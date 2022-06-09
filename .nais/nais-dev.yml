@@ -14,9 +14,9 @@ spec:
     application:
       enabled: true
   liveness:
-    path: /isAlive
+    path: /isalive
   readiness:
-    path: /isReady
+    path: /isready
   prometheus:
     enabled: true
     path: /metrics
@@ -25,5 +25,5 @@ spec:
     max: 1
   kafka:
     pool: nav-dev
-  tokenx:
+  secureLogs:
     enabled: true
