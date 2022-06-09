@@ -13,6 +13,7 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://packages.confluent.io/maven/")
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -22,6 +23,9 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("io.prometheus:simpleclient:$prometheusVersion")
     implementation("io.prometheus:simpleclient_common:$prometheusVersion")
+    implementation("com.github.navikt:rapids-and-rivers:2022060808531654671206.908d671b7ae0")
+    implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
+    implementation("org.jetbrains:annotations:23.0.0")
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
