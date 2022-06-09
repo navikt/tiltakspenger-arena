@@ -1,4 +1,5 @@
 val javaVersion = JavaVersion.VERSION_17
+val prometheusVersion = "0.15.0"
 
 plugins {
     application
@@ -20,6 +21,8 @@ dependencies {
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
+    implementation("io.prometheus:simpleclient:$prometheusVersion")
+    implementation("io.prometheus:simpleclient_common:$prometheusVersion")
     implementation("com.github.navikt:rapids-and-rivers:2022060808531654671206.908d671b7ae0")
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
     implementation("org.jetbrains:annotations:23.0.0")
