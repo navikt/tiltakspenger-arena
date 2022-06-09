@@ -40,7 +40,7 @@ configurations.all {
 }
 
 application {
-    mainClass.set("no.nav.tiltakspenger.mottak.AppKt")
+    mainClass.set("no.nav.tiltakspenger.arena.ApplicationKt")
 }
 
 java {
