@@ -1,11 +1,7 @@
 package no.nav.tiltakspenger.arena
 
-import com.natpryce.konfig.ConfigurationMap
+import com.natpryce.konfig.*
 import com.natpryce.konfig.ConfigurationProperties.Companion.systemProperties
-import com.natpryce.konfig.EnvironmentVariables
-import com.natpryce.konfig.Key
-import com.natpryce.konfig.overriding
-import com.natpryce.konfig.stringType
 
 object Configuration {
 
@@ -22,8 +18,8 @@ object Configuration {
 
     val otherDefaultProperties = mapOf(
         "application.httpPort" to 8080.toString(),
-        "stsUsername" to System.getenv("SERVICEUSER_USERNAME"),
-        "stsPassword" to System.getenv("SERVICEUSER_PASSWORD")
+        "SERVICEUSER_TPTS_USERNAME" to System.getenv("SERVICEUSER_TPTS_USERNAME"),
+        "SERVICEUSER_TPTS_PASSWORD" to System.getenv("SERVICEUSER_TPTS_PASSWORD")
     )
     private val defaultProperties = ConfigurationMap(
         rapidsAndRivers + otherDefaultProperties
@@ -66,8 +62,8 @@ object Configuration {
     data class ArenaSoapConfig(
         val ytelseskontraktUrl: String = config()[Key("ytelseskontraktUrl", stringType)],
         val stsUrl: String = config()[Key("stsUrl", stringType)],
-        val stsUsername: String = config()[Key("stsUsername", stringType)],
-        val stsPassword: String = config()[Key("stsPassword", stringType)],
+        val stsUsername: String = config()[Key("SERVICEUSER_TPTS_USERNAME", stringType)],
+        val stsPassword: String = config()[Key("SERVICEUSER_TPTS_PASSWORD", stringType)],
     )
 }
 
