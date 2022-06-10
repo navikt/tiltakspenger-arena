@@ -10,9 +10,6 @@ spec:
   port: 8080
   ingresses:
     - https://{{ name }}.dev.intern.nav.no
-  azure:
-    application:
-      enabled: true
   liveness:
     path: /isalive
   readiness:
