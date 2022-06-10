@@ -1,12 +1,7 @@
 package no.nav.tiltakspenger.arena
 
 import mu.KotlinLogging
-import no.nav.helse.rapids_rivers.JsonMessage
-import no.nav.helse.rapids_rivers.MessageContext
-import no.nav.helse.rapids_rivers.MessageProblems
-import no.nav.helse.rapids_rivers.RapidsConnection
-import no.nav.helse.rapids_rivers.River
-import no.nav.helse.rapids_rivers.asOptionalLocalDate
+import no.nav.helse.rapids_rivers.*
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.YtelseSak
 
@@ -20,10 +15,10 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
     init {
         River(rapidsConnection).apply {
             validate {
+                it.demandValue("@behov", "ytelser")
+                it.forbid("@løsning")
+                it.requireKey("@id", "@behovId") // Hva er forskjellen på den ene og den andre her?
                 it.requireKey("ident")
-                // Hva brukes egentlig interestedIn til??
-                it.interestedIn("@behov")
-                it.interestedIn("@id")
                 it.interestedIn("fom")
                 it.interestedIn("tom")
             }
