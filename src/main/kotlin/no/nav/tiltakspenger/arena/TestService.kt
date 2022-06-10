@@ -1,5 +1,11 @@
+package no.nav.tiltakspenger.arena
+
 import mu.KotlinLogging
-import no.nav.helse.rapids_rivers.*
+import no.nav.helse.rapids_rivers.JsonMessage
+import no.nav.helse.rapids_rivers.MessageContext
+import no.nav.helse.rapids_rivers.MessageProblems
+import no.nav.helse.rapids_rivers.RapidsConnection
+import no.nav.helse.rapids_rivers.River
 
 private val LOG = KotlinLogging.logger {}
 
