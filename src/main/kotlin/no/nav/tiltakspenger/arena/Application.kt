@@ -10,6 +10,8 @@ private val LOG = KotlinLogging.logger {}
 fun main() {
     RapidApplication.create(Configuration.rapidsAndRivers).apply {
         TestService(this)
+        // ArenaYtelserService(this, Configuration.arenaSoapService)
+
         register(object : RapidsConnection.StatusListener {
             override fun onStartup(rapidsConnection: RapidsConnection) {
                 LOG.info { "Starting tiltakspenger-arena" }

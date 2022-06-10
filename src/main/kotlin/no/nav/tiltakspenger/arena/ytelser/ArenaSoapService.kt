@@ -6,9 +6,9 @@ import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.YtelseskontraktV3
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Periode
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.meldinger.HentYtelseskontraktListeRequest
-import java.text.DateFormat
 import java.text.ParseException
-import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 import javax.ws.rs.InternalServerErrorException
 import javax.xml.datatype.DatatypeConfigurationException
@@ -26,7 +26,7 @@ class ArenaSoapService(
     @Suppress("TooGenericExceptionCaught")
     fun ping(): Boolean {
         return try {
-            ytelseskontraktV3Service!!.ping()
+            ytelseskontraktV3Service.ping()
             true
         } catch (e: Exception) {
             log.error("Failed to ping service", e)
@@ -34,31 +34,30 @@ class ArenaSoapService(
         }
     }
 
-    fun toGregorianOrNull(dateParam: String?): XMLGregorianCalendar? {
+    private fun toXMLGregorianOrNull(dateParam: LocalDate?): XMLGregorianCalendar? {
         return try {
             if (dateParam == null) return null
-            val format: DateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-            val date = format.parse(dateParam)
-            val cal = GregorianCalendar()
-            cal.time = date
+            val date = dateParam.atStartOfDay(ZoneId.of("Europe/Oslo"))
+            val cal = GregorianCalendar.from(date)
             DatatypeFactory.newInstance().newXMLGregorianCalendar(cal)
         } catch (exception: ParseException) {
+            log.error(exception) { "Noe feilet" }
             null
         } catch (exception: DatatypeConfigurationException) {
-            log.error(exception) { "Noe feil" }
+            log.error(exception) { "Noe feilet" }
             null
         }
     }
 
-    fun getYtelser(fnr: String?, fom: String?, tom: String?): List<Ytelseskontrakt> {
+    fun getYtelser(fnr: String, fom: LocalDate?, tom: LocalDate?): List<Ytelseskontrakt> {
         val periode = Periode()
-        periode.fom = toGregorianOrNull(fom)
-        periode.tom = toGregorianOrNull(tom)
+        periode.fom = toXMLGregorianOrNull(fom)
+        periode.tom = toXMLGregorianOrNull(tom)
         val request = HentYtelseskontraktListeRequest()
         request.periode = periode
         request.personidentifikator = fnr
         return try {
-            val response = ytelseskontraktV3Service!!.hentYtelseskontraktListe(request)
+            val response = ytelseskontraktV3Service.hentYtelseskontraktListe(request)
             response.ytelseskontraktListe
         } catch (exception: HentYtelseskontraktListeSikkerhetsbegrensning) {
             log.error("HentYtelseskontraktListeSikkerhetsbegrensning feil:", exception)
