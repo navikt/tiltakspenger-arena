@@ -17,12 +17,13 @@ import javax.xml.datatype.XMLGregorianCalendar
 
 class ArenaSoapService(
     private val ytelseskontraktV3Service: YtelseskontraktV3,
-    //private val tiltakOgAktivitetV1Service: TiltakOgAktivitetV1,
+    // private val tiltakOgAktivitetV1Service: TiltakOgAktivitetV1,
 ) {
     companion object {
         private val log = KotlinLogging.logger {}
     }
 
+    @Suppress("TooGenericExceptionCaught")
     fun ping(): Boolean {
         return try {
             ytelseskontraktV3Service!!.ping()
@@ -44,6 +45,7 @@ class ArenaSoapService(
         } catch (exception: ParseException) {
             null
         } catch (exception: DatatypeConfigurationException) {
+            log.error(exception) { "Noe feil" }
             null
         }
     }

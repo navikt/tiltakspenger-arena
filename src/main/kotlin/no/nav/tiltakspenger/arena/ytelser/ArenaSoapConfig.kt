@@ -12,7 +12,7 @@ class ArenaSoapConfig(
     private val stsUrl: String,
     private val stsUsername: String,
     private val stsPassword: String,
-    private val tiltakogaktivitetUrl: String,
+//    private val tiltakogaktivitetUrl: String,
 ) {
     companion object {
         private val log = KotlinLogging.logger {}

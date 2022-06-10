@@ -15,6 +15,7 @@ class TiltakOgAktivitet(
     // val statusSistEndret: XMLGregorianCalendar? = null,
     // val begrunnelseInnsoeking: String? = null,
 ) {
+    @Suppress("ForbiddenComment")
     companion object {
         fun of(tiltaksaktiviteter: List<Tiltaksaktivitet>): List<TiltakOgAktivitet> =
             tiltaksaktiviteter.map { tiltaksaktivitet ->
@@ -23,7 +24,7 @@ class TiltakOgAktivitet(
                     aktivitetId = tiltaksaktivitet.getAktivitetId(),
                     tiltakLokaltNavn = tiltaksaktivitet.getTiltakLokaltNavn(),
                     arrangoer = tiltaksaktivitet.getArrangoer(),
-                    deltakelsePeriode = tiltaksaktivitet.getDeltakelsePeriode(), //TODO: Må mappe periode også!
+                    deltakelsePeriode = tiltaksaktivitet.getDeltakelsePeriode(), // TODO: Må mappe periode også!
                     deltakelseProsent = tiltaksaktivitet.getDeltakelseProsent(),
                     // antallDagerPerUke = tiltaksaktivitet.getAntallDagerPerUke(),
                     // deltakerStatus = tiltaksaktivitet.deltakerStatus,
