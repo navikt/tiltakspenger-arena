@@ -45,7 +45,7 @@ dependencies {
     implementation("no.nav.helse:cxf-prometheus-metrics:dd7d125")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
     implementation("no.nav.common:cxf:2.2022.05.31_07.13-5812471780dc")
-    implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
+    implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.1.0")
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
