@@ -27,8 +27,8 @@ spec:
     pool: nav-dev
   secureLogs:
     enabled: true
-  vault:
-    enabled: true
-    paths:
-      - kvPath: /serviceuser/data/dev/srvtpts-arena
-        mountPath: /secrets/serviceuser
+#  vault:
+#    enabled: true
+#    paths:
+#      - kvPath: /serviceuser/data/dev/srvtpts-arena
+#        mountPath: /secrets/serviceuser
