@@ -1,4 +1,4 @@
-tiltakspenger
+tiltakspenger-arena
 ================
 
 Håndterer Arena-koblinger for tiltakspenger
