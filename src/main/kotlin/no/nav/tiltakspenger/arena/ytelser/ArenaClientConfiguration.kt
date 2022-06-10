@@ -13,6 +13,7 @@ class ArenaClientConfiguration(
 ) {
     companion object {
         private val log = KotlinLogging.logger {}
+        private val securelog = KotlinLogging.logger("tjenestekall")
     }
 
     private val stsConfig: StsConfig
@@ -24,6 +25,10 @@ class ArenaClientConfiguration(
             .build()
 
     fun ytelseskontraktV3(): YtelseskontraktV3 {
+        securelog.info { arenaSoapConfig }
+        log.info { "stsurl: ${arenaSoapConfig.stsUrl}" }
+        log.info { "url: ${arenaSoapConfig.ytelseskontraktUrl}" }
+        log.info { "username: ${arenaSoapConfig.stsUsername}" }
         log.info(
             "Using URL {} for service {}",
             arenaSoapConfig.ytelseskontraktUrl,
