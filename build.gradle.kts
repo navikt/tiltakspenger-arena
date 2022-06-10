@@ -29,6 +29,7 @@ dependencies {
     implementation("com.github.navikt:rapids-and-rivers:2022060808531654671206.908d671b7ae0")
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
     implementation("org.jetbrains:annotations:23.0.0")
+    implementation("com.natpryce:konfig:1.6.10.0")
 
 
     implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion")
