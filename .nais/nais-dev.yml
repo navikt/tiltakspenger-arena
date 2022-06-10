@@ -27,6 +27,8 @@ spec:
     pool: nav-dev
   secureLogs:
     enabled: true
+  envFrom:
+    - secret: srvtpts-arena
 #  vault:
 #    enabled: true
 #    paths:
