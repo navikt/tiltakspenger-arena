@@ -32,9 +32,9 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
 
     override fun onPacket(packet: JsonMessage, context: MessageContext) {
         LOG.info { "Received packet: ${packet.toJson()}" }
-        val ident = packet.get("ident").asText()
-        val fom = packet.get("fom").asOptionalLocalDate()
-        val tom = packet.get("fom").asOptionalLocalDate()
+        val ident = packet["ident"].asText()
+        val fom = packet["fom"].asOptionalLocalDate()
+        val tom = packet["tom"].asOptionalLocalDate()
         val ytelser = YtelseSak.of(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
         context.publish(ident, ytelser.asRapidMessage())
     }
@@ -44,7 +44,7 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
     }
 
     override fun onError(problems: MessageProblems, context: MessageContext) {
-        LOG.error { problems }
+        LOG.debug { problems }
     }
 
     private fun List<YtelseSak>.asRapidMessage(): String {
