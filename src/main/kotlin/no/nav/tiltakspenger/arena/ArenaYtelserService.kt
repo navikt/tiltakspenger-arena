@@ -36,8 +36,10 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
         val fom = packet["fom"].asOptionalLocalDate()
         val tom = packet["tom"].asOptionalLocalDate()
         val ytelser = YtelseSak.of(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
-        LOG.info { "Sending fakta: $ytelser" }
-        context.publish(ident, ytelser.asRapidMessage())
+        val løsning = ytelser.first().ytelsestype ?: ""
+        packet["@løsning"] = løsning
+        LOG.info { "Sending ytelse: $ytelser og løsning: $løsning" }
+        context.publish(packet.toJson())
     }
 
     override fun onSevere(error: MessageProblems.MessageException, context: MessageContext) {
@@ -46,9 +48,5 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
 
     override fun onError(problems: MessageProblems, context: MessageContext) {
         LOG.debug { problems }
-    }
-
-    private fun List<YtelseSak>.asRapidMessage(): String {
-        return "{}" + ""
     }
 }
