@@ -49,8 +49,10 @@ dependencies {
     // implementation("javax.activation:activation:1.1.1")
     // implementation("no.nav.helse:cxf-prometheus-metrics:dd7d125")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
+    implementation("org.apache.cxf:cxf-rt-features-metrics:$cxfVersion")
 
     implementation("no.nav.common:cxf:2.2022.05.31_07.13-5812471780dc")
+    implementation("com.sun.activation:jakarta.activation:1.2.2")
     implementation("jakarta.activation:jakarta.activation-api:1.2.2")
     implementation("jakarta.annotation:jakarta.annotation-api:1.3.5")
     implementation("jakarta.jws:jakarta.jws-api:2.1.0")
@@ -58,6 +60,8 @@ dependencies {
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
     implementation("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
     implementation("jakarta.xml.ws:jakarta.xml.ws-api:2.3.3")
+
+
     // implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
     // implementation("javax.annotation:javax.annotation-api:1.3.2")
     // implementation("jakarta.annotation:jakarta.annotation-api:2.1.0")
