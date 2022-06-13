@@ -28,6 +28,6 @@ class TestService(rapidsConnection: RapidsConnection) : River.PacketListener {
     }
 
     override fun onError(problems: MessageProblems, context: MessageContext) {
-        LOG.error { problems }
+        LOG.debug { problems }
     }
 }
