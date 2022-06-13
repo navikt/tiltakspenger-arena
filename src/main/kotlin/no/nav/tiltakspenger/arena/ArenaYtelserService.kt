@@ -20,7 +20,7 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
     init {
         River(rapidsConnection).apply {
             validate {
-                it.demandValue("@behov", "ytelser")
+                it.demandAllOrAny("@behov", listOf("ytelser"))
                 it.forbid("@løsning")
                 it.requireKey("@id", "@behovId") // Hva er forskjellen på den ene og den andre her?
                 it.requireKey("ident")
