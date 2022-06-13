@@ -9,6 +9,7 @@ import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 private val LOG = KotlinLogging.logger {}
 
 fun main() {
+    Thread.setDefaultUncaughtExceptionHandler { _, e -> LOG.error(e) { e.message } }
     val arenaSoapService = ArenaSoapService(ArenaClientConfiguration().ytelseskontraktV3())
 
     RapidApplication.create(Configuration.rapidsAndRivers).apply {
