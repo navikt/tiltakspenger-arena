@@ -13,7 +13,6 @@ fun main() {
     val arenaSoapService = ArenaSoapService(ArenaClientConfiguration().ytelseskontraktV3())
 
     RapidApplication.create(Configuration.rapidsAndRivers).apply {
-        TestService(this)
         ArenaYtelserService(this, arenaSoapService)
 
         register(object : RapidsConnection.StatusListener {

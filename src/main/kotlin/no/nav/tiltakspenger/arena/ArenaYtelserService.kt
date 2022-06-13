@@ -36,6 +36,7 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
         val fom = packet["fom"].asOptionalLocalDate()
         val tom = packet["tom"].asOptionalLocalDate()
         val ytelser = YtelseSak.of(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
+        LOG.info { "Sending fakta: $ytelser" }
         context.publish(ident, ytelser.asRapidMessage())
     }
 
