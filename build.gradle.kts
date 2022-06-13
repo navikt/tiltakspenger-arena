@@ -51,7 +51,7 @@ dependencies {
     implementation("org.apache.cxf:cxf-rt-features-metrics:$cxfVersion")
     implementation("com.sun.activation:jakarta.activation:1.2.2")
     implementation("com.sun.xml.messaging.saaj:saaj-impl:1.5.3")
-    implementation("jakarta.activation:jakarta.activation-api:1.2.2")
+    implementation("jakarta.activation:jakarta.activation-api:2.1.0")
     implementation("jakarta.annotation:jakarta.annotation-api:1.3.5")
     implementation("jakarta.jws:jakarta.jws-api:2.1.0")
     implementation("jakarta.validation:jakarta.validation-api:2.0.2")
