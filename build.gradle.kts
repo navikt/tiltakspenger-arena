@@ -33,6 +33,17 @@ dependencies {
     implementation("com.natpryce:konfig:1.6.10.0")
     implementation("com.squareup.okhttp3:okhttp:3.14.9")
     implementation("no.nav.common:rest:2.2022.05.31_07.13-5812471780dc")
+    //implementation("no.nav.common:xml:2.2022.05.31_07.13-5812471780dc")
+    implementation("no.nav.common:sts:2.2022.05.31_07.13-5812471780dc")
+    implementation("no.nav.common:util:2.2022.05.31_07.13-5812471780dc")
+    implementation("no.nav.common:client:2.2022.05.31_07.13-5812471780dc")
+    implementation("no.nav.common:auth:2.2022.05.31_07.13-5812471780dc")
+    implementation("no.nav.common:log:2.2022.05.31_07.13-5812471780dc")
+    implementation("no.nav.common:health:2.2022.05.31_07.13-5812471780dc")
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.3")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
 
     // Not quite sure if I need all of these
     implementation("no.nav.common:cxf:2.2022.05.31_07.13-5812471780dc")
