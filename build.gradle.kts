@@ -5,7 +5,7 @@ val cxfVersion = "3.5.2"
 plugins {
     application
     id("java")
-    kotlin("jvm") version "1.6.21"
+    kotlin("jvm") version "1.7.0"
     kotlin("plugin.serialization") version "1.6.21"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
