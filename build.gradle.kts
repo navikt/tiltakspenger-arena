@@ -31,6 +31,8 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
     implementation("org.jetbrains:annotations:23.0.0")
     implementation("com.natpryce:konfig:1.6.10.0")
+    implementation("com.squareup.okhttp3:okhttp:3.14.9")
+    implementation("no.nav.common:rest:2.2022.05.31_07.13-5812471780dc")
 
     // Not quite sure if I need all of these
     implementation("no.nav.common:cxf:2.2022.05.31_07.13-5812471780dc")
