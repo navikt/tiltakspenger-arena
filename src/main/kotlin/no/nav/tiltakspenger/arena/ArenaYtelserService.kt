@@ -17,7 +17,7 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
         private val LOG = KotlinLogging.logger {}
 
         internal object BEHOV {
-            const val YTELSE_LISTE = "Ytelser"
+            const val YTELSE_LISTE = "ytelser"
         }
     }
 
@@ -45,10 +45,6 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
         )
         LOG.info { "Sending ytelse: $ytelser" }
         context.publish(packet.toJson())
-    }
-
-    override fun onSevere(error: MessageProblems.MessageException, context: MessageContext) {
-        LOG.debug { error }
     }
 
     override fun onError(problems: MessageProblems, context: MessageContext) {

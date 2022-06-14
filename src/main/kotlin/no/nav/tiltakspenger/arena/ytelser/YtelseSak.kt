@@ -4,7 +4,7 @@ import no.nav.tiltakspenger.arena.felles.toLocalDate
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt
 import java.time.LocalDate
 
-class YtelseSak(
+data class YtelseSak(
     val datoKravMottatt: LocalDate?,
     val dataKravMottatt: String? = null,
     val fagsystemSakId: Int? = null,

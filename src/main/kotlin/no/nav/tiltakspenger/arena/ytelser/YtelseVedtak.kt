@@ -4,7 +4,7 @@ import no.nav.tiltakspenger.arena.felles.toLocalDate
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Vedtak
 import java.time.LocalDate
 
-class YtelseVedtak(
+data class YtelseVedtak(
     val beslutningsDato: LocalDate? = null,
     val periodetypeForYtelse: String? = null,
     val vedtaksperiodeFom: LocalDate? = null,
