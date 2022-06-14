@@ -2,8 +2,11 @@ package no.nav.tiltakspenger.arena.ytelser
 
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class YtelseSak(
+    val fomGyldighetsperiode: LocalDateTime,
+    val tomGyldighetsperiode: LocalDateTime,
     val datoKravMottatt: LocalDate?,
     val dataKravMottatt: String? = null,
     val fagsystemSakId: Int? = null,
@@ -15,6 +18,8 @@ data class YtelseSak(
         fun of(ytelser: List<Ytelseskontrakt>): List<YtelseSak> =
             ytelser.map { ytelse ->
                 YtelseSak(
+                    fomGyldighetsperiode = ytelse.fomGyldighetsperiode,
+                    tomGyldighetsperiode = ytelse.tomGyldighetsperiode,
                     datoKravMottatt = ytelse.datoKravMottatt,
                     dataKravMottatt = ytelse.ytelsestype,
                     fagsystemSakId = ytelse.fagsystemSakId,

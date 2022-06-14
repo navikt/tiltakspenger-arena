@@ -9,6 +9,8 @@
     <jaxb:globalBindings>
         <xjc:javaType adapter="io.github.threetenjaxb.core.LocalDateXmlAdapter"
                       name="java.time.LocalDate" xmlType="xs:date"/>
+        <xjc:javaType adapter="io.github.threetenjaxb.core.LocalDateTimeXmlAdapter"
+                      name="java.time.LocalDateTime" xmlType="xs:dateTime"/>
     </jaxb:globalBindings>
 
 </jaxb:bindings>
