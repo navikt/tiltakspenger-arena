@@ -3,7 +3,7 @@ package no.nav.tiltakspenger.arena.ytelser
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Vedtak
 import javax.xml.datatype.XMLGregorianCalendar
 
-class YtelseVedtak(
+data class YtelseVedtak(
     val beslutningsDato: XMLGregorianCalendar? = null,
     val periodetypeForYtelse: String? = null,
     val vedtaksperiodeFom: XMLGregorianCalendar? = null,

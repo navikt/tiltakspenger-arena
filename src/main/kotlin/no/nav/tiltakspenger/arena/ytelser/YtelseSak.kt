@@ -2,7 +2,7 @@ package no.nav.tiltakspenger.arena.ytelser
 
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt
 
-class YtelseSak(
+data class YtelseSak(
     val dataKravMottatt: String? = null,
     val fagsystemSakId: Int? = null,
     val status: String? = null,
