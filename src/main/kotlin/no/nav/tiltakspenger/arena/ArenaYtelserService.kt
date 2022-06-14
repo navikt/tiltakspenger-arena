@@ -17,7 +17,7 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
         private val LOG = KotlinLogging.logger {}
 
         internal object BEHOV {
-            const val YTELSE_LISTE = "Ytelser"
+            const val YTELSE_LISTE = "ytelser"
         }
     }
 
