@@ -46,6 +46,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
 
     // Not quite sure if I need all of these
+    implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
     implementation("no.nav.common:cxf:2.2022.05.31_07.13-5812471780dc")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-features-metrics:$cxfVersion")
@@ -91,6 +92,7 @@ detekt {
 wsdl2java {
     wsdlDir.set(layout.projectDirectory.dir("src/main/resources/wsdl"))
     cxfVersion.set("3.5.2")
+    bindingFile.set(layout.projectDirectory.file("src/main/resources/bindings/bindings.xml"))
 }
 
 java.sourceSets["main"].java {

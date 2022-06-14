@@ -1,7 +1,6 @@
 package no.nav.tiltakspenger.arena.ytelser
 
 import mu.KotlinLogging
-import no.nav.tiltakspenger.arena.felles.toXMLGregorian
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeSikkerhetsbegrensning
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.YtelseskontraktV3
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Periode
@@ -31,8 +30,8 @@ class ArenaSoapService(
 
     fun getYtelser(fnr: String, fom: LocalDate?, tom: LocalDate?): List<Ytelseskontrakt> {
         val periode = Periode()
-        periode.fom = fom.toXMLGregorian()
-        periode.tom = tom.toXMLGregorian()
+        periode.fom = fom
+        periode.tom = tom
         val request = HentYtelseskontraktListeRequest()
         request.periode = periode
         request.personidentifikator = fnr
