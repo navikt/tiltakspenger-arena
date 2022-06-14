@@ -15,12 +15,16 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
 
     companion object {
         private val LOG = KotlinLogging.logger {}
+
+        internal object BEHOV {
+            const val YTELSE_LISTE = "Ytelser"
+        }
     }
 
     init {
         River(rapidsConnection).apply {
             validate {
-                it.demandAllOrAny("@behov", listOf("ytelser"))
+                it.demandAllOrAny("@behov", listOf(BEHOV.YTELSE_LISTE))
                 it.forbid("@løsning")
                 it.requireKey("@id", "@behovId") // Hva er forskjellen på den ene og den andre her?
                 it.requireKey("ident")
@@ -35,15 +39,16 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
         val ident = packet["ident"].asText()
         val fom = packet["fom"].asOptionalLocalDate()
         val tom = packet["tom"].asOptionalLocalDate()
-        val ytelser = YtelseSak.of(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
-        val løsning = ytelser.first().ytelsestype ?: ""
-        packet["@løsning"] = løsning
-        LOG.info { "Sending ytelse: $ytelser og løsning: $løsning" }
+        val ytelser: List<YtelseSak> = YtelseSak.of(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
+        packet["@løsning"] = mapOf(
+            BEHOV.YTELSE_LISTE to ytelser
+        )
+        LOG.info { "Sending ytelse: $ytelser" }
         context.publish(packet.toJson())
     }
 
     override fun onSevere(error: MessageProblems.MessageException, context: MessageContext) {
-        LOG.error { error }
+        LOG.debug { error }
     }
 
     override fun onError(problems: MessageProblems, context: MessageContext) {
