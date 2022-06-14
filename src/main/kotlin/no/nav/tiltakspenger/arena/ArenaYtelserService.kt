@@ -47,10 +47,6 @@ class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaS
         context.publish(packet.toJson())
     }
 
-    override fun onSevere(error: MessageProblems.MessageException, context: MessageContext) {
-        LOG.debug { error }
-    }
-
     override fun onError(problems: MessageProblems, context: MessageContext) {
         LOG.debug { problems }
     }
