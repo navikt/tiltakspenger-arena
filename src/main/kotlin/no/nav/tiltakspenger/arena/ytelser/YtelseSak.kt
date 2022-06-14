@@ -1,8 +1,11 @@
 package no.nav.tiltakspenger.arena.ytelser
 
+import no.nav.tiltakspenger.arena.felles.toLocalDate
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt
+import java.time.LocalDate
 
 class YtelseSak(
+    val datoKravMottatt: LocalDate?,
     val dataKravMottatt: String? = null,
     val fagsystemSakId: Int? = null,
     val status: String? = null,
@@ -13,6 +16,7 @@ class YtelseSak(
         fun of(ytelser: List<Ytelseskontrakt>): List<YtelseSak> =
             ytelser.map { ytelse ->
                 YtelseSak(
+                    datoKravMottatt = ytelse.datoKravMottatt.toLocalDate(),
                     dataKravMottatt = ytelse.ytelsestype,
                     fagsystemSakId = ytelse.fagsystemSakId,
                     status = ytelse.status,

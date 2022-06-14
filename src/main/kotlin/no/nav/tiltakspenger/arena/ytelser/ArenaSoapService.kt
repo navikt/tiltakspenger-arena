@@ -1,19 +1,14 @@
 package no.nav.tiltakspenger.arena.ytelser
 
 import mu.KotlinLogging
+import no.nav.tiltakspenger.arena.felles.toXMLGregorian
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeSikkerhetsbegrensning
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.YtelseskontraktV3
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Periode
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.meldinger.HentYtelseskontraktListeRequest
-import java.text.ParseException
 import java.time.LocalDate
-import java.time.ZoneId
-import java.util.*
 import javax.ws.rs.InternalServerErrorException
-import javax.xml.datatype.DatatypeConfigurationException
-import javax.xml.datatype.DatatypeFactory
-import javax.xml.datatype.XMLGregorianCalendar
 
 class ArenaSoapService(
     private val ytelseskontraktV3Service: YtelseskontraktV3,
@@ -34,25 +29,10 @@ class ArenaSoapService(
         }
     }
 
-    private fun toXMLGregorianOrNull(dateParam: LocalDate?): XMLGregorianCalendar? {
-        return try {
-            if (dateParam == null) return null
-            val date = dateParam.atStartOfDay(ZoneId.of("Europe/Oslo"))
-            val cal = GregorianCalendar.from(date)
-            DatatypeFactory.newInstance().newXMLGregorianCalendar(cal)
-        } catch (exception: ParseException) {
-            log.error(exception) { "Noe feilet" }
-            null
-        } catch (exception: DatatypeConfigurationException) {
-            log.error(exception) { "Noe feilet" }
-            null
-        }
-    }
-
     fun getYtelser(fnr: String, fom: LocalDate?, tom: LocalDate?): List<Ytelseskontrakt> {
         val periode = Periode()
-        periode.fom = toXMLGregorianOrNull(fom)
-        periode.tom = toXMLGregorianOrNull(tom)
+        periode.fom = fom.toXMLGregorian()
+        periode.tom = tom.toXMLGregorian()
         val request = HentYtelseskontraktListeRequest()
         request.periode = periode
         request.personidentifikator = fnr
