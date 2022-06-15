@@ -1,3 +1,5 @@
+@file:Suppress("Indentation")
+
 package no.nav.tiltakspenger.arena.ytelser
 
 import mu.KotlinLogging

@@ -25,7 +25,8 @@ object Configuration {
         "SERVICEUSER_TPTS_USERNAME" to System.getenv("SERVICEUSER_TPTS_USERNAME"),
         "SERVICEUSER_TPTS_PASSWORD" to System.getenv("SERVICEUSER_TPTS_PASSWORD"),
         "ARENA_ORDS_CLIENT_ID" to System.getenv("ARENA_ORDS_CLIENT_ID"),
-        "ARENA_ORDS_CLIENT_SECRET" to System.getenv("ARENA_ORDS_CLIENT_SECRET")
+        "ARENA_ORDS_CLIENT_SECRET" to System.getenv("ARENA_ORDS_CLIENT_SECRET"),
+        "ARENA_ORDS_URL" to System.getenv("ARENA_ORDS_URL")
     )
     private val defaultProperties = ConfigurationMap(
         rapidsAndRivers + otherDefaultProperties
@@ -70,6 +71,12 @@ object Configuration {
         val stsUrl: String = config()[Key("stsUrl", stringType)],
         val stsUsername: String = config()[Key("SERVICEUSER_TPTS_USERNAME", stringType)],
         val stsPassword: String = config()[Key("SERVICEUSER_TPTS_PASSWORD", stringType)],
+    )
+
+    data class ArenaOrdsConfig(
+        val arenaOrdsUrl: String = config()[Key("ARENA_ORDS_URL", stringType)],
+        val arenaOrdsClientId: String = config()[Key("ARENA_ORDS_CLIENT_ID", stringType)],
+        val arenaOrdsClientSecret: String = config()[Key("ARENA_ORDS_CLIENT_SECRET", stringType)],
     )
 }
 

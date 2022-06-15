@@ -7,10 +7,16 @@ import no.nav.helse.rapids_rivers.MessageProblems
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
 import no.nav.helse.rapids_rivers.asOptionalLocalDate
+import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.YtelseSak
 
-class ArenaYtelserService(rapidsConnection: RapidsConnection, private val arenaSoapService: ArenaSoapService) :
+@Suppress("UnusedPrivateMember")
+class ArenaYtelserService(
+    rapidsConnection: RapidsConnection,
+    private val arenaSoapService: ArenaSoapService,
+    private val arenaOrdsService: ArenaOrdsClient
+) :
     River.PacketListener {
 
     companion object {

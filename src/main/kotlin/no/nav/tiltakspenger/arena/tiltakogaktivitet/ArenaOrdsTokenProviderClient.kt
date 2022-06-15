@@ -13,20 +13,18 @@ import no.nav.tiltakspenger.arena.Configuration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
-class ArenaOrdsTokenProviderClient(
-    private val arenaOrdsUrl: String
-) {
-    private val client = HttpClient(CIO) {
-        install(ContentNegotiation) {
-            jackson()
-        }
-    }
-
+class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.ArenaOrdsConfig) {
     companion object {
         private const val MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH: Long = 60
     }
 
     private var tokenCache: TokenCache? = null
+
+    private val client = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            jackson()
+        }
+    }
 
     suspend fun token(): String {
         if (tokenIsSoonExpired()) {
@@ -37,15 +35,12 @@ class ArenaOrdsTokenProviderClient(
 
     private suspend fun refreshToken() {
         val response: OrdsToken = client.submitForm(
-            url = arenaOrdsUrl + "arena/api/oauth/token",
+            url = arenaOrdsConfig.arenaOrdsUrl + "arena/api/oauth/token",
             formParameters = Parameters.build {
                 append("grant_type", "client_credentials")
             }
         ) {
-            basicAuth(
-                Configuration.otherDefaultProperties.getOrDefault("ARENA_ORDS_CLIENT_ID", ""),
-                Configuration.otherDefaultProperties.getOrDefault("ARENA_ORDS_CLIENT_ID", "")
-            )
+            basicAuth(arenaOrdsConfig.arenaOrdsClientId, arenaOrdsConfig.arenaOrdsClientSecret)
             header(HttpHeaders.CacheControl, "no-cache")
         }.body()
         tokenCache = TokenCache(response)

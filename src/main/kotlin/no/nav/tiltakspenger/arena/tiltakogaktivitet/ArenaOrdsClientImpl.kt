@@ -7,9 +7,10 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
+import no.nav.tiltakspenger.arena.Configuration
 
 class ArenaOrdsClientImpl(
-    private val arenaOrdsUrl: String,
+    private val arenaOrdsConfig: Configuration.ArenaOrdsConfig,
     private val arenaOrdsTokenProvider: ArenaOrdsTokenProviderClient
 ) : ArenaOrdsClient {
 
@@ -25,7 +26,7 @@ class ArenaOrdsClientImpl(
     // }
 
     override suspend fun hentArenaOppfolgingsstatus(fnr: String): ArenaOppfølgingsstatusDTO {
-        val url = arenaOrdsUrl + "arena/api/v1/person/oppfoelging/oppfoelgingsstatus?p_fnr=$fnr"
+        val url = arenaOrdsConfig.arenaOrdsUrl + "arena/api/v1/person/oppfoelging/oppfoelgingsstatus?p_fnr=$fnr"
         val response: ArenaOppfølgingsstatusDTO = client.get(urlString = url) {
             bearerAuth(arenaOrdsTokenProvider.token())
         }.body()
@@ -33,7 +34,7 @@ class ArenaOrdsClientImpl(
     }
 
     override suspend fun hentArenaOppfolginssak(fnr: String): ArenaOppfølgingssakDTO {
-        val url = arenaOrdsUrl + "arena/api/v1/person/oppfoelging/oppfoelgingssak?p_fnr=$fnr"
+        val url = arenaOrdsConfig.arenaOrdsUrl + "arena/api/v1/person/oppfoelging/oppfoelgingssak?p_fnr=$fnr"
         val response: ArenaOppfølgingssakDTO = client.get(urlString = url) {
             bearerAuth(arenaOrdsTokenProvider.token())
         }.body()
@@ -41,7 +42,7 @@ class ArenaOrdsClientImpl(
     }
 
     override suspend fun hentArenaAktiviteter(fnr: String): ArenaAktiviteterDTO? {
-        val url = arenaOrdsUrl + "arena/api/v1/person/oppfoelging/aktiviteter"
+        val url = arenaOrdsConfig.arenaOrdsUrl + "arena/api/v1/person/oppfoelging/aktiviteter"
         val response: ArenaAktiviteterDTO = client.get(urlString = url) {
             bearerAuth(arenaOrdsTokenProvider.token())
             header("fnr", fnr)
