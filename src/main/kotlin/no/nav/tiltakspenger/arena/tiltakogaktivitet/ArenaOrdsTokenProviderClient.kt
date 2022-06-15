@@ -1,50 +1,54 @@
 package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
 import com.fasterxml.jackson.annotation.JsonAlias
-import no.nav.common.rest.client.RestClient
-import no.nav.common.rest.client.RestUtils
-import no.nav.common.utils.AuthUtils
-import no.nav.common.utils.EnvironmentUtils
-import no.nav.common.utils.UrlUtils
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
+import io.ktor.serialization.jackson.*
+import no.nav.tiltakspenger.arena.Configuration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import javax.ws.rs.core.HttpHeaders.AUTHORIZATION
-import javax.ws.rs.core.HttpHeaders.CACHE_CONTROL
 
 class ArenaOrdsTokenProviderClient(
-    private val arenaOrdsUrl: String,
-    private val client: OkHttpClient = RestClient.baseClient()
+    private val arenaOrdsUrl: String
 ) {
+    private val client = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            jackson()
+        }
+    }
+
+    companion object {
+        private const val MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH: Long = 60
+    }
+
     private var tokenCache: TokenCache? = null
 
-    val token: String
-        get() {
-            if (tokenIsSoonExpired()) {
-                refreshToken()
-            }
-            return tokenCache?.ordsToken?.accessToken!!
+    suspend fun token(): String {
+        if (tokenIsSoonExpired()) {
+            refreshToken()
         }
+        return tokenCache?.ordsToken?.accessToken!!
+    }
 
-    private fun refreshToken() {
-        val basicAuth = AuthUtils.basicCredentials(
-            EnvironmentUtils.getRequiredProperty(ARENA_ORDS_CLIENT_ID_PROPERTY),
-            EnvironmentUtils.getRequiredProperty(ARENA_ORDS_CLIENT_SECRET_PROPERTY)
-        )
-        val request: Request = Request.Builder()
-            .url(UrlUtils.joinPaths(arenaOrdsUrl, "arena/api/oauth/token"))
-            .header(CACHE_CONTROL, "no-cache")
-            .header(AUTHORIZATION, basicAuth)
-            .post("grant_type=client_credentials".toRequestBody("application/x-www-form-urlencoded".toMediaType()))
-            .build()
-        client.newCall(request).execute().use { response ->
-            RestUtils.throwIfNotSuccessful(response)
-            val ordsToken = RestUtils.parseJsonResponseOrThrow(response, OrdsToken::class.java)
-            tokenCache = TokenCache(ordsToken)
-        }
+    private suspend fun refreshToken() {
+        val response: OrdsToken = client.submitForm(
+            url = arenaOrdsUrl + "arena/api/oauth/token",
+            formParameters = Parameters.build {
+                append("grant_type", "client_credentials")
+            }
+        ) {
+            basicAuth(
+                Configuration.otherDefaultProperties.getOrDefault("ARENA_ORDS_CLIENT_ID", ""),
+                Configuration.otherDefaultProperties.getOrDefault("ARENA_ORDS_CLIENT_ID", "")
+            )
+            header(HttpHeaders.CacheControl, "no-cache")
+        }.body()
+        tokenCache = TokenCache(response)
     }
 
     private fun tokenIsSoonExpired(): Boolean {
@@ -70,10 +74,4 @@ class ArenaOrdsTokenProviderClient(
         @JsonAlias("expires_in")
         val expiresIn: Long = 0
     )
-
-    companion object {
-        const val ARENA_ORDS_CLIENT_ID_PROPERTY = "ARENA_ORDS_CLIENT_ID"
-        const val ARENA_ORDS_CLIENT_SECRET_PROPERTY = "ARENA_ORDS_CLIENT_SECRET"
-        private const val MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH: Long = 60
-    }
 }

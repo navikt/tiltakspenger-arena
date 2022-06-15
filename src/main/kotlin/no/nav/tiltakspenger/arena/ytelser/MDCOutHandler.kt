@@ -22,17 +22,17 @@ internal class MDCOutHandler : SOAPHandler<SOAPMessageContext?> {
     }
 
     override fun handleMessage(context: SOAPMessageContext?): Boolean {
-        val outbound = context!![MessageContext.MESSAGE_OUTBOUND_PROPERTY] as Boolean?
+        val outbound = context!![MessageContext.MESSAGE_OUTBOUND_PROPERTY] as Boolean
 
         // OUTBOUND processing
-        if (java.lang.Boolean.TRUE == outbound) {
+        if (outbound) {
             val callId = MDC.get(MDCConstants.MDC_CALL_ID)
                 ?: throw NullPointerException(
                     "CallId skal være tilgjengelig i MDC på dette tidspunkt. Om du er en webapp, må du legge til et " +
-                        "MDCFilter i web.xml (oppskrift på dette: " +
-                        "http://confluence.adeo.no/display/Modernisering/MDCFilter). " +
-                        "Om du er noe annet må du generere callId selv og legge på MDC. " +
-                        "Hjelpemetoder finnes i no.nav.modig.common.MDCOperations."
+                            "MDCFilter i web.xml (oppskrift på dette: " +
+                            "http://confluence.adeo.no/display/Modernisering/MDCFilter). " +
+                            "Om du er noe annet må du generere callId selv og legge på MDC. " +
+                            "Hjelpemetoder finnes i no.nav.modig.common.MDCOperations."
                 )
             log.debug("Add the callId to the SOAP message: $callId")
             try {

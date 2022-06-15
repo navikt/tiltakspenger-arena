@@ -1,6 +1,8 @@
 val javaVersion = JavaVersion.VERSION_17
 val prometheusVersion = "0.15.0"
 val cxfVersion = "3.5.2"
+val ktorVersion = "2.0.2"
+val jacksonVersion = "2.13.3"
 
 plugins {
     application
@@ -11,6 +13,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("ca.cutterslade.analyze") version "1.9.0"
     id("com.github.bjornvester.wsdl2java") version "1.2"
+    id("com.github.ben-manes.versions") version "0.42.0"
 }
 
 repositories {
@@ -31,23 +34,32 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
     implementation("org.jetbrains:annotations:23.0.0")
     implementation("com.natpryce:konfig:1.6.10.0")
-    implementation("com.squareup.okhttp3:okhttp:3.14.9")
-    implementation("no.nav.common:rest:2.2022.05.31_07.13-5812471780dc")
-    //implementation("no.nav.common:xml:2.2022.05.31_07.13-5812471780dc")
-    implementation("no.nav.common:sts:2.2022.05.31_07.13-5812471780dc")
-    implementation("no.nav.common:util:2.2022.05.31_07.13-5812471780dc")
-    implementation("no.nav.common:client:2.2022.05.31_07.13-5812471780dc")
-    implementation("no.nav.common:auth:2.2022.05.31_07.13-5812471780dc")
-    implementation("no.nav.common:log:2.2022.05.31_07.13-5812471780dc")
-    implementation("no.nav.common:health:2.2022.05.31_07.13-5812471780dc")
+
+//    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
+//    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio-jvm:$ktorVersion")
+//    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation-jvm:$ktorVersion")
+//    implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-jackson-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-utils-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-http-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-xml:$ktorVersion")
 
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.3")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
 
     // Not quite sure if I need all of these
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
     implementation("no.nav.common:cxf:2.2022.05.31_07.13-5812471780dc")
+    implementation("org.apache.cxf:cxf-core:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-features-metrics:$cxfVersion")
     implementation("com.sun.activation:jakarta.activation:1.2.2")
@@ -99,6 +111,15 @@ java.sourceSets["main"].java {
     srcDir("build/generated/sources/wsdl2java/java")
 }
 
+// https://github.com/ben-manes/gradle-versions-plugin
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
+}
+
+
 tasks {
     compileJava {
     }
@@ -119,6 +140,12 @@ tasks {
         // https://github.com/johnrengelman/shadow/issues/309
         transform(com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer::class.java) {
             resource = "META-INF/cxf/bus-extensions.txt"
+        }
+    }
+    // https://github.com/ben-manes/gradle-versions-plugin
+    dependencyUpdates {
+        rejectVersionIf {
+            isNonStable(candidate.version)
         }
     }
     analyzeClassesDependencies {

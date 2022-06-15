@@ -23,7 +23,9 @@ object Configuration {
     val otherDefaultProperties = mapOf(
         "application.httpPort" to 8080.toString(),
         "SERVICEUSER_TPTS_USERNAME" to System.getenv("SERVICEUSER_TPTS_USERNAME"),
-        "SERVICEUSER_TPTS_PASSWORD" to System.getenv("SERVICEUSER_TPTS_PASSWORD")
+        "SERVICEUSER_TPTS_PASSWORD" to System.getenv("SERVICEUSER_TPTS_PASSWORD"),
+        "ARENA_ORDS_CLIENT_ID" to System.getenv("ARENA_ORDS_CLIENT_ID"),
+        "ARENA_ORDS_CLIENT_SECRET" to System.getenv("ARENA_ORDS_CLIENT_SECRET")
     )
     private val defaultProperties = ConfigurationMap(
         rapidsAndRivers + otherDefaultProperties

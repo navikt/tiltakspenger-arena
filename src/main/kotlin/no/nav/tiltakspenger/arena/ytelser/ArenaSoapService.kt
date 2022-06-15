@@ -7,7 +7,6 @@ import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.meldinger.HentYtelseskontraktListeRequest
 import java.time.LocalDate
-import javax.ws.rs.InternalServerErrorException
 
 class ArenaSoapService(
     private val ytelseskontraktV3Service: YtelseskontraktV3,
@@ -40,7 +39,7 @@ class ArenaSoapService(
             response.ytelseskontraktListe
         } catch (exception: HentYtelseskontraktListeSikkerhetsbegrensning) {
             log.error("HentYtelseskontraktListeSikkerhetsbegrensning feil:", exception)
-            throw InternalServerErrorException()
+            throw exception
         }
     }
 
