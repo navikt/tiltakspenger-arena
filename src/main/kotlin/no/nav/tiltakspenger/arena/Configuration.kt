@@ -1,11 +1,7 @@
 package no.nav.tiltakspenger.arena
 
-import com.natpryce.konfig.ConfigurationMap
+import com.natpryce.konfig.*
 import com.natpryce.konfig.ConfigurationProperties.Companion.systemProperties
-import com.natpryce.konfig.EnvironmentVariables
-import com.natpryce.konfig.Key
-import com.natpryce.konfig.overriding
-import com.natpryce.konfig.stringType
 
 object Configuration {
 
@@ -20,7 +16,7 @@ object Configuration {
         "KAFKA_CONSUMER_GROUP_ID" to "tiltakspenger-arena-v1",
     )
 
-    val otherDefaultProperties = mapOf(
+    private val otherDefaultProperties = mapOf(
         "application.httpPort" to 8080.toString(),
         "SERVICEUSER_TPTS_USERNAME" to System.getenv("SERVICEUSER_TPTS_USERNAME"),
         "SERVICEUSER_TPTS_PASSWORD" to System.getenv("SERVICEUSER_TPTS_PASSWORD"),
@@ -28,9 +24,7 @@ object Configuration {
         "ARENA_ORDS_CLIENT_SECRET" to System.getenv("ARENA_ORDS_CLIENT_SECRET"),
         "ARENA_ORDS_URL" to System.getenv("ARENA_ORDS_URL")
     )
-    private val defaultProperties = ConfigurationMap(
-        rapidsAndRivers + otherDefaultProperties
-    )
+    private val defaultProperties = ConfigurationMap(rapidsAndRivers + otherDefaultProperties)
     private val localProperties = ConfigurationMap(
         mapOf(
             "stsUrl" to "",
