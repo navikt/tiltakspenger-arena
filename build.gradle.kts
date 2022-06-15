@@ -67,7 +67,7 @@ dependencies {
     implementation("jakarta.activation:jakarta.activation-api:1.2.2")
     implementation("jakarta.annotation:jakarta.annotation-api:1.3.5")
     implementation("jakarta.jws:jakarta.jws-api:2.1.0")
-    implementation("jakarta.validation:jakarta.validation-api:2.0.2")
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
     implementation("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
     implementation("jakarta.xml.ws:jakarta.xml.ws-api:2.3.3")
