@@ -13,7 +13,7 @@ object XmlUtils {
     fun <T> fromXml(xml: String, clazz: Class<T>): T {
         val module = JacksonXmlModule()
         module.setDefaultUseWrapper(false)
-        val xmlMapper: XmlMapper = XmlMapper(module)
+        val xmlMapper = XmlMapper(module)
         xmlMapper.registerModule(JavaTimeModule())
         xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         return xmlMapper.readValue(xml, clazz)

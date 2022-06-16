@@ -33,7 +33,7 @@ class ArenaOrdsClientImpl(
         return response
     }
 
-    override suspend fun hentArenaOppfolginssak(fnr: String): ArenaOppfølgingssakDTO {
+    override suspend fun hentArenaOppfolgingssak(fnr: String): ArenaOppfølgingssakDTO {
         val url = arenaOrdsConfig.arenaOrdsUrl + "arena/api/v1/person/oppfoelging/oppfoelgingssak?p_fnr=$fnr"
         val response: ArenaOppfølgingssakDTO = client.get(urlString = url) {
             bearerAuth(arenaOrdsTokenProvider.token())
