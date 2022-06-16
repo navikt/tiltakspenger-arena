@@ -41,7 +41,7 @@ class ArenaOrdsClientImpl(
         return response
     }
 
-    override suspend fun hentArenaAktiviteter(fnr: String): ArenaAktiviteterDTO? {
+    override suspend fun hentArenaAktiviteter(fnr: String): ArenaAktiviteterDTO {
         val url = arenaOrdsConfig.arenaOrdsUrl + "arena/api/v1/person/oppfoelging/aktiviteter"
         val response: ArenaAktiviteterDTO = client.get(urlString = url) {
             bearerAuth(arenaOrdsTokenProvider.token())

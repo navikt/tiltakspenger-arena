@@ -24,6 +24,9 @@ fun main() {
         ArenaYtelserService(
             rapidsConnection = this,
             arenaSoapService = arenaSoapService,
+        )
+        ArenaTiltakService(
+            rapidsConnection = this,
             arenaOrdsService = arenaOrdsService
         )
 
