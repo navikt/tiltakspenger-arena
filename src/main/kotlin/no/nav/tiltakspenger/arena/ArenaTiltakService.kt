@@ -9,7 +9,6 @@ import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 
-@Suppress("UnusedPrivateMember")
 class ArenaTiltakService(
     rapidsConnection: RapidsConnection,
     private val arenaOrdsService: ArenaOrdsClient
@@ -40,6 +39,7 @@ class ArenaTiltakService(
         val ident = packet["ident"].asText()
         runBlocking {
             val aktiviteter = arenaOrdsService.hentArenaAktiviteter(ident)
+            // Trengs det å mappe denne noe mer her, til egen domenemodell?
             packet["@løsning"] = mapOf(
                 BEHOV.TILTAK_LISTE to aktiviteter.response.tiltaksaktivitetListe
             )

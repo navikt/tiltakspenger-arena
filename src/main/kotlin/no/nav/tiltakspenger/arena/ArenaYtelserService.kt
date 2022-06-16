@@ -10,7 +10,6 @@ import no.nav.helse.rapids_rivers.asOptionalLocalDate
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.YtelseSak
 
-@Suppress("UnusedPrivateMember")
 class ArenaYtelserService(
     rapidsConnection: RapidsConnection,
     private val arenaSoapService: ArenaSoapService
