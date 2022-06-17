@@ -4,6 +4,7 @@ val cxfVersion = "3.5.2"
 val ktorVersion = "2.0.2"
 val jacksonVersion = "2.13.3"
 
+
 plugins {
     application
     id("java")
@@ -74,6 +75,8 @@ dependencies {
     testImplementation("io.mockk:mockk-dsl-jvm:1.12.4")
     testImplementation("org.skyscreamer:jsonassert:1.5.0")
     testImplementation("org.junit-pioneer:junit-pioneer:1.7.1")
+    testImplementation("io.ktor:ktor-client-mock-jvm:$ktorVersion")
+
 }
 
 configurations.all {
