@@ -23,12 +23,12 @@ data class ArenaAktiviteterDTO(
         val arrangoer: String?,
         val bedriftsnummer: String?,
         val deltakelsePeriode: DeltakelsesPeriode?,
-        @JsonDeserialize(using = XmlUtils.ArenaFloatDeserializer::class)
+        @JsonDeserialize(using = ArenaFloatDeserializer::class)
         val deltakelseProsent: Float?,
         val deltakerStatus: String,
         val statusSistEndret: LocalDate?,
         val begrunnelseInnsoeking: String,
-        @JsonDeserialize(using = XmlUtils.ArenaFloatDeserializer::class)
+        @JsonDeserialize(using = ArenaFloatDeserializer::class)
         val antallDagerPerUke: Float?,
     ) {
 
