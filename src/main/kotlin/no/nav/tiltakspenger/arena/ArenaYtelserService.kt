@@ -27,7 +27,7 @@ class ArenaYtelserService(
     init {
         River(rapidsConnection).apply {
             validate {
-                it.demandAllOrAny("@behov", listOf(BEHOV.YTELSE_LISTE))
+                it.requireAllOrAny("@behov", listOf(BEHOV.YTELSE_LISTE))
                 it.forbid("@løsning")
                 it.requireKey("@id", "@behovId") // Hva er forskjellen på den ene og den andre her?
                 it.requireKey("ident")
@@ -52,5 +52,9 @@ class ArenaYtelserService(
 
     override fun onError(problems: MessageProblems, context: MessageContext) {
         LOG.debug { problems }
+    }
+
+    override fun onSevere(error: MessageProblems.MessageException, context: MessageContext) {
+        LOG.error { error }
     }
 }

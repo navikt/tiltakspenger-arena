@@ -26,7 +26,7 @@ class ArenaTiltakService(
     init {
         River(rapidsConnection).apply {
             validate {
-                it.demandAllOrAny("@behov", listOf(BEHOV.TILTAK_LISTE))
+                it.requireAllOrAny("@behov", listOf(BEHOV.TILTAK_LISTE))
                 it.forbid("@løsning")
                 it.requireKey("@id", "@behovId")
                 it.requireKey("ident")
@@ -37,18 +37,22 @@ class ArenaTiltakService(
     override fun onPacket(packet: JsonMessage, context: MessageContext) {
         LOG.info { "Received packet: ${packet.toJson()}" }
         val ident = packet["ident"].asText()
-        runBlocking {
-            val aktiviteter = arenaOrdsService.hentArenaAktiviteter(ident)
+        val aktiviteter = runBlocking {
+            arenaOrdsService.hentArenaAktiviteter(ident)
             // Trengs det å mappe denne noe mer her, til egen domenemodell?
-            packet["@løsning"] = mapOf(
-                BEHOV.TILTAK_LISTE to aktiviteter.response.tiltaksaktivitetListe
-            )
-            LOG.info { "Sending tiltal: $aktiviteter.response.tiltaksaktivitetListe" }
-            context.publish(packet.toJson())
         }
+        packet["@løsning"] = mapOf(
+            BEHOV.TILTAK_LISTE to aktiviteter.response.tiltaksaktivitetListe
+        )
+        LOG.info { "Sending tiltak: $aktiviteter.response.tiltaksaktivitetListe" }
+        context.publish(packet.toJson())
     }
 
     override fun onError(problems: MessageProblems, context: MessageContext) {
         LOG.debug { problems }
+    }
+
+    override fun onSevere(error: MessageProblems.MessageException, context: MessageContext) {
+        LOG.error { error }
     }
 }
