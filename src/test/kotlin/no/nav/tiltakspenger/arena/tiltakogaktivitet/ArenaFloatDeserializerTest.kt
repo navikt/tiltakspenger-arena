@@ -10,7 +10,7 @@ internal class ArenaFloatDeserializerTest {
     data class ClassForTest(@JsonDeserialize(using = ArenaFloatDeserializer::class) val tall: Float)
 
     @Test
-    fun deserialze() {
+    fun deserialize() {
         // given
         val json = """{"tall": "1,5"}"""
 
