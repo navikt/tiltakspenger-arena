@@ -1,6 +1,6 @@
 Brukernavn/passord for bruker mot STS
 
-* Opprette bruker i gruppetilgang_servicebruker:     
+* Opprette bruker i gruppetilgang-servicebruker:     
   https://github.com/navikt/gruppetilgang-servicebruker/pull/1049
 * Denne manglet et par grupper:   
   https://github.com/navikt/gruppetilgang-servicebruker/pull/1072 og https://github.com/navikt/gruppetilgang-servicebruker/pull/1074
@@ -12,5 +12,5 @@ ClientId/Secret for ORDS tjeneste oppfoelging/aktiviteter i Arena
 
 * Opprette clientId/secret:  
   https://jira.adeo.no/browse/ARENA-7441
-* Opprett secret i Kubernetes:    
+* Opprette secret i Kubernetes:    
   `kubectl create secret generic ords-arena --from-literal=ARENA_ORDS_CLIENT_ID=<id> --from-literal=ARENA_ORDS_CLIENT_SECRET=<secret> --namespace tpts`
