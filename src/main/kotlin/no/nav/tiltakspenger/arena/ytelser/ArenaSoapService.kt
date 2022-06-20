@@ -28,12 +28,13 @@ class ArenaSoapService(
     }
 
     fun getYtelser(fnr: String, fom: LocalDate?, tom: LocalDate?): List<Ytelseskontrakt> {
-        val periode = Periode()
-        periode.fom = fom
-        periode.tom = tom
-        val request = HentYtelseskontraktListeRequest()
-        request.periode = periode
-        request.personidentifikator = fnr
+        val request = HentYtelseskontraktListeRequest().apply {
+            personidentifikator = fnr
+            periode = Periode().apply {
+                this.fom = fom
+                this.tom = tom
+            }
+        }
         return try {
             val response = ytelseskontraktV3Service.hentYtelseskontraktListe(request)
             response.ytelseskontraktListe
