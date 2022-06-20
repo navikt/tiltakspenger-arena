@@ -1,7 +1,11 @@
 package no.nav.tiltakspenger.arena
 
-import com.natpryce.konfig.*
+import com.natpryce.konfig.ConfigurationMap
 import com.natpryce.konfig.ConfigurationProperties.Companion.systemProperties
+import com.natpryce.konfig.EnvironmentVariables
+import com.natpryce.konfig.Key
+import com.natpryce.konfig.overriding
+import com.natpryce.konfig.stringType
 
 object Configuration {
 
@@ -29,7 +33,6 @@ object Configuration {
         mapOf(
             "stsUrl" to "",
             "ytelseskontraktUrl" to "",
-            "tiltakogaktivitetUrl" to "",
             "application.profile" to Profile.LOCAL.toString(),
         )
     )
@@ -37,16 +40,14 @@ object Configuration {
         mapOf(
             "stsUrl" to "https://sts-q1.preprod.local/SecurityTokenServiceProvider/",
             "ytelseskontraktUrl" to "https://arena-q1.adeo.no/ail_ws/Ytelseskontrakt_v3",
-            "tiltakogaktivitetUrl" to "https://arena-q1.adeo.no/ail_ws/TiltakOgAktivitet_v1",
-            "application.profile" to Profile.LOCAL.toString(),
+            "application.profile" to Profile.DEV.toString(),
         )
     )
     private val prodProperties = ConfigurationMap(
         mapOf(
             "stsUrl" to "",
             "ytelseskontraktUrl" to "",
-            "tiltakogaktivitetUrl" to "",
-            "application.profile" to Profile.LOCAL.toString(),
+            "application.profile" to Profile.PROD.toString(),
         )
     )
 

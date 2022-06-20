@@ -1,14 +1,16 @@
 package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
 import com.fasterxml.jackson.annotation.JsonAlias
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
-import io.ktor.http.*
-import io.ktor.serialization.jackson.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.basicAuth
+import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
+import io.ktor.http.Parameters
+import io.ktor.serialization.jackson.jackson
 import no.nav.tiltakspenger.arena.Configuration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
@@ -35,7 +37,7 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
 
     private suspend fun refreshToken() {
         val response: OrdsToken = client.submitForm(
-            url = arenaOrdsConfig.arenaOrdsUrl + "arena/api/oauth/token",
+            url = arenaOrdsConfig.arenaOrdsUrl + "/arena/api/oauth/token",
             formParameters = Parameters.build {
                 append("grant_type", "client_credentials")
             }

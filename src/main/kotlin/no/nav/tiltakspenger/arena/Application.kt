@@ -25,13 +25,11 @@ fun main() {
             rapidsConnection = this,
             arenaSoapService = arenaSoapService,
         )
-        /*
         ArenaTiltakService(
             rapidsConnection = this,
             arenaOrdsService = arenaOrdsService
         )
-        */
-
+        
         register(object : RapidsConnection.StatusListener {
             override fun onStartup(rapidsConnection: RapidsConnection) {
                 LOG.info { "Starting tiltakspenger-arena" }
