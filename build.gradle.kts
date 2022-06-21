@@ -62,7 +62,7 @@ dependencies {
     runtimeOnly("org.apache.cxf:cxf-core:$cxfVersion")
     runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersion")
 //    implementation("com.sun.activation:jakarta.activation:2.0.1")
-    runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:1.5.3")
+//    runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:1.5.3")
     runtimeOnly("jakarta.activation:jakarta.activation-api:1.2.2")
     runtimeOnly("jakarta.jws:jakarta.jws-api:2.1.0")
 //    implementation("jakarta.validation:jakarta.validation-api:2.0.2")
