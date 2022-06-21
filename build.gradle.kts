@@ -63,7 +63,7 @@ dependencies {
 //    implementation("com.sun.activation:jakarta.activation:2.0.1")
     runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:1.5.3")
 //    runtimeOnly("jakarta.activation:jakarta.activation-api:1.2.2")
-    runtimeOnly("jakarta.jws:jakarta.jws-api:2.1.0")
+    runtimeOnly("jakarta.jws:jakarta.jws-api:3.0.0")
 //    implementation("jakarta.validation:jakarta.validation-api:2.0.2")
     runtimeOnly("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
     runtimeOnly("jakarta.xml.ws:jakarta.xml.ws-api:2.3.3")
