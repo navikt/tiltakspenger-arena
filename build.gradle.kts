@@ -66,7 +66,7 @@ dependencies {
 //    runtimeOnly("jakarta.jws:jakarta.jws-api:2.1.0")
 //    implementation("jakarta.validation:jakarta.validation-api:2.0.2")
     runtimeOnly("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
-    runtimeOnly("jakarta.xml.ws:jakarta.xml.ws-api:2.3.3")
+    runtimeOnly("jakarta.xml.ws:jakarta.xml.ws-api:4.0.0")
     // old version because of https://issues.apache.org/jira/browse/CXF-8727
     runtimeOnly("jakarta.annotation:jakarta.annotation-api:1.3.5")
 
