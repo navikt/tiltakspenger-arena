@@ -53,10 +53,11 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
 
-    implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.1.0")
+    // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
+    implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
     implementation("no.nav.common:cxf:2.2022.05.31_07.13-5812471780dc")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
-    implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
+    // implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
 
     runtimeOnly("org.apache.cxf:cxf-core:$cxfVersion")
     runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersion")
@@ -67,7 +68,7 @@ dependencies {
 //    implementation("jakarta.validation:jakarta.validation-api:2.0.2")
     runtimeOnly("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
     runtimeOnly("jakarta.xml.ws:jakarta.xml.ws-api:2.3.3")
-    // since cxf-core org.apache.cxf.common.injection.ResourceInjector needs an old version
+    // old version because of https://issues.apache.org/jira/browse/CXF-8727
     runtimeOnly("jakarta.annotation:jakarta.annotation-api:1.3.5")
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
