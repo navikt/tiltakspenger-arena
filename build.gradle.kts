@@ -53,20 +53,20 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
 
-    // Not quite sure if I need all of these
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
     implementation("no.nav.common:cxf:2.2022.05.31_07.13-5812471780dc")
-    implementation("org.apache.cxf:cxf-core:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
-    implementation("org.apache.cxf:cxf-rt-features-metrics:$cxfVersion")
-//    implementation("com.sun.activation:jakarta.activation:2.0.1")
-    implementation("com.sun.xml.messaging.saaj:saaj-impl:1.5.3")
-    implementation("jakarta.activation:jakarta.activation-api:1.2.2")
-    implementation("jakarta.jws:jakarta.jws-api:2.1.0")
-//    implementation("jakarta.validation:jakarta.validation-api:2.0.2")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
-    implementation("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
-    implementation("jakarta.xml.ws:jakarta.xml.ws-api:2.3.3")
+
+    runtimeOnly("org.apache.cxf:cxf-core:$cxfVersion")
+    runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersion")
+//    implementation("com.sun.activation:jakarta.activation:2.0.1")
+    runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:1.5.3")
+    runtimeOnly("jakarta.activation:jakarta.activation-api:1.2.2")
+    runtimeOnly("jakarta.jws:jakarta.jws-api:2.1.0")
+//    implementation("jakarta.validation:jakarta.validation-api:2.0.2")
+    runtimeOnly("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
+    runtimeOnly("jakarta.xml.ws:jakarta.xml.ws-api:2.3.3")
     // since cxf-core org.apache.cxf.common.injection.ResourceInjector needs an old version
     runtimeOnly("jakarta.annotation:jakarta.annotation-api:1.3.5")
 
