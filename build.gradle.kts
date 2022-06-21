@@ -44,7 +44,6 @@ dependencies {
     implementation("io.ktor:ktor-serialization-jvm:$ktorVersion")
     implementation("io.ktor:ktor-utils-jvm:$ktorVersion")
     implementation("io.ktor:ktor-http-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-xml:$ktorVersion")
 
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
 //    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
