@@ -53,7 +53,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
 
-    implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
+    implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.1.0")
     implementation("no.nav.common:cxf:2.2022.05.31_07.13-5812471780dc")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
