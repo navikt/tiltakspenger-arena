@@ -1,24 +1,21 @@
 package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
-import io.ktor.serialization.kotlinx.xml.DefaultXml
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ArenaFloatDeserializerTest {
-    @Serializable
-    data class ClassForTest(@Serializable(with = ArenaFloatDeserializer::class) val tall: Float)
+    data class ClassForTest(@JsonDeserialize(using = ArenaFloatDeserializer::class) val tall: Float)
 
     @Test
-    @Disabled
     fun deserialize() {
         // given
-        val xml = """<tall>1,5</tall>"""
+        val json = """{"tall": "1,5"}"""
 
         // when
-        val deserialized = DefaultXml.decodeFromString<ClassForTest>(xml)
+        val deserialized: ClassForTest = ObjectMapper().registerKotlinModule().readValue(json, ClassForTest::class.java)
 
         // then
         assertEquals(1.5F, deserialized.tall)

@@ -16,7 +16,6 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType.Application
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.jackson.jackson
-import io.ktor.serialization.kotlinx.xml.*
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.OtherException
@@ -66,7 +65,8 @@ private fun cioHttpClient() = HttpClient(CIO) { setupHttpClient() }
 @Suppress("ThrowsCount")
 fun HttpClientConfig<*>.setupHttpClient() {
     this.install(ContentNegotiation) {
-        xml()
+        // jackson()
+        jackson(contentType = Application.Xml)
     }
     this.install(Logging) {
         logger = Logger.DEFAULT
