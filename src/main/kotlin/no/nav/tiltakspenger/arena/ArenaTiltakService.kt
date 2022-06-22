@@ -44,7 +44,7 @@ class ArenaTiltakService(
         packet["@løsning"] = mapOf(
             BEHOV.TILTAK_LISTE to aktiviteter.response.tiltaksaktivitetListe
         )
-        LOG.info { "Sending tiltak: $aktiviteter.response.tiltaksaktivitetListe" }
+        LOG.info { "Sending tiltak: ${aktiviteter.response.tiltaksaktivitetListe}" }
         context.publish(packet.toJson())
     }
 
