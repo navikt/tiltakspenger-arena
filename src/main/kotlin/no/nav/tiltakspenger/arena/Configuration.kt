@@ -41,7 +41,7 @@ object Configuration {
             "stsUrl" to "https://sts-q1.preprod.local/SecurityTokenServiceProvider/",
             "ytelseskontraktUrl" to "https://arena-q1.adeo.no/ail_ws/Ytelseskontrakt_v3",
             "application.profile" to Profile.DEV.toString(),
-            "ARENA_ORDS_URL" to "https://arena-ords-q2.nais.preprod.local"
+            "ARENA_ORDS_URL" to "https://arena-ords-q1.nais.preprod.local"
         )
     )
     private val prodProperties = ConfigurationMap(

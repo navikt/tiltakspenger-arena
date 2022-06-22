@@ -30,6 +30,3 @@ spec:
   envFrom:
     - secret: srvtpts-arena
     - secret: ords-arena
-  env:
-    - name: ARENA_ORDS_URL
-      value: https://arena-ords-q2.nais.preprod.local
