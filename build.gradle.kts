@@ -4,7 +4,6 @@ val cxfVersion = "3.5.2"
 val ktorVersion = "2.0.2"
 val jacksonVersion = "2.13.3"
 
-
 plugins {
     application
     id("java")
@@ -29,6 +28,7 @@ dependencies {
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.3")
 //    implementation("io.prometheus:simpleclient:$prometheusVersion")
 //    implementation("io.prometheus:simpleclient_common:$prometheusVersion")
     implementation("com.github.navikt:rapids-and-rivers:2022061809451655538329.d6deccc62862")
@@ -55,17 +55,17 @@ dependencies {
     // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
     implementation("no.nav.common:cxf:2.2022.05.31_07.13-5812471780dc")
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
+    implementation("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
-    // implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
+    implementation("org.apache.cxf:cxf-core:$cxfVersion")
 
-    runtimeOnly("org.apache.cxf:cxf-core:$cxfVersion")
     runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersion")
 //    implementation("com.sun.activation:jakarta.activation:2.0.1")
     runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:1.5.3")
 //    runtimeOnly("jakarta.activation:jakarta.activation-api:1.2.2")
 //    runtimeOnly("jakarta.jws:jakarta.jws-api:2.1.0")
 //    implementation("jakarta.validation:jakarta.validation-api:2.0.2")
-    runtimeOnly("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
 //    runtimeOnly("jakarta.xml.ws:jakarta.xml.ws-api:2.3.3")
     // old version because of https://issues.apache.org/jira/browse/CXF-8727
     runtimeOnly("jakarta.annotation:jakarta.annotation-api:1.3.5")
@@ -77,7 +77,6 @@ dependencies {
     testImplementation("org.skyscreamer:jsonassert:1.5.0")
     testImplementation("org.junit-pioneer:junit-pioneer:1.7.1")
     testImplementation("io.ktor:ktor-client-mock-jvm:$ktorVersion")
-
 }
 
 configurations.all {
@@ -118,7 +117,6 @@ fun isNonStable(version: String): Boolean {
     val isStable = stableKeyword || regex.matches(version)
     return isStable.not()
 }
-
 
 tasks {
     compileJava {
