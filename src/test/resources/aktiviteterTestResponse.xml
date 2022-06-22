@@ -1,120 +1,20 @@
-{
-  "data": {
-    "hentGeografiskTilknytning": {
-      "gtType": "KOMMUNE",
-      "gtKommune": "5444",
-      "gtBydel": null,
-      "gtLand": null,
-      "regel": "2"
-    },
-    "hentPerson": {
-      "adressebeskyttelse": [],
-      "forelderBarnRelasjon": [
-        {
-          "relatertPersonsIdent": "10020662730",
-          "relatertPersonsRolle": "BARN",
-          "minRolleForPerson": "MOR",
-          "relatertPersonUtenFolkeregisteridentifikator": null,
-          "folkeregistermetadata": {
-            "aarsak": null,
-            "ajourholdstidspunkt": "2022-06-17T09:32:16",
-            "gyldighetstidspunkt": "2022-06-17T09:32:16",
-            "kilde": "Dolly",
-            "opphoerstidspunkt": null,
-            "sekvens": null
-          },
-          "metadata": {
-            "endringer": [
-              {
-                "kilde": "Dolly",
-                "registrert": "2022-06-17T09:32:16",
-                "registrertAv": "Folkeregisteret",
-                "systemkilde": "FREG",
-                "type": "OPPRETT"
-              }
-            ],
-            "master": "FREG"
-          }
-        },
-        {
-          "relatertPersonsIdent": "07070676243",
-          "relatertPersonsRolle": "BARN",
-          "minRolleForPerson": "MOR",
-          "relatertPersonUtenFolkeregisteridentifikator": null,
-          "folkeregistermetadata": {
-            "aarsak": null,
-            "ajourholdstidspunkt": "2022-06-17T09:32:16",
-            "gyldighetstidspunkt": "2022-06-17T09:32:16",
-            "kilde": "Dolly",
-            "opphoerstidspunkt": null,
-            "sekvens": null
-          },
-          "metadata": {
-            "endringer": [
-              {
-                "kilde": "Dolly",
-                "registrert": "2022-06-17T09:32:16",
-                "registrertAv": "Folkeregisteret",
-                "systemkilde": "FREG",
-                "type": "OPPRETT"
-              }
-            ],
-            "master": "FREG"
-          }
-        }
-      ],
-      "navn": [
-        {
-          "fornavn": "Lykkelig",
-          "mellomnavn": null,
-          "etternavn": "Eksamen",
-          "folkeregistermetadata": {
-            "aarsak": null,
-            "ajourholdstidspunkt": "2022-06-17T09:32:15",
-            "gyldighetstidspunkt": "2022-06-17T09:32:15",
-            "kilde": "Dolly",
-            "opphoerstidspunkt": null,
-            "sekvens": null
-          },
-          "metadata": {
-            "endringer": [
-              {
-                "kilde": "Dolly",
-                "registrert": "2022-06-17T09:32:15",
-                "registrertAv": "Folkeregisteret",
-                "systemkilde": "FREG",
-                "type": "OPPRETT"
-              }
-            ],
-            "master": "FREG"
-          }
-        }
-      ],
-      "foedsel": [
-        {
-          "foedselsdato": "1984-07-04",
-          "folkeregistermetadata": {
-            "aarsak": null,
-            "ajourholdstidspunkt": "2022-06-17T09:32:15",
-            "gyldighetstidspunkt": "2022-06-17T09:32:15",
-            "kilde": "Dolly",
-            "opphoerstidspunkt": null,
-            "sekvens": null
-          },
-          "metadata": {
-            "endringer": [
-              {
-                "kilde": "Dolly",
-                "registrert": "2022-06-17T09:32:15",
-                "registrertAv": "Folkeregisteret",
-                "systemkilde": "FREG",
-                "type": "OPPRETT"
-              }
-            ],
-            "master": "FREG"
-          }
-        }
-      ]
-    }
-  }
-}
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<v1:hentTiltakOgAktiviteterForBrukerResponse xmlns:v1="http://nav.no/tjeneste/virksomhet/tiltakOgAktivitet/v1/">
+    <response>
+        <tiltaksaktivitetListe>
+            <tiltaksnavn>Arbeidstrening</tiltaksnavn>
+            <aktivitetId>TA6698352</aktivitetId>
+            <tiltakLokaltNavn>Arbeidstrening</tiltakLokaltNavn>
+            <arrangoer>GRÅTASS BARNEHAGE AS</arrangoer>
+            <bedriftsnummer>987739061</bedriftsnummer>
+            <deltakelsePeriode>
+                <fom>2022-05-06</fom>
+                <tom>2022-07-08</tom>
+            </deltakelsePeriode>
+            <deltakelseProsent>100</deltakelseProsent>
+            <deltakerStatus termnavn="Gjennomføres">GJENN</deltakerStatus>
+            <statusSistEndret>2022-06-01</statusSistEndret>
+            <begrunnelseInnsoeking>Trenger tiltaksplass</begrunnelseInnsoeking>
+        </tiltaksaktivitetListe>
+    </response>
+</v1:hentTiltakOgAktiviteterForBrukerResponse>

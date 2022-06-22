@@ -43,7 +43,7 @@ internal class ArenaOrdsClientImplTest {
         val mockEngine = MockEngine {
             respondError(
                 status = statusCode,
-                headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Xml.toString())
             )
         }
         return HttpClient(mockEngine) { setupHttpClient() }
