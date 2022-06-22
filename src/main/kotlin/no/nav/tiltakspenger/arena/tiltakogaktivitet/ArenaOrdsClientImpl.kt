@@ -65,7 +65,7 @@ private fun cioHttpClient() = HttpClient(CIO) { setupHttpClient() }
 @Suppress("ThrowsCount")
 fun HttpClientConfig<*>.setupHttpClient() {
     this.install(ContentNegotiation) {
-        register(ContentType.Application.Xml, JacksonXmlConverter())
+        register(ContentType.Text.Xml, JacksonXmlConverter())
     }
     this.install(Logging) {
         logger = Logger.DEFAULT

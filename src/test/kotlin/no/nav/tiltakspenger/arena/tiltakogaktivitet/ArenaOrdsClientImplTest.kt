@@ -32,7 +32,7 @@ internal class ArenaOrdsClientImplTest {
             respond(
                 status = HttpStatusCode.OK,
                 content = response,
-                headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Xml.toString())
+                headers = headersOf(HttpHeaders.ContentType, ContentType.Text.Xml.toString())
             )
         }
         return HttpClient(mockEngine) { setupHttpClient() }
@@ -43,7 +43,7 @@ internal class ArenaOrdsClientImplTest {
             respondError(
                 status = statusCode,
                 headers = headersOf(
-                    HttpHeaders.ContentType, ContentType.Application.Xml.toString(),
+                    HttpHeaders.ContentType, ContentType.Text.Xml.toString(),
                 )
             )
         }
