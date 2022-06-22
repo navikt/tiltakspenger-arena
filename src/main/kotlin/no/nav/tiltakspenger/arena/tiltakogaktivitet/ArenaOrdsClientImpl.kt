@@ -64,7 +64,7 @@ private fun cioHttpClient() = HttpClient(CIO) { setupHttpClient() }
 @Suppress("ThrowsCount")
 fun HttpClientConfig<*>.setupHttpClient() {
     this.install(ContentNegotiation) {
-        jackson()
+        // jackson()
         jackson(contentType = Application.Xml)
     }
     this.expectSuccess = true
