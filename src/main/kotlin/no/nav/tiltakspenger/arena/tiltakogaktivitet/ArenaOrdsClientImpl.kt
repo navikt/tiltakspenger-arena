@@ -13,11 +13,11 @@ import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.statement.bodyAsText
-import io.ktor.http.ContentType.Application
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
-import io.ktor.serialization.jackson.jackson
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
+import no.nav.tiltakspenger.arena.felles.JacksonXmlConverter
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.OtherException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.PersonNotFoundException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.UnauthorizedException
@@ -65,8 +65,7 @@ private fun cioHttpClient() = HttpClient(CIO) { setupHttpClient() }
 @Suppress("ThrowsCount")
 fun HttpClientConfig<*>.setupHttpClient() {
     this.install(ContentNegotiation) {
-        // jackson()
-        jackson(contentType = Application.Xml)
+        register(ContentType.Application.Xml, JacksonXmlConverter())
     }
     this.install(Logging) {
         logger = Logger.DEFAULT
@@ -77,11 +76,12 @@ fun HttpClientConfig<*>.setupHttpClient() {
     // Man kan få 204, 401 og 500
     // Det er strengt tatt ikke nødvendig å styre med custom exceptions her, med mulig unntak av 204.
     // Men det var interessant å lære litt om Ktor Client.
+
     this.HttpResponseValidator {
         validateResponse { response ->
             val statusCode = response.status
-            val text = response.bodyAsText()
             if (statusCode == HttpStatusCode.NoContent) {
+                val text = response.bodyAsText()
                 LOG.warn { "Bruker (person) finnes ikke i Arena: $text" }
                 throw PersonNotFoundException("Bruker (person) finnes ikke i Arena: $text")
             }

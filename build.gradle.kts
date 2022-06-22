@@ -45,6 +45,7 @@ dependencies {
     implementation("io.ktor:ktor-utils-jvm:$ktorVersion")
     implementation("io.ktor:ktor-http-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
 
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
 //    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")

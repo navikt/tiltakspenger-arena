@@ -10,25 +10,25 @@ data class ArenaAktiviteterDTO(
     // https://confluence.adeo.no/display/ARENA/Arena+-+Tjeneste+Webservice+-+TiltakOgAktivitet_v1#ArenaTjenesteWebserviceTiltakOgAktivitet_v1-HentTiltakOgAktiviteterForBrukerResponse
     // De variablene som er merket som mandatory der er satt til ikke å være nullable her
     data class Response(
-        val tiltaksaktivitetListe: List<Tiltaksaktivitet> = emptyList(),
-        val gruppeaktivitetListe: List<Gruppeaktivitet> = emptyList(),
-        val utdanningsaktivitetListe: List<Utdanningsaktivitet> = emptyList(),
+        var tiltaksaktivitetListe: List<Tiltaksaktivitet> = emptyList(),
+        var gruppeaktivitetListe: List<Gruppeaktivitet> = emptyList(),
+        var utdanningsaktivitetListe: List<Utdanningsaktivitet> = emptyList(),
     )
 
     data class Tiltaksaktivitet(
-        val tiltaksnavn: String,
-        val aktivitetId: String,
-        val tiltakLokaltNavn: String?,
-        val arrangoer: String?,
-        val bedriftsnummer: String?,
-        val deltakelsePeriode: DeltakelsesPeriode?,
+        var tiltaksnavn: String,
+        var aktivitetId: String,
+        var tiltakLokaltNavn: String?,
+        var arrangoer: String?,
+        var bedriftsnummer: String?,
+        var deltakelsePeriode: DeltakelsesPeriode?,
         @JsonDeserialize(using = ArenaFloatDeserializer::class)
-        val deltakelseProsent: Float?,
-        val deltakerStatus: String,
-        val statusSistEndret: LocalDate?,
-        val begrunnelseInnsoeking: String,
+        var deltakelseProsent: Float?,
+        var deltakerStatus: String,
+        var statusSistEndret: LocalDate?,
+        var begrunnelseInnsoeking: String,
         @JsonDeserialize(using = ArenaFloatDeserializer::class)
-        val antallDagerPerUke: Float?,
+        var antallDagerPerUke: Float?,
     ) {
 
         data class DeltakelsesPeriode(

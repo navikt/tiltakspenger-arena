@@ -10,7 +10,6 @@ import java.time.LocalDate
 
 class ArenaSoapService(
     private val ytelseskontraktV3Service: YtelseskontraktV3,
-    // private val tiltakOgAktivitetV1Service: TiltakOgAktivitetV1,
 ) {
     companion object {
         private val log = KotlinLogging.logger {}
@@ -43,24 +42,4 @@ class ArenaSoapService(
             throw exception
         }
     }
-
-    /*
-    fun getTiltaksaktivitetListe(fnr: String?): List<Tiltaksaktivitet> {
-        val request = HentTiltakOgAktiviteterForBrukerRequest()
-        request.personident = fnr
-        return try {
-            val response = tiltakOgAktivitetV1Service!!.hentTiltakOgAktiviteterForBruker(request)
-            response.tiltaksaktivitetListe
-        } catch (exception: HentTiltakOgAktiviteterForBrukerUgyldigInput) {
-            log.error("Ugyldig input:", exception)
-            throw BadRequestException()
-        } catch (exception: HentTiltakOgAktiviteterForBrukerSikkerhetsbegrensning) {
-            log.error("Systembruker har ikke tilgang:", exception)
-            throw ForbiddenException()
-        } catch (exception: HentTiltakOgAktiviteterForBrukerPersonIkkeFunnet) {
-            log.error("Person ikke funnet:", exception)
-            throw NotFoundException()
-        }
-    }
-     */
 }

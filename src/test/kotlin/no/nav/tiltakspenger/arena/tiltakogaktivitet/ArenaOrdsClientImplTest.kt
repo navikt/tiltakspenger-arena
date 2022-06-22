@@ -17,7 +17,6 @@ import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.OtherExce
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.PersonNotFoundException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.UnauthorizedException
 import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ArenaOrdsClientImplTest {
@@ -43,14 +42,15 @@ internal class ArenaOrdsClientImplTest {
         val mockEngine = MockEngine {
             respondError(
                 status = statusCode,
-                headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                headers = headersOf(
+                    HttpHeaders.ContentType, ContentType.Application.Xml.toString(),
+                )
             )
         }
         return HttpClient(mockEngine) { setupHttpClient() }
     }
 
     @Test
-    @Disabled
     fun `should be able to serialize non-errors`() {
         val mockTokenProvider = mockk<ArenaOrdsTokenProviderClient>()
         coEvery { mockTokenProvider.token() } returns "token"
