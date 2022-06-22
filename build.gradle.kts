@@ -131,6 +131,8 @@ tasks {
     test {
         // JUnit 5 support
         useJUnitPlatform()
+        // https://phauer.com/2018/best-practices-unit-testing-kotlin/
+        systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
     }
     shadowJar {
         dependsOn("test")
