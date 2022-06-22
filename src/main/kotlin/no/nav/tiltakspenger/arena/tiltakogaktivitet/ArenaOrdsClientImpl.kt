@@ -8,6 +8,7 @@ import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -66,6 +67,10 @@ fun HttpClientConfig<*>.setupHttpClient() {
     this.install(ContentNegotiation) {
         // jackson()
         jackson(contentType = Application.Xml)
+    }
+    this.install(Logging) {
+        logger = Logger.DEFAULT
+        level = LogLevel.ALL
     }
     this.expectSuccess = true
     // https://confluence.adeo.no/pages/viewpage.action?pageId=470748287

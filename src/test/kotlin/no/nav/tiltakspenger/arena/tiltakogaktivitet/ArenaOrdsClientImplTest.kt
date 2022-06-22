@@ -33,7 +33,7 @@ internal class ArenaOrdsClientImplTest {
             respond(
                 status = HttpStatusCode.OK,
                 content = response,
-                headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Xml.toString())
             )
         }
         return HttpClient(mockEngine) { setupHttpClient() }
@@ -55,7 +55,7 @@ internal class ArenaOrdsClientImplTest {
         val mockTokenProvider = mockk<ArenaOrdsTokenProviderClient>()
         coEvery { mockTokenProvider.token() } returns "token"
 
-        val response = this::class.java.classLoader.getResource("aktiviteterTestResponse.json").readText()
+        val response = this::class.java.classLoader.getResource("aktiviteterTestResponse.xml").readText()
         val arenaOrdsService = ArenaOrdsClientImpl(mockConfig(), mockTokenProvider, mockClient(response))
 
         @Suppress("UnusedPrivateMember")
