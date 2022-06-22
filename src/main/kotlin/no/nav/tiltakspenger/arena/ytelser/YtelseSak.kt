@@ -14,9 +14,11 @@ data class YtelseSak(
     val status: String? = null,
     val ytelsestype: String? = null,
     val vedtak: List<YtelseVedtak> = emptyList(),
+    val antallDagerIgjen: Int? = null,
+    val antallUkerIgjen: Int? = null,
 ) {
     companion object {
-        fun of(ytelser: List<Ytelseskontrakt>): List<YtelseSak> =
+        fun map(ytelser: List<Ytelseskontrakt>): List<YtelseSak> =
             ytelser.map { ytelse ->
                 if (ytelse is Dagpengekontrakt) {
                     YtelseSak(
@@ -28,9 +30,8 @@ data class YtelseSak(
                         status = ytelse.status,
                         ytelsestype = ytelse.ytelsestype,
                         vedtak = YtelseVedtak.of(ytelse.ihtVedtak),
-                        // TO DO
-                        // ytelse.antallDagerIgjen
-                        // ytelse.antallUkerIgjen
+                        antallDagerIgjen = ytelse.antallDagerIgjen,
+                        antallUkerIgjen = ytelse.antallUkerIgjen,
                     )
                 } else {
                     YtelseSak(
@@ -41,7 +42,7 @@ data class YtelseSak(
                         fagsystemSakId = ytelse.fagsystemSakId,
                         status = ytelse.status,
                         ytelsestype = ytelse.ytelsestype,
-                        vedtak = YtelseVedtak.of(ytelse.ihtVedtak)
+                        vedtak = YtelseVedtak.of(ytelse.ihtVedtak),
                     )
                 }
             }

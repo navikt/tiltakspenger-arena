@@ -42,7 +42,7 @@ class ArenaYtelserService(
         val ident = packet["ident"].asText()
         val fom = packet["fom"].asOptionalLocalDate()
         val tom = packet["tom"].asOptionalLocalDate()
-        val ytelser: List<YtelseSak> = YtelseSak.of(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
+        val ytelser: List<YtelseSak> = YtelseSak.map(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
         packet["@løsning"] = mapOf(
             BEHOV.YTELSE_LISTE to ytelser
         )

@@ -1,6 +1,5 @@
 package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
-// import no.nav.veilarbarena.utils.XmlUtils
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.time.LocalDate
 
