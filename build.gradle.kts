@@ -9,7 +9,6 @@ plugins {
     id("java")
     kotlin("jvm") version "1.7.0"
     kotlin("plugin.serialization") version "1.7.0"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("ca.cutterslade.analyze") version "1.9.0"
     id("com.github.bjornvester.wsdl2java") version "1.2"
@@ -142,14 +141,6 @@ tasks {
         useJUnitPlatform()
         // https://phauer.com/2018/best-practices-unit-testing-kotlin/
         systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
-    }
-    shadowJar {
-        dependsOn("test")
-        transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer::class.java)
-        // https://github.com/johnrengelman/shadow/issues/309
-        transform(com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer::class.java) {
-            resource = "META-INF/cxf/bus-extensions.txt"
-        }
     }
     // https://github.com/ben-manes/gradle-versions-plugin
     dependencyUpdates {
