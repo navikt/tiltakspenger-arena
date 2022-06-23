@@ -42,7 +42,7 @@ const val XML_TEXT_ELEMENT_NAME: String = "innerText"
 class JacksonXmlConverter(private val xmlMapper: XmlMapper = xmlMapper()) : ContentConverter {
 
     override suspend fun deserialize(charset: Charset, typeInfo: TypeInfo, content: ByteReadChannel): Any? {
-        val reader = content.toInputStream().reader(charset)
+        val reader = content.toInputStream().reader()
         return xmlMapper.readValue(reader, typeInfo.type.javaObjectType)
     }
 

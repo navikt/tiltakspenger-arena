@@ -56,6 +56,7 @@ class ArenaOrdsClientImpl(
             bearerAuth(arenaOrdsTokenProvider.token())
             header("fnr", fnr)
         }.body()
+        LOG.info { "Arrangør: ${response.response.tiltaksaktivitetListe.first().arrangoer}" }
         return response
     }
 }

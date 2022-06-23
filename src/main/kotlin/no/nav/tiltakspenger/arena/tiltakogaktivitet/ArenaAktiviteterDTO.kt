@@ -1,6 +1,10 @@
 package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
+import no.nav.tiltakspenger.arena.felles.XML_TEXT_ELEMENT_NAME
 import java.time.LocalDate
 
 data class ArenaAktiviteterDTO(
@@ -10,30 +14,38 @@ data class ArenaAktiviteterDTO(
     // https://confluence.adeo.no/display/ARENA/Arena+-+Tjeneste+Webservice+-+TiltakOgAktivitet_v1#ArenaTjenesteWebserviceTiltakOgAktivitet_v1-HentTiltakOgAktiviteterForBrukerResponse
     // De variablene som er merket som mandatory der er satt til ikke å være nullable her
     data class Response(
-        var tiltaksaktivitetListe: List<Tiltaksaktivitet> = emptyList(),
-        var gruppeaktivitetListe: List<Gruppeaktivitet> = emptyList(),
-        var utdanningsaktivitetListe: List<Utdanningsaktivitet> = emptyList(),
+        val tiltaksaktivitetListe: List<Tiltaksaktivitet> = emptyList(),
+        val gruppeaktivitetListe: List<Gruppeaktivitet> = emptyList(),
+        val utdanningsaktivitetListe: List<Utdanningsaktivitet> = emptyList(),
     )
 
     data class Tiltaksaktivitet(
-        var tiltaksnavn: String,
-        var aktivitetId: String,
-        var tiltakLokaltNavn: String?,
-        var arrangoer: String?,
-        var bedriftsnummer: String?,
-        var deltakelsePeriode: DeltakelsesPeriode?,
+        val tiltaksnavn: String,
+        val aktivitetId: String,
+        val tiltakLokaltNavn: String?,
+        val arrangoer: String?,
+        val bedriftsnummer: String?,
+        val deltakelsePeriode: DeltakelsesPeriode?,
         @JsonDeserialize(using = ArenaFloatDeserializer::class)
-        var deltakelseProsent: Float?,
-        var deltakerStatus: String,
-        var statusSistEndret: LocalDate?,
-        var begrunnelseInnsoeking: String,
+        val deltakelseProsent: Float?,
+        val deltakerStatus: DeltakerStatus,
+        val statusSistEndret: LocalDate?,
+        val begrunnelseInnsoeking: String,
         @JsonDeserialize(using = ArenaFloatDeserializer::class)
-        var antallDagerPerUke: Float?,
+        val antallDagerPerUke: Float?,
     ) {
 
         data class DeltakelsesPeriode(
             val fom: LocalDate?,
             val tom: LocalDate?,
+        )
+
+        data class DeltakerStatus(
+            @JacksonXmlProperty(localName = "termnavn", isAttribute = true)
+            val termnavn: String,
+            @JsonProperty(XML_TEXT_ELEMENT_NAME)
+            @JacksonXmlText
+            val status: String
         )
     }
 

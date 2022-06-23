@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReference
 internal class JacksonXmlConverterTest {
     private val sampleXml = """<?xml version="1.0"?>
         <book id="bk101">
-          <author>Gambardella, Matthew</author>
+          <author>Gambardella, Matthew ÆØÅ</author>
           <title>XML Developer's Guide</title>
           <genre>Computer</genre>
           <price currency="EUR">44.95</price>
@@ -35,7 +35,7 @@ internal class JacksonXmlConverterTest {
 
     private val book = Book(
         id = "bk101",
-        author = "Gambardella, Matthew",
+        author = "Gambardella, Matthew ÆØÅ",
         title = "XML Developer's Guide",
         genre = "Computer",
         price = Price(
