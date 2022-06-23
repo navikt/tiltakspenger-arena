@@ -75,7 +75,7 @@ private fun xmlMapper(xmlTextElementName: String = XML_TEXT_ELEMENT_NAME): XmlMa
         setDefaultUseWrapper(false)
     }
     return XmlMapper(module).apply {
-        registerModule(KotlinModule())
+        registerModule(KotlinModule.Builder().build())
         registerModule(JavaTimeModule())
         setDefaultPrettyPrinter(
             DefaultPrettyPrinter().apply {
