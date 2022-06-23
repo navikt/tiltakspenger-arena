@@ -10,9 +10,9 @@ plugins {
     kotlin("jvm") version "1.7.0"
     kotlin("plugin.serialization") version "1.7.0"
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
-    id("ca.cutterslade.analyze") version "1.9.0"
+//    id("ca.cutterslade.analyze") version "1.9.0"
     id("com.github.bjornvester.wsdl2java") version "1.2"
-    id("com.github.ben-manes.versions") version "0.42.0"
+//    id("com.github.ben-manes.versions") version "0.42.0"
 }
 
 repositories {
@@ -119,12 +119,12 @@ java.sourceSets["main"].java {
 }
 
 // https://github.com/ben-manes/gradle-versions-plugin
-fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
-    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-    val isStable = stableKeyword || regex.matches(version)
-    return isStable.not()
-}
+//fun isNonStable(version: String): Boolean {
+//    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+//    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+//    val isStable = stableKeyword || regex.matches(version)
+//    return isStable.not()
+//}
 
 tasks {
     compileJava {
@@ -143,17 +143,17 @@ tasks {
         systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
     }
     // https://github.com/ben-manes/gradle-versions-plugin
-    dependencyUpdates {
-        rejectVersionIf {
-            isNonStable(candidate.version)
-        }
-    }
-    analyzeClassesDependencies {
-        warnUsedUndeclared = true
-        warnUnusedDeclared = true
-    }
-    analyzeTestClassesDependencies {
-        warnUsedUndeclared = true
-        warnUnusedDeclared = true
-    }
+//    dependencyUpdates {
+//        rejectVersionIf {
+//            isNonStable(candidate.version)
+//        }
+//    }
+//    analyzeClassesDependencies {
+//        warnUsedUndeclared = true
+//        warnUnusedDeclared = true
+//    }
+//    analyzeTestClassesDependencies {
+//        warnUsedUndeclared = true
+//        warnUnusedDeclared = true
+//    }
 }
