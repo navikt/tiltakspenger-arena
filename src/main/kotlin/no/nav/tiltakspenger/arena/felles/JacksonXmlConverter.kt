@@ -23,6 +23,8 @@ import io.ktor.utils.io.jvm.javaio.toInputStream
 const val XML_TEXT_ELEMENT_NAME: String = "innerText"
 
 /**
+ * Inspired by https://github.com/manhhavu/ktor-jackson-xml
+ *
  *    install(ContentNegotiation) {
  *       register(ContentType.Application.Xml, JacksonXmlConverter())
  *    }
