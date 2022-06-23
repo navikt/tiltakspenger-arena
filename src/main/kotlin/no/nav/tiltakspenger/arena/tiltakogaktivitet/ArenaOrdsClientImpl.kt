@@ -56,7 +56,6 @@ class ArenaOrdsClientImpl(
             bearerAuth(arenaOrdsTokenProvider.token())
             header("fnr", fnr)
         }.body()
-        LOG.info { "Arrangør: ${response.response.tiltaksaktivitetListe.first().arrangoer}" }
         return response
     }
 }
@@ -70,7 +69,7 @@ fun HttpClientConfig<*>.setupHttpClient() {
     }
     this.install(Logging) {
         logger = Logger.DEFAULT
-        level = LogLevel.ALL
+        level = LogLevel.NONE
     }
     this.expectSuccess = true
     // https://confluence.adeo.no/pages/viewpage.action?pageId=470748287

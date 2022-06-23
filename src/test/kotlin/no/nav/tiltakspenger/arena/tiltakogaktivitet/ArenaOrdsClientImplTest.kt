@@ -71,11 +71,13 @@ internal class ArenaOrdsClientImplTest {
             ArenaAktiviteterDTO.Tiltaksaktivitet.DeltakelsesPeriode(
                 LocalDate.of(2022, 5, 6),
                 LocalDate.of(2022, 7, 8)
-            ), tiltak.deltakelsePeriode
+            ),
+            tiltak.deltakelsePeriode
         )
         assertEquals("424242", tiltak.bedriftsnummer)
         assertEquals(100F, tiltak.deltakelseProsent)
         assertEquals("GJENN", tiltak.deltakerStatus.status)
+        assertEquals("Gjennomføres", tiltak.deltakerStatus.termnavn)
         assertEquals(LocalDate.of(2022, 6, 1), tiltak.statusSistEndret)
         assertEquals("Trenger tiltaksplass", tiltak.begrunnelseInnsoeking)
     }

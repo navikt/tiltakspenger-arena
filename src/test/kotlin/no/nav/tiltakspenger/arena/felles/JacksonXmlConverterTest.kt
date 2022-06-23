@@ -64,8 +64,7 @@ internal class JacksonXmlConverterTest {
             setBody(sampleXml)
         }
         assertEquals(HttpStatusCode.OK, response.status)
-        val book = holder.get()
-        assertEquals(holder.get(), book)
+        assertEquals(book, holder.get())
     }
 
     @Test
