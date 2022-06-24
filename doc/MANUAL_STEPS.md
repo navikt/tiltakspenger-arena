@@ -7,6 +7,10 @@ Brukernavn/passord for bruker mot STS
   og https://github.com/navikt/gruppetilgang-servicebruker/pull/1074
 * Legge til de samme gruppene i prod:  
   https://github.com/navikt/gruppetilgang-servicebruker/pull/1112
+* Endre så innslag i Vault mappes opp i tiltakspenger-arena:  
+  https://github.com/navikt/vault-iac/pull/4629
+  (Her er det muligens gjort noe annet også tidligere..)
+
 * Opprette secret i Kubernetes i dev-fss:   
   `kubectl create secret generic srvtpts-arena --from-literal=SERVICEUSER_TPTS_USERNAME=<username>
   --from-literal=SERVICEUSER_TPTS_PASSWORD=<hemmeligheten> --namespace tpts`
