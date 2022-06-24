@@ -4,6 +4,8 @@ val cxfVersion = "3.5.2"
 val ktorVersion = "2.0.2"
 val jacksonVersion = "2.13.3"
 
+project.base.archivesName.set("app")
+
 plugins {
     application
     id("java")
@@ -92,10 +94,6 @@ configurations.all {
     exclude(group = "junit", module = "junit")
 }
 
-application {
-    mainClass.set("no.nav.tiltakspenger.arena.ApplicationKt")
-}
-
 java {
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
@@ -141,6 +139,13 @@ tasks {
         useJUnitPlatform()
         // https://phauer.com/2018/best-practices-unit-testing-kotlin/
         systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
+    }
+    jar {
+        manifest.attributes["Main-Class"] = "no.nav.tiltakspenger.arena.ApplicationKt"
+        manifest.attributes["Class-Path"] = configurations
+            .runtimeClasspath
+            .get()
+            .joinToString(separator = " ") { file -> "${file.name}" }
     }
     // https://github.com/ben-manes/gradle-versions-plugin
 //    dependencyUpdates {
