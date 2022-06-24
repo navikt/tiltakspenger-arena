@@ -26,7 +26,6 @@ spec:
   secureLogs:
     enabled: true
   envFrom:
-    - secret: srvtpts-arena
     - secret: ords-arena
   webproxy: true
   vault:
