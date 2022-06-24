@@ -7,10 +7,10 @@ Brukernavn/passord for bruker mot STS
   og https://github.com/navikt/gruppetilgang-servicebruker/pull/1074
 * Legge til de samme gruppene i prod:  
   https://github.com/navikt/gruppetilgang-servicebruker/pull/1112
-* Opprette secret i Kubernetes i dev-gcp:   
+* Opprette secret i Kubernetes i dev-fss:   
   `kubectl create secret generic srvtpts-arena --from-literal=SERVICEUSER_TPTS_USERNAME=<username>
   --from-literal=SERVICEUSER_TPTS_PASSWORD=<hemmeligheten> --namespace tpts`
-* Opprette secret i Kubernetes i prod-gcp:   
+* Opprette secret i Kubernetes i prod-fss:   
   `kubectl create secret generic srvtpts-arena --from-literal=SERVICEUSER_TPTS_USERNAME=<username>
   --from-literal=SERVICEUSER_TPTS_PASSWORD=<hemmeligheten> --namespace tpts`
 
