@@ -3,8 +3,14 @@ Brukernavn/passord for bruker mot STS
 * Opprette bruker i gruppetilgang-servicebruker:     
   https://github.com/navikt/gruppetilgang-servicebruker/pull/1049
 * Denne manglet et par grupper:   
-  https://github.com/navikt/gruppetilgang-servicebruker/pull/1072 og https://github.com/navikt/gruppetilgang-servicebruker/pull/1074
-* Opprette secret i Kubernetes:   
+  https://github.com/navikt/gruppetilgang-servicebruker/pull/1072
+  og https://github.com/navikt/gruppetilgang-servicebruker/pull/1074
+* Legge til de samme gruppene i prod:  
+  https://github.com/navikt/gruppetilgang-servicebruker/pull/1112
+* Opprette secret i Kubernetes i dev-gcp:   
+  `kubectl create secret generic srvtpts-arena --from-literal=SERVICEUSER_TPTS_USERNAME=<username>
+  --from-literal=SERVICEUSER_TPTS_PASSWORD=<hemmeligheten> --namespace tpts`
+* Opprette secret i Kubernetes i prod-gcp:   
   `kubectl create secret generic srvtpts-arena --from-literal=SERVICEUSER_TPTS_USERNAME=<username>
   --from-literal=SERVICEUSER_TPTS_PASSWORD=<hemmeligheten> --namespace tpts`
 
