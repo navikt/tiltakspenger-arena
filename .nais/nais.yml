@@ -27,7 +27,6 @@ spec:
     enabled: true
   envFrom:
     - secret: ords-arena
-  webproxy: true
   vault:
     enabled: true
     paths:
