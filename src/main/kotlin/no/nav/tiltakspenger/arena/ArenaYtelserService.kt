@@ -3,7 +3,6 @@ package no.nav.tiltakspenger.arena
 import mu.KotlinLogging
 import no.nav.helse.rapids_rivers.JsonMessage
 import no.nav.helse.rapids_rivers.MessageContext
-import no.nav.helse.rapids_rivers.MessageProblems
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
 import no.nav.helse.rapids_rivers.asOptionalLocalDate
@@ -27,9 +26,9 @@ class ArenaYtelserService(
     init {
         River(rapidsConnection).apply {
             validate {
-                it.requireAllOrAny("@behov", listOf(BEHOV.YTELSE_LISTE))
+                it.demandAllOrAny("@behov", listOf(BEHOV.YTELSE_LISTE))
                 it.forbid("@løsning")
-                it.requireKey("@id", "@behovId") // Hva er forskjellen på den ene og den andre her?
+                it.requireKey("@id", "@behovId")
                 it.requireKey("ident")
                 it.interestedIn("fom")
                 it.interestedIn("tom")
@@ -48,13 +47,5 @@ class ArenaYtelserService(
         )
         LOG.info { "Sending ytelse: $ytelser" }
         context.publish(packet.toJson())
-    }
-
-    override fun onError(problems: MessageProblems, context: MessageContext) {
-        LOG.debug { problems }
-    }
-
-    override fun onSevere(error: MessageProblems.MessageException, context: MessageContext) {
-        LOG.error { error }
     }
 }

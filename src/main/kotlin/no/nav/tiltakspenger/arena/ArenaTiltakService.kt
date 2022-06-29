@@ -4,7 +4,6 @@ import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 import no.nav.helse.rapids_rivers.JsonMessage
 import no.nav.helse.rapids_rivers.MessageContext
-import no.nav.helse.rapids_rivers.MessageProblems
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
@@ -26,7 +25,7 @@ class ArenaTiltakService(
     init {
         River(rapidsConnection).apply {
             validate {
-                it.requireAllOrAny("@behov", listOf(BEHOV.TILTAK_LISTE))
+                it.demandAllOrAny("@behov", listOf(BEHOV.TILTAK_LISTE))
                 it.forbid("@løsning")
                 it.requireKey("@id", "@behovId")
                 it.requireKey("ident")
@@ -46,13 +45,5 @@ class ArenaTiltakService(
         )
         LOG.info { "Sending tiltak: ${aktiviteter.response.tiltaksaktivitetListe}" }
         context.publish(packet.toJson())
-    }
-
-    override fun onError(problems: MessageProblems, context: MessageContext) {
-        LOG.debug { problems }
-    }
-
-    override fun onSevere(error: MessageProblems.MessageException, context: MessageContext) {
-        LOG.error { error }
     }
 }
