@@ -59,7 +59,7 @@ dependencies {
 
     // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
-    implementation("no.nav.common:cxf:2.2022.06.20_04.34-44e077dc9a78")
+    implementation("no.nav.common:cxf:2.2022.06.30_06.19-0603b0416483")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
     implementation("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
