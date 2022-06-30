@@ -60,6 +60,14 @@ dependencies {
     // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
     implementation("no.nav.common:cxf:2.2022.06.30_13.28-d6517db2c62c")
+    constraints {
+        implementation("commons-collections:commons-collections") {
+            version {
+                require("3.2.2")
+            }
+            because("https://security.snyk.io/vuln/SNYK-JAVA-COMMONSCOLLECTIONS-30078")
+        }
+    }
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
     implementation("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
