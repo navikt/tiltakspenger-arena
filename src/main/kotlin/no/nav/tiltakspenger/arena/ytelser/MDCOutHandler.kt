@@ -2,14 +2,14 @@
 
 package no.nav.tiltakspenger.arena.ytelser
 
-import mu.KotlinLogging
-import org.slf4j.MDC
 import javax.xml.namespace.QName
 import javax.xml.soap.SOAPException
 import javax.xml.ws.ProtocolException
 import javax.xml.ws.handler.MessageContext
 import javax.xml.ws.handler.soap.SOAPHandler
 import javax.xml.ws.handler.soap.SOAPMessageContext
+import mu.KotlinLogging
+import org.slf4j.MDC
 
 @Suppress("MaxLineLength")
 /**
@@ -17,7 +17,7 @@ import javax.xml.ws.handler.soap.SOAPMessageContext
  */
 internal class MDCOutHandler : SOAPHandler<SOAPMessageContext?> {
     companion object {
-        private val log = KotlinLogging.logger {}
+        private val LOG = KotlinLogging.logger {}
 
         // QName for the callId header
         private val CALLID_QNAME = QName("uri:no.nav.applikasjonsrammeverk", MDCConstants.MDC_CALL_ID)
@@ -36,14 +36,14 @@ internal class MDCOutHandler : SOAPHandler<SOAPMessageContext?> {
                             "Om du er noe annet må du generere callId selv og legge på MDC. " +
                             "Hjelpemetoder finnes i no.nav.modig.common.MDCOperations."
                 )
-            log.debug("Add the callId to the SOAP message: $callId")
+            LOG.debug("Add the callId to the SOAP message: $callId")
             try {
                 val envelope = context.message.soapPart.envelope
                 val header = envelope.header
                 val callIdElement = header.addChildElement(CALLID_QNAME)
                 callIdElement.value = callId
             } catch (e: SOAPException) {
-                log.error(e.message)
+                LOG.error(e.message)
                 throw ProtocolException(e)
             }
         }

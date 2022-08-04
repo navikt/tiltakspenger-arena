@@ -12,7 +12,7 @@ class ArenaSoapService(
     private val ytelseskontraktV3Service: YtelseskontraktV3,
 ) {
     companion object {
-        private val log = KotlinLogging.logger {}
+        private val LOG = KotlinLogging.logger {}
     }
 
     @Suppress("TooGenericExceptionCaught")
@@ -21,7 +21,7 @@ class ArenaSoapService(
             ytelseskontraktV3Service.ping()
             true
         } catch (e: Exception) {
-            log.error("Failed to ping service", e)
+            LOG.error("Failed to ping service", e)
             false
         }
     }
@@ -38,7 +38,7 @@ class ArenaSoapService(
             val response = ytelseskontraktV3Service.hentYtelseskontraktListe(request)
             response.ytelseskontraktListe
         } catch (exception: HentYtelseskontraktListeSikkerhetsbegrensning) {
-            log.error("HentYtelseskontraktListeSikkerhetsbegrensning feil:", exception)
+            LOG.error("HentYtelseskontraktListeSikkerhetsbegrensning feil:", exception)
             throw exception
         }
     }
