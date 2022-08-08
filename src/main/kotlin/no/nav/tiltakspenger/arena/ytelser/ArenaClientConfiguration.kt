@@ -1,12 +1,12 @@
 package no.nav.tiltakspenger.arena.ytelser
 
-import javax.xml.namespace.QName
 import mu.KotlinLogging
 import no.nav.common.cxf.CXFClient
 import no.nav.common.cxf.StsConfig
 import no.nav.tiltakspenger.arena.Configuration
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.YtelseskontraktV3
 import org.apache.cxf.ext.logging.LoggingOutInterceptor
+import javax.xml.namespace.QName
 
 class ArenaClientConfiguration(
     private val arenaSoapConfig: Configuration.ArenaSoapConfig = Configuration.ArenaSoapConfig(),
