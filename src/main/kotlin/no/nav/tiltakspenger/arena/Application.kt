@@ -11,8 +11,12 @@ import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 fun main() {
     System.setProperty("logback.configurationFile", "egenLogback.xml")
     val log = KotlinLogging.logger {}
+    val securelog = KotlinLogging.logger("tjenestekall")
 
-    Thread.setDefaultUncaughtExceptionHandler { _, e -> log.error(e) { e.message } }
+    Thread.setDefaultUncaughtExceptionHandler { _, e ->
+        log.error { "Uncaught exception logget i securelog" }
+        securelog.error(e) { e.message }
+    }
     val arenaSoapService = ArenaSoapService(ArenaClientConfiguration().ytelseskontraktV3())
 
     val tokenProviderClient = ArenaOrdsTokenProviderClient(Configuration.ArenaOrdsConfig())
