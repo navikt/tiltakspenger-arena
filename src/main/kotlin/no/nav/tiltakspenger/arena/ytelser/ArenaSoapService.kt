@@ -8,13 +8,11 @@ import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.meldinger.HentYtelseskontraktListeRequest
 import java.time.LocalDate
 
+private val LOG = KotlinLogging.logger {}
+
 class ArenaSoapService(
     private val ytelseskontraktV3Service: YtelseskontraktV3,
 ) {
-    companion object {
-        private val LOG = KotlinLogging.logger {}
-    }
-
     @Suppress("TooGenericExceptionCaught")
     fun ping(): Boolean {
         return try {
@@ -38,7 +36,8 @@ class ArenaSoapService(
             val response = ytelseskontraktV3Service.hentYtelseskontraktListe(request)
             response.ytelseskontraktListe
         } catch (exception: HentYtelseskontraktListeSikkerhetsbegrensning) {
-            LOG.error("HentYtelseskontraktListeSikkerhetsbegrensning feil:", exception)
+            LOG.error("HentYtelseskontraktListeSikkerhetsbegrensning logget til securelog")
+            LOG.error(exception) { "HentYtelseskontraktListeSikkerhetsbegrensning feil" }
             throw exception
         }
     }

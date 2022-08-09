@@ -8,7 +8,9 @@ import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.*
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -23,6 +25,14 @@ import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.PersonNot
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.UnauthorizedException
 
 private val LOG = KotlinLogging.logger {}
+private val SECURELOG = KotlinLogging.logger("tjenestekall")
+
+private object SecurelogWrapper : Logger {
+    override fun log(message: String) {
+        LOG.info("HttpClient detaljer logget til securelog")
+        SECURELOG.info(message)
+    }
+}
 
 class ArenaOrdsClientImpl(
     private val arenaOrdsConfig: Configuration.ArenaOrdsConfig,
@@ -68,7 +78,7 @@ fun HttpClientConfig<*>.setupHttpClient() {
         register(ContentType.Text.Xml, JacksonXmlConverter())
     }
     this.install(Logging) {
-        logger = Logger.DEFAULT
+        logger = SecurelogWrapper
         level = LogLevel.NONE
     }
     this.expectSuccess = true
@@ -82,7 +92,8 @@ fun HttpClientConfig<*>.setupHttpClient() {
             val statusCode = response.status
             if (statusCode == HttpStatusCode.NoContent) {
                 val text = response.bodyAsText()
-                LOG.warn { "Bruker (person) finnes ikke i Arena: $text" }
+                LOG.warn { "Bruker (person) finnes ikke i Arena" }
+                SECURELOG.warn { "Bruker (person) finnes ikke i Arena: $text" }
                 throw PersonNotFoundException("Bruker (person) finnes ikke i Arena: $text")
             }
         }

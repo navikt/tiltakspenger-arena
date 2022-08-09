@@ -2,14 +2,16 @@
 
 package no.nav.tiltakspenger.arena.ytelser
 
+import mu.KotlinLogging
+import org.slf4j.MDC
 import javax.xml.namespace.QName
 import javax.xml.soap.SOAPException
 import javax.xml.ws.ProtocolException
 import javax.xml.ws.handler.MessageContext
 import javax.xml.ws.handler.soap.SOAPHandler
 import javax.xml.ws.handler.soap.SOAPMessageContext
-import mu.KotlinLogging
-import org.slf4j.MDC
+
+private val LOG = KotlinLogging.logger {}
 
 @Suppress("MaxLineLength")
 /**
@@ -17,8 +19,6 @@ import org.slf4j.MDC
  */
 internal class MDCOutHandler : SOAPHandler<SOAPMessageContext?> {
     companion object {
-        private val LOG = KotlinLogging.logger {}
-
         // QName for the callId header
         private val CALLID_QNAME = QName("uri:no.nav.applikasjonsrammeverk", MDCConstants.MDC_CALL_ID)
     }
@@ -43,7 +43,8 @@ internal class MDCOutHandler : SOAPHandler<SOAPMessageContext?> {
                 val callIdElement = header.addChildElement(CALLID_QNAME)
                 callIdElement.value = callId
             } catch (e: SOAPException) {
-                LOG.error(e.message)
+                LOG.error("SOAPException logget til securelog")
+                LOG.error(e) { e.message }
                 throw ProtocolException(e)
             }
         }

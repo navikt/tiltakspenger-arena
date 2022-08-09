@@ -10,6 +10,7 @@ import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
 
 private val LOG = KotlinLogging.logger {}
+private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
 // TO DO: Er ikke sikker på om vi burde angi Europe/Oslo eller ikke.
 //  (Gjelder både tilXmlGregorianCalenadar og toLocalDate..)
@@ -20,10 +21,12 @@ fun LocalDate?.toXMLGregorian(): XMLGregorianCalendar? {
             ?.let { GregorianCalendar.from(it) }
             ?.let { DatatypeFactory.newInstance().newXMLGregorianCalendar(it) }
     } catch (exception: ParseException) {
-        LOG.error(exception) { "Noe feilet" }
+        LOG.error("Feil logget til securelog")
+        SECURELOG.error(exception) { "Noe feilet" }
         null
     } catch (exception: DatatypeConfigurationException) {
-        LOG.error(exception) { "Noe feilet" }
+        LOG.error("Feil logget til securelog")
+        SECURELOG.error(exception) { "Noe feilet" }
         null
     }
 }
@@ -36,9 +39,11 @@ fun XMLGregorianCalendar?.toLocalDate(): LocalDate? =
             // ?.withZoneSameInstant(ZoneId.of("Europe/Oslo"))
             ?.toLocalDate()
     } catch (exception: ParseException) {
-        LOG.error(exception) { "Noe feilet" }
+        LOG.error("Feil logget til securelog")
+        SECURELOG.error(exception) { "Noe feilet" }
         null
     } catch (exception: DatatypeConfigurationException) {
-        LOG.error(exception) { "Noe feilet" }
+        LOG.error("Feil logget til securelog")
+        SECURELOG.error(exception) { "Noe feilet" }
         null
     }

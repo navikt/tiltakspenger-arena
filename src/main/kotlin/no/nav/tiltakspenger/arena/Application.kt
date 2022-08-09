@@ -8,10 +8,11 @@ import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsTokenProviderClient
 import no.nav.tiltakspenger.arena.ytelser.ArenaClientConfiguration
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 
-private val LOG = KotlinLogging.logger {}
-
 fun main() {
-    Thread.setDefaultUncaughtExceptionHandler { _, e -> LOG.error(e) { e.message } }
+    System.setProperty("logback.configurationFile", "egenLogback.xml")
+    val log = KotlinLogging.logger {}
+
+    Thread.setDefaultUncaughtExceptionHandler { _, e -> log.error(e) { e.message } }
     val arenaSoapService = ArenaSoapService(ArenaClientConfiguration().ytelseskontraktV3())
 
     val tokenProviderClient = ArenaOrdsTokenProviderClient(Configuration.ArenaOrdsConfig())
@@ -32,11 +33,11 @@ fun main() {
 
         register(object : RapidsConnection.StatusListener {
             override fun onStartup(rapidsConnection: RapidsConnection) {
-                LOG.info { "Starting tiltakspenger-arena" }
+                log.info { "Starting tiltakspenger-arena" }
             }
 
             override fun onShutdown(rapidsConnection: RapidsConnection) {
-                LOG.info { "Stopping tiltakspenger-arena" }
+                log.info { "Stopping tiltakspenger-arena" }
                 super.onShutdown(rapidsConnection)
             }
         })
