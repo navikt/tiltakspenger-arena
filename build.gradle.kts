@@ -9,9 +9,9 @@ project.base.archivesName.set("app")
 plugins {
     application
     id("java")
-    kotlin("jvm") version "1.7.0"
-    kotlin("plugin.serialization") version "1.7.0"
-    id("io.gitlab.arturbosch.detekt") version "1.20.0"
+    kotlin("jvm") version "1.7.10"
+    kotlin("plugin.serialization") version "1.7.10"
+    id("io.gitlab.arturbosch.detekt") version "1.21.0"
 //    id("ca.cutterslade.analyze") version "1.9.0"
     id("com.github.bjornvester.wsdl2java") version "1.2"
 //    id("com.github.ben-manes.versions") version "0.42.0"
@@ -25,14 +25,13 @@ repositories {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0")
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")
 //    implementation("io.prometheus:simpleclient:$prometheusVersion")
 //    implementation("io.prometheus:simpleclient_common:$prometheusVersion")
-    implementation("com.github.navikt:rapids-and-rivers:2022061809451655538329.d6deccc62862")
+    implementation("com.github.navikt:rapids-and-rivers:2022072721371658950659.c1e8f7bf35c6")
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
     implementation("org.slf4j:slf4j-api:1.7.36")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.6.4")
@@ -60,7 +59,7 @@ dependencies {
 
     // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
-    implementation("no.nav.common:cxf:2.2022.06.30_13.28-d6517db2c62c")
+    implementation("no.nav.common:cxf:2.2022.08.09_10.24-3195203d427c")
     constraints {
         implementation("commons-collections:commons-collections") {
             version {
@@ -84,10 +83,10 @@ dependencies {
     // old version because of https://issues.apache.org/jira/browse/CXF-8727
     runtimeOnly("jakarta.annotation:jakarta.annotation-api:1.3.5")
 
-    testImplementation(platform("org.junit:junit-bom:5.8.2"))
+    testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("io.mockk:mockk:1.12.4")
-    testImplementation("io.mockk:mockk-dsl-jvm:1.12.4")
+    testImplementation("io.mockk:mockk:1.12.5")
+    testImplementation("io.mockk:mockk-dsl-jvm:1.12.5")
 //    testImplementation("org.skyscreamer:jsonassert:1.5.0")
     testImplementation("org.junit-pioneer:junit-pioneer:1.7.1")
     testImplementation("io.ktor:ktor-client-mock-jvm:$ktorVersion")
@@ -109,7 +108,6 @@ java {
 }
 
 detekt {
-    autoCorrect = true
     buildUponDefaultConfig = true
     allRules = false
     config = files("$projectDir/config/detekt.yml")
