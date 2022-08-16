@@ -6,6 +6,9 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.basicAuth
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.header
@@ -16,7 +19,19 @@ import no.nav.tiltakspenger.arena.Configuration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import kotlinx.coroutines.runBlocking
+import mu.KotlinLogging
 
+private val LOG = KotlinLogging.logger {}
+private val SECURELOG = KotlinLogging.logger("tjenestekall")
+
+private object TokenProviderSecurelogWrapper : Logger {
+    override fun log(message: String) {
+        LOG.info("HttpClient detaljer logget til securelog")
+        //Midlertidig:
+        LOG.info(message)
+        SECURELOG.info(message)
+    }
+}
 class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.ArenaOrdsConfig) {
     companion object {
         private const val MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH: Long = 60
@@ -27,6 +42,10 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
     private val client = HttpClient(CIO) {
         install(ContentNegotiation) {
             jackson()
+        }
+        install(Logging) {
+            logger = TokenProviderSecurelogWrapper
+            level = LogLevel.BODY
         }
     }
 
