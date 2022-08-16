@@ -46,6 +46,7 @@ class JacksonXmlConverter(private val xmlMapper: XmlMapper = xmlMapper()) : Cont
         return xmlMapper.readValue(reader, typeInfo.type.javaObjectType)
     }
 
+    @Deprecated("TODO")
     override suspend fun serialize(
         contentType: ContentType,
         charset: Charset,

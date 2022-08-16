@@ -15,6 +15,7 @@ import io.ktor.serialization.jackson.jackson
 import no.nav.tiltakspenger.arena.Configuration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
+import kotlinx.coroutines.runBlocking
 
 class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.ArenaOrdsConfig) {
     companion object {
@@ -29,23 +30,26 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
         }
     }
 
-    suspend fun token(): String {
+    fun token(): String {
         if (tokenIsSoonExpired()) {
             refreshToken()
         }
         return tokenCache?.ordsToken?.accessToken!!
     }
 
-    private suspend fun refreshToken() {
-        val response: OrdsToken = client.submitForm(
-            url = arenaOrdsConfig.arenaOrdsUrl + "/arena/api/oauth/token",
-            formParameters = Parameters.build {
-                append("grant_type", "client_credentials")
+    private fun refreshToken() {
+        val response: OrdsToken =
+            runBlocking {
+                client.submitForm(
+                    url = arenaOrdsConfig.arenaOrdsUrl + "/arena/api/oauth/token",
+                    formParameters = Parameters.build {
+                        append("grant_type", "client_credentials")
+                    }
+                ) {
+                    basicAuth(arenaOrdsConfig.arenaOrdsClientId, arenaOrdsConfig.arenaOrdsClientSecret)
+                    header(HttpHeaders.CacheControl, "no-cache")
+                }.body()
             }
-        ) {
-            basicAuth(arenaOrdsConfig.arenaOrdsClientId, arenaOrdsConfig.arenaOrdsClientSecret)
-            header(HttpHeaders.CacheControl, "no-cache")
-        }.body()
         tokenCache = TokenCache(response)
     }
 
