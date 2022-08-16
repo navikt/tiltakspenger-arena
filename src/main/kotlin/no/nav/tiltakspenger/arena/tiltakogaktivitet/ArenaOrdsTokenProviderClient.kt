@@ -1,6 +1,7 @@
 package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
 import com.fasterxml.jackson.annotation.JsonAlias
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -63,6 +64,7 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
         val time: LocalDateTime = LocalDateTime.now()
     )
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     data class OrdsToken(
         @JsonAlias("access_token")
         val accessToken: String?,
