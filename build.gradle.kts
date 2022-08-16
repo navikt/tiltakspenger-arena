@@ -1,7 +1,7 @@
 val javaVersion = JavaVersion.VERSION_17
 val prometheusVersion = "0.15.0"
 val cxfVersion = "3.5.3"
-val ktorVersion = "2.0.3"
+val ktorVersion = "2.1.0"
 val jacksonVersion = "2.13.3"
 
 project.base.archivesName.set("app")
@@ -59,7 +59,7 @@ dependencies {
 
     // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
-    implementation("no.nav.common:cxf:2.2022.08.09_10.24-3195203d427c")
+    implementation("no.nav.common:cxf:2.2022.08.15_07.05-3fef82ca5c66")
     constraints {
         implementation("commons-collections:commons-collections") {
             version {
