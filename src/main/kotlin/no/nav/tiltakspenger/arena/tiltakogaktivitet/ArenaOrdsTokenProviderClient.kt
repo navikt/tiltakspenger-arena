@@ -32,12 +32,12 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
 
     fun token(): String {
         if (tokenIsSoonExpired()) {
-            refreshToken()
+            return refreshToken().accessToken
         }
-        return tokenCache?.ordsToken?.accessToken!!
+        return tokenCache!!.ordsToken.accessToken
     }
 
-    private fun refreshToken() {
+    private fun refreshToken(): OrdsToken {
         val response: OrdsToken =
             runBlocking {
                 client.submitForm(
@@ -51,6 +51,7 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
                 }.body()
             }
         tokenCache = TokenCache(response)
+        return response
     }
 
     private fun tokenIsSoonExpired(): Boolean {
@@ -71,7 +72,7 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class OrdsToken(
         @JsonAlias("access_token")
-        val accessToken: String?,
+        val accessToken: String,
         @JsonAlias("token_type")
         val tokenType: String?,
         @JsonAlias("expires_in")
