@@ -27,8 +27,6 @@ private val SECURELOG = KotlinLogging.logger("tjenestekall")
 private object TokenProviderSecurelogWrapper : Logger {
     override fun log(message: String) {
         LOG.info("HttpClient detaljer logget til securelog")
-        //Midlertidig:
-        LOG.info(message)
         SECURELOG.info(message)
     }
 }
@@ -45,7 +43,7 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
         }
         install(Logging) {
             logger = TokenProviderSecurelogWrapper
-            level = LogLevel.BODY
+            level = LogLevel.NONE
         }
     }
 

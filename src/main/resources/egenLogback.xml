@@ -40,6 +40,10 @@
         <appender-ref ref="secureLog"/>
     </logger>
 
+    <logger name="org.apache.cxf.services.Ytelseskontrakt_v3.REQ_OUT" level="DEBUG" additivity="false">
+        <appender-ref ref="secureLog"/>
+    </logger>
+
     <root level="INFO">
         <appender-ref ref="STDOUT_JSON"/>
     </root>
