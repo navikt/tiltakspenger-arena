@@ -45,6 +45,7 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
             logger = TokenProviderSecurelogWrapper
             level = LogLevel.NONE
         }
+        this.expectSuccess = true
     }
 
     fun token(): String {
