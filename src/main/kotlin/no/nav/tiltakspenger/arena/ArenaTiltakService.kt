@@ -88,7 +88,7 @@ class ArenaTiltakService(
             StructuredArguments.keyValue("id", packet["@id"].asText()),
             StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
         )
-        SECURELOG.debug { "publiserer melding: $packet" }
+        SECURELOG.debug { "publiserer melding: ${packet.toJson()}" }
     }
 
     private fun loggVedFeil(ex: Throwable, packet: JsonMessage) {
