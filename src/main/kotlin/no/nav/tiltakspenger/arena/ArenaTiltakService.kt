@@ -22,7 +22,7 @@ class ArenaTiltakService(
 
     companion object {
         internal object BEHOV {
-            const val TILTAK_LISTE = "tiltak"
+            const val TILTAK_LISTE = "arenatiltak"
         }
     }
 

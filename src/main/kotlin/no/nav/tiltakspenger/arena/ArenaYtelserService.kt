@@ -23,7 +23,7 @@ class ArenaYtelserService(
 
     companion object {
         internal object BEHOV {
-            const val YTELSE_LISTE = "ytelser"
+            const val YTELSE_LISTE = "arenaytelser"
         }
     }
 
