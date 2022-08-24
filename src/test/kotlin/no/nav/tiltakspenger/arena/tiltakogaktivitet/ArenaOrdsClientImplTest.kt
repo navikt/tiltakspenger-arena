@@ -1,13 +1,21 @@
 package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
-import io.ktor.client.*
-import io.ktor.client.engine.mock.*
-import io.ktor.client.plugins.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.respond
+import io.ktor.client.engine.mock.respondError
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.headersOf
 import io.mockk.coEvery
 import io.mockk.mockk
+import java.nio.charset.Charset
+import java.time.LocalDate
 import kotlinx.coroutines.runBlocking
 import no.nav.tiltakspenger.arena.Configuration.ArenaOrdsConfig
+import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaAktiviteterDTO.Tiltaksaktivitet.DeltakerStatusType
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.OtherException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.PersonNotFoundException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.UnauthorizedException
@@ -15,8 +23,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import java.nio.charset.Charset
-import java.time.LocalDate
 
 internal class ArenaOrdsClientImplTest {
 
@@ -76,8 +82,8 @@ internal class ArenaOrdsClientImplTest {
         )
         assertEquals("424242", tiltak.bedriftsnummer)
         assertEquals(100F, tiltak.deltakelseProsent)
-        assertEquals("GJENN", tiltak.deltakerStatus.status)
-        assertEquals("Gjennomføres", tiltak.deltakerStatus.termnavn)
+        assertEquals(DeltakerStatusType.GJENN, tiltak.deltakerStatus.status)
+        assertEquals("Gjennomføres", tiltak.deltakerStatus.statusNavn)
         assertEquals(LocalDate.of(2022, 6, 1), tiltak.statusSistEndret)
         assertEquals("Trenger tiltaksplass", tiltak.begrunnelseInnsoeking)
     }

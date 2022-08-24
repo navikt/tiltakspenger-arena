@@ -10,7 +10,7 @@ import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
 import no.nav.helse.rapids_rivers.asOptionalLocalDate
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
-import no.nav.tiltakspenger.arena.ytelser.YtelseSak
+import no.nav.tiltakspenger.arena.ytelser.YtelseSakDTO
 
 private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
@@ -44,14 +44,14 @@ class ArenaYtelserService(
         runCatching {
             loggVedInngang(packet)
 
-            val ytelser = withLoggingContext(
+            val ytelser: List<YtelseSakDTO> = withLoggingContext(
                 "id" to packet["@id"].asText(),
                 "behovId" to packet["@behovId"].asText()
             ) {
                 val ident = packet["ident"].asText()
                 val fom = packet["fom"].asOptionalLocalDate()
                 val tom = packet["tom"].asOptionalLocalDate()
-                YtelseSak.map(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
+                YtelseSakDTO.map(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
             }
 
             packet["@løsning"] = mapOf(
