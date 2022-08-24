@@ -16,6 +16,7 @@ import java.time.LocalDate
 import kotlinx.coroutines.runBlocking
 import no.nav.tiltakspenger.arena.Configuration.ArenaOrdsConfig
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaAktiviteterDTO.Tiltaksaktivitet.DeltakerStatusType
+import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaAktiviteterDTO.Tiltaksaktivitet.Tiltaksnavn
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.OtherException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.PersonNotFoundException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.UnauthorizedException
@@ -69,7 +70,7 @@ internal class ArenaOrdsClientImplTest {
         }
         assertTrue(aktiviteter.response.tiltaksaktivitetListe.size == 1)
         val tiltak = aktiviteter.response.tiltaksaktivitetListe.first()
-        assertEquals("Arbeidstrening", tiltak.tiltaksnavn)
+        assertEquals(Tiltaksnavn.ARBTREN, tiltak.tiltaksnavn)
         assertEquals("TA6698352", tiltak.aktivitetId)
         assertEquals("Arbeidstrening", tiltak.tiltakLokaltNavn)
         assertEquals("GRÅTASS BARNEHAGE AS", tiltak.arrangoer)

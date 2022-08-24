@@ -20,7 +20,8 @@ data class ArenaAktiviteterDTO(
     )
 
     data class Tiltaksaktivitet(
-        val tiltaksnavn: String,
+        @JsonDeserialize(using = ArenaTiltaksnavnDeserializer::class)
+        val tiltaksnavn: Tiltaksnavn,
         val aktivitetId: String,
         val tiltakLokaltNavn: String?,
         val arrangoer: String?,
@@ -49,6 +50,7 @@ data class ArenaAktiviteterDTO(
         )
 
         enum class Tiltaksnavn(val tekst: String) {
+
             MENTOR("Mentor"),
             MIDLONTIL("Midlertidig lønnstilskudd"),
             PV("Produksjonsverksted (PV)"),
@@ -89,7 +91,16 @@ data class ArenaAktiviteterDTO(
             VARLONTIL("Varig lønnstilskudd"),
             VASV("Varig tilrettelagt arbeid i skjermet virksomhet"),
             VATIAROR("Varig tilrettelagt arbeid i ordinær virksomhet"),
-            VV("Varig vernet arbeid (VVA)")
+            VV("Varig vernet arbeid (VVA)");
+
+            companion object {
+                fun fromTekst(tekst: String): Tiltaksnavn {
+                    return Tiltaksnavn.values().find { it.tekst == tekst }
+                        ?: throw IllegalArgumentException(
+                            "Tiltaksnavn $tekst ikke funnet, sjekk lovlige verdier i Arena"
+                        )
+                }
+            }
         }
 
         enum class DeltakerStatusType(val tekst: String) {
