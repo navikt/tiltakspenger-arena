@@ -74,12 +74,12 @@ class ArenaYtelserService(
 
     fun loggVedInngang(packet: JsonMessage) {
         LOG.info(
-            "løser behov med {} og {}",
+            "løser ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
             StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
         )
         SECURELOG.info(
-            "løser behov med {} og {}",
+            "løser ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
             StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
         )
@@ -88,12 +88,12 @@ class ArenaYtelserService(
 
     private fun loggVedUtgang(packet: JsonMessage) {
         LOG.info(
-            "har løst behov med {} og {}",
+            "har løst ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
             StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
         )
         SECURELOG.info(
-            "har løst behov med {} og {}",
+            "har løst ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
             StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
         )
@@ -102,14 +102,13 @@ class ArenaYtelserService(
 
     private fun loggVedFeil(ex: Throwable, packet: JsonMessage) {
         LOG.error(
-            "feil ved behandling av behov med {}, se securelogs for detaljer",
+            "feil ved behandling av ytelser-behov med {}, se securelogs for detaljer",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
-            StructuredArguments.keyValue("behovId", packet["@behovId"].asText()),
         )
         SECURELOG.error(
-            "feil ${ex.message} ved behandling av behov med {} og {}",
+            "feil ${ex.message} ved behandling av ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
-            StructuredArguments.keyValue("behovId", packet["@behovId"].asText()),
+            StructuredArguments.keyValue("packet", packet.toJson()),
             ex
         )
     }
