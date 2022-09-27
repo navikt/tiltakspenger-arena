@@ -63,12 +63,10 @@ class ArenaOrdsClientImpl(
 
     override suspend fun hentArenaAktiviteter(fnr: String): ArenaAktiviteterDTO {
         val url = arenaOrdsConfig.arenaOrdsUrl + "/arena/api/v1/person/oppfoelging/aktiviteter"
-        LOG.info { url }
         val response: ArenaAktiviteterDTO = client.get(urlString = url) {
             bearerAuth(arenaOrdsTokenProvider.token())
             header("fnr", fnr)
         }.body()
-        SECURELOG.info { response }
         return response
     }
 }
