@@ -57,7 +57,6 @@ class ArenaOrdsClientImpl(
         val response: ArenaOppfølgingssakDTO = client.get(urlString = url) {
             bearerAuth(arenaOrdsTokenProvider.token())
         }.body()
-        SECURELOG.info { response }
         return response
     }
 
@@ -107,7 +106,6 @@ fun HttpClientConfig<*>.setupHttpClient() {
                         throw UnauthorizedException(exceptionResponseText, exception)
                     }
                 }
-
                 is ServerResponseException -> {
                     val exceptionResponse = exception.response
                     if (exceptionResponse.status == HttpStatusCode.InternalServerError) {
@@ -115,7 +113,6 @@ fun HttpClientConfig<*>.setupHttpClient() {
                         throw OtherException(exceptionResponseText, exception)
                     }
                 }
-
                 else -> return@handleResponseExceptionWithRequest
             }
         }

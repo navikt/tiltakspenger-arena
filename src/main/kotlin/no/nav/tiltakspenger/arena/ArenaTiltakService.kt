@@ -45,7 +45,6 @@ class ArenaTiltakService(
                 "id" to packet["@id"].asText(),
                 "behovId" to packet["@behovId"].asText()
             ) {
-                LOG.info { "1" }
                 val ident = packet["ident"].asText()
                 SECURELOG.debug { "mottok ident $ident" }
                 runBlocking(MDCContext()) {
@@ -53,15 +52,12 @@ class ArenaTiltakService(
                     // Trengs det å mappe denne noe mer her, til egen domenemodell?
                 }
             }
-            LOG.info { "2" }
+
             packet["@løsning"] = mapOf(
                 BEHOV.TILTAK_LISTE to aktiviteter.response.tiltaksaktivitetListe
             )
-            LOG.info { "3" }
             loggVedUtgang(packet)
-            LOG.info { "4" }
             context.publish(packet.toJson())
-            LOG.info { "5" }
         }.onFailure {
             loggVedFeil(it, packet)
         }.getOrThrow()
