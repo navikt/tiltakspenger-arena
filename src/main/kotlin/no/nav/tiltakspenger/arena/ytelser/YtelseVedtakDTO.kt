@@ -54,7 +54,7 @@ data class YtelseVedtakDTO(
 
         companion object {
             fun fromNavn(n: String): YtelseVedtakVedtakstype =
-                YtelseVedtakVedtakstype.values().firstOrNull { it.navn == n }
+                YtelseVedtakVedtakstype.values().firstOrNull { n.contains(it.navn) }
                     ?: throw IllegalArgumentException("Ukjent YtelseVedtakVedtakstype $n")
 
         }
