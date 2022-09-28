@@ -27,8 +27,8 @@ data class YtelseSakDTO(
                         datoKravMottatt = ytelse.datoKravMottatt,
                         dataKravMottatt = ytelse.ytelsestype,
                         fagsystemSakId = ytelse.fagsystemSakId,
-                        status = ytelse.status?.let { YtelseSakStatus.valueOf(it.uppercase()) },
-                        ytelsestype = ytelse.ytelsestype?.let { YtelseSakYtelsetype.valueOf(it.uppercase()) },
+                        status = ytelse.status?.let { YtelseSakStatus.fromNavn(it) },
+                        ytelsestype = ytelse.ytelsestype?.let { YtelseSakYtelsetype.fromNavn(it) },
                         vedtak = YtelseVedtakDTO.of(ytelse.ihtVedtak),
                         antallDagerIgjen = ytelse.antallDagerIgjen,
                         antallUkerIgjen = ytelse.antallUkerIgjen,
@@ -40,8 +40,8 @@ data class YtelseSakDTO(
                         datoKravMottatt = ytelse.datoKravMottatt,
                         dataKravMottatt = ytelse.ytelsestype,
                         fagsystemSakId = ytelse.fagsystemSakId,
-                        status = ytelse.status?.let { YtelseSakStatus.valueOf(it.uppercase()) },
-                        ytelsestype = ytelse.ytelsestype?.let { YtelseSakYtelsetype.valueOf(it.uppercase()) },
+                        status = ytelse.status?.let { YtelseSakStatus.fromNavn(it) },
+                        ytelsestype = ytelse.ytelsestype?.let { YtelseSakYtelsetype.fromNavn(it) },
                         vedtak = YtelseVedtakDTO.of(ytelse.ihtVedtak),
                     )
                 }
@@ -52,12 +52,26 @@ data class YtelseSakDTO(
     enum class YtelseSakStatus(val navn: String) {
         AKTIV("Aktiv"),
         AVSLU("Lukket"),
-        INAKT("Inaktiv")
+        INAKT("Inaktiv");
+
+        companion object {
+            fun fromNavn(n: String): YtelseSakStatus =
+                YtelseSakStatus.values().firstOrNull { it.navn == n }
+                    ?: throw IllegalArgumentException("Ukjent YtelseSakStatus $n")
+
+        }
     }
 
     enum class YtelseSakYtelsetype(val navn: String) {
         AA("Arbeidsavklaringspenger"),
         DAGP("Dagpenger"),
-        INDIV("Individstønad"),
+        INDIV("Individstønad");
+
+        companion object {
+            fun fromNavn(n: String): YtelseSakYtelsetype =
+                YtelseSakYtelsetype.values().firstOrNull { it.navn == n }
+                    ?: throw IllegalArgumentException("Ukjent YtelseSakYtelsetype $n")
+
+        }
     }
 }

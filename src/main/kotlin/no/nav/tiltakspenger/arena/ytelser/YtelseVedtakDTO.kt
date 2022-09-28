@@ -1,7 +1,7 @@
 package no.nav.tiltakspenger.arena.ytelser
 
-import java.time.LocalDate
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Vedtak
+import java.time.LocalDate
 
 data class YtelseVedtakDTO(
     val beslutningsDato: LocalDate? = null,
@@ -17,14 +17,12 @@ data class YtelseVedtakDTO(
                 YtelseVedtakDTO(
                     beslutningsDato = vedtak.beslutningsdato,
                     periodetypeForYtelse = vedtak.periodetypeForYtelse?.let {
-                        YtelseVedtakPeriodeTypeForYtelse.valueOf(
-                            it
-                        )
+                        YtelseVedtakPeriodeTypeForYtelse.fromNavn(it)
                     },
                     vedtaksperiodeFom = vedtak.vedtaksperiode.fom,
                     vedtaksperiodeTom = vedtak.vedtaksperiode.tom,
-                    vedtaksType = vedtak.vedtakstype?.let { YtelseVedtakVedtakstype.valueOf(it) },
-                    status = vedtak.status?.let { YtelseVedtakStatus.valueOf(it) }
+                    vedtaksType = vedtak.vedtakstype?.let { YtelseVedtakVedtakstype.fromNavn(it) },
+                    status = vedtak.status?.let { YtelseVedtakStatus.fromNavn(it) }
                 )
             }
     }
@@ -36,7 +34,14 @@ data class YtelseVedtakDTO(
         N("Annuller sanksjon"), // Gjelder ikke tiltakspenger
         O("Ny rettighet"),
         S("Stans"),
-        T("Tidsbegrenset bortfall") // Gjelder ikke tiltakspenger
+        T("Tidsbegrenset bortfall"); // Gjelder ikke tiltakspenger
+
+        companion object {
+            fun fromNavn(n: String): YtelseVedtakPeriodeTypeForYtelse =
+                YtelseVedtakPeriodeTypeForYtelse.values().firstOrNull { it.navn == n }
+                    ?: throw IllegalArgumentException("Ukjent YtelseVedtakPeriodeTypeForYtelse $n")
+
+        }
     }
 
     enum class YtelseVedtakVedtakstype(val navn: String, val ytelseSakDTOYtelsetype: YtelseSakDTO.YtelseSakYtelsetype) {
@@ -45,7 +50,14 @@ data class YtelseVedtakDTO(
         PERM("Dagpenger under permitteringer", YtelseSakDTO.YtelseSakYtelsetype.DAGP),
         FISK("Dagp. v/perm fra fiskeindustri", YtelseSakDTO.YtelseSakYtelsetype.DAGP),
         LONN("Lønnsgarantimidler - dagpenger", YtelseSakDTO.YtelseSakYtelsetype.DAGP),
-        BASI("Tiltakspenger (basisytelse før 2014)", YtelseSakDTO.YtelseSakYtelsetype.INDIV)
+        BASI("Tiltakspenger (basisytelse før 2014)", YtelseSakDTO.YtelseSakYtelsetype.INDIV);
+
+        companion object {
+            fun fromNavn(n: String): YtelseVedtakVedtakstype =
+                YtelseVedtakVedtakstype.values().firstOrNull { it.navn == n }
+                    ?: throw IllegalArgumentException("Ukjent YtelseVedtakVedtakstype $n")
+
+        }
     }
 
     enum class YtelseVedtakStatus(val navn: String) {
@@ -55,6 +67,13 @@ data class YtelseVedtakDTO(
         IVERK("Iverksatt"),
         MOTAT("Mottatt"),
         OPPRE("Opprettet"),
-        REGIS("Registrert")
+        REGIS("Registrert");
+
+        companion object {
+            fun fromNavn(n: String): YtelseVedtakStatus =
+                YtelseVedtakStatus.values().firstOrNull { it.navn == n }
+                    ?: throw IllegalArgumentException("Ukjent YtelseVedtakStatus $n")
+
+        }
     }
 }
