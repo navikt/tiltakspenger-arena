@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
-import java.time.LocalDate
 import no.nav.tiltakspenger.arena.felles.XML_TEXT_ELEMENT_NAME
+import java.time.LocalDate
 
 data class ArenaAktiviteterDTO(
     val response: Response
@@ -31,7 +31,7 @@ data class ArenaAktiviteterDTO(
         val deltakelseProsent: Float?,
         val deltakerStatus: DeltakerStatus,
         val statusSistEndret: LocalDate?,
-        val begrunnelseInnsoeking: String,
+        val begrunnelseInnsoeking: String?,
         @JsonDeserialize(using = ArenaFloatDeserializer::class)
         val antallDagerPerUke: Float?,
     ) {
