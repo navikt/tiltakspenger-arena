@@ -1,9 +1,9 @@
 package no.nav.tiltakspenger.arena.ytelser
 
-import java.time.LocalDate
-import java.time.LocalDateTime
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Dagpengekontrakt
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class YtelseSakDTO(
     val fomGyldighetsperiode: LocalDateTime,
@@ -27,8 +27,8 @@ data class YtelseSakDTO(
                         datoKravMottatt = ytelse.datoKravMottatt,
                         dataKravMottatt = ytelse.ytelsestype,
                         fagsystemSakId = ytelse.fagsystemSakId,
-                        status = ytelse.status?.let { YtelseSakStatus.valueOf(it) },
-                        ytelsestype = ytelse.ytelsestype?.let { YtelseSakYtelsetype.valueOf(it) },
+                        status = ytelse.status?.let { YtelseSakStatus.valueOf(it.uppercase()) },
+                        ytelsestype = ytelse.ytelsestype?.let { YtelseSakYtelsetype.valueOf(it.uppercase()) },
                         vedtak = YtelseVedtakDTO.of(ytelse.ihtVedtak),
                         antallDagerIgjen = ytelse.antallDagerIgjen,
                         antallUkerIgjen = ytelse.antallUkerIgjen,
@@ -40,8 +40,8 @@ data class YtelseSakDTO(
                         datoKravMottatt = ytelse.datoKravMottatt,
                         dataKravMottatt = ytelse.ytelsestype,
                         fagsystemSakId = ytelse.fagsystemSakId,
-                        status = ytelse.status?.let { YtelseSakStatus.valueOf(it) },
-                        ytelsestype = ytelse.ytelsestype?.let { YtelseSakYtelsetype.valueOf(it) },
+                        status = ytelse.status?.let { YtelseSakStatus.valueOf(it.uppercase()) },
+                        ytelsestype = ytelse.ytelsestype?.let { YtelseSakYtelsetype.valueOf(it.uppercase()) },
                         vedtak = YtelseVedtakDTO.of(ytelse.ihtVedtak),
                     )
                 }
