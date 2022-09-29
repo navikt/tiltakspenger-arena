@@ -106,7 +106,7 @@ class ArenaYtelserService(
             StructuredArguments.keyValue("id", packet["@id"].asText()),
         )
         SECURELOG.error(
-            "feil '${ex.message}' ved behandling av ytelser-behov med {} og {}",
+            "feil \"${ex.message}\" ved behandling av ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
             StructuredArguments.keyValue("packet", packet.toJson()),
             ex

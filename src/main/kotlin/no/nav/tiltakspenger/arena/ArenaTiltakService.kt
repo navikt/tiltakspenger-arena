@@ -97,7 +97,7 @@ class ArenaTiltakService(
             StructuredArguments.keyValue("id", packet["@id"].asText()),
         )
         SECURELOG.error(
-            "feil '${ex.message}' ved behandling av tiltak-behov med {} og {}",
+            "feil \"${ex.message}\" ved behandling av tiltak-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
             StructuredArguments.keyValue("packet", packet.toJson()),
             ex
