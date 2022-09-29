@@ -65,7 +65,8 @@ data class YtelseSakDTO(
     enum class YtelseSakYtelsetype(val navn: String) {
         AA("Arbeidsavklaringspenger"),
         DAGP("Dagpenger"),
-        INDIV("Individstønad");
+        INDIV("Individstønad"),
+        ANNET("Alt annet");
 
         companion object {
             fun fromNavn(n: String): YtelseSakYtelsetype =
