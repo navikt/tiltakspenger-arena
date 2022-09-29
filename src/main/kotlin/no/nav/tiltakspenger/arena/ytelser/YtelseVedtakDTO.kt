@@ -59,7 +59,7 @@ data class YtelseVedtakDTO(
         ABOUT("Boutgifter", YtelseSakYtelsetype.ANNET),
         ADAGR("Daglige reiseutgifter", YtelseSakYtelsetype.ANNET),
         AFLYT("Flytting", YtelseSakYtelsetype.ANNET),
-        AHJMR("Hjemreise ", YtelseSakYtelsetype.ANNET),
+        AHJMR("Hjemreise", YtelseSakYtelsetype.ANNET),
         ANKE("Anke", YtelseSakYtelsetype.ANNET),
         ARBT("Arbeidstreningplass", YtelseSakYtelsetype.ANNET),
         ATIF("Tilsyn - familiemedlemmer", YtelseSakYtelsetype.ANNET),
