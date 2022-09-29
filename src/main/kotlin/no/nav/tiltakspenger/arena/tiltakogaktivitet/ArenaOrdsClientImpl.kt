@@ -66,20 +66,19 @@ private fun cioHttpClient() = HttpClient(CIO) { setupHttpClient() }
 
 @Suppress("ThrowsCount")
 fun HttpClientConfig<*>.setupHttpClient() {
-    this.install(ContentNegotiation) {
+    install(ContentNegotiation) {
         register(ContentType.Text.Xml, JacksonXmlConverter())
     }
-    this.install(Logging) {
+    install(Logging) {
         logger = SecurelogWrapper
         level = LogLevel.ALL
     }
-    this.expectSuccess = true
+    expectSuccess = true
     // https://confluence.adeo.no/pages/viewpage.action?pageId=470748287
     // Man kan få 204, 401 og 500
     // Det er strengt tatt ikke nødvendig å styre med custom exceptions her, med mulig unntak av 204.
     // Men det var interessant å lære litt om Ktor Client.
-
-    this.HttpResponseValidator {
+    HttpResponseValidator {
         validateResponse { response ->
             val statusCode = response.status
             if (statusCode == HttpStatusCode.NoContent) {
@@ -98,6 +97,7 @@ fun HttpClientConfig<*>.setupHttpClient() {
                         throw UnauthorizedException(exceptionResponseText, exception)
                     }
                 }
+
                 is ServerResponseException -> {
                     val exceptionResponse = exception.response
                     if (exceptionResponse.status == HttpStatusCode.InternalServerError) {
@@ -105,6 +105,7 @@ fun HttpClientConfig<*>.setupHttpClient() {
                         throw OtherException(exceptionResponseText, exception)
                     }
                 }
+
                 else -> return@handleResponseExceptionWithRequest
             }
         }

@@ -6,8 +6,5 @@ import com.fasterxml.jackson.databind.JsonDeserializer
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaAktiviteterDTO.Tiltaksaktivitet.Tiltaksnavn
 
 class ArenaTiltaksnavnDeserializer : JsonDeserializer<Tiltaksnavn>() {
-    override fun deserialize(parser: JsonParser, context: DeserializationContext): Tiltaksnavn {
-        var value = parser.text
-        return Tiltaksnavn.fromTekst(value)
-    }
+    override fun deserialize(parser: JsonParser, context: DeserializationContext) = Tiltaksnavn.fromTekst(parser.text)
 }

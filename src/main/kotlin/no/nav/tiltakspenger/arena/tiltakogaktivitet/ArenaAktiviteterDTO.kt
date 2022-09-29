@@ -50,7 +50,6 @@ data class ArenaAktiviteterDTO(
         )
 
         enum class Tiltaksnavn(val tekst: String) {
-
             MENTOR("Mentor"),
             MIDLONTIL("Midlertidig lønnstilskudd"),
             PV("Produksjonsverksted (PV)"),
@@ -99,7 +98,7 @@ data class ArenaAktiviteterDTO(
                 fun fromTekst(tekst: String): Tiltaksnavn {
                     return Tiltaksnavn.values().find { it.tekst == tekst }
                         ?: throw IllegalArgumentException(
-                            "Tiltaksnavn $tekst ikke funnet, sjekk lovlige verdier i Arena"
+                            "Tiltaksnavn '$tekst' ikke funnet, sjekk lovlige verdier i Arena"
                         )
                 }
             }

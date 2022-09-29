@@ -46,18 +46,20 @@ object Configuration {
     )
     private val prodProperties = ConfigurationMap(
         mapOf(
-            "stsUrl" to "",
-            "ytelseskontraktUrl" to "",
+            "stsUrl" to "https://sts.adeo.no/SecurityTokenServiceProvider/",
+            "ytelseskontraktUrl" to "https://arena.adeo.no/ail_ws/Ytelseskontrakt_v3",
             "application.profile" to Profile.PROD.toString(),
-            "ARENA_ORDS_URL" to ""
+            "ARENA_ORDS_URL" to "https://arena-ords.nais.adeo.no"
         )
     )
 
     private fun config() = when (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")) {
         "dev-fss" ->
             systemProperties() overriding EnvironmentVariables overriding devProperties overriding defaultProperties
+
         "prod-fss" ->
             systemProperties() overriding EnvironmentVariables overriding prodProperties overriding defaultProperties
+
         else -> {
             systemProperties() overriding EnvironmentVariables overriding localProperties overriding defaultProperties
         }
