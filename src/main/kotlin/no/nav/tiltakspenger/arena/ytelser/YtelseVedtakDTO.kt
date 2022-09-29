@@ -50,11 +50,12 @@ data class YtelseVedtakDTO(
         PERM("Dagpenger under permitteringer", YtelseSakDTO.YtelseSakYtelsetype.DAGP),
         FISK("Dagp. v/perm fra fiskeindustri", YtelseSakDTO.YtelseSakYtelsetype.DAGP),
         LONN("Lønnsgarantimidler - dagpenger", YtelseSakDTO.YtelseSakYtelsetype.DAGP),
-        BASI("Tiltakspenger (basisytelse før 2014)", YtelseSakDTO.YtelseSakYtelsetype.INDIV);
+        BASI("Tiltakspenger (basisytelse før 2014)", YtelseSakDTO.YtelseSakYtelsetype.INDIV),
+        BTIL("Barnetillegg", YtelseSakDTO.YtelseSakYtelsetype.INDIV);
 
         companion object {
             fun fromNavn(n: String): YtelseVedtakVedtakstype =
-                YtelseVedtakVedtakstype.values().firstOrNull { n.contains(it.navn) }
+                YtelseVedtakVedtakstype.values().firstOrNull { it.navn == n.split("/").first().trim() }
                     ?: throw IllegalArgumentException("Ukjent YtelseVedtakVedtakstype $n")
 
         }
