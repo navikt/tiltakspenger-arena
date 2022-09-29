@@ -30,5 +30,5 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: /serviceuser/data/dev/srvtpts-arena
+      - kvPath: /serviceuser/data/{{ vaultpath }}/srvtpts-arena
         mountPath: /secrets/serviceuser
