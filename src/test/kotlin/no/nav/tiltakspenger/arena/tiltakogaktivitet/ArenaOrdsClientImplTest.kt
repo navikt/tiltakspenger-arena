@@ -1,18 +1,11 @@
 package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.mock.MockEngine
-import io.ktor.client.engine.mock.respond
-import io.ktor.client.engine.mock.respondError
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.headersOf
+import io.ktor.client.*
+import io.ktor.client.engine.mock.*
+import io.ktor.client.plugins.*
+import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.mockk
-import java.nio.charset.Charset
-import java.time.LocalDate
 import kotlinx.coroutines.runBlocking
 import no.nav.tiltakspenger.arena.Configuration.ArenaOrdsConfig
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaAktiviteterDTO.Tiltaksaktivitet.DeltakerStatusType
@@ -22,8 +15,9 @@ import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.PersonNot
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.UnauthorizedException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import java.nio.charset.Charset
+import java.time.LocalDate
 
 internal class ArenaOrdsClientImplTest {
 
@@ -61,17 +55,17 @@ internal class ArenaOrdsClientImplTest {
         val mockTokenProvider = mockk<ArenaOrdsTokenProviderClient>()
         coEvery { mockTokenProvider.token() } returns "token"
 
-        val response = this::class.java.classLoader.getResource("aktiviteterTestResponse.xml")
+        val response = this::class.java.classLoader.getResource("aktiviteterTilbakeITidResponse.xml")
             .readText(Charset.forName("ISO-8859-1"))
         val arenaOrdsService = ArenaOrdsClientImpl(mockConfig(), mockTokenProvider, mockClient(response))
 
         val aktiviteter = runBlocking {
             arenaOrdsService.hentArenaAktiviteter("01019012345")
         }
-        assertTrue(aktiviteter.response.tiltaksaktivitetListe.size == 1)
+        assertEquals(16, aktiviteter.response.tiltaksaktivitetListe.size)
         val tiltak = aktiviteter.response.tiltaksaktivitetListe.first()
         assertEquals(Tiltaksnavn.ARBTREN, tiltak.tiltaksnavn)
-        assertEquals("TA6698352", tiltak.aktivitetId)
+        assertEquals("TA66", tiltak.aktivitetId)
         assertEquals("Arbeidstrening", tiltak.tiltakLokaltNavn)
         assertEquals("GRÅTASS BARNEHAGE AS", tiltak.arrangoer)
         assertEquals(

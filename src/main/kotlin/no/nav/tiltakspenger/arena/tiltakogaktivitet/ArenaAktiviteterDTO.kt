@@ -117,7 +117,8 @@ data class ArenaAktiviteterDTO(
             AVKLARSP("Avklaring - sykmeldt arbeidstaker"),
             LONNTIL("Tidsbegrenset lønnstilskudd"),
             OPPLT2AAR("2-årig opplæringstiltak"),
-            TILSJOBB("Tilskudd til sommerjobb");
+            TILSJOBB("Tilskudd til sommerjobb"),
+            AVKLARSV("Avklaring i skjermet virksomhet");
 
             companion object {
                 fun fromTekst(tekst: String): Tiltaksnavn {
