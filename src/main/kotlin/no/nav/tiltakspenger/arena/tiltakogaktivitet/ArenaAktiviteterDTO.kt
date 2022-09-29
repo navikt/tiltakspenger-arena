@@ -91,7 +91,9 @@ data class ArenaAktiviteterDTO(
             VARLONTIL("Varig lønnstilskudd"),
             VASV("Varig tilrettelagt arbeid i skjermet virksomhet"),
             VATIAROR("Varig tilrettelagt arbeid i ordinær virksomhet"),
-            VV("Varig vernet arbeid (VVA)");
+            VV("Varig vernet arbeid (VVA)"),
+            AMO("AMO"),
+            PRAKSKJERM("Avklaring i skjermet virksomhet");
 
             companion object {
                 fun fromTekst(tekst: String): Tiltaksnavn {
