@@ -71,7 +71,6 @@ fun HttpClientConfig<*>.setupHttpClient() {
     }
     install(Logging) {
         logger = SecurelogWrapper
-        level = LogLevel.ALL
     }
     expectSuccess = true
     // https://confluence.adeo.no/pages/viewpage.action?pageId=470748287
