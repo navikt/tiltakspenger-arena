@@ -10,6 +10,7 @@ import no.nav.helse.rapids_rivers.MessageContext
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
+import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException
 
 private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
@@ -41,20 +42,30 @@ class ArenaTiltakService(
         runCatching {
             loggVedInngang(packet)
 
-            val aktiviteter = withLoggingContext(
-                "id" to packet["@id"].asText(),
-                "behovId" to packet["@behovId"].asText()
-            ) {
-                val ident = packet["ident"].asText()
-                SECURELOG.debug { "mottok ident $ident" }
-                runBlocking(MDCContext()) {
-                    arenaOrdsService.hentArenaAktiviteter(ident)
-                    // Trengs det å mappe denne noe mer her, til egen domenemodell?
+            val response = try {
+                withLoggingContext(
+                    "id" to packet["@id"].asText(),
+                    "behovId" to packet["@behovId"].asText()
+                ) {
+                    val ident = packet["ident"].asText()
+                    SECURELOG.debug { "mottok ident $ident" }
+                    runBlocking(MDCContext()) {
+                        Response(
+                            tiltaksaktiviteter = arenaOrdsService.hentArenaAktiviteter(ident).response.tiltaksaktivitetListe,
+                            feil = null,
+                        )
+                        // Trengs det å mappe denne noe mer her, til egen domenemodell?
+                    }
                 }
+            } catch (e: ArenaOrdsException.PersonNotFoundException) {
+                Response(
+                    tiltaksaktiviteter = null,
+                    feil = Feilmelding.PersonIkkeFunnet
+                )
             }
 
             packet["@løsning"] = mapOf(
-                BEHOV.TILTAK_LISTE to aktiviteter.response.tiltaksaktivitetListe
+                BEHOV.TILTAK_LISTE to response
             )
             loggVedUtgang(packet)
             context.publish(packet.toJson())

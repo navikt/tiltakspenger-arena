@@ -97,6 +97,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
     testImplementation("org.xmlunit:xmlunit-matchers:2.9.0")
     testImplementation("org.hamcrest:hamcrest-core:2.2")
+    testImplementation("org.skyscreamer:jsonassert:1.5.1")
 }
 
 configurations.all {
