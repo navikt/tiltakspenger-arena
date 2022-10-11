@@ -5,7 +5,7 @@ import io.mockk.mockk
 import no.nav.helse.rapids_rivers.testsupport.TestRapid
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaAktiviteterDTO
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
-import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException
+import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.PersonNotFoundException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
@@ -31,7 +31,7 @@ internal class ArenaTiltakServiceTest {
 
     @Test
     fun `Sjekk løsning hvis vi ikke finner person i arena`() {
-        coEvery { arenaOrdsService.hentArenaAktiviteter(any()) } throws ArenaOrdsException.PersonNotFoundException("feil")
+        coEvery { arenaOrdsService.hentArenaAktiviteter(any()) } throws PersonNotFoundException("feil")
 
         testRapid.sendTestMessage(behovMelding)
         with(testRapid.inspektør) {

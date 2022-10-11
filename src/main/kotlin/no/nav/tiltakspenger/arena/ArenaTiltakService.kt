@@ -51,13 +51,15 @@ class ArenaTiltakService(
                     SECURELOG.debug { "mottok ident $ident" }
                     runBlocking(MDCContext()) {
                         Response(
-                            tiltaksaktiviteter = arenaOrdsService.hentArenaAktiviteter(ident).response.tiltaksaktivitetListe,
+                            tiltaksaktiviteter =
+                            arenaOrdsService.hentArenaAktiviteter(ident).response.tiltaksaktivitetListe,
                             feil = null,
                         )
                         // Trengs det å mappe denne noe mer her, til egen domenemodell?
                     }
                 }
             } catch (e: ArenaOrdsException.PersonNotFoundException) {
+                LOG.error { "Person ikke funnet i Arena Tiltak ${e.message}" }
                 Response(
                     tiltaksaktiviteter = null,
                     feil = Feilmelding.PersonIkkeFunnet
