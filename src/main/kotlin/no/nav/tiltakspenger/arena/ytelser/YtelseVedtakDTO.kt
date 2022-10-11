@@ -35,6 +35,10 @@ data class YtelseVedtakDTO(
         N("Annuller sanksjon"), // Gjelder ikke tiltakspenger
         O("Ny rettighet"),
         S("Stans"),
+        A("Reaksjon"), // Står ikke listet opp i dokumentasjonen..
+        K("Kontroll"), // Står ikke listet opp i dokumentasjonen..
+        M("Omgjør reaksjon"), // Står ikke listet opp i dokumentasjonen..
+        R("Revurdering"), // Står ikke listet opp i dokumentasjonen..
         T("Tidsbegrenset bortfall"); // Gjelder ikke tiltakspenger
 
         companion object {
