@@ -1,6 +1,6 @@
 val javaVersion = JavaVersion.VERSION_17
 val prometheusVersion = "0.15.0"
-val cxfVersion = "3.5.3"
+val cxfVersion = "3.5.4"
 val ktorVersion = "2.1.2"
 val jacksonVersion = "2.13.4"
 val mockkVersion = "1.13.2"
