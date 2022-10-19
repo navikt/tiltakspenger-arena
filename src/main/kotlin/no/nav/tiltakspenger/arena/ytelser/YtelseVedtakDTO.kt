@@ -129,9 +129,11 @@ data class YtelseVedtakDTO(
         VENT("Ventestønad", YtelseSakYtelsetype.ANNET);
 
         companion object {
-            fun fromNavn(n: String): YtelseVedtakVedtakstype =
-                YtelseVedtakVedtakstype.values().firstOrNull { it.navn == n.split("/").first().trim() }
-                    ?: throw IllegalArgumentException("Ukjent YtelseVedtakVedtakstype $n")
+            fun fromNavn(n: String): YtelseVedtakVedtakstype {
+                val faktiskNavn = n.substringBeforeLast("/ ").trim()
+                return YtelseVedtakVedtakstype.values().firstOrNull { it.navn == faktiskNavn }
+                    ?: throw IllegalArgumentException("Ukjent YtelseVedtakVedtakstype $n (trodde det var $faktiskNavn")
+            }
         }
     }
 
