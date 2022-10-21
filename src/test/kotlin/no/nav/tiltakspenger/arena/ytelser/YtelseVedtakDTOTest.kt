@@ -1,7 +1,6 @@
 package no.nav.tiltakspenger.arena.ytelser
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class YtelseVedtakDTOTest {
@@ -19,7 +18,7 @@ internal class YtelseVedtakDTOTest {
     }
 
     @Test
-    fun `finner rett del av en tekst som har en skråstrek som ikke er en del av rettighetsnavnet`() {
+    fun `finner rett del av en tekst som har en skråstrek`() {
         // given
         val rettighetsnavn = "Tiltaksplass / Endring"
 
