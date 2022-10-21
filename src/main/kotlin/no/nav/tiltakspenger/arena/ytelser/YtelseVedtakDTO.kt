@@ -1,8 +1,11 @@
 package no.nav.tiltakspenger.arena.ytelser
 
+import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.ytelser.YtelseSakDTO.YtelseSakYtelsetype
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Vedtak
 import java.time.LocalDate
+
+private val LOG = KotlinLogging.logger {}
 
 data class YtelseVedtakDTO(
     val beslutningsDato: LocalDate? = null,
@@ -131,6 +134,7 @@ data class YtelseVedtakDTO(
         companion object {
             fun fromNavn(n: String): YtelseVedtakVedtakstype {
                 val faktiskNavn = n.substringBeforeLast('/').trim()
+                LOG.info { "navn: '$n', ble oppfattet som '$faktiskNavn" }
                 return YtelseVedtakVedtakstype.values().firstOrNull { it.navn == faktiskNavn }
                     ?: throw IllegalArgumentException("Ukjent YtelseVedtakVedtakstype $n (trodde det var $faktiskNavn")
             }
