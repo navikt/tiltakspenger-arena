@@ -37,11 +37,11 @@
       <xsd:element minOccurs="0" name="fom" type="xsd:date">
         <xsd:annotation>
           <xsd:documentation>
-Merk! 
+            Merk!
 
-xsd:date
+            xsd:date
 
-kan valgfritt returneres med eller uten tidssone av tilbyder. Dette må håndteres av konsumenter.</xsd:documentation>
+            kan valgfritt returneres med eller uten tidssone av tilbyder. Dette må håndteres av konsumenter.</xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:element minOccurs="0" name="tom" type="xsd:date">
@@ -110,7 +110,7 @@ kan valgfritt returneres med eller uten tidssone av tilbyder. Dette må håndter
   <xsd:complexType name="Ytelseskontrakt">
     <xsd:sequence>
       <xsd:element name="datoKravMottatt" type="xsd:date"/>
-      <xsd:element minOccurs="0" name="fagsystemSakId" type="xsd:int">
+      <xsd:element minOccurs="0" name="fagsystemSakId" type="xsd:string">
         <xsd:annotation>
           <xsd:documentation>Unik id til ytelseskontrakt-saken vedtaket eksisterer på = saksnummer i Arena.</xsd:documentation>
         </xsd:annotation>
