@@ -59,10 +59,10 @@ class ArenaTiltakService(
                     }
                 }
             } catch (e: ArenaOrdsException.PersonNotFoundException) {
-                LOG.error { "Person ikke funnet i Arena Tiltak ${e.message}" }
+                LOG.warn { "Person ikke funnet i Arena Tiltak ${e.message}" }
                 Response(
-                    tiltaksaktiviteter = null,
-                    feil = Feilmelding.PersonIkkeFunnet
+                    tiltaksaktiviteter = emptyList(),
+                    feil = null
                 )
             }
 

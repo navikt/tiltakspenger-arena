@@ -19,13 +19,6 @@ import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.Unauthori
 private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
-private object SecurelogWrapper : Logger {
-    override fun log(message: String) {
-        LOG.info("HttpClient detaljer logget til securelog")
-        SECURELOG.info(message)
-    }
-}
-
 class ArenaOrdsClientImpl(
     private val arenaOrdsConfig: Configuration.ArenaOrdsConfig,
     private val arenaOrdsTokenProvider: ArenaOrdsTokenProviderClient,
@@ -70,7 +63,12 @@ fun HttpClientConfig<*>.setupHttpClient() {
         register(ContentType.Text.Xml, JacksonXmlConverter())
     }
     install(Logging) {
-        logger = SecurelogWrapper
+        logger = object : Logger {
+            override fun log(message: String) {
+                LOG.info("HttpClient detaljer logget til securelog")
+                SECURELOG.info(message)
+            }
+        }
     }
     expectSuccess = true
     // https://confluence.adeo.no/pages/viewpage.action?pageId=470748287
