@@ -34,20 +34,20 @@ internal class ArenaTiltakServiceTest {
         coEvery { arenaOrdsService.hentArenaAktiviteter(any()) } throws PersonNotFoundException("feil")
 
         testRapid.sendTestMessage(behovMelding)
+
         with(testRapid.inspektør) {
             assertEquals(1, size)
             assertEquals(ident, field(0, "ident").asText())
+            JSONAssert.assertEquals(
+                tomLøsning, field(0, "@løsning").toPrettyString(),
+                JSONCompareMode.STRICT
+            )
+
             assertNull(
                 field(0, "@løsning")
                     .get("arenatiltak")
-                    .get("tiltaksaktiviteter")
-                    .asText(null)
-            )
-            assertEquals(
-                "PersonIkkeFunnet", field(0, "@løsning")
-                    .get("arenatiltak")
                     .get("feil")
-                    .asText()
+                    .asText(null)
             )
         }
     }
@@ -88,8 +88,24 @@ internal class ArenaTiltakServiceTest {
                 løsning, field(0, "@løsning").toPrettyString(),
                 JSONCompareMode.STRICT
             )
+
+            assertNull(
+                field(0, "@løsning")
+                    .get("arenatiltak")
+                    .get("feil")
+                    .asText(null)
+            )
         }
     }
+
+    private val tomLøsning = """
+            {
+                "arenatiltak": {
+                  "tiltaksaktiviteter": [],
+                  "feil": null
+                }
+              }
+        """.trimIndent()
 
     private val løsning = """
             {
