@@ -10,7 +10,7 @@ project.base.archivesName.set("app")
 plugins {
     application
     id("java")
-    kotlin("jvm") version "1.7.20"
+    kotlin("jvm") version "1.7.21"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
 //    id("ca.cutterslade.analyze") version "1.9.0"
     id("com.github.bjornvester.wsdl2java") version "1.2"
