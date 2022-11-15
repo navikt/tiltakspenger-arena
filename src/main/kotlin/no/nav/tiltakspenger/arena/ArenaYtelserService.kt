@@ -44,21 +44,21 @@ class ArenaYtelserService(
         runCatching {
             loggVedInngang(packet)
 
-            val ytelser: List<YtelseSakDTO> = withLoggingContext(
+            withLoggingContext(
                 "id" to packet["@id"].asText(),
                 "behovId" to packet["@behovId"].asText()
             ) {
                 val ident = packet["ident"].asText()
                 val fom = packet["fom"].asOptionalLocalDate()
                 val tom = packet["tom"].asOptionalLocalDate()
-                YtelseSakDTO.map(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
+                val ytelser: List<YtelseSakDTO> =
+                    YtelseSakDTO.map(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
+                packet["@løsning"] = mapOf(
+                    BEHOV.YTELSE_LISTE to ytelser
+                )
+                loggVedUtgang(packet)
+                context.publish(ident, packet.toJson())
             }
-
-            packet["@løsning"] = mapOf(
-                BEHOV.YTELSE_LISTE to ytelser
-            )
-            loggVedUtgang(packet)
-            context.publish(packet.toJson())
         }.onFailure {
             loggVedFeil(it, packet)
         }.getOrThrow()

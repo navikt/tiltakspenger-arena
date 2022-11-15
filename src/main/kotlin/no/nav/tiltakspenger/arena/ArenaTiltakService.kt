@@ -41,14 +41,13 @@ class ArenaTiltakService(
     override fun onPacket(packet: JsonMessage, context: MessageContext) {
         runCatching {
             loggVedInngang(packet)
-
-            val response = try {
-                withLoggingContext(
-                    "id" to packet["@id"].asText(),
-                    "behovId" to packet["@behovId"].asText()
-                ) {
-                    val ident = packet["ident"].asText()
-                    SECURELOG.debug { "mottok ident $ident" }
+            withLoggingContext(
+                "id" to packet["@id"].asText(),
+                "behovId" to packet["@behovId"].asText()
+            ) {
+                val ident = packet["ident"].asText()
+                SECURELOG.debug { "mottok ident $ident" }
+                val response = try {
                     runBlocking(MDCContext()) {
                         Response(
                             tiltaksaktiviteter =
@@ -57,20 +56,20 @@ class ArenaTiltakService(
                         )
                         // Trengs det å mappe denne noe mer her, til egen domenemodell?
                     }
+                } catch (e: ArenaOrdsException.PersonNotFoundException) {
+                    LOG.warn { "Person ikke funnet i Arena Tiltak ${e.message}" }
+                    Response(
+                        tiltaksaktiviteter = emptyList(),
+                        feil = null
+                    )
                 }
-            } catch (e: ArenaOrdsException.PersonNotFoundException) {
-                LOG.warn { "Person ikke funnet i Arena Tiltak ${e.message}" }
-                Response(
-                    tiltaksaktiviteter = emptyList(),
-                    feil = null
-                )
-            }
 
-            packet["@løsning"] = mapOf(
-                BEHOV.TILTAK_LISTE to response
-            )
-            loggVedUtgang(packet)
-            context.publish(packet.toJson())
+                packet["@løsning"] = mapOf(
+                    BEHOV.TILTAK_LISTE to response
+                )
+                loggVedUtgang(packet)
+                context.publish(ident, packet.toJson())
+            }
         }.onFailure {
             loggVedFeil(it, packet)
         }.getOrThrow()
