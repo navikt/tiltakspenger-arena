@@ -61,7 +61,7 @@ dependencies {
 
     // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
-    implementation("no.nav.common:cxf:2.2022.11.10_08.35-ef4fef3c53ea")
+    implementation("no.nav.common:cxf:2.2022.11.16_08.36-35c94368bc44")
     constraints {
         implementation("commons-collections:commons-collections") {
             version {
