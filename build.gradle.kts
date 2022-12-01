@@ -90,7 +90,7 @@ dependencies {
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
 //    testImplementation("org.skyscreamer:jsonassert:1.5.0")
-    testImplementation("org.junit-pioneer:junit-pioneer:1.9.0")
+    testImplementation("org.junit-pioneer:junit-pioneer:1.9.1")
     testImplementation("io.ktor:ktor-client-mock-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
