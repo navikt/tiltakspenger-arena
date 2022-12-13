@@ -1,9 +1,9 @@
 val javaVersion = JavaVersion.VERSION_17
-val prometheusVersion = "0.15.0"
-val cxfVersion = "3.5.5"
+val cxfVersjon = "3.5.4"
 val ktorVersion = "2.2.1"
 val jacksonVersion = "2.14.1"
 val mockkVersion = "1.13.3"
+val kotlinxCoroutinesVersion = "1.6.4"
 
 project.base.archivesName.set("app")
 
@@ -12,9 +12,7 @@ plugins {
     id("java")
     kotlin("jvm") version "1.7.22"
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
-//    id("ca.cutterslade.analyze") version "1.9.0"
     id("com.github.bjornvester.wsdl2java") version "1.2"
-//    id("com.github.ben-manes.versions") version "0.42.0"
 }
 
 repositories {
@@ -28,18 +26,14 @@ dependencies {
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")
-//    implementation("io.prometheus:simpleclient:$prometheusVersion")
-//    implementation("io.prometheus:simpleclient_common:$prometheusVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
     implementation("com.github.navikt:rapids-and-rivers:2022112407251669271100.df879df951cf")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains:annotations:23.1.0")
     implementation("com.natpryce:konfig:1.6.10.0")
-
     implementation("net.logstash.logback:logstash-logback-encoder:7.2")
     implementation("ch.qos.logback:logback-classic:1.4.5")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
-
     implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-cio-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation-jvm:$ktorVersion")
@@ -50,38 +44,22 @@ dependencies {
     implementation("io.ktor:ktor-io-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
-
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
-//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-
     // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
-    implementation("no.nav.common:cxf:2.2022.11.16_08.36-35c94368bc44")
-    constraints {
-        implementation("commons-collections:commons-collections") {
-            version {
-                require("3.2.2")
-            }
-            because("https://security.snyk.io/vuln/SNYK-JAVA-COMMONSCOLLECTIONS-30078")
-        }
-    }
+    implementation("no.nav.common:cxf:2.2022.11.16_15.18-421ec713e2a0")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
     implementation("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
-    implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
-    implementation("org.apache.cxf:cxf-core:$cxfVersion")
+    implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersjon")
+    implementation("org.apache.cxf:cxf-core:$cxfVersjon")
 
-    runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersion")
-//    implementation("com.sun.activation:jakarta.activation:2.0.1")
+    runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersjon")
     runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:1.5.3")
-//    runtimeOnly("jakarta.activation:jakarta.activation-api:1.2.2")
-//    runtimeOnly("jakarta.jws:jakarta.jws-api:2.1.0")
-//    implementation("jakarta.validation:jakarta.validation-api:2.0.2")
-//    runtimeOnly("jakarta.xml.ws:jakarta.xml.ws-api:2.3.3")
     // old version because of https://issues.apache.org/jira/browse/CXF-8727
     runtimeOnly("jakarta.annotation:jakarta.annotation-api:1.3.5")
 
@@ -89,7 +67,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
-//    testImplementation("org.skyscreamer:jsonassert:1.5.0")
+    testImplementation("org.skyscreamer:jsonassert:1.5.1")
     testImplementation("org.junit-pioneer:junit-pioneer:1.9.1")
     testImplementation("io.ktor:ktor-client-mock-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
@@ -97,7 +75,6 @@ dependencies {
     testImplementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
     testImplementation("org.xmlunit:xmlunit-matchers:2.9.0")
     testImplementation("org.hamcrest:hamcrest-core:2.2")
-    testImplementation("org.skyscreamer:jsonassert:1.5.1")
 }
 
 configurations.all {
@@ -118,21 +95,13 @@ detekt {
 
 wsdl2java {
     wsdlDir.set(layout.projectDirectory.dir("src/main/resources/wsdl"))
-    cxfVersion.set("3.5.2")
+    cxfVersion.set("$cxfVersjon")
     bindingFile.set(layout.projectDirectory.file("src/main/resources/bindings/bindings.xml"))
 }
 
 java.sourceSets["main"].java {
     srcDir("build/generated/sources/wsdl2java/java")
 }
-
-// https://github.com/ben-manes/gradle-versions-plugin
-//fun isNonStable(version: String): Boolean {
-//    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
-//    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-//    val isStable = stableKeyword || regex.matches(version)
-//    return isStable.not()
-//}
 
 tasks {
     compileJava {
@@ -157,18 +126,4 @@ tasks {
             .get()
             .joinToString(separator = " ") { file -> "${file.name}" }
     }
-    // https://github.com/ben-manes/gradle-versions-plugin
-//    dependencyUpdates {
-//        rejectVersionIf {
-//            isNonStable(candidate.version)
-//        }
-//    }
-//    analyzeClassesDependencies {
-//        warnUsedUndeclared = true
-//        warnUnusedDeclared = true
-//    }
-//    analyzeTestClassesDependencies {
-//        warnUsedUndeclared = true
-//        warnUnusedDeclared = true
-//    }
 }
