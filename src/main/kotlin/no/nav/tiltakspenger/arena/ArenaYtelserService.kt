@@ -5,7 +5,6 @@ import mu.withLoggingContext
 import net.logstash.logback.argument.StructuredArguments
 import no.nav.helse.rapids_rivers.JsonMessage
 import no.nav.helse.rapids_rivers.MessageContext
-import no.nav.helse.rapids_rivers.MessageProblems
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
 import no.nav.helse.rapids_rivers.asOptionalLocalDate
@@ -64,15 +63,7 @@ class ArenaYtelserService(
         }.getOrThrow()
     }
 
-    override fun onError(problems: MessageProblems, context: MessageContext) {
-        LOG.info { "meldingen validerte ikke: $problems" }
-    }
-
-    @Suppress("EmptyFunctionBlock")
-    override fun onSevere(error: MessageProblems.MessageException, context: MessageContext) {
-    }
-
-    fun loggVedInngang(packet: JsonMessage) {
+    private fun loggVedInngang(packet: JsonMessage) {
         LOG.info(
             "løser ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),

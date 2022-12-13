@@ -75,7 +75,7 @@ class ArenaTiltakService(
         }.getOrThrow()
     }
 
-    fun loggVedInngang(packet: JsonMessage) {
+    private fun loggVedInngang(packet: JsonMessage) {
         LOG.info(
             "løser tiltak-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
