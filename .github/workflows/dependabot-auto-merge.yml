@@ -10,6 +10,12 @@ jobs:
   dependabot:
     name: Merge
     runs-on: ubuntu-latest
+    run: | 
+      echo "github.actor=${{ github.actor }}"
+      echo "github.event.pull_request.head.repo.full_name=${{ github.event.pull_request.head.repo.full_name }}"
+      echo "github.repository=${{ github.repository }}"
+      echo "github.event.workflow_run=${{ github.event.workflow_run }}"
+      echo "github.event.workflow_run.conclusion=${{ github.event.workflow_run.conclusion }}"
     # Only allow dependabot from this repo, not via forks and only if build was successful
     if: github.actor == 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == github.repository && github.event.workflow_run.conclusion == 'success'
     steps:
