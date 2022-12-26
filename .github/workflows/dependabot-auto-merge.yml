@@ -8,6 +8,8 @@ on:
 
 jobs:
   echo:
+    name: Echo
+    runs-on: ubuntu-latest
     steps:
       - name: skrive ut variabler
         run: |
