@@ -32,6 +32,19 @@ jobs:
           BRANCH: ${{ github.head_ref }}
           AUTHOR: ${{ github.actor }}
           WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
+  echo:
+    name: Echo
+    runs-on: ubuntu-latest
+    steps:
+      - name: skrive ut variabler
+        run: |
+          echo "github.actor=${{ github.actor }}"
+          echo "github.event.pull_request.mergeable=${{ github.event.pull_request.mergeable }}"
+          echo "github.event.pull_request.mergeable_state=${{ github.event.pull_request.mergeable_state }}"
+          echo "github.event.pull_request.head.repo.full_name=${{ github.event.pull_request.head.repo.full_name }}"
+          echo "github.repository=${{ github.repository }}"
+          echo "github.event.workflow_run=${{ github.event.workflow_run }}"
+          echo "github.event.workflow_run.conclusion=${{ github.event.workflow_run.conclusion }}"
 
   dependabot:
     name: Merge
