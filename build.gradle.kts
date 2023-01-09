@@ -52,7 +52,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
-    implementation("no.nav.common:cxf:2.2022.11.16_15.18-421ec713e2a0")
+    implementation("no.nav.common:cxf:2.2023.01.09_08.56-ae38750bc0d9")
     constraints {
         implementation("commons-collections:commons-collections") {
             version {
