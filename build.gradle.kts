@@ -81,7 +81,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
-    testImplementation("org.xmlunit:xmlunit-matchers:2.9.0")
+    testImplementation("org.xmlunit:xmlunit-matchers:2.9.1")
     testImplementation("org.hamcrest:hamcrest-core:2.2")
 }
 
