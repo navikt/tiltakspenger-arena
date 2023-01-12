@@ -26,6 +26,9 @@ dependencies {
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
+    // implementation("com.github.navikt:tiltakspenger-libs:0.0.7")
+    implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:0.0.7")
+    implementation("com.github.navikt.tiltakspenger-libs:arenaytelser-dtos:0.0.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
     implementation("com.github.navikt:rapids-and-rivers:2022112407251669271100.df879df951cf")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")

@@ -9,7 +9,7 @@ data class YtelseSakDTO(
     val fomGyldighetsperiode: LocalDateTime,
     val tomGyldighetsperiode: LocalDateTime?,
     val datoKravMottatt: LocalDate?,
-    val dataKravMottatt: String? = null,
+    val dataKravMottatt: String? = null, //TODO: Denne er helt meningsløs, kan slettes
     val fagsystemSakId: String? = null,
     val status: YtelseSakStatus? = null,
     val ytelsestype: YtelseSakYtelsetype? = null,

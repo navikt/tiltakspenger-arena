@@ -8,8 +8,9 @@ import no.nav.helse.rapids_rivers.MessageContext
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
 import no.nav.helse.rapids_rivers.asOptionalLocalDate
+import no.nav.tiltakspenger.arena.ytelse.ArenaYtelseResponsDTO
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
-import no.nav.tiltakspenger.arena.ytelser.YtelseSakDTO
+import no.nav.tiltakspenger.arena.ytelser.mapRespons
 
 private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
@@ -22,14 +23,14 @@ class ArenaYtelserService(
 
     companion object {
         internal object BEHOV {
-            const val YTELSE_LISTE = "arenaytelser"
+            const val ARENAYTELSER = "arenaytelser"
         }
     }
 
     init {
         River(rapidsConnection).apply {
             validate {
-                it.demandAllOrAny("@behov", listOf(BEHOV.YTELSE_LISTE))
+                it.demandAllOrAny("@behov", listOf(BEHOV.ARENAYTELSER))
                 it.forbid("@løsning")
                 it.requireKey("@id", "@behovId")
                 it.requireKey("ident")
@@ -50,10 +51,10 @@ class ArenaYtelserService(
                 val ident = packet["ident"].asText()
                 val fom = packet["fom"].asOptionalLocalDate()
                 val tom = packet["tom"].asOptionalLocalDate()
-                val ytelser: List<YtelseSakDTO> =
-                    YtelseSakDTO.map(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
+                val respons: ArenaYtelseResponsDTO =
+                    mapRespons(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
                 packet["@løsning"] = mapOf(
-                    BEHOV.YTELSE_LISTE to ytelser
+                    BEHOV.ARENAYTELSER to respons
                 )
                 loggVedUtgang(packet)
                 context.publish(ident, packet.toJson())
