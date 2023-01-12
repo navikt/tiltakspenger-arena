@@ -1,6 +1,6 @@
 package no.nav.tiltakspenger.arena.ytelser
 
-import no.nav.tiltakspenger.arena.ytelse.ArenaYtelseResponsDTO
+import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Dagpengekontrakt
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Vedtak
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt

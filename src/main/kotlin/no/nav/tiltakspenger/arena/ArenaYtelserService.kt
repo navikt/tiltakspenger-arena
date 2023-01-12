@@ -8,7 +8,7 @@ import no.nav.helse.rapids_rivers.MessageContext
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
 import no.nav.helse.rapids_rivers.asOptionalLocalDate
-import no.nav.tiltakspenger.arena.ytelse.ArenaYtelseResponsDTO
+import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.mapRespons
 
