@@ -1,6 +1,6 @@
 val javaVersion = JavaVersion.VERSION_17
 val cxfVersjon = "3.5.5"
-val ktorVersion = "2.2.1"
+val ktorVersion = "2.2.2"
 val jacksonVersion = "2.14.1"
 val mockkVersion = "1.13.3"
 val kotlinxCoroutinesVersion = "1.6.4"
@@ -10,7 +10,7 @@ project.base.archivesName.set("app")
 plugins {
     application
     id("java")
-    kotlin("jvm") version "1.7.22"
+    kotlin("jvm") version "1.8.0"
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
     id("com.github.bjornvester.wsdl2java") version "1.2"
 }
@@ -30,7 +30,7 @@ dependencies {
     implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:0.0.7")
     implementation("com.github.navikt.tiltakspenger-libs:arenaytelser-dtos:0.0.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
-    implementation("com.github.navikt:rapids-and-rivers:2022112407251669271100.df879df951cf")
+    implementation("com.github.navikt:rapids-and-rivers:2022122311551671792919.2bdd972d7bdb")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains:annotations:23.1.0")
     implementation("com.natpryce:konfig:1.6.10.0")
@@ -55,7 +55,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
-    implementation("no.nav.common:cxf:2.2022.11.16_15.18-421ec713e2a0")
+    implementation("no.nav.common:cxf:2.2023.01.09_08.56-ae38750bc0d9")
     constraints {
         implementation("commons-collections:commons-collections") {
             version {
@@ -84,7 +84,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
-    testImplementation("org.xmlunit:xmlunit-matchers:2.9.0")
+    testImplementation("org.xmlunit:xmlunit-matchers:2.9.1")
     testImplementation("org.hamcrest:hamcrest-core:2.2")
 }
 
