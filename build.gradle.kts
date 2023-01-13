@@ -32,7 +32,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
     implementation("com.github.navikt:rapids-and-rivers:2022122311551671792919.2bdd972d7bdb")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
-    implementation("org.jetbrains:annotations:23.1.0")
+    implementation("org.jetbrains:annotations:24.0.0")
     implementation("com.natpryce:konfig:1.6.10.0")
     implementation("net.logstash.logback:logstash-logback-encoder:7.2")
     implementation("ch.qos.logback:logback-classic:1.4.5")
