@@ -3,14 +3,10 @@ package no.nav.tiltakspenger.arena
 import mu.KotlinLogging
 import mu.withLoggingContext
 import net.logstash.logback.argument.StructuredArguments
-import no.nav.helse.rapids_rivers.JsonMessage
-import no.nav.helse.rapids_rivers.MessageContext
-import no.nav.helse.rapids_rivers.RapidsConnection
-import no.nav.helse.rapids_rivers.River
-import no.nav.helse.rapids_rivers.asOptionalLocalDate
-import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
+import no.nav.helse.rapids_rivers.*
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
-import no.nav.tiltakspenger.arena.ytelser.mapRespons
+import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelser
+import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
 
 private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
@@ -52,7 +48,7 @@ class ArenaYtelserService(
                 val fom = packet["fom"].asOptionalLocalDate()
                 val tom = packet["tom"].asOptionalLocalDate()
                 val respons: ArenaYtelseResponsDTO =
-                    mapRespons(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
+                    mapArenaYtelser(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
                 packet["@løsning"] = mapOf(
                     BEHOV.ARENAYTELSER to respons
                 )

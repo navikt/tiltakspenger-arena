@@ -85,7 +85,7 @@ internal class ArenaTiltakServiceTest {
             assertEquals(1, size)
             assertEquals(ident, field(0, "ident").asText())
             JSONAssert.assertEquals(
-                løsning, field(0, "@løsning").toPrettyString(),
+                løsning, field(0, "@løsning").toPrettyString().also { println(it) },
                 JSONCompareMode.STRICT
             )
 
@@ -112,17 +112,14 @@ internal class ArenaTiltakServiceTest {
                 "arenatiltak": {
                   "tiltaksaktiviteter": [
                     {
-                      "tiltaksnavn": "ABIST",
+                      "tiltakType": "ABIST",
                       "aktivitetId": "aktivitetId",
                       "tiltakLokaltNavn": null,
                       "arrangoer": null,
                       "bedriftsnummer": null,
                       "deltakelsePeriode": null,
                       "deltakelseProsent": null,
-                      "deltakerStatus": {
-                        "statusNavn": "",
-                        "innerText": "DELAVB"
-                      },
+                      "deltakerStatusType": "DELAVB",
                       "statusSistEndret": null,
                       "begrunnelseInnsoeking": null,
                       "antallDagerPerUke": null

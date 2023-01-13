@@ -11,6 +11,8 @@ import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException
+import no.nav.tiltakspenger.arena.tiltakogaktivitet.mapArenaTiltak
+import no.nav.tiltakspenger.libs.arena.tiltak.ArenaTiltaksaktivitetResponsDTO
 
 private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
@@ -23,14 +25,14 @@ class ArenaTiltakService(
 
     companion object {
         internal object BEHOV {
-            const val TILTAK_LISTE = "arenatiltak"
+            const val ARENATILTAK = "arenatiltak"
         }
     }
 
     init {
         River(rapidsConnection).apply {
             validate {
-                it.demandAllOrAny("@behov", listOf(BEHOV.TILTAK_LISTE))
+                it.demandAllOrAny("@behov", listOf(BEHOV.ARENATILTAK))
                 it.forbid("@løsning")
                 it.requireKey("@id", "@behovId")
                 it.requireKey("ident")
@@ -47,25 +49,20 @@ class ArenaTiltakService(
             ) {
                 val ident = packet["ident"].asText()
                 SECURELOG.debug { "mottok ident $ident" }
-                val response = try {
+                val response: ArenaTiltaksaktivitetResponsDTO = try {
                     runBlocking(MDCContext()) {
-                        Response(
-                            tiltaksaktiviteter =
-                            arenaOrdsService.hentArenaAktiviteter(ident).response.tiltaksaktivitetListe,
-                            feil = null,
-                        )
-                        // Trengs det å mappe denne noe mer her, til egen domenemodell?
+                        mapArenaTiltak(arenaOrdsService.hentArenaAktiviteter(ident).response.tiltaksaktivitetListe)
                     }
                 } catch (e: ArenaOrdsException.PersonNotFoundException) {
                     LOG.warn { "Person ikke funnet i Arena Tiltak ${e.message}" }
-                    Response(
+                    ArenaTiltaksaktivitetResponsDTO(
                         tiltaksaktiviteter = emptyList(),
                         feil = null
                     )
                 }
 
                 packet["@løsning"] = mapOf(
-                    BEHOV.TILTAK_LISTE to response
+                    BEHOV.ARENATILTAK to response
                 )
                 loggVedUtgang(packet)
                 context.publish(ident, packet.toJson())

@@ -5,7 +5,7 @@ import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Vedtak
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt
 
-fun mapRespons(ytelser: List<Ytelseskontrakt>): ArenaYtelseResponsDTO =
+fun mapArenaYtelser(ytelser: List<Ytelseskontrakt>): ArenaYtelseResponsDTO =
     ArenaYtelseResponsDTO(saker = ytelser.map { mapSak(it) })
 
 fun mapSak(ytelse: Ytelseskontrakt): ArenaYtelseResponsDTO.SakDTO =
