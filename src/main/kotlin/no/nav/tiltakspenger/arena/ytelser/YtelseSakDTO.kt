@@ -9,7 +9,7 @@ data class YtelseSakDTO(
     val fomGyldighetsperiode: LocalDateTime,
     val tomGyldighetsperiode: LocalDateTime?,
     val datoKravMottatt: LocalDate?,
-    val dataKravMottatt: String? = null, //TODO: Denne er helt meningsløs, kan slettes
+    val dataKravMottatt: String? = null, // TODO: Denne er helt meningsløs, kan slettes
     val fagsystemSakId: String? = null,
     val status: YtelseSakStatus? = null,
     val ytelsestype: YtelseSakYtelsetype? = null,
@@ -48,7 +48,6 @@ data class YtelseSakDTO(
             }
     }
 
-
     enum class YtelseSakStatus(val navn: String) {
         AKTIV("Aktiv"),
         AVSLU("Lukket"),
@@ -58,7 +57,6 @@ data class YtelseSakDTO(
             fun fromNavn(n: String): YtelseSakStatus =
                 YtelseSakStatus.values().firstOrNull { it.navn == n }
                     ?: throw IllegalArgumentException("Ukjent YtelseSakStatus $n")
-
         }
     }
 
@@ -72,7 +70,6 @@ data class YtelseSakDTO(
             fun fromNavn(n: String): YtelseSakYtelsetype =
                 YtelseSakYtelsetype.values().firstOrNull { it.navn == n }
                     ?: throw IllegalArgumentException("Ukjent YtelseSakYtelsetype $n")
-
         }
     }
 }

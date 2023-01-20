@@ -15,11 +15,11 @@ import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
 import io.ktor.serialization.jackson.jackson
+import kotlinx.coroutines.runBlocking
+import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import kotlinx.coroutines.runBlocking
-import mu.KotlinLogging
 
 private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
@@ -30,6 +30,7 @@ private object TokenProviderSecurelogWrapper : Logger {
         SECURELOG.info(message)
     }
 }
+
 class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.ArenaOrdsConfig) {
     companion object {
         private const val MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH: Long = 60

@@ -1,14 +1,21 @@
 package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.logging.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.call.body
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.plugins.ServerResponseException
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.bearerAuth
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
 import no.nav.tiltakspenger.arena.felles.JacksonXmlConverter
@@ -57,7 +64,6 @@ class ArenaOrdsClientImpl(
 
 private fun cioHttpClient() = HttpClient(CIO) { setupHttpClient() }
 
-@Suppress("ThrowsCount")
 fun HttpClientConfig<*>.setupHttpClient() {
     install(ContentNegotiation) {
         register(ContentType.Text.Xml, JacksonXmlConverter())

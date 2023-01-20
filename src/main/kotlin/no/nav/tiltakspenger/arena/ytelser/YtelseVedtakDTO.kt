@@ -45,7 +45,6 @@ data class YtelseVedtakDTO(
             fun fromNavn(n: String): YtelseVedtakPeriodeTypeForYtelse =
                 YtelseVedtakPeriodeTypeForYtelse.values().firstOrNull { it.navn == n }
                     ?: throw IllegalArgumentException("Ukjent YtelseVedtakPeriodeTypeForYtelse $n")
-
         }
     }
 
@@ -150,7 +149,6 @@ data class YtelseVedtakDTO(
             fun fromNavn(n: String): YtelseVedtakStatus =
                 YtelseVedtakStatus.values().firstOrNull { it.navn == n }
                     ?: throw IllegalArgumentException("Ukjent YtelseVedtakStatus $n")
-
         }
     }
 }

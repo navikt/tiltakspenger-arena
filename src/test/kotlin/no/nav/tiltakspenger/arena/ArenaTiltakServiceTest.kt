@@ -105,7 +105,7 @@ internal class ArenaTiltakServiceTest {
                   "feil": null
                 }
               }
-        """.trimIndent()
+    """.trimIndent()
 
     private val løsning = """
             {
@@ -128,7 +128,7 @@ internal class ArenaTiltakServiceTest {
                   "feil": null
                 }
               }
-        """.trimIndent()
+    """.trimIndent()
 
     private val behovMelding = """
         {

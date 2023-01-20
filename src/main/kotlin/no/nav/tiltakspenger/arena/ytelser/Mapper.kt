@@ -33,7 +33,6 @@ fun mapSak(ytelse: Ytelseskontrakt): ArenaYtelseResponsDTO.SakDTO =
         )
     }
 
-
 fun mapVedtak(vedtakListe: List<Vedtak>): List<ArenaYtelseResponsDTO.VedtakDTO> =
     vedtakListe.map { vedtak ->
         ArenaYtelseResponsDTO.VedtakDTO(
@@ -45,7 +44,6 @@ fun mapVedtak(vedtakListe: List<Vedtak>): List<ArenaYtelseResponsDTO.VedtakDTO> 
             status = vedtak.status?.let { mapVedtakStatusType(it) }
         )
     }
-
 
 fun mapVedtakStatusType(n: String): ArenaYtelseResponsDTO.VedtakStatusType =
     ArenaYtelseResponsDTO.VedtakStatusType.values().firstOrNull { it.navn == n }

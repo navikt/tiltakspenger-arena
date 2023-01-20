@@ -11,9 +11,8 @@ fun mapArenaTiltak(aktiviteter: List<ArenaAktiviteterDTO.Tiltaksaktivitet>): Are
     )
 }
 
-
 fun mapTiltaksaktivitet(tiltaksaktivitet: ArenaAktiviteterDTO.Tiltaksaktivitet):
-        ArenaTiltaksaktivitetResponsDTO.TiltaksaktivitetDTO {
+    ArenaTiltaksaktivitetResponsDTO.TiltaksaktivitetDTO {
     return ArenaTiltaksaktivitetResponsDTO.TiltaksaktivitetDTO(
         tiltakType = mapTiltakType(tiltaksaktivitet.tiltaksnavn),
         aktivitetId = tiltaksaktivitet.aktivitetId,
@@ -29,9 +28,8 @@ fun mapTiltaksaktivitet(tiltaksaktivitet: ArenaAktiviteterDTO.Tiltaksaktivitet):
     )
 }
 
-@Suppress("CyclomaticComplexMethod")
 fun mapDeltakerStatus(deltakerStatus: ArenaAktiviteterDTO.Tiltaksaktivitet.DeltakerStatus):
-        ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType =
+    ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType =
     when (deltakerStatus.status) {
         DeltakerStatusType.AKTUELL -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.AKTUELL
         DeltakerStatusType.AVSLAG -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.AVSLAG
@@ -49,10 +47,8 @@ fun mapDeltakerStatus(deltakerStatus: ArenaAktiviteterDTO.Tiltaksaktivitet.Delta
         DeltakerStatusType.VENTELISTE -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.VENTELISTE
     }
 
-
-@Suppress("CyclomaticComplexMethod", "LongMethod")
 fun mapTiltakType(tiltaksnavn: Tiltaksnavn):
-        ArenaTiltaksaktivitetResponsDTO.TiltakType =
+    ArenaTiltaksaktivitetResponsDTO.TiltakType =
     when (tiltaksnavn) {
         Tiltaksnavn.AMBF1 -> ArenaTiltaksaktivitetResponsDTO.TiltakType.AMBF1
         Tiltaksnavn.KURS -> ArenaTiltaksaktivitetResponsDTO.TiltakType.KURS
@@ -163,5 +159,5 @@ fun mapTiltakType(tiltaksnavn: Tiltaksnavn):
     }
 
 fun mapDeltakelsePeriode(deltakelsePeriode: ArenaAktiviteterDTO.Tiltaksaktivitet.DeltakelsesPeriode?):
-        ArenaTiltaksaktivitetResponsDTO.DeltakelsesPeriodeDTO? =
+    ArenaTiltaksaktivitetResponsDTO.DeltakelsesPeriodeDTO? =
     deltakelsePeriode?.let { ArenaTiltaksaktivitetResponsDTO.DeltakelsesPeriodeDTO(fom = it.fom, tom = it.tom) }

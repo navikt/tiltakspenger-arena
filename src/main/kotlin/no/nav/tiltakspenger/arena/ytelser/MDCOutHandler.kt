@@ -2,18 +2,17 @@
 
 package no.nav.tiltakspenger.arena.ytelser
 
+import mu.KotlinLogging
+import org.slf4j.MDC
 import javax.xml.namespace.QName
 import javax.xml.soap.SOAPException
 import javax.xml.ws.ProtocolException
 import javax.xml.ws.handler.MessageContext
 import javax.xml.ws.handler.soap.SOAPHandler
 import javax.xml.ws.handler.soap.SOAPMessageContext
-import mu.KotlinLogging
-import org.slf4j.MDC
 
 private val LOG = KotlinLogging.logger {}
 
-@Suppress("MaxLineLength")
 /**
  * Cut'n'paste from https://github.com/navikt/modiapersonoversikt-api/blob/eb85e37863ba5691a0285209dc8655eaaf11483a/web/src/main/java/no/nav/modiapersonoversikt/infrastructure/jaxws/handlers/MDCOutHandler.java, with some cleanup.
  */
@@ -31,10 +30,10 @@ internal class MDCOutHandler : SOAPHandler<SOAPMessageContext?> {
             val callId = MDC.get(MDCConstants.MDC_CALL_ID)
                 ?: throw NullPointerException(
                     "CallId skal være tilgjengelig i MDC på dette tidspunkt. Om du er en webapp, må du legge til et " +
-                            "MDCFilter i web.xml (oppskrift på dette: " +
-                            "http://confluence.adeo.no/display/Modernisering/MDCFilter). " +
-                            "Om du er noe annet må du generere callId selv og legge på MDC. " +
-                            "Hjelpemetoder finnes i no.nav.modig.common.MDCOperations."
+                        "MDCFilter i web.xml (oppskrift på dette: " +
+                        "http://confluence.adeo.no/display/Modernisering/MDCFilter). " +
+                        "Om du er noe annet må du generere callId selv og legge på MDC. " +
+                        "Hjelpemetoder finnes i no.nav.modig.common.MDCOperations."
                 )
             LOG.debug("Add the callId to the SOAP message: $callId")
             try {

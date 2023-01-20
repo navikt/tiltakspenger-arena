@@ -13,7 +13,7 @@ private val LOG = KotlinLogging.logger {}
 class ArenaSoapService(
     private val ytelseskontraktV3Service: YtelseskontraktV3,
 ) {
-    @Suppress("TooGenericExceptionCaught")
+
     fun ping(): Boolean {
         return try {
             ytelseskontraktV3Service.ping()

@@ -4,7 +4,7 @@ import mu.KotlinLogging
 import java.text.ParseException
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.*
+import java.util.GregorianCalendar
 import javax.xml.datatype.DatatypeConfigurationException
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
