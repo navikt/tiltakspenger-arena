@@ -7,7 +7,6 @@ import no.nav.helse.rapids_rivers.JsonMessage
 import no.nav.helse.rapids_rivers.MessageContext
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
-import no.nav.helse.rapids_rivers.asOptionalLocalDate
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelser
 import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
@@ -17,7 +16,7 @@ private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
 class ArenaYtelserService(
     rapidsConnection: RapidsConnection,
-    private val arenaSoapService: ArenaSoapService
+    private val arenaSoapService: ArenaSoapService,
 ) :
     River.PacketListener {
 
@@ -46,15 +45,15 @@ class ArenaYtelserService(
 
             withLoggingContext(
                 "id" to packet["@id"].asText(),
-                "behovId" to packet["@behovId"].asText()
+                "behovId" to packet["@behovId"].asText(),
             ) {
                 val ident = packet["ident"].asText()
-                val fom = packet["fom"].asOptionalLocalDate()
-                val tom = packet["tom"].asOptionalLocalDate()
+                val fom = null // packet["fom"].asOptionalLocalDate()
+                val tom = null // packet["tom"].asOptionalLocalDate()
                 val respons: ArenaYtelseResponsDTO =
                     mapArenaYtelser(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
                 packet["@løsning"] = mapOf(
-                    BEHOV.ARENAYTELSER to respons
+                    BEHOV.ARENAYTELSER to respons,
                 )
                 loggVedUtgang(packet)
                 context.publish(ident, packet.toJson())
@@ -68,12 +67,12 @@ class ArenaYtelserService(
         LOG.info(
             "løser ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
-            StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
+            StructuredArguments.keyValue("behovId", packet["@behovId"].asText()),
         )
         SECURELOG.info(
             "løser ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
-            StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
+            StructuredArguments.keyValue("behovId", packet["@behovId"].asText()),
         )
         SECURELOG.debug { "mottok melding: ${packet.toJson()}" }
     }
@@ -82,12 +81,12 @@ class ArenaYtelserService(
         LOG.info(
             "har løst ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
-            StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
+            StructuredArguments.keyValue("behovId", packet["@behovId"].asText()),
         )
         SECURELOG.info(
             "har løst ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
-            StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
+            StructuredArguments.keyValue("behovId", packet["@behovId"].asText()),
         )
         SECURELOG.debug { "publiserer melding: ${packet.toJson()}" }
     }
@@ -101,7 +100,7 @@ class ArenaYtelserService(
             "feil \"${ex.message}\" ved behandling av ytelser-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
             StructuredArguments.keyValue("packet", packet.toJson()),
-            ex
+            ex,
         )
     }
 }
