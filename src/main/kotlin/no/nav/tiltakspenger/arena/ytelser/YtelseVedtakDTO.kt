@@ -23,7 +23,7 @@ data class YtelseVedtakDTO(
                     vedtaksperiodeFom = vedtak.vedtaksperiode.fom,
                     vedtaksperiodeTom = vedtak.vedtaksperiode.tom,
                     vedtaksType = vedtak.vedtakstype?.let { YtelseVedtakVedtakstype.fromNavn(it) },
-                    status = vedtak.status?.let { YtelseVedtakStatus.fromNavn(it) }
+                    status = vedtak.status?.let { YtelseVedtakStatus.fromNavn(it) },
                 )
             }
     }
@@ -39,7 +39,8 @@ data class YtelseVedtakDTO(
         K("Kontroll"), // Står ikke listet opp i dokumentasjonen..
         M("Omgjør reaksjon"), // Står ikke listet opp i dokumentasjonen..
         R("Revurdering"), // Står ikke listet opp i dokumentasjonen..
-        T("Tidsbegrenset bortfall"); // Gjelder ikke tiltakspenger
+        T("Tidsbegrenset bortfall"), // Gjelder ikke tiltakspenger
+        ;
 
         companion object {
             fun fromNavn(n: String): YtelseVedtakPeriodeTypeForYtelse =
@@ -125,7 +126,8 @@ data class YtelseVedtakDTO(
         UFOREYT("Uføreytelser", YtelseSakYtelsetype.ANNET),
         UNDM("Bøker og undervisningsmatr.", YtelseSakYtelsetype.ANNET),
         UTESTENG("Utestengning", YtelseSakYtelsetype.ANNET),
-        VENT("Ventestønad", YtelseSakYtelsetype.ANNET);
+        VENT("Ventestønad", YtelseSakYtelsetype.ANNET),
+        ;
 
         companion object {
             fun fromNavn(n: String): YtelseVedtakVedtakstype {
@@ -143,7 +145,8 @@ data class YtelseVedtakDTO(
         IVERK("Iverksatt"),
         MOTAT("Mottatt"),
         OPPRE("Opprettet"),
-        REGIS("Registrert");
+        REGIS("Registrert"),
+        ;
 
         companion object {
             fun fromNavn(n: String): YtelseVedtakStatus =

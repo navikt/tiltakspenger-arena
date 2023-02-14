@@ -19,7 +19,7 @@ private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
 class ArenaTiltakService(
     rapidsConnection: RapidsConnection,
-    private val arenaOrdsService: ArenaOrdsClient
+    private val arenaOrdsService: ArenaOrdsClient,
 ) :
     River.PacketListener {
 
@@ -45,7 +45,7 @@ class ArenaTiltakService(
             loggVedInngang(packet)
             withLoggingContext(
                 "id" to packet["@id"].asText(),
-                "behovId" to packet["@behovId"].asText()
+                "behovId" to packet["@behovId"].asText(),
             ) {
                 val ident = packet["ident"].asText()
                 SECURELOG.debug { "mottok ident $ident" }
@@ -57,12 +57,12 @@ class ArenaTiltakService(
                     LOG.warn { "Person ikke funnet i Arena Tiltak ${e.message}" }
                     ArenaTiltaksaktivitetResponsDTO(
                         tiltaksaktiviteter = emptyList(),
-                        feil = null
+                        feil = null,
                     )
                 }
 
                 packet["@løsning"] = mapOf(
-                    BEHOV.ARENATILTAK to response
+                    BEHOV.ARENATILTAK to response,
                 )
                 loggVedUtgang(packet)
                 context.publish(ident, packet.toJson())
@@ -76,12 +76,12 @@ class ArenaTiltakService(
         LOG.info(
             "løser tiltak-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
-            StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
+            StructuredArguments.keyValue("behovId", packet["@behovId"].asText()),
         )
         SECURELOG.info(
             "løser tiltak-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
-            StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
+            StructuredArguments.keyValue("behovId", packet["@behovId"].asText()),
         )
         SECURELOG.debug { "mottok melding: ${packet.toJson()}" }
     }
@@ -90,12 +90,12 @@ class ArenaTiltakService(
         LOG.info(
             "har løst tiltak-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
-            StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
+            StructuredArguments.keyValue("behovId", packet["@behovId"].asText()),
         )
         SECURELOG.info(
             "har løst tiltak-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
-            StructuredArguments.keyValue("behovId", packet["@behovId"].asText())
+            StructuredArguments.keyValue("behovId", packet["@behovId"].asText()),
         )
         SECURELOG.debug { "publiserer melding: ${packet.toJson()}" }
     }
@@ -109,7 +109,7 @@ class ArenaTiltakService(
             "feil \"${ex.message}\" ved behandling av tiltak-behov med {} og {}",
             StructuredArguments.keyValue("id", packet["@id"].asText()),
             StructuredArguments.keyValue("packet", packet.toJson()),
-            ex
+            ex,
         )
     }
 }

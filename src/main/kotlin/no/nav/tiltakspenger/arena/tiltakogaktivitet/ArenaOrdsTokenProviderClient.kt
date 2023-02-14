@@ -63,7 +63,7 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
                     url = arenaOrdsConfig.arenaOrdsUrl + "/arena/api/oauth/token",
                     formParameters = Parameters.build {
                         append("grant_type", "client_credentials")
-                    }
+                    },
                 ) {
                     basicAuth(arenaOrdsConfig.arenaOrdsClientId, arenaOrdsConfig.arenaOrdsClientSecret)
                     header(HttpHeaders.CacheControl, "no-cache")
@@ -80,12 +80,12 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
     private fun timeToRefresh(): LocalDateTime =
         tokenCache!!.time.plus(
             tokenCache!!.ordsToken.expiresIn - MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH,
-            ChronoUnit.SECONDS
+            ChronoUnit.SECONDS,
         )
 
     data class TokenCache(
         val ordsToken: OrdsToken,
-        val time: LocalDateTime = LocalDateTime.now()
+        val time: LocalDateTime = LocalDateTime.now(),
     )
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -95,6 +95,6 @@ class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.Ar
         @JsonAlias("token_type")
         val tokenType: String?,
         @JsonAlias("expires_in")
-        val expiresIn: Long = 0
+        val expiresIn: Long = 0,
     )
 }

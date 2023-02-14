@@ -22,7 +22,7 @@ fun main() {
     val tokenProviderClient = ArenaOrdsTokenProviderClient(Configuration.ArenaOrdsConfig())
     val arenaOrdsService = ArenaOrdsClientImpl(
         arenaOrdsConfig = Configuration.ArenaOrdsConfig(),
-        arenaOrdsTokenProvider = tokenProviderClient
+        arenaOrdsTokenProvider = tokenProviderClient,
     )
 
     RapidApplication.create(Configuration.rapidsAndRivers).apply {
@@ -32,7 +32,7 @@ fun main() {
         )
         ArenaTiltakService(
             rapidsConnection = this,
-            arenaOrdsService = arenaOrdsService
+            arenaOrdsService = arenaOrdsService,
         )
 
         register(object : RapidsConnection.StatusListener {

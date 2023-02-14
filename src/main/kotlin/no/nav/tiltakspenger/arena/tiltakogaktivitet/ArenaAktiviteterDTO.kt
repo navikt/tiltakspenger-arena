@@ -8,7 +8,7 @@ import no.nav.tiltakspenger.arena.felles.XML_TEXT_ELEMENT_NAME
 import java.time.LocalDate
 
 data class ArenaAktiviteterDTO(
-    val response: Response
+    val response: Response,
 ) {
     // Denne klassen er sjekket opp mot
     // https://confluence.adeo.no/display/ARENA/Arena+-+Tjeneste+Webservice+-+TiltakOgAktivitet_v1#ArenaTjenesteWebserviceTiltakOgAktivitet_v1-HentTiltakOgAktiviteterForBrukerResponse
@@ -46,9 +46,10 @@ data class ArenaAktiviteterDTO(
             val statusNavn: String,
             @JsonProperty(XML_TEXT_ELEMENT_NAME)
             @JacksonXmlText
-            val status: DeltakerStatusType
+            val status: DeltakerStatusType,
         )
 
+        @Suppress("ktlint:no-semi")
         enum class Tiltaksnavn(val tekst: String) {
             AMBF1("AMB Avklaring (fase 1)"),
             KURS("Andre kurs"),
@@ -155,13 +156,14 @@ data class ArenaAktiviteterDTO(
             VASV("Varig tilrettelagt arbeid i skjermet virksomhet"),
             VV("Varig vernet arbeid (VVA)"),
             VIDRSKOLE("Videregående skole"),
-            OPPLT2AAR("2-årig opplæringstiltak");
+            OPPLT2AAR("2-årig opplæringstiltak"),
+            ;
 
             companion object {
                 fun fromTekst(tekst: String): Tiltaksnavn {
                     return Tiltaksnavn.values().find { it.tekst == tekst }
                         ?: throw IllegalArgumentException(
-                            "Tiltaksnavn '$tekst' ikke funnet, sjekk lovlige verdier i Arena"
+                            "Tiltaksnavn '$tekst' ikke funnet, sjekk lovlige verdier i Arena",
                         )
                 }
             }
@@ -181,7 +183,7 @@ data class ArenaAktiviteterDTO(
             JATAKK("Takket ja til tilbud"),
             NEITAKK("Takket nei til tilbud"),
             TILBUD("Godkjent tiltaksplass"),
-            VENTELISTE("Venteliste")
+            VENTELISTE("Venteliste"),
         }
     }
 

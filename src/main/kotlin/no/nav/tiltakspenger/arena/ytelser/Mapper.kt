@@ -41,7 +41,7 @@ fun mapVedtak(vedtakListe: List<Vedtak>): List<ArenaYtelseResponsDTO.VedtakDTO> 
             vedtaksperiodeFom = vedtak.vedtaksperiode.fom,
             vedtaksperiodeTom = vedtak.vedtaksperiode.tom,
             rettighetType = vedtak.vedtakstype?.let { mapRettighetType(it) },
-            status = vedtak.status?.let { mapVedtakStatusType(it) }
+            status = vedtak.status?.let { mapVedtakStatusType(it) },
         )
     }
 

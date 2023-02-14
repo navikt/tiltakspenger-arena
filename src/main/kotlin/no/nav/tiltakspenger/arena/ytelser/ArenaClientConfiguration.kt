@@ -32,7 +32,7 @@ class ArenaClientConfiguration(
         LOG.info(
             "Using URL {} for service {}",
             arenaSoapConfig.ytelseskontraktUrl,
-            YtelseskontraktV3::class.java.simpleName
+            YtelseskontraktV3::class.java.simpleName,
         )
         return CXFClient(YtelseskontraktV3::class.java)
             .wsdl("classpath:wsdl/tjenestespesifikasjon/no/nav/tjeneste/virksomhet/ytelseskontrakt/v3/Binding.wsdl")
@@ -40,8 +40,8 @@ class ArenaClientConfiguration(
             .endpointName(
                 QName(
                     "http://nav.no/tjeneste/virksomhet/ytelseskontrakt/v3/Binding",
-                    "Ytelseskontrakt_v3Port"
-                )
+                    "Ytelseskontrakt_v3Port",
+                ),
             )
             .withOutInterceptor(LoggingOutInterceptor())
             .address(arenaSoapConfig.ytelseskontraktUrl)

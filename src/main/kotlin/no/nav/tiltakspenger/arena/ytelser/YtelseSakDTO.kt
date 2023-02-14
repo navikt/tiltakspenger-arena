@@ -51,7 +51,8 @@ data class YtelseSakDTO(
     enum class YtelseSakStatus(val navn: String) {
         AKTIV("Aktiv"),
         AVSLU("Lukket"),
-        INAKT("Inaktiv");
+        INAKT("Inaktiv"),
+        ;
 
         companion object {
             fun fromNavn(n: String): YtelseSakStatus =
@@ -64,7 +65,8 @@ data class YtelseSakDTO(
         AA("Arbeidsavklaringspenger"),
         DAGP("Dagpenger"),
         INDIV("Individstønad"),
-        ANNET("Alt annet");
+        ANNET("Alt annet"),
+        ;
 
         companion object {
             fun fromNavn(n: String): YtelseSakYtelsetype =

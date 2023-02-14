@@ -46,10 +46,10 @@ internal class JacksonXmlConverterTest {
         genre = "Computer",
         price = Price(
             currency = "EUR",
-            amount = BigDecimal("44.95")
+            amount = BigDecimal("44.95"),
         ),
         publishDate = "2000-10-01",
-        description = "An in-depth look at creating applications with XML."
+        description = "An in-depth look at creating applications with XML.",
     )
 
     @Test
@@ -104,7 +104,7 @@ data class Book(
     @JsonProperty("publish_date")
     val publishDate: String,
     @JsonProperty("description")
-    val description: String
+    val description: String,
 )
 
 data class Price(
@@ -112,5 +112,5 @@ data class Price(
     val currency: String,
     @JsonProperty(XML_TEXT_ELEMENT_NAME)
     @JacksonXmlText
-    val amount: BigDecimal
+    val amount: BigDecimal,
 )
