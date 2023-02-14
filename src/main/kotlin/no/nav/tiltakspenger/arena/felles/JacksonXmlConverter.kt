@@ -51,7 +51,7 @@ class JacksonXmlConverter(private val xmlMapper: XmlMapper = xmlMapper()) : Cont
         contentType: ContentType,
         charset: Charset,
         typeInfo: TypeInfo,
-        value: Any
+        value: Any,
     ): OutgoingContent =
         TextContent(xmlMapper.writeValueAsString(value), contentType.withCharset(charset))
 }
@@ -62,7 +62,7 @@ class JacksonXmlConverter(private val xmlMapper: XmlMapper = xmlMapper()) : Cont
 fun ContentNegotiation.Config.xml(
     contentType: ContentType = ContentType.Application.Xml,
     xmlTextElementName: String = XML_TEXT_ELEMENT_NAME,
-    block: XmlMapper.() -> Unit = {}
+    block: XmlMapper.() -> Unit = {},
 ) {
     val mapper = xmlMapper(xmlTextElementName)
     mapper.apply(block)
@@ -84,7 +84,7 @@ private fun xmlMapper(xmlTextElementName: String = XML_TEXT_ELEMENT_NAME): XmlMa
             DefaultPrettyPrinter().apply {
                 indentArraysWith(DefaultPrettyPrinter.FixedSpaceIndenter.instance)
                 indentObjectsWith(DefaultIndenter("  ", "\n"))
-            }
+            },
         )
         configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     }

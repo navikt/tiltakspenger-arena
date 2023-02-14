@@ -25,7 +25,7 @@ object Configuration {
         "SERVICEUSER_TPTS_USERNAME" to System.getenv("SERVICEUSER_TPTS_USERNAME"),
         "SERVICEUSER_TPTS_PASSWORD" to System.getenv("SERVICEUSER_TPTS_PASSWORD"),
         "ARENA_ORDS_CLIENT_ID" to System.getenv("ARENA_ORDS_CLIENT_ID"),
-        "ARENA_ORDS_CLIENT_SECRET" to System.getenv("ARENA_ORDS_CLIENT_SECRET")
+        "ARENA_ORDS_CLIENT_SECRET" to System.getenv("ARENA_ORDS_CLIENT_SECRET"),
     )
     private val defaultProperties = ConfigurationMap(rapidsAndRivers + otherDefaultProperties)
     private val localProperties = ConfigurationMap(
@@ -33,24 +33,24 @@ object Configuration {
             "stsUrl" to "",
             "ytelseskontraktUrl" to "",
             "application.profile" to Profile.LOCAL.toString(),
-            "ARENA_ORDS_URL" to ""
-        )
+            "ARENA_ORDS_URL" to "",
+        ),
     )
     private val devProperties = ConfigurationMap(
         mapOf(
             "stsUrl" to "https://sts-q1.preprod.local/SecurityTokenServiceProvider/",
             "ytelseskontraktUrl" to "https://arena-q1.adeo.no/ail_ws/Ytelseskontrakt_v3",
             "application.profile" to Profile.DEV.toString(),
-            "ARENA_ORDS_URL" to "https://arena-ords-q1.nais.preprod.local"
-        )
+            "ARENA_ORDS_URL" to "https://arena-ords-q1.nais.preprod.local",
+        ),
     )
     private val prodProperties = ConfigurationMap(
         mapOf(
             "stsUrl" to "https://sts.adeo.no/SecurityTokenServiceProvider/",
             "ytelseskontraktUrl" to "https://arena.adeo.no/ail_ws/Ytelseskontrakt_v3",
             "application.profile" to Profile.PROD.toString(),
-            "ARENA_ORDS_URL" to "https://arena-ords.nais.adeo.no"
-        )
+            "ARENA_ORDS_URL" to "https://arena-ords.nais.adeo.no",
+        ),
     )
 
     private fun config() = when (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")) {

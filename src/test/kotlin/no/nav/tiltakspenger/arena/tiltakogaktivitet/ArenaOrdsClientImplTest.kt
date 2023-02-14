@@ -29,7 +29,7 @@ internal class ArenaOrdsClientImplTest {
     private fun mockConfig() = ArenaOrdsConfig(
         arenaOrdsUrl = "",
         arenaOrdsClientId = "",
-        arenaOrdsClientSecret = ""
+        arenaOrdsClientSecret = "",
     )
 
     private fun mockClient(response: String): HttpClient {
@@ -37,7 +37,7 @@ internal class ArenaOrdsClientImplTest {
             respond(
                 status = HttpStatusCode.OK,
                 content = response,
-                headers = headersOf(HttpHeaders.ContentType, ContentType.Text.Xml.toString())
+                headers = headersOf(HttpHeaders.ContentType, ContentType.Text.Xml.toString()),
             )
         }
         return HttpClient(mockEngine) { setupHttpClient() }
@@ -48,8 +48,9 @@ internal class ArenaOrdsClientImplTest {
             respondError(
                 status = statusCode,
                 headers = headersOf(
-                    HttpHeaders.ContentType, ContentType.Text.Xml.toString(),
-                )
+                    HttpHeaders.ContentType,
+                    ContentType.Text.Xml.toString(),
+                ),
             )
         }
         return HttpClient(mockEngine) { setupHttpClient() }
@@ -76,9 +77,9 @@ internal class ArenaOrdsClientImplTest {
         assertEquals(
             ArenaAktiviteterDTO.Tiltaksaktivitet.DeltakelsesPeriode(
                 LocalDate.of(2022, 5, 6),
-                LocalDate.of(2022, 7, 8)
+                LocalDate.of(2022, 7, 8),
             ),
-            tiltak.deltakelsePeriode
+            tiltak.deltakelsePeriode,
         )
         assertEquals("424242", tiltak.bedriftsnummer)
         assertEquals(100F, tiltak.deltakelseProsent)
@@ -96,7 +97,7 @@ internal class ArenaOrdsClientImplTest {
         val arenaOrdsService = ArenaOrdsClientImpl(
             mockConfig(),
             mockTokenProvider,
-            mockClientError(HttpStatusCode.InternalServerError)
+            mockClientError(HttpStatusCode.InternalServerError),
         )
 
         assertThrows(OtherException::class.java) {
@@ -114,7 +115,7 @@ internal class ArenaOrdsClientImplTest {
         val arenaOrdsService = ArenaOrdsClientImpl(
             mockConfig(),
             mockTokenProvider,
-            mockClientError(HttpStatusCode.NoContent)
+            mockClientError(HttpStatusCode.NoContent),
         )
 
         assertThrows(PersonNotFoundException::class.java) {
@@ -132,7 +133,7 @@ internal class ArenaOrdsClientImplTest {
         val arenaOrdsService = ArenaOrdsClientImpl(
             mockConfig(),
             mockTokenProvider,
-            mockClientError(HttpStatusCode.Unauthorized)
+            mockClientError(HttpStatusCode.Unauthorized),
         )
 
         assertThrows(UnauthorizedException::class.java) {
@@ -150,7 +151,7 @@ internal class ArenaOrdsClientImplTest {
         val arenaOrdsService = ArenaOrdsClientImpl(
             mockConfig(),
             mockTokenProvider,
-            mockClientError(HttpStatusCode.NotFound)
+            mockClientError(HttpStatusCode.NotFound),
         )
 
         assertThrows(ClientRequestException::class.java) {

@@ -21,7 +21,7 @@ internal class ArenaSoapServiceTest {
             kontrakt.hentYtelseskontraktListe(
                 match {
                     it.personidentifikator == ident && it.periode.fom == fom && it.periode.tom == tom
-                }
+                },
             )
         } returns HentYtelseskontraktListeResponse()
         val service = ArenaSoapService(kontrakt)

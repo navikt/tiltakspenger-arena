@@ -7,7 +7,7 @@ import no.nav.tiltakspenger.libs.arena.tiltak.ArenaTiltaksaktivitetResponsDTO
 fun mapArenaTiltak(aktiviteter: List<ArenaAktiviteterDTO.Tiltaksaktivitet>): ArenaTiltaksaktivitetResponsDTO {
     return ArenaTiltaksaktivitetResponsDTO(
         tiltaksaktiviteter = aktiviteter.map { mapTiltaksaktivitet(it) },
-        feil = null
+        feil = null,
     )
 }
 

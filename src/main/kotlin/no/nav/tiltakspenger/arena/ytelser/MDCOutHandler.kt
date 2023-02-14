@@ -33,7 +33,7 @@ internal class MDCOutHandler : SOAPHandler<SOAPMessageContext?> {
                         "MDCFilter i web.xml (oppskrift på dette: " +
                         "http://confluence.adeo.no/display/Modernisering/MDCFilter). " +
                         "Om du er noe annet må du generere callId selv og legge på MDC. " +
-                        "Hjelpemetoder finnes i no.nav.modig.common.MDCOperations."
+                        "Hjelpemetoder finnes i no.nav.modig.common.MDCOperations.",
                 )
             LOG.debug("Add the callId to the SOAP message: $callId")
             try {

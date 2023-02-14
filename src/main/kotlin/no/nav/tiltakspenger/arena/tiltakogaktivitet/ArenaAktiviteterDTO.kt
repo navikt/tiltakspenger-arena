@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:no-semi", "ktlint:trailing-comma-on-declaration-site")
+
 package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -8,7 +10,7 @@ import no.nav.tiltakspenger.arena.felles.XML_TEXT_ELEMENT_NAME
 import java.time.LocalDate
 
 data class ArenaAktiviteterDTO(
-    val response: Response
+    val response: Response,
 ) {
     // Denne klassen er sjekket opp mot
     // https://confluence.adeo.no/display/ARENA/Arena+-+Tjeneste+Webservice+-+TiltakOgAktivitet_v1#ArenaTjenesteWebserviceTiltakOgAktivitet_v1-HentTiltakOgAktiviteterForBrukerResponse
@@ -46,7 +48,7 @@ data class ArenaAktiviteterDTO(
             val statusNavn: String,
             @JsonProperty(XML_TEXT_ELEMENT_NAME)
             @JacksonXmlText
-            val status: DeltakerStatusType
+            val status: DeltakerStatusType,
         )
 
         enum class Tiltaksnavn(val tekst: String) {
@@ -161,13 +163,15 @@ data class ArenaAktiviteterDTO(
                 fun fromTekst(tekst: String): Tiltaksnavn {
                     return Tiltaksnavn.values().find { it.tekst == tekst }
                         ?: throw IllegalArgumentException(
-                            "Tiltaksnavn '$tekst' ikke funnet, sjekk lovlige verdier i Arena"
+                            "Tiltaksnavn '$tekst' ikke funnet, sjekk lovlige verdier i Arena",
                         )
                 }
             }
         }
 
-        enum class DeltakerStatusType(val tekst: String) {
+        enum class DeltakerStatusType(
+            val tekst: String,
+        ) {
             AKTUELL("Aktuell"),
             AVSLAG("Fått avslag"),
             DELAVB("Deltakelse avbrutt"),
@@ -181,7 +185,7 @@ data class ArenaAktiviteterDTO(
             JATAKK("Takket ja til tilbud"),
             NEITAKK("Takket nei til tilbud"),
             TILBUD("Godkjent tiltaksplass"),
-            VENTELISTE("Venteliste")
+            VENTELISTE("Venteliste"),
         }
     }
 

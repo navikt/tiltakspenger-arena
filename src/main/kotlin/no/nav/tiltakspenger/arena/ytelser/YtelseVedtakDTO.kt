@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:no-semi", "ktlint:trailing-comma-on-declaration-site")
+
 package no.nav.tiltakspenger.arena.ytelser
 
 import no.nav.tiltakspenger.arena.ytelser.YtelseSakDTO.YtelseSakYtelsetype
@@ -23,7 +25,7 @@ data class YtelseVedtakDTO(
                     vedtaksperiodeFom = vedtak.vedtaksperiode.fom,
                     vedtaksperiodeTom = vedtak.vedtaksperiode.tom,
                     vedtaksType = vedtak.vedtakstype?.let { YtelseVedtakVedtakstype.fromNavn(it) },
-                    status = vedtak.status?.let { YtelseVedtakStatus.fromNavn(it) }
+                    status = vedtak.status?.let { YtelseVedtakStatus.fromNavn(it) },
                 )
             }
     }

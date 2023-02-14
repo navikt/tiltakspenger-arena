@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:no-semi", "ktlint:trailing-comma-on-declaration-site")
+
 package no.nav.tiltakspenger.arena.ytelser
 
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Dagpengekontrakt
@@ -48,7 +50,9 @@ data class YtelseSakDTO(
             }
     }
 
-    enum class YtelseSakStatus(val navn: String) {
+    enum class YtelseSakStatus(
+        val navn: String,
+    ) {
         AKTIV("Aktiv"),
         AVSLU("Lukket"),
         INAKT("Inaktiv");
@@ -60,7 +64,9 @@ data class YtelseSakDTO(
         }
     }
 
-    enum class YtelseSakYtelsetype(val navn: String) {
+    enum class YtelseSakYtelsetype(
+        val navn: String,
+    ) {
         AA("Arbeidsavklaringspenger"),
         DAGP("Dagpenger"),
         INDIV("Individstønad"),

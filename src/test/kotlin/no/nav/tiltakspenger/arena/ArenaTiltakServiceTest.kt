@@ -39,15 +39,16 @@ internal class ArenaTiltakServiceTest {
             assertEquals(1, size)
             assertEquals(ident, field(0, "ident").asText())
             JSONAssert.assertEquals(
-                tomLøsning, field(0, "@løsning").toPrettyString(),
-                JSONCompareMode.STRICT
+                tomLøsning,
+                field(0, "@løsning").toPrettyString(),
+                JSONCompareMode.STRICT,
             )
 
             assertNull(
                 field(0, "@løsning")
                     .get("arenatiltak")
                     .get("feil")
-                    .asText(null)
+                    .asText(null),
             )
         }
     }
@@ -71,12 +72,12 @@ internal class ArenaTiltakServiceTest {
                         ),
                         statusSistEndret = null,
                         begrunnelseInnsoeking = null,
-                        antallDagerPerUke = null
-                    )
+                        antallDagerPerUke = null,
+                    ),
                 ),
                 gruppeaktivitetListe = listOf(),
-                utdanningsaktivitetListe = listOf()
-            )
+                utdanningsaktivitetListe = listOf(),
+            ),
         )
 
         testRapid.sendTestMessage(behovMelding)
@@ -85,15 +86,16 @@ internal class ArenaTiltakServiceTest {
             assertEquals(1, size)
             assertEquals(ident, field(0, "ident").asText())
             JSONAssert.assertEquals(
-                løsning, field(0, "@løsning").toPrettyString().also { println(it) },
-                JSONCompareMode.STRICT
+                løsning,
+                field(0, "@løsning").toPrettyString().also { println(it) },
+                JSONCompareMode.STRICT,
             )
 
             assertNull(
                 field(0, "@løsning")
                     .get("arenatiltak")
                     .get("feil")
-                    .asText(null)
+                    .asText(null),
             )
         }
     }
