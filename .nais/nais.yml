@@ -8,9 +8,18 @@ metadata:
 spec:
   image: {{ image }}
   port: 8080
+  ingresses:
+    - {{ ingress.url }}
   azure:
     application:
       enabled: true
+  tokenx:
+    enabled: true
+  accessPolicy:
+    inbound:
+      rules:
+        - application: tiltakspenger-soknad-api
+          cluster: dev-gcp
   liveness:
     path: /isalive
   readiness:

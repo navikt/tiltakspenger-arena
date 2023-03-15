@@ -1,3 +1,5 @@
 kafka:
   pool: nav-dev
 vaultpath: dev
+ingress:
+  url: https://tiltakspenger-arena.dev-fss-pub.nais.io

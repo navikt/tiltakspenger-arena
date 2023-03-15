@@ -25,7 +25,13 @@ fun main() {
         arenaOrdsTokenProvider = tokenProviderClient,
     )
 
-    RapidApplication.create(Configuration.rapidsAndRivers).apply {
+    val rapidsConnection: RapidsConnection = RapidApplication.Builder(
+        RapidApplication.RapidApplicationConfig.fromEnv(Configuration.rapidsAndRivers)
+    ).withKtorModule {
+        tiltakApi(arenaOrdsClient = arenaOrdsService)
+    }.build()
+
+    rapidsConnection.apply {
         ArenaYtelserService(
             rapidsConnection = this,
             arenaSoapService = arenaSoapService,
