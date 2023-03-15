@@ -26,10 +26,12 @@ fun Route.tiltakRoutes(arenaOrdsClient: ArenaOrdsClient) {
             }
         } catch (e: ArenaOrdsException.PersonNotFoundException) {
             SECURELOG.warn { "Person ikke funnet i Arena Tiltak ${e.message}" }
-            call.respond(ArenaTiltaksaktivitetResponsDTO(
-                tiltaksaktiviteter = emptyList(),
-                feil = null,
-            ))
+            call.respond(
+                ArenaTiltaksaktivitetResponsDTO(
+                    tiltaksaktiviteter = emptyList(),
+                    feil = null,
+                ),
+            )
         } catch (e: IllegalStateException) {
             SECURELOG.warn { "Mangler fødselsnummer" }
             call.respondText(text = "Bad Request", status = HttpStatusCode.BadRequest)

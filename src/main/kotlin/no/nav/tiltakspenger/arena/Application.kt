@@ -26,7 +26,7 @@ fun main() {
     )
 
     val rapidsConnection: RapidsConnection = RapidApplication.Builder(
-        RapidApplication.RapidApplicationConfig.fromEnv(Configuration.rapidsAndRivers)
+        RapidApplication.RapidApplicationConfig.fromEnv(Configuration.rapidsAndRivers),
     ).withKtorModule {
         tiltakApi(arenaOrdsClient = arenaOrdsService)
     }.build()

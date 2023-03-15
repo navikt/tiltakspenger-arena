@@ -24,7 +24,7 @@ fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient) {
             ),
         )
     }
-    install (Routing) {
+    install(Routing) {
         authenticate("tokendings") {
             tiltakRoutes(arenaOrdsClient = arenaOrdsClient)
         }
