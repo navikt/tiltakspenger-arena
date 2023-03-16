@@ -13,19 +13,21 @@ import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 
 fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient) {
     val config = environment.config
+    val issuerName = "tokendings"
     install(Authentication) {
+        val requiredClaimsMap = arrayOf("acr=Level4")
         tokenValidationSupport(
-            name = "tokendings",
+            name = issuerName,
             config = config,
             requiredClaims = RequiredClaims(
-                issuer = "tokendings",
-                claimMap = arrayOf("acr=Level4"),
+                issuer = issuerName,
+                claimMap = requiredClaimsMap,
                 combineWithOr = false,
             ),
         )
     }
     install(Routing) {
-        authenticate("tokendings") {
+        authenticate(issuerName) {
             tiltakRoutes(arenaOrdsClient = arenaOrdsClient)
         }
         healthRoutes()
