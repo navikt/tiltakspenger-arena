@@ -19,7 +19,7 @@ private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
 class ArenaTiltakService(
     rapidsConnection: RapidsConnection,
-    private val arenaOrdsService: ArenaOrdsClient,
+    private val arenaOrdsClient: ArenaOrdsClient,
 ) :
     River.PacketListener {
 
@@ -51,7 +51,7 @@ class ArenaTiltakService(
                 SECURELOG.debug { "mottok ident $ident" }
                 val response: ArenaTiltaksaktivitetResponsDTO = try {
                     runBlocking(MDCContext()) {
-                        mapArenaTiltak(arenaOrdsService.hentArenaAktiviteter(ident).response.tiltaksaktivitetListe)
+                        mapArenaTiltak(arenaOrdsClient.hentArenaAktiviteter(ident).response.tiltaksaktivitetListe)
                     }
                 } catch (e: ArenaOrdsException.PersonNotFoundException) {
                     LOG.warn { "Person ikke funnet i Arena Tiltak ${e.message}" }
