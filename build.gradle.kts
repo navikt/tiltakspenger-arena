@@ -4,6 +4,7 @@ val ktorVersion = "2.2.4"
 val jacksonVersion = "2.14.2"
 val mockkVersion = "1.13.4"
 val kotlinxCoroutinesVersion = "1.6.4"
+val tokenSupportVersion = "3.0.4"
 
 project.base.archivesName.set("app")
 
@@ -37,6 +38,7 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:7.3")
     implementation("ch.qos.logback:logback-classic:1.4.5")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
     implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-cio-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation-jvm:$ktorVersion")
@@ -53,6 +55,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("no.nav.security:token-validation-ktor-v2:$tokenSupportVersion")
+    implementation("no.nav.security:token-client-core:$tokenSupportVersion")
     // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
     implementation("no.nav.common:cxf:2.2023.01.09_08.56-ae38750bc0d9")
