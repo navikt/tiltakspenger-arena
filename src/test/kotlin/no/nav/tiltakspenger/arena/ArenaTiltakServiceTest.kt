@@ -21,7 +21,7 @@ internal class ArenaTiltakServiceTest {
 
     val service = ArenaTiltakService(
         rapidsConnection = testRapid,
-        arenaOrdsService = arenaOrdsService,
+        arenaOrdsClient = arenaOrdsService,
     )
 
     @BeforeEach
