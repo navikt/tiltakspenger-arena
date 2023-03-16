@@ -7,7 +7,6 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.routing.Routing
 import no.nav.security.token.support.v2.RequiredClaims
 import no.nav.security.token.support.v2.tokenValidationSupport
-import no.nav.tiltakspenger.arena.routes.healthRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 
@@ -30,6 +29,5 @@ fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient) {
         authenticate(issuerName) {
             tiltakRoutes(arenaOrdsClient = arenaOrdsClient)
         }
-        healthRoutes()
     }
 }
