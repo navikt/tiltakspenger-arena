@@ -4,7 +4,7 @@ val ktorVersion = "2.2.4"
 val jacksonVersion = "2.14.2"
 val mockkVersion = "1.13.4"
 val kotlinxCoroutinesVersion = "1.6.4"
-val tokenSupportVersion = "3.0.4"
+val tokenSupportVersion = "3.0.8"
 
 project.base.archivesName.set("app")
 
