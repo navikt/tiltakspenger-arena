@@ -1,5 +1,6 @@
 package no.nav.tiltakspenger.arena
 
+import io.ktor.server.config.ApplicationConfig
 import mu.KotlinLogging
 import no.nav.helse.rapids_rivers.RapidApplication
 import no.nav.helse.rapids_rivers.RapidsConnection
@@ -10,7 +11,7 @@ import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 
 private val LOG = KotlinLogging.logger {}
 
-internal class ApplicationBuilder : RapidsConnection.StatusListener {
+internal class ApplicationBuilder(val config: ApplicationConfig) : RapidsConnection.StatusListener {
     val arenaSoapService = ArenaSoapService(ArenaClientConfiguration().ytelseskontraktV3())
     val tokenProviderClient = ArenaOrdsTokenProviderClient(Configuration.ArenaOrdsConfig())
     val arenaOrdsClient = ArenaOrdsClientImpl(
@@ -22,7 +23,7 @@ internal class ApplicationBuilder : RapidsConnection.StatusListener {
         RapidApplication.RapidApplicationConfig.fromEnv(Configuration.rapidsAndRivers),
     )
         .withKtorModule {
-            tiltakApi(arenaOrdsClient = arenaOrdsClient)
+            tiltakApi(arenaOrdsClient = arenaOrdsClient, config = config)
         }
         .build()
         .apply {

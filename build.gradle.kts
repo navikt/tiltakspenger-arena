@@ -43,6 +43,7 @@ dependencies {
     implementation("io.ktor:ktor-client-cio-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation-jvm:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jvm:$ktorVersion")
     implementation("io.ktor:ktor-utils-jvm:$ktorVersion")
     implementation("io.ktor:ktor-http-jvm:$ktorVersion")
