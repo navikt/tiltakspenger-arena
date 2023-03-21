@@ -4,14 +4,14 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.authenticate
-import io.ktor.server.routing.Routing
+import io.ktor.server.config.ApplicationConfig
+import io.ktor.server.routing.routing
 import no.nav.security.token.support.v2.RequiredClaims
 import no.nav.security.token.support.v2.tokenValidationSupport
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 
-fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient) {
-    val config = environment.config
+fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient, config: ApplicationConfig) {
     val issuerName = "tokendings"
     install(Authentication) {
         val requiredClaimsMap = arrayOf("acr=Level4")
@@ -25,7 +25,7 @@ fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient) {
             ),
         )
     }
-    install(Routing) {
+    routing {
         authenticate(issuerName) {
             tiltakRoutes(arenaOrdsClient = arenaOrdsClient)
         }
