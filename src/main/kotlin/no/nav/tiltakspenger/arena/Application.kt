@@ -1,11 +1,9 @@
 package no.nav.tiltakspenger.arena
 
-import io.ktor.server.application.Application
+import io.ktor.server.config.ApplicationConfig
 import mu.KotlinLogging
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
-
-fun Application.module() {
+fun main() {
     System.setProperty("logback.configurationFile", "egenLogback.xml")
 
     val log = KotlinLogging.logger {}
@@ -16,7 +14,7 @@ fun Application.module() {
         securelog.error(e) { e.message }
     }
 
-    val config = environment.config
+    val config = ApplicationConfig("application.conf")
     val applicationBuilder = ApplicationBuilder(config = config)
     applicationBuilder.start()
 }
