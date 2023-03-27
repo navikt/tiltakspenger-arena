@@ -28,7 +28,7 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
     // implementation("com.github.navikt:tiltakspenger-libs:0.0.7")
-    implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:0.0.31")
+    implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:0.0.32")
     implementation("com.github.navikt.tiltakspenger-libs:arenaytelser-dtos:0.0.31")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
     implementation("com.github.navikt:rapids-and-rivers:2023031511211678875716.e6e2c9250860")
