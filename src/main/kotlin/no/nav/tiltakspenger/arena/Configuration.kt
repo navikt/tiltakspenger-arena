@@ -77,6 +77,12 @@ object Configuration {
         val arenaOrdsClientId: String = config()[Key("ARENA_ORDS_CLIENT_ID", stringType)],
         val arenaOrdsClientSecret: String = config()[Key("ARENA_ORDS_CLIENT_SECRET", stringType)],
     )
+
+    fun applicationProfile() = when (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")) {
+        "dev-gcp" -> Profile.DEV
+        "prod-gcp" -> Profile.PROD
+        else -> Profile.LOCAL
+    }
 }
 
 enum class Profile {

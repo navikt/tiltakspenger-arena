@@ -9,25 +9,19 @@ object Datasource {
     private const val MAX_POOLS = 3
     const val DB_USERNAME_KEY = "DB_USERNAME"
     const val DB_PASSWORD_KEY = "DB_PASSWORD"
-    const val DB_DATABASE_KEY = "DB_DATABASE"
-    const val DB_HOST_KEY = "DB_HOST"
-    const val DB_PORT_KEY = "DB_PORT"
+    const val DB_URL = "DB_URL"
 
     private fun getEnvOrProp(key: String) = System.getenv(key) ?: System.getProperty(key)
 
     private fun init(): HikariDataSource {
-        LOG.info {
-            "Kobler til Postgres '${getEnvOrProp(DB_USERNAME_KEY)}:xxx@" +
-                "${getEnvOrProp(DB_HOST_KEY)}:${getEnvOrProp(DB_PORT_KEY)}/${getEnvOrProp(DB_DATABASE_KEY)}'"
-        }
+        val url = getEnvOrProp(DB_URL)
+        LOG.info { "Kobler til Oracle '${url}" }
 
         return HikariDataSource().apply {
-            dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
-            addDataSourceProperty("serverName", getEnvOrProp(DB_HOST_KEY))
-            addDataSourceProperty("portNumber", getEnvOrProp(DB_PORT_KEY))
-            addDataSourceProperty("databaseName", getEnvOrProp(DB_DATABASE_KEY))
-            addDataSourceProperty("user", getEnvOrProp(DB_USERNAME_KEY))
-            addDataSourceProperty("password", getEnvOrProp(DB_PASSWORD_KEY))
+            driverClassName = "oracle.jdbc.driver.OracleDriver"
+            jdbcUrl = url
+            username = getEnvOrProp(DB_USERNAME_KEY)
+            password = getEnvOrProp(DB_PASSWORD_KEY)
             maximumPoolSize = MAX_POOLS
         }
     }

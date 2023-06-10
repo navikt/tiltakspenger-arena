@@ -77,10 +77,12 @@ dependencies {
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersjon")
     implementation("org.apache.cxf:cxf-core:$cxfVersjon")
 
-    implementation("org.flywaydb:flyway-core:9.19.3")
+    //implementation("org.flywaydb:flyway-core:9.19.3")
+    implementation("org.flywaydb:flyway-database-oracle:9.19.3")
     implementation("com.zaxxer:HikariCP:5.0.1")
-    implementation("com.oracle.database.jdbc:ojdbc11:23.2.0.0") //TODO: Er denne riktig?
+    implementation("com.oracle.database.jdbc:ojdbc8:19.6.0.0") //TODO: Er denne riktig?
     implementation("com.github.seratch:kotliquery:1.9.0")
+
 
     runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersjon")
     runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:1.5.3")
