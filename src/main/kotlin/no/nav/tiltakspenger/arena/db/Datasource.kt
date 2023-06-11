@@ -15,7 +15,7 @@ object Datasource {
 
     private fun init(): HikariDataSource {
         val url = getEnvOrProp(DB_URL)
-        LOG.info { "Kobler til Oracle '${url}" }
+        LOG.info { "Kobler til Oracle '$url" }
 
         return HikariDataSource().apply {
             driverClassName = "oracle.jdbc.driver.OracleDriver"

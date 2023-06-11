@@ -14,11 +14,9 @@ internal class DatasourceTest {
     companion object {
         @Container
         val container = OracleContainer("gvenzl/oracle-xe:18.4.0-slim-faststart")
-        //.withDatabaseName("testDB")
-        //.withUsername("testUser")
-        //.withPassword("testPassword")
-
-
+        // .withDatabaseName("testDB")
+        // .withUsername("testUser")
+        // .withPassword("testPassword")
     }
 
     @Test
@@ -26,9 +24,9 @@ internal class DatasourceTest {
         assertTrue(container.isCreated)
         assertTrue(container.isRunning)
 
-        //assertTrue(container.isHealthy)
-        //assertTrue(container.isHostAccessible)
-        //assertTrue(container.)
+        // assertTrue(container.isHealthy)
+        // assertTrue(container.isHostAccessible)
+        // assertTrue(container.)
 
         container.let {
             System.setProperty(DB_URL, it.jdbcUrl)

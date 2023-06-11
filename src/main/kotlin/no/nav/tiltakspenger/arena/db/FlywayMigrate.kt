@@ -1,6 +1,5 @@
 package no.nav.tiltakspenger.arena.db
 
-
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
 import no.nav.tiltakspenger.arena.Profile
