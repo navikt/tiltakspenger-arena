@@ -22,9 +22,9 @@ class SakDAO {
     }
 
     private fun Row.toSak(): String {
-        return string("id")
+        return string("sak_id")
     }
 
     @Language("SQL")
-    private val hentSql = "select * from sak where id = ?"
+    private val hentSql = "select * from sak where sak_id = ?"
 }

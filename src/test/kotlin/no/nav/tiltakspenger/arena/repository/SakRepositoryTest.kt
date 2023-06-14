@@ -13,7 +13,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @Testcontainers
 class SakRepositoryTest {
 
-    private val ID_SOM_SKAL_HENTES = "sak1"
+    private val ID_SOM_SKAL_HENTES = "13489616"
 
     companion object {
         @Container
