@@ -6,6 +6,7 @@ val mockkVersion = "1.13.4"
 val kotlinxCoroutinesVersion = "1.6.4"
 val tokenSupportVersion = "3.0.8"
 val testContainersVersion = "1.18.3"
+val kotestVersion = "5.6.2"
 
 project.base.archivesName.set("app")
 
@@ -106,6 +107,10 @@ dependencies {
     testImplementation("org.testcontainers:oracle-xe:1.18.3")
     // need quarkus-junit-4-mock because of https://github.com/testcontainers/testcontainers-java/issues/970
     testImplementation("io.quarkus:quarkus-junit4-mock:3.1.0.Final")
+
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
+    testImplementation("io.kotest:kotest-extensions:$kotestVersion")
 }
 
 configurations.all {
