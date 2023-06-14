@@ -13,7 +13,10 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @Testcontainers
 class SakRepositoryTest {
 
-    private val ID_SOM_SKAL_HENTES = "13489616"
+    private val FNR_SOM_IKKE_FINNES = "15"
+    private val FNR_MED_0_SAKER = "1"
+    private val FNR_MED_1_SAK = "3"
+    private val FNR_MED_2_SAKER = "2"
 
     companion object {
         @Container
@@ -34,10 +37,33 @@ class SakRepositoryTest {
     private val repo = SakRepository()
 
     @Test
-    fun `lagre og hent`() {
-        val hentet = repo.hent(ID_SOM_SKAL_HENTES)
+    fun `hent saker for person som ikke er i Arena`() {
+        val hentet = repo.hentSakerForFnr(FNR_SOM_IKKE_FINNES)
+
+        hentet shouldBe null
+    }
+
+    @Test
+    fun `hent saker for person med 0 saker`() {
+        val hentet = repo.hentSakerForFnr(FNR_MED_0_SAKER)
 
         hentet shouldNotBe null
-        hentet shouldBe ID_SOM_SKAL_HENTES
+        hentet shouldBe "0"
+    }
+
+    @Test
+    fun `hent saker for person med 1 sak`() {
+        val hentet = repo.hentSakerForFnr(FNR_MED_1_SAK)
+
+        hentet shouldNotBe null
+        hentet shouldBe "1"
+    }
+
+    @Test
+    fun `hent saker for person med 2 saker`() {
+        val hentet = repo.hentSakerForFnr(FNR_MED_2_SAKER)
+
+        hentet shouldNotBe null
+        hentet shouldBe "2"
     }
 }
