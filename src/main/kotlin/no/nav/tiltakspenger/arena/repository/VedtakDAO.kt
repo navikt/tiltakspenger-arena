@@ -5,8 +5,6 @@ import kotliquery.TransactionalSession
 import kotliquery.queryOf
 import mu.KotlinLogging
 import org.intellij.lang.annotations.Language
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class VedtakDAO(
     private val vedtakfaktaDAO: VedtakfaktaDAO = VedtakfaktaDAO(),
@@ -15,23 +13,6 @@ class VedtakDAO(
     companion object {
         private val log = KotlinLogging.logger {}
         private val securelog = KotlinLogging.logger("tjenestekall")
-
-        private fun List<ArenaVedtakfaktaDTO>.beslutningsdato(): LocalDate? {
-            val fakta =
-                this.find { it.vedtakfaktaKode == "INNVF" }.also { log.info { "INNVF: ${it?.vedtakfaktaVerdi}" } }
-            return fakta?.vedtakfaktaVerdi?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("dd-MM-yyyy")) }
-        }
-
-        private fun List<ArenaVedtakfaktaDTO>.vedtakBruttoBeløp(): Int? {
-            val fakta =
-                this.find { it.vedtakfaktaKode == "GRUNN" }.also { log.info { "GRUNN: ${it?.vedtakfaktaVerdi}" } }
-            return fakta?.vedtakfaktaVerdi?.let { it.toInt() }
-        }
-
-        private fun List<ArenaVedtakfaktaDTO>.dagsats(): Int? {
-            val fakta = this.find { it.vedtakfaktaKode == "DAGS" }.also { log.info { "DAGS: ${it?.vedtakfaktaVerdi}" } }
-            return fakta?.vedtakfaktaVerdi?.let { it.toInt() }
-        }
 
         private fun String.toVedtakType(): ArenaVedtakType =
             ArenaVedtakType.valueOf(this)

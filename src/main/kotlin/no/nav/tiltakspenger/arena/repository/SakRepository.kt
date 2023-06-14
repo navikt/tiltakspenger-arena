@@ -5,6 +5,12 @@ import no.nav.tiltakspenger.arena.db.Datasource
 import java.time.LocalDate
 
 /*
+Denne klassen er basert på tjenesten hos Arena som er dokumentert her:
+https://confluence.adeo.no/display/ARENA/Arena+-+Tjeneste+Webservice+-+Ytelseskontrakt_v3
+
+Men endret så den kun returnerer tiltakspenger-data, som er litt enklere enn AAP og DP.
+Vi har også endret så vi bruker mer enums, og så utfall inkluderes vedtakene.
+
 Saker som returneres i liste:
 
 Sakstype er AAP (AA), Dagpenger (DAGP) eller Individstønad (INDIV).
@@ -26,17 +32,16 @@ class SakRepository(
         fnr: String,
         fom: LocalDate = LocalDate.of(1900, 1, 1),
         tom: LocalDate = LocalDate.of(2099, 12, 31),
-    ): String? {
+    ): List<ArenaSakDTO>? {
         sessionOf(Datasource.hikariDataSource).use {
-            it.transaction { txSession ->
+            return it.transaction { txSession ->
                 val person = personDAO.findByFnr(fnr, txSession) ?: return null
-                val saker = sakDAO.findByPersonIdAndPeriode(
+                sakDAO.findByPersonIdAndPeriode(
                     personId = person.personId,
                     fom = fom,
                     tom = tom,
                     txSession = txSession,
                 )
-                return saker.count().toString() // Midlertidig
             }
         }
     }

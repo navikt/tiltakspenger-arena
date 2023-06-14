@@ -48,7 +48,7 @@ class SakRepositoryTest {
         val hentet = repo.hentSakerForFnr(FNR_MED_0_SAKER)
 
         hentet shouldNotBe null
-        hentet shouldBe "0"
+        hentet!!.size shouldBe 0
     }
 
     @Test
@@ -56,7 +56,7 @@ class SakRepositoryTest {
         val hentet = repo.hentSakerForFnr(FNR_MED_1_SAK)
 
         hentet shouldNotBe null
-        hentet shouldBe "1"
+        hentet!!.size shouldBe 1
     }
 
     @Test
@@ -64,6 +64,6 @@ class SakRepositoryTest {
         val hentet = repo.hentSakerForFnr(FNR_MED_2_SAKER)
 
         hentet shouldNotBe null
-        hentet shouldBe "2"
+        hentet!!.size shouldBe 2
     }
 }
