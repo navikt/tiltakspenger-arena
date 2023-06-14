@@ -34,10 +34,10 @@ class SakRepository(
         fnr: String,
         fom: LocalDate = LocalDate.of(1900, 1, 1),
         tom: LocalDate = LocalDate.of(2099, 12, 31),
-    ): List<ArenaSakDTO>? {
+    ): List<ArenaSakDTO> {
         sessionOf(Datasource.hikariDataSource).use {
             return it.transaction { txSession ->
-                val person = personDAO.findByFnr(fnr, txSession) ?: return null
+                val person = personDAO.findByFnr(fnr, txSession) ?: return emptyList()
                 sakDAO.findByPersonIdAndPeriode(
                     personId = person.personId,
                     fom = fom,

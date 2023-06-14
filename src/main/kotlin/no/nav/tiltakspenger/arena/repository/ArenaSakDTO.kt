@@ -1,6 +1,7 @@
 package no.nav.tiltakspenger.arena.repository
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class ArenaSakDTO(
     val aar: Int,
@@ -9,14 +10,14 @@ data class ArenaSakDTO(
     val ytelsestype: ArenaYtelse,
     val ihtVedtak: List<ArenaVedtakDTO>,
 ) {
-    val fomGyldighetsperiode: LocalDate?
-        get() = ihtVedtak.mapNotNull { it.fomGyldighetsdato() }.minOrNull()
-    val tomGyldighetsperiode: LocalDate?
+    val fomGyldighetsperiode: LocalDateTime
+        get() = ihtVedtak.mapNotNull { it.fomGyldighetsdato() }.min()
+    val tomGyldighetsperiode: LocalDateTime?
         get() = ihtVedtak.mapNotNull { it.tomGyldighetsdato() }.maxOrNull()
     val datoKravMottatt: LocalDate
         get() = ihtVedtak.first { it.periodetypeForYtelse == ArenaVedtakType.O }.mottattDato
-    val fagsystemSakId
-        get() = aar + lopenrSak
+    val fagsystemSakId: String
+        get() = aar.toString() + lopenrSak
 }
 /*
 ArenaDagpengeSakDTO må evt også ha feltene

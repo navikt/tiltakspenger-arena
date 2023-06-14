@@ -13,12 +13,12 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @Testcontainers
 class SakRepositoryTest {
 
-    private val FNR_SOM_IKKE_FINNES = "15"
-    private val FNR_MED_0_SAKER = "1"
-    private val FNR_MED_1_SAK = "3"
-    private val FNR_MED_2_SAKER = "2"
-
     companion object {
+        private const val FNR_SOM_IKKE_FINNES = "15"
+        private const val FNR_MED_0_SAKER = "1"
+        private const val FNR_MED_1_SAK = "3"
+        private const val FNR_MED_2_SAKER = "2"
+
         @Container
         val testContainer: OracleContainer = OracleContainer("gvenzl/oracle-xe:21-slim-faststart")
     }
@@ -40,7 +40,8 @@ class SakRepositoryTest {
     fun `hent saker for person som ikke er i Arena`() {
         val hentet = repo.hentSakerForFnr(FNR_SOM_IKKE_FINNES)
 
-        hentet shouldBe null
+        hentet shouldNotBe null
+        hentet.size shouldBe 0
     }
 
     @Test
@@ -48,7 +49,7 @@ class SakRepositoryTest {
         val hentet = repo.hentSakerForFnr(FNR_MED_0_SAKER)
 
         hentet shouldNotBe null
-        hentet!!.size shouldBe 0
+        hentet.size shouldBe 0
     }
 
     @Test
@@ -56,7 +57,7 @@ class SakRepositoryTest {
         val hentet = repo.hentSakerForFnr(FNR_MED_1_SAK)
 
         hentet shouldNotBe null
-        hentet!!.size shouldBe 1
+        hentet.size shouldBe 1
     }
 
     @Test
@@ -64,6 +65,6 @@ class SakRepositoryTest {
         val hentet = repo.hentSakerForFnr(FNR_MED_2_SAKER)
 
         hentet shouldNotBe null
-        hentet!!.size shouldBe 2
+        hentet.size shouldBe 2
     }
 }

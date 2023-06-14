@@ -1,6 +1,7 @@
 package no.nav.tiltakspenger.arena.repository
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class ArenaVedtakDTO(
     val periodetypeForYtelse: ArenaVedtakType,
@@ -18,6 +19,6 @@ data class ArenaVedtakDTO(
     val registrertDato: LocalDate?,
     val utfall: ArenaUtfall,
 ) {
-    fun fomGyldighetsdato(): LocalDate? = fomVedtaksperiode ?: registrertDato
-    fun tomGyldighetsdato(): LocalDate? = tomVedtaksperiode
+    fun fomGyldighetsdato(): LocalDateTime? = (fomVedtaksperiode ?: registrertDato)!!.atStartOfDay()
+    fun tomGyldighetsdato(): LocalDateTime? = tomVedtaksperiode?.atStartOfDay()
 }
