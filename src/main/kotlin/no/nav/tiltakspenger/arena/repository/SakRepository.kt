@@ -10,6 +10,8 @@ https://confluence.adeo.no/display/ARENA/Arena+-+Tjeneste+Webservice+-+Ytelsesko
 
 Men endret så den kun returnerer tiltakspenger-data, som er litt enklere enn AAP og DP.
 Vi har også endret så vi bruker mer enums, og så utfall inkluderes vedtakene.
+Vi dropper også saker som kun har vedtak som oppfyller det andre kriteriet:
+(Vedtakstype er Ny rettighet (O), samt at utfallskode er Nei (NEI).)
 
 Saker som returneres i liste:
 
