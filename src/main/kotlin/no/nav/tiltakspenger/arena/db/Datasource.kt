@@ -7,9 +7,9 @@ private val LOG = KotlinLogging.logger {}
 
 object Datasource {
     private const val MAX_POOLS = 3
-    const val DB_USERNAME_KEY = "DB_USERNAME"
-    const val DB_PASSWORD_KEY = "DB_PASSWORD"
-    const val DB_URL = "DB_URL"
+    const val DB_USERNAME_KEY = "ARENADB_USERNAME"
+    const val DB_PASSWORD_KEY = "ARENADB_PASSWORD"
+    const val DB_URL = "ARENADB_URL"
 
     private fun getEnvOrProp(key: String) = System.getenv(key) ?: System.getProperty(key)
 

@@ -38,6 +38,7 @@ spec:
     enabled: true
   envFrom:
     - secret: ords-arena
+    - secret: db-arena
   vault:
     enabled: true
     paths:
