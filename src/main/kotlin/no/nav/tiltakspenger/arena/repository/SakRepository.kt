@@ -10,12 +10,8 @@ https://confluence.adeo.no/display/ARENA/Arena+-+Tjeneste+Webservice+-+Ytelsesko
 
 Men endret så den kun returnerer tiltakspenger-data, som er litt enklere enn AAP og DP.
 Vi har også endret så vi bruker mer enums, og så utfall inkluderes vedtakene.
-Vi dropper også saker som kun har vedtak som oppfyller det andre kriteriet:
-(Vedtakstype er Ny rettighet (O), samt at utfallskode er Nei (NEI).)
 
 Saker som returneres i liste:
-
-Sakstype er AAP (AA), Dagpenger (DAGP) eller Individstønad (INDIV).
 
 Ytelsen må inneholde vedtak med fra_dato <= tom-dato i input. Dersom tom-dato er blank vil 31.12.2099 benyttes.
 Ytelsen må inneholde vedtak med til_dato >= fom-dato i input. Dersom fom-dato er blank vil 01.01.1900 benyttes.
