@@ -76,6 +76,6 @@ class VedtakDAO(
         WHERE v.sak_id = :sak_id
         AND v.rettighetkode = 'BASI'
         AND v.utfallkode != 'AVBRUTT'
-        ORDER BY v.lopenrvedtak  DESC
+        ORDER BY v.lopenrvedtak DESC
         """.trimIndent()
 }

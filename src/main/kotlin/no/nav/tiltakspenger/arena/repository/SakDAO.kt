@@ -66,19 +66,25 @@ class SakDAO(
              FROM vedtak
              WHERE sak.sak_id = vedtak.sak_id
                AND vedtak.rettighetkode NOT IN ('AA115')
+               AND (((SELECT DISTINCT first_value(fra_dato) OVER (ORDER BY fra_dato ASC)
+                     FROM vedtak vedt
+                     WHERE vedt.sak_id = sak.sak_id
+                     AND vedt.utfallkode != 'AVBRUTT'
+                     AND vedt.fra_dato <= NVL(vedt.til_dato, vedt.fra_dato)) <= nvl(:til_dato, SYSDATE)
+               AND (SELECT DISTINCT nvl(first_value(til_dato) OVER (ORDER BY fra_dato DESC, til_dato DESC), SYSDATE)
+                    FROM vedtak vedt
+                    WHERE vedt.sak_id = sak.sak_id
+                    AND vedt.fra_dato <= NVL(vedt.til_dato, vedt.fra_dato) -- Skal ikke ha vedtakene som er engangsutbetalinger
+                    AND vedt.utfallkode != 'AVBRUTT'
+                    AND vedt.vedtaktypekode IN ('O', 'E', 'G')) >= nvl(:fra_dato, SYSDATE)
                AND vedtak.vedtaktypekode IN ('O', 'E', 'G')
                AND vedtak.utfallkode NOT IN ('AVBRUTT', 'NEI')
                AND vedtak.fra_dato <= NVL(vedtak.til_dato, vedtak.fra_dato)
-               AND ((SELECT DISTINCT first_value(fra_dato) OVER (ORDER BY fra_dato ASC)
-                     FROM vedtak vedt
-                     WHERE vedt.sak_id = sak.sak_id
-                       AND vedt.utfallkode != 'AVBRUTT'
-                       AND vedt.fra_dato <= NVL(vedt.til_dato, vedt.fra_dato)) <= nvl(:til_dato, SYSDATE)
-                 AND (SELECT DISTINCT nvl(first_value(til_dato) OVER (ORDER BY fra_dato DESC, til_dato DESC), SYSDATE)
-                      FROM vedtak vedt
-                      WHERE vedt.sak_id = sak.sak_id
-                        AND vedt.fra_dato <= NVL(vedt.til_dato, vedt.fra_dato) -- Skal ikke ha vedtakene som er engangsutbetalinger
-                        AND vedt.utfallkode != 'AVBRUTT'
-                        AND vedt.vedtaktypekode IN ('O', 'E', 'G')) >= nvl(:fra_dato, SYSDATE)))
+               ) OR (vedtak.fra_dato >= to_date(:fra_dato)
+                    AND vedtak.fra_dato <= to_date(:til_dato)
+                    AND vedtak.fra_dato <= NVL(vedtak.til_dato,vedtak.fra_dato)
+                    AND vedtak.vedtaktypekode IN ('O') -- Kun O, ønsker kun ut de som har utfall nei og ingen andre vedtak på saken
+                    AND vedtak.utfallkode = 'NEI')))
+        ORDER BY sak.sak_id DESC
         """.trimIndent()
 }
