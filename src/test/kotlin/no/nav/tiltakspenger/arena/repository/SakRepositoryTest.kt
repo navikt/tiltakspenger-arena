@@ -4,7 +4,8 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import no.nav.tiltakspenger.arena.db.Datasource
 import no.nav.tiltakspenger.arena.db.flywayMigrate
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.testcontainers.containers.OracleContainer
 import org.testcontainers.junit.jupiter.Container
@@ -20,18 +21,33 @@ class SakRepositoryTest {
         private const val FNR_MED_2_SAKER = "2"
 
         @Container
-        val testContainer: OracleContainer = OracleContainer("gvenzl/oracle-xe:21-slim-faststart")
-    }
+        val container: OracleContainer = OracleContainer("gvenzl/oracle-xe:18.4.0-slim-faststart")
 
-    @BeforeEach
-    fun setup() {
-        testContainer.let {
-            System.setProperty(Datasource.DB_URL, it.jdbcUrl)
-            System.setProperty(Datasource.DB_USERNAME_KEY, it.username)
-            System.setProperty(Datasource.DB_PASSWORD_KEY, it.password)
+        @BeforeAll
+        @JvmStatic
+        fun setup() {
+            container.start()
+            container.let {
+                println(it.jdbcUrl)
+                System.setProperty(Datasource.DB_URL, it.jdbcUrl)
+                System.setProperty(Datasource.DB_USERNAME_KEY, it.username)
+                System.setProperty(Datasource.DB_PASSWORD_KEY, it.password)
+            }
+
+            flywayMigrate()
         }
 
-        flywayMigrate()
+        @AfterAll
+        @JvmStatic
+        fun teardown() {
+            container.let {
+                println(it.jdbcUrl)
+                System.clearProperty(Datasource.DB_URL)
+                System.clearProperty(Datasource.DB_USERNAME_KEY)
+                System.clearProperty(Datasource.DB_PASSWORD_KEY)
+            }
+            container.stop()
+        }
     }
 
     private val repo = SakRepository()

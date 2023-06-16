@@ -37,12 +37,13 @@ data class ArenaVedtakfaktaDTO(
     val vedtakfaktaVerdi: String?,
 )
 
+// Kan være null for tiltakspenger, selv om det kanskje er litt rart?
 fun List<ArenaVedtakfaktaDTO>.beslutningsdato(): LocalDate? =
     this.find { it.vedtakfaktaKode == "INNVF" }?.vedtakfaktaVerdi
         .also { log.info { "INNVF: $it" } }
         ?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("dd-MM-yyyy")) }
 
-// Ser ikke ut til å gjelde for tiltakspenger?
+// Ser ikke ut til å gjelde for tiltakspenger? Kan iallefall være null!
 fun List<ArenaVedtakfaktaDTO>.vedtakBruttoBeløp(): Int? =
     this.find { it.vedtakfaktaKode == "GRUNN" }?.vedtakfaktaVerdi
         .also { log.info { "GRUNN: $it" } }

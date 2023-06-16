@@ -12,6 +12,7 @@ private fun localFlyway() = Flyway
     .encoding("UTF-8")
     .locations("db/local-migrations")
     .dataSource(Datasource.hikariDataSource)
+    .connectRetries(5)
     .cleanDisabled(false)
     .cleanOnValidationError(true)
     .load()
