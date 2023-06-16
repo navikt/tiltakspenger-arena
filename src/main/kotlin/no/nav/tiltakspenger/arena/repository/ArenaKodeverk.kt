@@ -117,7 +117,7 @@ enum class ArenaVedtakStatus(val navn: String) {
     REGIS("Registrert"),
 }
 
-//TODO: Denne må dobbeltsjekkes med fasit i Q2, jeg tok bare de tre jeg vet om..
+// TODO: Denne må dobbeltsjekkes med fasit i Q2, jeg tok bare de tre jeg vet om..
 enum class ArenaUtfall(val navn: String) {
     JA("Ja"),
     NEI("Nei"),
