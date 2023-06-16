@@ -56,14 +56,18 @@ class ArenaYtelserService(
                 val respons: ArenaYtelseResponsDTO =
                     mapArenaYtelser(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
                 if (Configuration.applicationProfile() == Profile.DEV) {
-                    val dbRespons: ArenaYtelseResponsDTO =
-                        mapArenaYtelserFraDB(arenaSakRepository.hentSakerForFnr(fnr = ident))
-                    if (respons == dbRespons) {
-                        LOG.info { "Lik response fra webservice og db" }
-                    } else {
-                        LOG.info { "Ulik response fra webservice og db" }
-                        LOG.info { "webservice: $respons" }
-                        LOG.info { "db: $dbRespons" }
+                    try {
+                        val dbRespons: ArenaYtelseResponsDTO =
+                            mapArenaYtelserFraDB(arenaSakRepository.hentSakerForFnr(fnr = ident))
+                        if (respons == dbRespons) {
+                            LOG.info { "Lik response fra webservice og db" }
+                        } else {
+                            LOG.info { "Ulik response fra webservice og db" }
+                            LOG.info { "webservice: $respons" }
+                            LOG.info { "db: $dbRespons" }
+                        }
+                    } catch (e: Exception) {
+                        LOG.info("Kall mot Arena db feilet", e)
                     }
                 }
                 packet["@løsning"] = mapOf(
