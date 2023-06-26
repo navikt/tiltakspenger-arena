@@ -5,6 +5,7 @@ import mu.KotlinLogging
 
 fun main() {
     System.setProperty("logback.configurationFile", "egenLogback.xml")
+    System.setProperty("oracle.jdbc.fanEnabled", "false")
 
     val log = KotlinLogging.logger {}
     val securelog = KotlinLogging.logger("tjenestekall")

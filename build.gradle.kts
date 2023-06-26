@@ -5,6 +5,8 @@ val jacksonVersion = "2.15.0"
 val mockkVersion = "1.13.4"
 val kotlinxCoroutinesVersion = "1.6.4"
 val tokenSupportVersion = "3.0.8"
+val testContainersVersion = "1.18.3"
+val kotestVersion = "5.6.2"
 
 project.base.archivesName.set("app")
 
@@ -76,6 +78,13 @@ dependencies {
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersjon")
     implementation("org.apache.cxf:cxf-core:$cxfVersjon")
 
+    //implementation("org.flywaydb:flyway-core:9.19.3")
+    implementation("org.flywaydb:flyway-database-oracle:9.19.3")
+    implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("com.oracle.database.jdbc:ojdbc8:19.6.0.0") //TODO: Er denne riktig?
+    implementation("com.github.seratch:kotliquery:1.9.0")
+
+
     runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersjon")
     runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:1.5.3")
     // old version because of https://issues.apache.org/jira/browse/CXF-8727
@@ -93,6 +102,15 @@ dependencies {
     testImplementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
     testImplementation("org.xmlunit:xmlunit-matchers:2.9.1")
     testImplementation("org.hamcrest:hamcrest-core:2.2")
+    testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
+    testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
+    testImplementation("org.testcontainers:oracle-xe:1.18.3")
+    // need quarkus-junit-4-mock because of https://github.com/testcontainers/testcontainers-java/issues/970
+    testImplementation("io.quarkus:quarkus-junit4-mock:3.1.0.Final")
+
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
+    testImplementation("io.kotest:kotest-extensions:$kotestVersion")
 }
 
 configurations.all {

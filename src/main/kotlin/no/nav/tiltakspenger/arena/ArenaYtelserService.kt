@@ -7,8 +7,10 @@ import no.nav.helse.rapids_rivers.JsonMessage
 import no.nav.helse.rapids_rivers.MessageContext
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
+import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelser
+import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelserFraDB
 import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
 
 private val LOG = KotlinLogging.logger {}
@@ -17,6 +19,7 @@ private val SECURELOG = KotlinLogging.logger("tjenestekall")
 class ArenaYtelserService(
     rapidsConnection: RapidsConnection,
     private val arenaSoapService: ArenaSoapService,
+    private val arenaSakRepository: SakRepository,
 ) :
     River.PacketListener {
 
@@ -52,6 +55,21 @@ class ArenaYtelserService(
                 val tom = null // packet["tom"].asOptionalLocalDate()
                 val respons: ArenaYtelseResponsDTO =
                     mapArenaYtelser(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
+                if (Configuration.applicationProfile() == Profile.DEV) {
+                    try {
+                        val dbRespons: ArenaYtelseResponsDTO =
+                            mapArenaYtelserFraDB(arenaSakRepository.hentSakerForFnr(fnr = ident))
+                        if (respons == dbRespons) {
+                            LOG.info { "Lik response fra webservice og db" }
+                        } else {
+                            LOG.info { "Ulik response fra webservice og db" }
+                            LOG.info { "webservice: $respons" }
+                            LOG.info { "db: $dbRespons" }
+                        }
+                    } catch (e: Exception) {
+                        LOG.info("Kall mot Arena db feilet", e)
+                    }
+                }
                 packet["@løsning"] = mapOf(
                     BEHOV.ARENAYTELSER to respons,
                 )

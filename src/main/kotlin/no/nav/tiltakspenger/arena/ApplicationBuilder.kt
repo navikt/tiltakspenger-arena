@@ -4,6 +4,7 @@ import io.ktor.server.config.ApplicationConfig
 import mu.KotlinLogging
 import no.nav.helse.rapids_rivers.RapidApplication
 import no.nav.helse.rapids_rivers.RapidsConnection
+import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClientImpl
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsTokenProviderClient
 import no.nav.tiltakspenger.arena.ytelser.ArenaClientConfiguration
@@ -14,6 +15,7 @@ private val LOG = KotlinLogging.logger {}
 internal class ApplicationBuilder(val config: ApplicationConfig) : RapidsConnection.StatusListener {
     val arenaSoapService = ArenaSoapService(ArenaClientConfiguration().ytelseskontraktV3())
     val tokenProviderClient = ArenaOrdsTokenProviderClient(Configuration.ArenaOrdsConfig())
+    val arenaSakRepository = SakRepository()
     val arenaOrdsClient = ArenaOrdsClientImpl(
         arenaOrdsConfig = Configuration.ArenaOrdsConfig(),
         arenaOrdsTokenProvider = tokenProviderClient,
@@ -30,6 +32,7 @@ internal class ApplicationBuilder(val config: ApplicationConfig) : RapidsConnect
             ArenaYtelserService(
                 rapidsConnection = this,
                 arenaSoapService = arenaSoapService,
+                arenaSakRepository = arenaSakRepository,
             )
             ArenaTiltakService(
                 rapidsConnection = this,

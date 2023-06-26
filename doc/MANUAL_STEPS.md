@@ -24,3 +24,9 @@ ClientId/Secret for ORDS tjeneste oppfoelging/aktiviteter i Arena
   https://jira.adeo.no/browse/ARENA-7441
 * Opprette secret i Kubernetes:    
   `kubectl create secret generic ords-arena --from-literal=ARENA_ORDS_CLIENT_ID=<id> --from-literal=ARENA_ORDS_CLIENT_SECRET=<secret> --namespace tpts`
+
+For å koble opp mot ArenaDB i q2:
+
+* Opprette secret i Kuberets i dev-fss:
+  `kubectl create secret generic db-arena --from-literal=ARENADB_USERNAME=<username>
+  --from-literal=ARENADB_PASSWORD=<hemmeligheten> --from-literal=ARENADB_URL='<jdbc url>' --namespace tpts`
