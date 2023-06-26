@@ -54,8 +54,6 @@ class VedtakDAO(
             beslutningsdato = vedtakFakta.beslutningsdato(),
             periodetypeForYtelse = string("VEDTAKTYPEKODE").toVedtakType(),
             uttaksgrad = 100,
-            vedtakBruttoBeloep = vedtakFakta.vedtakBruttoBeløp(),
-            vedtakNettoBeloep = vedtakFakta.vedtakBruttoBeløp(),
             status = string("VEDTAKSTATUSKODE").toVedtakStatus(),
             rettighettype = string("RETTIGHETKODE").toRettighetType(),
             aktivitetsfase = string("AKTFASEKODE").toAktivitetFase(),

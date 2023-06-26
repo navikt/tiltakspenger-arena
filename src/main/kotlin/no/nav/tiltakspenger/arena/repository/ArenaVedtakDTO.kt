@@ -6,8 +6,6 @@ import java.time.LocalDateTime
 data class ArenaVedtakDTO(
     val periodetypeForYtelse: ArenaVedtakType,
     val uttaksgrad: Int,
-    val vedtakBruttoBeloep: Int?,
-    val vedtakNettoBeloep: Int?,
     val fomVedtaksperiode: LocalDate?,
     val tomVedtaksperiode: LocalDate?,
     val status: ArenaVedtakStatus,
