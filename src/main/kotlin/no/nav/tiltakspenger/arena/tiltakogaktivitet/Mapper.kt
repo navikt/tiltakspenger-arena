@@ -97,6 +97,7 @@ fun mapTiltakType(tiltaksnavn: Tiltaksnavn):
         Tiltaksnavn.FORSFAGENK -> ArenaTiltaksaktivitetResponsDTO.TiltakType.FORSFAGENK
         Tiltaksnavn.FORSFAGGRU -> ArenaTiltaksaktivitetResponsDTO.TiltakType.FORSFAGGRU
         Tiltaksnavn.FORSHOYUTD -> ArenaTiltaksaktivitetResponsDTO.TiltakType.FORSHOYUTD
+        Tiltaksnavn.FORSOPPLEV -> ArenaTiltaksaktivitetResponsDTO.TiltakType.FORSOPPLEV
         Tiltaksnavn.FUNKSJASS -> ArenaTiltaksaktivitetResponsDTO.TiltakType.FUNKSJASS
         Tiltaksnavn.GRUNNSKOLE -> ArenaTiltaksaktivitetResponsDTO.TiltakType.GRUNNSKOLE
         Tiltaksnavn.GRUPPEAMO -> ArenaTiltaksaktivitetResponsDTO.TiltakType.GRUPPEAMO

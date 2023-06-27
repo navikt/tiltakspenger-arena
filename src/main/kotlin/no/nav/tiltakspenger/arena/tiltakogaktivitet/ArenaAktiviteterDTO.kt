@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 import no.nav.tiltakspenger.arena.felles.XML_TEXT_ELEMENT_NAME
+import no.nav.tiltakspenger.libs.arena.tiltak.ArenaTiltaksaktivitetResponsDTO
 import java.time.LocalDate
 
 data class ArenaAktiviteterDTO(
@@ -99,6 +100,7 @@ data class ArenaAktiviteterDTO(
             FORSFAGENK("Forsøk fag- og yrkesopplæring enkeltplass"),
             FORSFAGGRU("Forsøk fag- og yrkesopplæring gruppe"),
             FORSHOYUTD("Forsøk høyere utdanning"),
+            FORSOPPLEV("Forsøk opplæringstiltak av lengre varighet"),
             FUNKSJASS("Funksjonsassistanse"),
             GRUNNSKOLE("Grunnskole"),
             GRUPPEAMO("Gruppe AMO"),
