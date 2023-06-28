@@ -33,7 +33,7 @@ dependencies {
     implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:0.0.40")
     implementation("com.github.navikt.tiltakspenger-libs:arenaytelser-dtos:0.0.40")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
-    implementation("com.github.navikt:rapids-and-rivers:2023031511211678875716.e6e2c9250860")
+    implementation("com.github.navikt:rapids-and-rivers:2023042609401682494832.502ede9d3e7e")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains:annotations:24.0.1")
     implementation("com.natpryce:konfig:1.6.10.0")
