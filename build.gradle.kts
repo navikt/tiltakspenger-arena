@@ -1,5 +1,5 @@
 val javaVersion = JavaVersion.VERSION_17
-val cxfVersjon = "3.5.5"
+val cxfVersjon = "4.0.2"
 val ktorVersion = "2.3.1"
 val jacksonVersion = "2.15.2"
 val mockkVersion = "1.13.5"
