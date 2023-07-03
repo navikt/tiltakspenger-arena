@@ -42,7 +42,7 @@ class ArenaClientConfiguration(
                     "Ytelseskontrakt_v3Port",
                 ),
             )
-            //.withOutInterceptor(LoggingOutInterceptor())
+            // .withOutInterceptor(LoggingOutInterceptor())
             .address(arenaSoapConfig.ytelseskontraktUrl)
             .configureStsForSystemUser(stsConfig)
             .build()
