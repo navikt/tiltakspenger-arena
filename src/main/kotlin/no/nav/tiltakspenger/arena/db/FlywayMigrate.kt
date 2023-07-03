@@ -9,6 +9,7 @@ private val LOG = KotlinLogging.logger {}
 
 private fun localFlyway() = Flyway
     .configure()
+    .loggers("slf4j")
     .encoding("UTF-8")
     .locations("db/local-migrations")
     .dataSource(Datasource.hikariDataSource)

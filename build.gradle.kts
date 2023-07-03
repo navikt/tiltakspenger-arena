@@ -90,6 +90,8 @@ dependencies {
     // old version because of https://issues.apache.org/jira/browse/CXF-8727
     runtimeOnly("jakarta.annotation:jakarta.annotation-api:1.3.5")
 
+    runtimeOnly("org.slf4j:jul-to-slf4j:2.0.7")
+
     testImplementation(platform("org.junit:junit-bom:5.9.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("io.mockk:mockk:$mockkVersion")

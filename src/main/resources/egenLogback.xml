@@ -34,12 +34,13 @@
             level="DEBUG" additivity="false">
         <appender-ref ref="secureLog"/>
     </logger>
-    
+
     <logger name="org.apache.cxf.services.SecurityTokenServiceProvider.SecurityTokenServiceSOAP.SecurityTokenServiceIssuer"
             level="DEBUG" additivity="false">
         <appender-ref ref="secureLog"/>
     </logger>
 
+    <!-- Denne fungerer, den ender opp i securelogs: -->
     <logger name="org.apache.cxf.services.Ytelseskontrakt_v3.REQ_OUT" level="DEBUG" additivity="false">
         <appender-ref ref="secureLog"/>
     </logger>
