@@ -5,7 +5,6 @@ import no.nav.common.cxf.CXFClient
 import no.nav.common.cxf.StsConfig
 import no.nav.tiltakspenger.arena.Configuration
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.YtelseskontraktV3
-import org.apache.cxf.ext.logging.LoggingOutInterceptor
 import javax.xml.namespace.QName
 
 class ArenaClientConfiguration(
@@ -43,7 +42,7 @@ class ArenaClientConfiguration(
                     "Ytelseskontrakt_v3Port",
                 ),
             )
-            .withOutInterceptor(LoggingOutInterceptor())
+            //.withOutInterceptor(LoggingOutInterceptor())
             .address(arenaSoapConfig.ytelseskontraktUrl)
             .configureStsForSystemUser(stsConfig)
             .build()
