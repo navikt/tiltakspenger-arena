@@ -91,6 +91,8 @@ dependencies {
     runtimeOnly("jakarta.annotation:jakarta.annotation-api:1.3.5")
 
     runtimeOnly("org.slf4j:jul-to-slf4j:2.0.7")
+    runtimeOnly("org.slf4j:log4j-over-slf4j:2.0.7")
+    runtimeOnly("org.slf4j:jcl-over-slf4j:2.0.7")
 
     testImplementation(platform("org.junit:junit-bom:5.9.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
