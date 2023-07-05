@@ -79,8 +79,8 @@ object Configuration {
     )
 
     fun applicationProfile() = when (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")) {
-        "dev-gcp" -> Profile.DEV
-        "prod-gcp" -> Profile.PROD
+        "dev-fss" -> Profile.DEV
+        "prod-fss" -> Profile.PROD
         else -> Profile.LOCAL
     }
 }
