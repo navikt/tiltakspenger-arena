@@ -70,7 +70,7 @@ class VedtakDAO(
         )
     }
 
-    //Vi vil bare ha positive vedtak,
+    // Vi vil bare ha positive vedtak,
     // da det vi skal finne ut av er når brukeren har tiltakspenger
     @Language("SQL")
     private val findBySQL =
