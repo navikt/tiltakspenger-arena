@@ -37,7 +37,7 @@ data class ArenaSakDTO(
     val tomGyldighetsperiode: LocalDateTime?
         get() = ihtVedtak.mapNotNull { it.tomGyldighetsdato() }.maxOrNull()
     val datoKravMottatt: LocalDate
-        get() = ihtVedtak.first { it.periodetypeForYtelse == ArenaVedtakType.O }.mottattDato
+        get() = ihtVedtak.first { it.vedtakType == ArenaVedtakType.O }.mottattDato
     val fagsystemSakId: String
         get() = aar.toString() + lopenrSak
 }

@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class ArenaVedtakDTO(
-    val periodetypeForYtelse: ArenaVedtakType,
+    val vedtakType: ArenaVedtakType,
     val uttaksgrad: Int,
     val fomVedtaksperiode: LocalDate?,
     val tomVedtaksperiode: LocalDate?,
@@ -16,6 +16,10 @@ data class ArenaVedtakDTO(
     val mottattDato: LocalDate,
     val registrertDato: LocalDate?,
     val utfall: ArenaUtfall,
+    val antallDager: Double?,
+    val opprinneligTomVedtaksperiode: LocalDate?,
+    val relatertTiltak: String?,
+    val antallBarn: Int?,
 ) {
     fun fomGyldighetsdato(): LocalDateTime? = (fomVedtaksperiode ?: registrertDato)!!.atStartOfDay()
     fun tomGyldighetsdato(): LocalDateTime? = tomVedtaksperiode?.atStartOfDay()

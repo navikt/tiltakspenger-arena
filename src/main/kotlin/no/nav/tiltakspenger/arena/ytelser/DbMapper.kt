@@ -22,7 +22,7 @@ fun mapVedtakFraDB(vedtakListe: List<ArenaVedtakDTO>): List<ArenaYtelseResponsDT
     vedtakListe.map { vedtak ->
         ArenaYtelseResponsDTO.VedtakDTO(
             beslutningsDato = vedtak.beslutningsdato,
-            vedtakType = ArenaYtelseResponsDTO.VedtakType.valueOf(vedtak.periodetypeForYtelse.name),
+            vedtakType = ArenaYtelseResponsDTO.VedtakType.valueOf(vedtak.vedtakType.name),
             vedtaksperiodeFom = vedtak.fomVedtaksperiode,
             vedtaksperiodeTom = vedtak.tomVedtaksperiode,
             rettighetType = ArenaYtelseResponsDTO.RettighetType.valueOf(vedtak.rettighettype.name),

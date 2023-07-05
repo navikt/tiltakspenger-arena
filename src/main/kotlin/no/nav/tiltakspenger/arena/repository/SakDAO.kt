@@ -65,7 +65,7 @@ class SakDAO(
             (SELECT 1
              FROM vedtak
              WHERE sak.sak_id = vedtak.sak_id
-               AND vedtak.rettighetkode NOT IN ('AA115')
+               AND vedtak.rettighetkode = 'BASI' --Sjekker ikke for barnetillegg her
                AND (((SELECT DISTINCT first_value(fra_dato) OVER (ORDER BY fra_dato ASC)
                      FROM vedtak vedt
                      WHERE vedt.sak_id = sak.sak_id
@@ -80,11 +80,7 @@ class SakDAO(
                AND vedtak.vedtaktypekode IN ('O', 'E', 'G')
                AND vedtak.utfallkode NOT IN ('AVBRUTT', 'NEI')
                AND vedtak.fra_dato <= NVL(vedtak.til_dato, vedtak.fra_dato)
-               ) OR (vedtak.fra_dato >= to_date(:fra_dato)
-                    AND vedtak.fra_dato <= to_date(:til_dato)
-                    AND vedtak.fra_dato <= NVL(vedtak.til_dato,vedtak.fra_dato)
-                    AND vedtak.vedtaktypekode IN ('O') -- Kun O, ønsker kun ut de som har utfall nei og ingen andre vedtak på saken
-                    AND vedtak.utfallkode = 'NEI')))
+               )))
         ORDER BY sak.sak_id DESC
         """.trimIndent()
 }

@@ -51,29 +51,37 @@ class VedtakDAO(
         val vedtakId = long("VEDTAK_ID")
         val vedtakFakta = vedtakfaktaDAO.findByVedtakId(vedtakId, txSession)
         return ArenaVedtakDTO(
-            beslutningsdato = vedtakFakta.beslutningsdato(),
-            periodetypeForYtelse = string("VEDTAKTYPEKODE").toVedtakType(),
+            beslutningsdato = vedtakFakta.beslutningsdato,
+            vedtakType = string("VEDTAKTYPEKODE").toVedtakType(),
             uttaksgrad = 100,
             status = string("VEDTAKSTATUSKODE").toVedtakStatus(),
             rettighettype = string("RETTIGHETKODE").toRettighetType(),
             aktivitetsfase = string("AKTFASEKODE").toAktivitetFase(),
-            dagsats = vedtakFakta.dagsats(),
+            dagsats = vedtakFakta.dagsats,
             fomVedtaksperiode = localDateOrNull("FRA_DATO"),
             tomVedtaksperiode = localDateOrNull("TIL_DATO"),
             mottattDato = localDate("DATO_MOTTATT"),
             registrertDato = localDateOrNull("REG_DATO"),
             utfall = string("UTFALLKODE").toUtfall(),
+            antallDager = vedtakFakta.antallDager,
+            opprinneligTomVedtaksperiode = vedtakFakta.opprinneligTilDato,
+            relatertTiltak = vedtakFakta.relatertTiltak,
+            antallBarn = vedtakFakta.antallBarn,
         )
     }
 
+    //Vi vil bare ha positive vedtak,
+    // da det vi skal finne ut av er når brukeren har tiltakspenger
     @Language("SQL")
     private val findBySQL =
         """
         SELECT *
         FROM vedtak v
         WHERE v.sak_id = :sak_id
+        -- AND v.rettighetkode IN ('BASI', 'BTIL') -- Venter litt med BTIL
         AND v.rettighetkode = 'BASI'
-        AND v.utfallkode != 'AVBRUTT'
+        AND v.vedtaktypekode IN ('O', 'E', 'G')
+        AND v.utfallkode NOT IN ('AVBRUTT', 'NEI')
         ORDER BY v.lopenrvedtak DESC
         """.trimIndent()
 }

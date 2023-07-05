@@ -15,7 +15,7 @@ class VedtakfaktaDAO {
     fun findByVedtakId(
         vedtakId: Long,
         txSession: TransactionalSession,
-    ): List<ArenaVedtakfaktaDTO> {
+    ): ArenaTiltakspengerVedtakfaktaDTO {
         val paramMap = mapOf(
             "vedtak_id" to vedtakId.toString(),
         )
@@ -23,7 +23,7 @@ class VedtakfaktaDAO {
             queryOf(findBySQL, paramMap)
                 .map { row -> row.toVedtakfakta() }
                 .asList,
-        )
+        ).toArenaTiltakspengerVedtakfaktaDTO()
     }
 
     private fun Row.toVedtakfakta(): ArenaVedtakfaktaDTO {
