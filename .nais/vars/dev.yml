@@ -3,3 +3,4 @@ kafka:
 vaultpath: dev
 ingress:
   url: https://tiltakspenger-arena.dev-fss-pub.nais.io
+cluster: dev-gcp
