@@ -28,7 +28,7 @@ spec:
     enabled: true
     path: /metrics
   strategy:
-    type: Recreate
+    type: RollingUpdate
   replicas:
     min: 2
     max: 2
