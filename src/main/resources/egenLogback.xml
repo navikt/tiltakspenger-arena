@@ -31,7 +31,7 @@
     </logger>
 
     <logger name="no.nav.common.cxf.CXFMaskSAMLTokenLoggingOutInterceptor.Ytelseskontrakt_v3.Ytelseskontrakt_v3Port.Ytelseskontrakt_v3"
-            level="DEBUG" additivity="false">
+            level="WARN" additivity="false">
         <appender-ref ref="secureLog"/>
     </logger>
 
