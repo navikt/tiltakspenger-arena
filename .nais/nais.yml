@@ -20,6 +20,8 @@ spec:
       rules:
         - application: tiltakspenger-soknad-api
           cluster: {{ cluster }}
+        - application: tiltakspenger-tiltak
+          cluster: {{ cluster }}
   liveness:
     path: /isalive
   readiness:
