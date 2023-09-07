@@ -38,6 +38,7 @@ spec:
     pool: {{ kafka.pool }}
   secureLogs:
     enabled: true
+  webproxy: true
   envFrom:
     - secret: ords-arena
     - secret: db-arena
