@@ -13,11 +13,13 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
 import no.nav.security.token.support.v2.RequiredClaims
 import no.nav.security.token.support.v2.tokenValidationSupport
+import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 
 fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient, config: ApplicationConfig) {
     val issuerName = "tokendings"
+    val issuerAzure = "azure"
     install(Authentication) {
         val requiredClaimsMap = arrayOf("acr=Level4")
         tokenValidationSupport(
@@ -25,6 +27,15 @@ fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient, config: ApplicationC
             config = config,
             requiredClaims = RequiredClaims(
                 issuer = issuerName,
+                claimMap = requiredClaimsMap,
+                combineWithOr = false,
+            ),
+        )
+        tokenValidationSupport(
+            name = issuerAzure,
+            config = config,
+            requiredClaims = RequiredClaims(
+                issuer = issuerAzure,
                 claimMap = requiredClaimsMap,
                 combineWithOr = false,
             ),
@@ -40,6 +51,9 @@ fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient, config: ApplicationC
     routing {
         authenticate(issuerName) {
             tiltakRoutes(arenaOrdsClient = arenaOrdsClient)
+        }
+        authenticate(issuerAzure) {
+            tiltakAzureRoutes(arenaOrdsClient = arenaOrdsClient)
         }
     }
 }
