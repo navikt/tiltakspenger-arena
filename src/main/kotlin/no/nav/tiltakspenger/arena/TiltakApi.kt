@@ -15,6 +15,7 @@ import no.nav.security.token.support.v2.RequiredClaims
 import no.nav.security.token.support.v2.tokenValidationSupport
 import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
+import no.nav.tiltakspenger.arena.routes.tiltakUtenRoutes
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 
 fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient, config: ApplicationConfig) {
@@ -36,7 +37,7 @@ fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient, config: ApplicationC
             config = config,
             requiredClaims = RequiredClaims(
                 issuer = issuerAzure,
-                claimMap = requiredClaimsMap,
+                claimMap = arrayOf(),
                 combineWithOr = false,
             ),
         )
@@ -55,5 +56,6 @@ fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient, config: ApplicationC
         authenticate(issuerAzure) {
             tiltakAzureRoutes(arenaOrdsClient = arenaOrdsClient)
         }
+        tiltakUtenRoutes(arenaOrdsClient = arenaOrdsClient)
     }
 }

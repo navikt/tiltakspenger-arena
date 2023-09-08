@@ -21,6 +21,7 @@ spec:
         - application: tiltakspenger-soknad-api
           cluster: {{ cluster }}
         - application: tiltakspenger-tiltak
+          namespace: tpts
           cluster: {{ cluster }}
   liveness:
     path: /isalive
