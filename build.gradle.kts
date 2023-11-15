@@ -1,8 +1,8 @@
-val javaVersion = JavaVersion.VERSION_17
+val javaVersion = JavaVersion.VERSION_21
 val cxfVersjon = "3.5.5"
 val ktorVersion = "2.3.1"
 val jacksonVersion = "2.15.2"
-val mockkVersion = "1.13.5"
+val mockkVersion = "1.13.8"
 val kotlinxCoroutinesVersion = "1.7.1"
 val tokenSupportVersion = "3.0.8"
 val testContainersVersion = "1.18.3"
@@ -13,7 +13,7 @@ project.base.archivesName.set("app")
 plugins {
     application
     id("java")
-    kotlin("jvm") version "1.8.22"
+    kotlin("jvm") version "1.9.20"
     id("com.diffplug.spotless") version "6.19.0"
     id("com.github.bjornvester.wsdl2java") version "1.2"
 }
