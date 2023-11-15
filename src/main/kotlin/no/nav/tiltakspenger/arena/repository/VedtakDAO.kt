@@ -69,8 +69,10 @@ class VedtakDAO(
             relatertTiltak = vedtakFakta.relatertTiltak,
             antallBarn = vedtakFakta.antallBarn,
         ).also {
-            if (!(it.status.equals(ArenaYtelseResponsDTO.VedtakStatusType.GODKJ)
-                    || it.status.equals(ArenaYtelseResponsDTO.VedtakStatusType.IVERK))
+            if (!(
+                    it.status.equals(ArenaYtelseResponsDTO.VedtakStatusType.GODKJ) ||
+                        it.status.equals(ArenaYtelseResponsDTO.VedtakStatusType.IVERK)
+                    )
             ) {
                 log.info { "VedtakStatusType er ${it.status}" }
             }
