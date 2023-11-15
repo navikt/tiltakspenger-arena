@@ -4,6 +4,7 @@ import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
 import mu.KotlinLogging
+import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
 import org.intellij.lang.annotations.Language
 
 class VedtakDAO(
@@ -67,7 +68,13 @@ class VedtakDAO(
             opprinneligTomVedtaksperiode = vedtakFakta.opprinneligTilDato,
             relatertTiltak = vedtakFakta.relatertTiltak,
             antallBarn = vedtakFakta.antallBarn,
-        )
+        ).also {
+            if (!(it.status.equals(ArenaYtelseResponsDTO.VedtakStatusType.GODKJ)
+                    || it.status.equals(ArenaYtelseResponsDTO.VedtakStatusType.IVERK))
+            ) {
+                log.info { "VedtakStatusType er ${it.status}" }
+            }
+        }
     }
 
     // Vi vil bare ha positive vedtak,
@@ -78,7 +85,7 @@ class VedtakDAO(
         SELECT *
         FROM vedtak v
         WHERE v.sak_id = :sak_id
-        -- AND v.rettighetkode IN ('BASI', 'BTIL') -- Venter litt med BTIL
+        -- AND v.rettighetkode IN ('BASI', 'BTIL') -- Venter litt med BTIL (Barnetillegg)
         AND v.rettighetkode = 'BASI'
         AND v.vedtaktypekode IN ('O', 'E', 'G')
         AND v.utfallkode NOT IN ('AVBRUTT', 'NEI')
