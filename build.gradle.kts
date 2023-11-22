@@ -4,7 +4,7 @@ val ktorVersion = "2.3.6"
 val jacksonVersion = "2.15.2"
 val mockkVersion = "1.13.8"
 val kotlinxCoroutinesVersion = "1.7.1"
-val tokenSupportVersion = "3.0.8"
+val tokenSupportVersion = "3.1.9"
 val testContainersVersion = "1.18.3"
 val kotestVersion = "5.6.2"
 
