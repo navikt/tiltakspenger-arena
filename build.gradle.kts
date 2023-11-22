@@ -1,6 +1,6 @@
 val javaVersion = JavaVersion.VERSION_21
 val cxfVersjon = "3.5.5"
-val ktorVersion = "2.3.1"
+val ktorVersion = "2.3.6"
 val jacksonVersion = "2.15.2"
 val mockkVersion = "1.13.8"
 val kotlinxCoroutinesVersion = "1.7.1"
