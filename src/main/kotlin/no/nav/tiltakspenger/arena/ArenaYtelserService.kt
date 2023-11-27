@@ -63,9 +63,20 @@ class ArenaYtelserService(
                             LOG.info { "Lik response fra webservice og db" }
                         } else {
                             LOG.info { "Ulik response fra webservice og db" }
+                            SECURELOG.info { "Ulik response fra webservice og db for ident $ident" }
                             LOG.info { "webservice: $respons" }
                             LOG.info { "db: $dbRespons" }
                         }
+                        /*
+                        dbRespons.saker
+                            ?.flatMap { it.vedtak }
+                            ?.map {
+                                Periode(
+                                    it.vedtaksperiodeFom ?: LocalDate.MIN,
+                                    it.vedtaksperiodeTom ?: LocalDate.MAX,
+                                )
+                            }
+                         */
                     } catch (e: Exception) {
                         LOG.info("Kall mot Arena db feilet", e)
                     }
