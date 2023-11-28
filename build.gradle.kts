@@ -15,7 +15,7 @@ plugins {
     id("java")
     kotlin("jvm") version "1.9.20"
     id("com.diffplug.spotless") version "6.22.0"
-    id("com.github.bjornvester.wsdl2java") version "1.2"
+    id("com.github.bjornvester.wsdl2java") version "2.0.2"
 }
 
 repositories {
