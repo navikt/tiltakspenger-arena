@@ -2,14 +2,14 @@
 
 package no.nav.tiltakspenger.arena.ytelser
 
+import jakarta.xml.soap.SOAPException
+import jakarta.xml.ws.ProtocolException
+import jakarta.xml.ws.handler.MessageContext
+import jakarta.xml.ws.handler.soap.SOAPHandler
+import jakarta.xml.ws.handler.soap.SOAPMessageContext
 import mu.KotlinLogging
 import org.slf4j.MDC
 import javax.xml.namespace.QName
-import javax.xml.soap.SOAPException
-import javax.xml.ws.ProtocolException
-import javax.xml.ws.handler.MessageContext
-import javax.xml.ws.handler.soap.SOAPHandler
-import javax.xml.ws.handler.soap.SOAPMessageContext
 
 private val LOG = KotlinLogging.logger {}
 

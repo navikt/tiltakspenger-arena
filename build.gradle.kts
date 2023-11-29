@@ -1,5 +1,5 @@
 val javaVersion = JavaVersion.VERSION_21
-val cxfVersjon = "3.5.5"
+val cxfVersjon = "4.0.2"
 val ktorVersion = "2.3.6"
 val jacksonVersion = "2.16.0"
 val mockkVersion = "1.13.8"
@@ -15,7 +15,7 @@ plugins {
     id("java")
     kotlin("jvm") version "1.9.20"
     id("com.diffplug.spotless") version "6.22.0"
-    id("com.github.bjornvester.wsdl2java") version "1.2"
+    id("com.github.bjornvester.wsdl2java") version "2.0.2"
 }
 
 repositories {
@@ -64,7 +64,7 @@ dependencies {
     implementation("no.nav.security:token-validation-ktor-v2:$tokenSupportVersion")
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
     // old version because of https://github.com/bjornvester/wsdl2java-gradle-plugin#configure-binding-files
-    implementation("io.github.threeten-jaxb:threeten-jaxb-core:1.2")
+    implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.1.0")
     implementation("no.nav.common:cxf:2.2023.01.09_08.56-ae38750bc0d9")
     constraints {
         implementation("commons-collections:commons-collections") {
@@ -74,8 +74,8 @@ dependencies {
             because("https://security.snyk.io/vuln/SNYK-JAVA-COMMONSCOLLECTIONS-30078")
         }
     }
-    implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.3")
-    implementation("jakarta.xml.soap:jakarta.xml.soap-api:1.4.2")
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.1")
+    implementation("jakarta.xml.soap:jakarta.xml.soap-api:3.0.1")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersjon")
     implementation("org.apache.cxf:cxf-core:$cxfVersjon")
 
@@ -87,9 +87,9 @@ dependencies {
 
 
     runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersjon")
-    runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:1.5.3")
+    runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:3.0.3")
     // old version because of https://issues.apache.org/jira/browse/CXF-8727
-    runtimeOnly("jakarta.annotation:jakarta.annotation-api:1.3.5")
+    runtimeOnly("jakarta.annotation:jakarta.annotation-api:2.1.1")
 
     implementation("org.slf4j:jul-to-slf4j:2.0.7")
     implementation("org.slf4j:log4j-over-slf4j:2.0.7")
