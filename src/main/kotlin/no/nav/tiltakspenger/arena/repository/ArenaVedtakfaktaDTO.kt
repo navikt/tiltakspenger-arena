@@ -20,18 +20,19 @@ TDATO	Gjelder til
 TILTAKNAVN	Knyttet til tiltak
 
 (Hentet ut med SQLen
-select distinct(vf.vedtakfaktakode), vft.vedtakfaktanavn
-from vedtakfaktatype vft, vedtakfakta vf, vedtak v, sak s
-where vft.vedtakfaktakode = vf.vedtakfaktakode
-and vf.vedtak_id = v.vedtak_id
-and v.sak_id = s.sak_id
-AND s.sakskode = 'INDIV';
+    select distinct(vf.vedtakfaktakode), vft.vedtakfaktanavn
+    from vedtakfaktatype vft, vedtakfakta vf, vedtak v, sak s
+    where vft.vedtakfaktakode = vf.vedtakfaktakode
+    and vf.vedtak_id = v.vedtak_id
+    and v.sak_id = s.sak_id
+    AND s.sakskode = 'INDIV';
 )
  */
 
 private val log = KotlinLogging.logger {}
 
 enum class ArenaLovligeVedtakFaktaForTiltakspenger(val navn: String) {
+    // BARNMSTON er bare i bruk på BTIL vedtak!
     BARNMSTON("Antall barn med stønad"),
     DAGS("DAGSATS"),
     DAGUTBTILT("Antall dager med utbetaling"),
