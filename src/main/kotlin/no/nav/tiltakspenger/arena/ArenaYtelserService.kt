@@ -7,11 +7,15 @@ import no.nav.helse.rapids_rivers.JsonMessage
 import no.nav.helse.rapids_rivers.MessageContext
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
+import no.nav.tiltakspenger.arena.felles.Periode
+import no.nav.tiltakspenger.arena.felles.inneholderOverlapp
+import no.nav.tiltakspenger.arena.felles.leggSammen
 import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelser
 import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelserFraDB
 import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
+import java.time.LocalDate
 
 private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
@@ -67,8 +71,8 @@ class ArenaYtelserService(
                             LOG.info { "webservice: $respons" }
                             LOG.info { "db: $dbRespons" }
                         }
-                        /*
-                        dbRespons.saker
+
+                        val vedtakPerioder = dbRespons.saker
                             ?.flatMap { it.vedtak }
                             ?.map {
                                 Periode(
@@ -76,7 +80,13 @@ class ArenaYtelserService(
                                     it.vedtaksperiodeTom ?: LocalDate.MAX,
                                 )
                             }
-                         */
+                        if (vedtakPerioder != null) {
+                            if (vedtakPerioder.inneholderOverlapp()) {
+                                LOG.info { "Vedtaksperiodene fra Arena overlapper hverandre" }
+                            }
+                            val sammenhengenePerioder = vedtakPerioder.leggSammen()
+                            LOG.info { "Antall sammenhengende vedtaksperioder er ${sammenhengenePerioder.size}" }
+                        }
                     } catch (e: Exception) {
                         LOG.info("Kall mot Arena db feilet", e)
                     }
