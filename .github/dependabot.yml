@@ -9,12 +9,7 @@ updates:
     assignees:
       - "@navikt/tpts"
     ignore:
-      # Trenger foreløpig å ignorere noen avhengigheter, se build.gradle.kts
-      - dependency-name: "io.github.threeten-jaxb:threeten-jaxb-core"
-      - dependency-name: "jakarta.xml.bind:jakarta.xml.bind-api"
-      - dependency-name: "jakarta.xml.soap:jakarta.xml.soap-api"
-      - dependency-name: "jakarta.annotation:jakarta.annotation-api"
-      - dependency-name: "com.sun.xml.messaging.saaj:saaj-impl"
+    # Trenger ikke lenger å ignorere noen dependencies, vi har oppgradert til jakarta-namespacet og siste versjon av cxf
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
