@@ -68,9 +68,11 @@ class ArenaYtelserService(
                         } else {
                             LOG.info { "Ulik response fra webservice og db" }
                             SECURELOG.info { "Ulik response fra webservice og db for ident $ident" }
-                            LOG.info { "webservice: $respons" }
-                            LOG.info { "db: $dbRespons" }
+                            SECURELOG.info { "webservice: $respons" }
+                            SECURELOG.info { "db: $dbRespons" }
                         }
+                        LOG.info { "Antall vedtak fra webservicen er ${respons.saker?.flatMap { it.vedtak }?.size ?: 0}" }
+                        LOG.info { "Antall vedtak fra db er ${dbRespons.saker?.flatMap { it.vedtak }?.size ?: 0}" }
 
                         val vedtakPerioder = dbRespons.saker
                             ?.flatMap { it.vedtak }
