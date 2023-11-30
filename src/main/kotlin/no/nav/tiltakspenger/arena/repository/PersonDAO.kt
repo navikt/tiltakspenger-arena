@@ -6,9 +6,12 @@ import kotliquery.queryOf
 import mu.KotlinLogging
 import org.intellij.lang.annotations.Language
 
-class PersonDAO() {
-    private val log = KotlinLogging.logger {}
-    private val securelog = KotlinLogging.logger("tjenestekall")
+class PersonDAO {
+
+    companion object {
+        private val LOG = KotlinLogging.logger {}
+        private val SECURELOG = KotlinLogging.logger("tjenestekall")
+    }
 
     fun findByFnr(
         fnr: String,

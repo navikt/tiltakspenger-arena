@@ -11,8 +11,8 @@ class SakDAO(
     private val vedtakDAO: VedtakDAO = VedtakDAO(),
 ) {
     companion object {
-        private val log = KotlinLogging.logger {}
-        private val securelog = KotlinLogging.logger("tjenestekall")
+        private val LOG = KotlinLogging.logger {}
+        private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
         private fun String.toStatus(): ArenaSakStatus =
             ArenaSakStatus.valueOf(this)
@@ -36,7 +36,10 @@ class SakDAO(
             queryOf(findBySQL, paramMap)
                 .map { row -> row.toSak(txSession) }
                 .asList,
-        )
+        ).also {
+            LOG.info { "Antall saker er ${it.size}" }
+            SECURELOG.info { "Antall saker er ${it.size}" }
+        }
     }
 
     private fun Row.toSak(txSession: TransactionalSession): ArenaSakDTO {

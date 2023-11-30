@@ -12,8 +12,8 @@ class VedtakDAO(
 ) {
 
     companion object {
-        private val log = KotlinLogging.logger {}
-        private val securelog = KotlinLogging.logger("tjenestekall")
+        private val LOG = KotlinLogging.logger {}
+        private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
         private fun String.toVedtakType(): ArenaVedtakType =
             ArenaVedtakType.valueOf(this)
@@ -45,7 +45,10 @@ class VedtakDAO(
             queryOf(findBySQL, paramMap)
                 .map { row -> row.toVedtak(txSession) }
                 .asList,
-        )
+        ).also {
+            LOG.info { "Antall vedtak er ${it.size}" }
+            SECURELOG.info { "Antall vedtak er ${it.size}" }
+        }
     }
 
     private fun Row.toVedtak(txSession: TransactionalSession): ArenaVedtakDTO {
@@ -74,7 +77,7 @@ class VedtakDAO(
                         it.status.equals(ArenaYtelseResponsDTO.VedtakStatusType.IVERK)
                     )
             ) {
-                log.info { "VedtakStatusType er ${it.status}" }
+                LOG.info { "VedtakStatusType er ${it.status}" }
             }
         }
     }

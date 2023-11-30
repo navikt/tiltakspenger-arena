@@ -1,6 +1,7 @@
 package no.nav.tiltakspenger.arena.repository
 
 import kotliquery.sessionOf
+import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.db.Datasource
 import java.time.LocalDate
 
@@ -26,6 +27,11 @@ class SakRepository(
     private val sakDAO: SakDAO = SakDAO(),
 ) {
 
+    companion object {
+        private val LOG = KotlinLogging.logger {}
+        private val SECURELOG = KotlinLogging.logger("tjenestekall")
+    }
+
     fun hentSakerForFnr(
         fnr: String,
         fom: LocalDate = LocalDate.of(1900, 1, 1),
@@ -33,7 +39,11 @@ class SakRepository(
     ): List<ArenaSakDTO> {
         sessionOf(Datasource.hikariDataSource).use {
             return it.transaction { txSession ->
-                val person = personDAO.findByFnr(fnr, txSession) ?: return emptyList()
+                val person = personDAO.findByFnr(fnr, txSession) ?: return emptyList<ArenaSakDTO>()
+                    .also {
+                        LOG.info { "Fant ikke person" }
+                        SECURELOG.info { "Fant ikke person med ident $fnr" }
+                    }
                 sakDAO.findByPersonIdAndPeriode(
                     personId = person.personId,
                     fom = fom,
