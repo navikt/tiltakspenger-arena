@@ -66,7 +66,7 @@ dependencies {
     implementation("no.nav.security:token-validation-ktor-v2:$tokenSupportVersion")
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.1.0")
-    implementation("no.nav.common:cxf:2.2023.01.09_08.56-ae38750bc0d9")
+    implementation("no.nav.common:cxf:3.2023.10.23_12.41-bafec3836d28")
     constraints {
         implementation("commons-collections:commons-collections") {
             version {
