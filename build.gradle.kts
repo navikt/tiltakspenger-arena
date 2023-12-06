@@ -67,15 +67,7 @@ dependencies {
     implementation("no.nav.security:token-validation-ktor-v2:$tokenSupportVersion")
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.1.0")
-    implementation("no.nav.common:cxf:2.2023.01.09_08.56-ae38750bc0d9")
-    constraints {
-        implementation("commons-collections:commons-collections") {
-            version {
-                require("3.2.2")
-            }
-            because("https://security.snyk.io/vuln/SNYK-JAVA-COMMONSCOLLECTIONS-30078")
-        }
-    }
+    implementation("no.nav.common:cxf:3.2023.10.23_12.41-bafec3836d28")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.1")
     implementation("jakarta.xml.soap:jakarta.xml.soap-api:3.0.1")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersjon")
