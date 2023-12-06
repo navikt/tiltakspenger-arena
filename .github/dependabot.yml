@@ -9,7 +9,7 @@ updates:
     assignees:
       - "@navikt/tpts"
     ignore:
-    # Trenger ikke lenger å ignorere noen dependencies, vi har oppgradert til jakarta-namespacet og siste versjon av cxf
+      - dependency-name: "jakarta.xml.bind:jakarta.xml.bind-api"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:

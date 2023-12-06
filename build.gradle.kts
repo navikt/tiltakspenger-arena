@@ -68,7 +68,7 @@ dependencies {
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.1.0")
     implementation("no.nav.common:cxf:3.2023.10.23_12.41-bafec3836d28")
-    implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.1")
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api:3.0.1")
     implementation("jakarta.xml.soap:jakarta.xml.soap-api:3.0.1")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersjon")
     implementation("org.apache.cxf:cxf-core:$cxfVersjon")
