@@ -38,18 +38,22 @@ class SakRepository(
         tom: LocalDate = LocalDate.of(2099, 12, 31),
     ): List<ArenaSakDTO> {
         sessionOf(Datasource.hikariDataSource).use {
-            return it.transaction { txSession ->
-                val person = personDAO.findByFnr(fnr, txSession) ?: return emptyList<ArenaSakDTO>()
-                    .also {
-                        LOG.info { "Fant ikke person" }
-                        SECURELOG.info { "Fant ikke person med ident $fnr" }
-                    }
-                sakDAO.findByPersonIdAndPeriode(
+            it.transaction { txSession ->
+                val person = personDAO.findByFnr(fnr, txSession)
+                if (person == null) {
+                    LOG.info { "Fant ikke person" }
+                    SECURELOG.info { "Fant ikke person med ident $fnr" }
+                    return emptyList()
+                }
+                val saker = sakDAO.findByPersonIdAndPeriode(
                     personId = person.personId,
                     fom = fom,
                     tom = tom,
                     txSession = txSession,
                 )
+                LOG.info { "Antall saker er ${saker.size}" }
+                SECURELOG.info { "Antall saker er ${saker.size}" }
+                return saker
             }
         }
     }

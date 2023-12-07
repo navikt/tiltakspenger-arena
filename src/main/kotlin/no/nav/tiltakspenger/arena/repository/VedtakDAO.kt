@@ -4,7 +4,6 @@ import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
 import mu.KotlinLogging
-import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
 import org.intellij.lang.annotations.Language
 
 class VedtakDAO(
@@ -39,22 +38,19 @@ class VedtakDAO(
         txSession: TransactionalSession,
     ): List<ArenaVedtakDTO> {
         val paramMap = mapOf(
-            "sak_id" to sakId.toString(),
+            "sak_id" to sakId,
         )
         return txSession.run(
             queryOf(findBySQL, paramMap)
                 .map { row -> row.toVedtak(txSession) }
                 .asList,
-        ).also {
-            LOG.info { "Antall vedtak er ${it.size}" }
-            SECURELOG.info { "Antall vedtak er ${it.size}" }
-        }
+        )
     }
 
     private fun Row.toVedtak(txSession: TransactionalSession): ArenaVedtakDTO {
         val vedtakId = long("VEDTAK_ID")
         val vedtakFakta = vedtakfaktaDAO.findByVedtakId(vedtakId, txSession)
-        return ArenaVedtakDTO(
+        val dto = ArenaVedtakDTO(
             beslutningsdato = vedtakFakta.beslutningsdato,
             vedtakType = string("VEDTAKTYPEKODE").toVedtakType(),
             uttaksgrad = 100,
@@ -71,15 +67,16 @@ class VedtakDAO(
             opprinneligTomVedtaksperiode = vedtakFakta.opprinneligTilDato,
             relatertTiltak = vedtakFakta.relatertTiltak,
             antallBarn = vedtakFakta.antallBarn,
-        ).also {
-            if (!(
-                    it.status.equals(ArenaYtelseResponsDTO.VedtakStatusType.GODKJ) ||
-                        it.status.equals(ArenaYtelseResponsDTO.VedtakStatusType.IVERK)
-                    )
-            ) {
-                LOG.info { "VedtakStatusType er ${it.status}" }
-            }
+        )
+
+        if (!(
+                dto.status == ArenaVedtakStatus.GODKJ ||
+                    dto.status == ArenaVedtakStatus.IVERK
+                )
+        ) {
+            LOG.info { "VedtakStatusType er ${dto.status}" }
         }
+        return dto
     }
 
     // Vi vil bare ha positive vedtak,

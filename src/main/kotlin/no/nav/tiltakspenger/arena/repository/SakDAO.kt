@@ -36,22 +36,21 @@ class SakDAO(
             queryOf(findBySQL, paramMap)
                 .map { row -> row.toSak(txSession) }
                 .asList,
-        ).also {
-            LOG.info { "Antall saker er ${it.size}" }
-            SECURELOG.info { "Antall saker er ${it.size}" }
-        }
+        )
     }
 
     private fun Row.toSak(txSession: TransactionalSession): ArenaSakDTO {
         val sakId = long("SAK_ID")
+        val vedtak = vedtakDAO.findBySakId(sakId, txSession)
+        LOG.info { "Antall vedtak er ${vedtak.size} for sak med id $sakId" }
+        SECURELOG.info { "Antall vedtak er ${vedtak.size} for sak med id $sakId" }
+
         return ArenaSakDTO(
             aar = int("AAR"),
             lopenrSak = long("LOPENRSAK"),
             status = string("SAKSTATUSKODE").toStatus(),
             ytelsestype = string("SAKSKODE").toYtelse(),
-            // bortfallsprosentDagerIgjen = null, // Gjelder bare AAP og Dagpenger
-            // bortfallsprosentUkerIgjen = null,  // Gjelder bare AAP og Dagpenger
-            ihtVedtak = vedtakDAO.findBySakId(sakId, txSession),
+            ihtVedtak = vedtak,
         )
     }
 
