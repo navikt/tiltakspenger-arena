@@ -33,7 +33,7 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
     // implementation("com.github.navikt:tiltakspenger-libs:0.0.7")
-    implementation("com.google.guava:guava:32.1.2-jre")
+    implementation("com.google.guava:guava:32.1.3-jre")
     implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:0.0.51")
     implementation("com.github.navikt.tiltakspenger-libs:arenaytelser-dtos:0.0.62")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
@@ -87,7 +87,7 @@ dependencies {
 
     implementation("org.slf4j:jul-to-slf4j:2.0.7")
     implementation("org.slf4j:log4j-over-slf4j:2.0.9")
-    implementation("org.slf4j:jcl-over-slf4j:2.0.7")
+    implementation("org.slf4j:jcl-over-slf4j:2.0.9")
 
     testImplementation(platform("org.junit:junit-bom:5.9.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
