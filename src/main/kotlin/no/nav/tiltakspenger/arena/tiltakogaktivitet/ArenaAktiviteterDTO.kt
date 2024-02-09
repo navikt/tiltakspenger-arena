@@ -151,7 +151,7 @@ data class ArenaAktiviteterDTO(
             UTBHLETTPS("Utredning/behandling lettere psykiske lidelser"),
             UTBHPSLD("Utredning/behandling lettere psykiske og sammensatte lidelser"),
             UTBHSAMLI("Utredning/behandling sammensatte lidelser"),
-            UTVAOONAV("Utvidet oppfølging i NAV"),
+            UTVAOONAV("Arbeid med støtte"),
             UTVOPPFOPL("Utvidet oppfølging i opplæring"),
             VARLONTIL("Varig lønnstilskudd"),
             VATIAROR("Varig tilrettelagt arbeid i ordinær virksomhet"),
