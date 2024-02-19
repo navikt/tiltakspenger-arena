@@ -25,7 +25,12 @@ internal class ApplicationBuilder(val config: ApplicationConfig) : RapidsConnect
         RapidApplication.RapidApplicationConfig.fromEnv(Configuration.rapidsAndRivers),
     )
         .withKtorModule {
-            tiltakApi(arenaOrdsClient = arenaOrdsClient, config = config)
+            tiltakApi(
+                arenaSoapService = arenaSoapService,
+                arenaSakRepository = arenaSakRepository,
+                arenaOrdsClient = arenaOrdsClient,
+                config = config,
+            )
         }
         .build()
         .apply {
