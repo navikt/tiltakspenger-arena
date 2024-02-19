@@ -28,10 +28,12 @@ class TiltakepengerPerioderService(
         val wsRespons: ArenaYtelseResponsDTO =
             mapArenaYtelser(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
                 .filterKunTiltakspenger()
+        LOG.info { "Antall saker fra ws : ${wsRespons.saker?.size}" }
         if (Configuration.applicationProfile() == Profile.DEV) {
             try {
                 val dbRespons: ArenaYtelseResponsDTO =
                     mapArenaYtelserFraDB(arenaSakRepository.hentSakerForFnr(fnr = ident))
+                LOG.info { "Antall saker fra db : ${dbRespons.saker?.size}" }
                 if (wsRespons == dbRespons) {
                     LOG.info { "Lik response fra webservice og db" }
                 } else {
@@ -47,6 +49,8 @@ class TiltakepengerPerioderService(
             } catch (e: Exception) {
                 LOG.info("Kall mot Arena db feilet", e)
             }
+        } else {
+            LOG.info("Vi er visst ikke i dev")
         }
         return sammenhengendePerioder(wsRespons)
     }
