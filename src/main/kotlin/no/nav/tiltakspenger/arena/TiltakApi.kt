@@ -13,11 +13,20 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
 import no.nav.security.token.support.v2.RequiredClaims
 import no.nav.security.token.support.v2.tokenValidationSupport
+import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
+import no.nav.tiltakspenger.arena.routes.tiltakspengerUtenRoutes
+import no.nav.tiltakspenger.arena.service.TiltakepengerPerioderService
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
+import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 
-fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient, config: ApplicationConfig) {
+fun Application.tiltakApi(
+    arenaSoapService: ArenaSoapService,
+    arenaSakRepository: SakRepository,
+    arenaOrdsClient: ArenaOrdsClient,
+    config: ApplicationConfig,
+) {
     val issuerName = "tokendings"
     val issuerAzure = "azure"
     install(Authentication) {
@@ -56,6 +65,13 @@ fun Application.tiltakApi(arenaOrdsClient: ArenaOrdsClient, config: ApplicationC
         authenticate(issuerAzure) {
             tiltakAzureRoutes(arenaOrdsClient = arenaOrdsClient)
         }
-        // tiltakUtenRoutes(arenaOrdsClient = arenaOrdsClient)
+        if (Configuration.applicationProfile() == Profile.DEV) {
+            tiltakspengerUtenRoutes(
+                TiltakepengerPerioderService(
+                    arenaSoapService = arenaSoapService,
+                    arenaSakRepository = arenaSakRepository,
+                ),
+            )
+        }
     }
 }
