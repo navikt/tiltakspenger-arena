@@ -8,6 +8,7 @@ import no.nav.tiltakspenger.arena.felles.inneholderOverlapp
 import no.nav.tiltakspenger.arena.felles.leggSammen
 import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
+import no.nav.tiltakspenger.arena.ytelser.filterKunTiltakspenger
 import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelser
 import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelserFraDB
 import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
@@ -26,6 +27,7 @@ class TiltakepengerPerioderService(
     fun hentTiltakspengerPerioder(ident: String, fom: LocalDate? = null, tom: LocalDate? = null): List<Periode> {
         val wsRespons: ArenaYtelseResponsDTO =
             mapArenaYtelser(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
+                .filterKunTiltakspenger()
         if (Configuration.applicationProfile() == Profile.DEV) {
             try {
                 val dbRespons: ArenaYtelseResponsDTO =

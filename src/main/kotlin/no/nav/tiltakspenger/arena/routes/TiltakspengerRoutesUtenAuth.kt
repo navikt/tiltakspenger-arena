@@ -12,11 +12,11 @@ import java.time.LocalDate
 
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
-fun Route.tiltakspengerUtenRoutes(service: TiltakepengerPerioderService) {
+fun Route.tiltakspengerRoutesUtenAuth(service: TiltakepengerPerioderService) {
     post("/tiltakspengerUten") {
         try {
             val ident =
-                call.receive<RequestBody>().ident //  .fødselsnummer() ?: throw IllegalStateException("Mangler fødselsnummer")
+                call.receive<RequestBody>().ident
             val sammenhengendePerioder: List<Periode> =
                 service.hentTiltakspengerPerioder(ident = ident, fom = LocalDate.MIN, tom = LocalDate.MAX)
             call.respond(sammenhengendePerioder)

@@ -8,6 +8,9 @@ import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt
 fun mapArenaYtelser(ytelser: List<Ytelseskontrakt>): ArenaYtelseResponsDTO =
     ArenaYtelseResponsDTO(saker = ytelser.map { mapSak(it) })
 
+fun ArenaYtelseResponsDTO.filterKunTiltakspenger(): ArenaYtelseResponsDTO =
+    this.copy(saker = saker?.filter { it.sakType == ArenaYtelseResponsDTO.SakType.INDIV })
+
 fun mapSak(ytelse: Ytelseskontrakt): ArenaYtelseResponsDTO.SakDTO =
     if (ytelse is Dagpengekontrakt) {
         ArenaYtelseResponsDTO.SakDTO(
@@ -46,7 +49,7 @@ fun mapVedtak(vedtakListe: List<Vedtak>): List<ArenaYtelseResponsDTO.VedtakDTO> 
     }
 
 fun mapVedtakStatusType(n: String): ArenaYtelseResponsDTO.VedtakStatusType =
-    ArenaYtelseResponsDTO.VedtakStatusType.values().firstOrNull { it.navn == n }
+    ArenaYtelseResponsDTO.VedtakStatusType.entries.firstOrNull { it.navn == n }
         ?: throw IllegalArgumentException("Ukjent VedtakStatusType $n")
 
 fun mapRettighetType(n: String): ArenaYtelseResponsDTO.RettighetType {

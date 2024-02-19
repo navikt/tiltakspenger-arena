@@ -16,7 +16,7 @@ import no.nav.security.token.support.v2.tokenValidationSupport
 import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
-import no.nav.tiltakspenger.arena.routes.tiltakspengerUtenRoutes
+import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutesUtenAuth
 import no.nav.tiltakspenger.arena.service.TiltakepengerPerioderService
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
@@ -66,7 +66,7 @@ fun Application.tiltakApi(
             tiltakAzureRoutes(arenaOrdsClient = arenaOrdsClient)
         }
         if (Configuration.applicationProfile() == Profile.DEV) {
-            tiltakspengerUtenRoutes(
+            tiltakspengerRoutesUtenAuth(
                 TiltakepengerPerioderService(
                     arenaSoapService = arenaSoapService,
                     arenaSakRepository = arenaSakRepository,
