@@ -27,7 +27,6 @@ object Datasource {
     }
 
     val hikariDataSource: HikariDataSource by lazy {
-        LOG.info { "Kobler opp mot Arena på ${this.DB_URL}" }
         init()
     }
 }
