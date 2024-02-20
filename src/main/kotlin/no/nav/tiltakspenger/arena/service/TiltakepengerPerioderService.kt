@@ -25,15 +25,21 @@ class TiltakepengerPerioderService(
     }
 
     fun hentTiltakspengerPerioder(ident: String, fom: LocalDate? = null, tom: LocalDate? = null): List<Periode> {
+        val dbRespons: ArenaYtelseResponsDTO =
+            if (Configuration.applicationProfile() == Profile.DEV) {
+                mapArenaYtelserFraDB(arenaSakRepository.hentSakerForFnr(fnr = ident))
+                    .also { LOG.info { "Antall saker fra db : ${it.saker?.size}" } }
+            } else {
+                ArenaYtelseResponsDTO(saker = null, feil = null)
+            }
+
         val wsRespons: ArenaYtelseResponsDTO =
             mapArenaYtelser(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
                 .filterKunTiltakspenger()
         LOG.info { "Antall saker fra ws : ${wsRespons.saker?.size}" }
+
         if (Configuration.applicationProfile() == Profile.DEV) {
             try {
-                val dbRespons: ArenaYtelseResponsDTO =
-                    mapArenaYtelserFraDB(arenaSakRepository.hentSakerForFnr(fnr = ident))
-                LOG.info { "Antall saker fra db : ${dbRespons.saker?.size}" }
                 if (wsRespons == dbRespons) {
                     LOG.info { "Lik response fra webservice og db" }
                 } else {
