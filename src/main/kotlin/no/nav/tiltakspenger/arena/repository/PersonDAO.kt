@@ -18,7 +18,7 @@ class PersonDAO {
         txSession: TransactionalSession,
     ): ArenaPersonDTO? {
         return txSession.run(
-            queryOf(findByFnrSQL, fnr)
+            queryOf(findByFnrSQL, mapOf("fnr" to fnr))
                 .map { row -> row.toPerson() }
                 .asSingle,
         )
@@ -32,5 +32,5 @@ class PersonDAO {
     }
 
     @Language("SQL")
-    private val findByFnrSQL = "SELECT PERSON_ID, FODSELSNR FROM PERSON WHERE FODSELSNR = ?"
+    private val findByFnrSQL = "SELECT PERSON_ID, FODSELSNR FROM PERSON WHERE FODSELSNR = :fnr"
 }
