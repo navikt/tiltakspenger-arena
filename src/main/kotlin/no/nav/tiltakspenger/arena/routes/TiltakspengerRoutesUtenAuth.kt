@@ -8,7 +8,6 @@ import io.ktor.server.routing.post
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.felles.Periode
 import no.nav.tiltakspenger.arena.service.TiltakepengerPerioderService
-import java.time.LocalDate
 
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
@@ -18,7 +17,7 @@ fun Route.tiltakspengerRoutesUtenAuth(service: TiltakepengerPerioderService) {
             val ident =
                 call.receive<RequestBody>().ident
             val sammenhengendePerioder: List<Periode> =
-                service.hentTiltakspengerPerioder(ident = ident, fom = LocalDate.MIN, tom = LocalDate.MAX)
+                service.hentTiltakspengerPerioder(ident = ident)
             call.respond(sammenhengendePerioder)
         } catch (e: Exception) {
             SECURELOG.warn("Feil i kall mot Arena for å hente tiltakspenger ${e.message}", e)
