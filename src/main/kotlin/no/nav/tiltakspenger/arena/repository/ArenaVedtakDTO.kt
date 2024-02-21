@@ -23,4 +23,22 @@ data class ArenaVedtakDTO(
 ) {
     fun fomGyldighetsdato(): LocalDateTime? = (fomVedtaksperiode ?: registrertDato)!!.atStartOfDay()
     fun tomGyldighetsdato(): LocalDateTime? = tomVedtaksperiode?.atStartOfDay()
+
+    fun isTiltakspenger(): Boolean = this.rettighettype == ArenaRettighet.BASI
+    fun isNotAvbruttOrNei(): Boolean = !(this.utfall == ArenaUtfall.AVBRUTT || this.utfall == ArenaUtfall.NEI)
+    fun isNyRettighetOrGjenopptakOrEndring(): Boolean =
+        this.vedtakType == ArenaVedtakType.O ||
+            this.vedtakType == ArenaVedtakType.G ||
+            this.vedtakType == ArenaVedtakType.E
+
+    fun isFraDatoNotNull(): Boolean = this.fomVedtaksperiode != null
+
+    fun isNotEngangsutbetaling(): Boolean =
+        this.fomVedtaksperiode != null && // Litt usikker på denne..
+            tomIsNullOrEqualToOrAfterFom(this.fomVedtaksperiode, this.tomVedtaksperiode)
+
+    private fun tomIsNullOrEqualToOrAfterFom(fom: LocalDate, tom: LocalDate?) =
+        tom == null || !tom.isBefore(fom)
+
+    fun isVedtaksperiodeÅpen() = this.tomVedtaksperiode == null
 }

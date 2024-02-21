@@ -33,7 +33,7 @@ class VedtakDAO(
             ArenaUtfall.valueOf(this)
     }
 
-    fun findBySakId(
+    fun findAlleBySakId(
         sakId: Long,
         txSession: TransactionalSession,
     ): List<ArenaVedtakDTO> {
@@ -46,6 +46,20 @@ class VedtakDAO(
                 .asList,
         )
     }
+
+    fun findBySakId(
+        sakId: Long,
+        txSession: TransactionalSession,
+    ): List<ArenaVedtakDTO> = findAlleBySakId(sakId, txSession)
+        .asSequence()
+        // En del av filterne her gjøres også i SQL-koden, så det er overflødig..
+        // TODO: Må sjekke om fraDato kan være null
+        .filter { it.isTiltakspenger() }
+        .filter { it.isNotAvbruttOrNei() }
+        .filter { it.isNyRettighetOrGjenopptakOrEndring() }
+        .filter { it.isFraDatoNotNull() }
+        .filter { it.isNotEngangsutbetaling() }
+        .toList()
 
     private fun Row.toVedtak(txSession: TransactionalSession): ArenaVedtakDTO {
         val vedtakId = long("VEDTAK_ID")
@@ -69,11 +83,7 @@ class VedtakDAO(
             antallBarn = vedtakFakta.antallBarn,
         )
 
-        if (!(
-                dto.status == ArenaVedtakStatus.GODKJ ||
-                    dto.status == ArenaVedtakStatus.IVERK
-                )
-        ) {
+        if (!(dto.status == ArenaVedtakStatus.GODKJ || dto.status == ArenaVedtakStatus.IVERK)) {
             LOG.info { "VedtakStatusType er ${dto.status}" }
         }
         return dto
@@ -89,8 +99,8 @@ class VedtakDAO(
         WHERE v.sak_id = :sak_id
         -- AND v.rettighetkode IN ('BASI', 'BTIL') -- Venter litt med BTIL (Barnetillegg)
         AND v.rettighetkode = 'BASI'
-        AND v.vedtaktypekode IN ('O', 'E', 'G')
-        AND v.utfallkode NOT IN ('AVBRUTT', 'NEI')
+        AND v.vedtaktypekode IN ('O', 'E', 'G') --Ny rettighet, endring, gjenopptak
+        AND v.utfallkode NOT IN ('AVBRUTT', 'NEI') --Vi vil bare ha positive vedtak
         ORDER BY v.lopenrvedtak DESC
         """.trimIndent()
 }

@@ -35,7 +35,23 @@ class SakRepository(
     fun hentSakerForFnr(
         fnr: String,
         fom: LocalDate = LocalDate.of(1900, 1, 1),
-        tom: LocalDate = LocalDate.of(2099, 12, 31),
+        tom: LocalDate = LocalDate.of(2299, 12, 31),
+    ): List<ArenaSakDTO> {
+        val saker = hentAlleSakerForFnr(fnr, fom, tom)
+            .filter { sak -> sak.harVedtak() }
+            .filter { sak -> sak.førsteFomVedtaksperiodeIsBefore(tom) }
+            .filter { sak ->
+                sak.harVedtakMedÅpenPeriode() || (sak.sisteVedtakMedLukketPeriodeIsAfter(fom))
+            }
+        LOG.info { "Antall filtrerte saker er ${saker.size}" }
+        SECURELOG.info { "Antall filtrerte saker er ${saker.size}" }
+        return saker
+    }
+
+    private fun hentAlleSakerForFnr(
+        fnr: String,
+        fom: LocalDate = LocalDate.of(1900, 1, 1),
+        tom: LocalDate = LocalDate.of(2299, 12, 31),
     ): List<ArenaSakDTO> {
         sessionOf(Datasource.hikariDataSource).use {
             it.transaction { txSession ->

@@ -63,6 +63,19 @@ class SakDAO(
           AND sak.objekt_id = :person_id
           AND sak.sakstatuskode <> 'HIST'
           AND sak.sakskode = 'INDIV'
+        ORDER BY sak.sak_id DESC
+        """.trimIndent()
+
+    // Denne er for vanskelig å forstå, skriver om til å gjøre filtrering i Kotlin-koden!
+    @Language("SQL")
+    private val oldFindBySQL =
+        """
+        SELECT *
+        FROM sak
+        WHERE sak.tabellnavnalias = 'PERS'
+          AND sak.objekt_id = :person_id
+          AND sak.sakstatuskode <> 'HIST'
+          AND sak.sakskode = 'INDIV'
           AND EXISTS
             (SELECT 1
              FROM vedtak
