@@ -45,7 +45,7 @@ class SakDAO(
             lopenrSak = long("LOPENRSAK"),
             status = string("SAKSTATUSKODE").toStatus(),
             ytelsestype = string("SAKSKODE").toYtelse(),
-            ihtVedtak = vedtak,
+            vedtak = vedtak,
         )
     }
 

@@ -15,7 +15,7 @@ fun mapSakFraDB(sak: ArenaSakDTO): ArenaYtelseResponsDTO.SakDTO =
         fagsystemSakId = sak.fagsystemSakId,
         status = ArenaYtelseResponsDTO.SakStatusType.valueOf(sak.status.name),
         sakType = ArenaYtelseResponsDTO.SakType.valueOf(sak.ytelsestype.name),
-        vedtak = mapVedtakFraDB(sak.ihtVedtak),
+        vedtak = mapVedtakFraDB(sak.vedtak),
     )
 
 fun mapVedtakFraDB(vedtakListe: List<ArenaVedtakDTO>): List<ArenaYtelseResponsDTO.VedtakDTO> =

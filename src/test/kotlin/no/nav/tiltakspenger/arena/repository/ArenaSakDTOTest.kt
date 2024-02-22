@@ -6,12 +6,12 @@ import java.time.LocalDate
 
 class ArenaSakDTOTest {
 
-    val sakHvorVedtakIkkeErIRekkefølge = ArenaSakDTO(
+    private val sakHvorVedtakIkkeErIRekkefølge = ArenaSakDTO(
         aar = 2022,
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
-        ihtVedtak = listOf(
+        vedtak = listOf(
             ArenaVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
@@ -19,7 +19,7 @@ class ArenaSakDTOTest {
                 tomVedtaksperiode = LocalDate.of(2023, 11, 13),
                 status = ArenaVedtakStatus.IVERK,
                 rettighettype = ArenaRettighet.BASI,
-                aktivitetsfase = ArenaAktivitetFase.UVUP,
+                aktivitetsfase = ArenaAktivitetFase.UGJEN,
                 dagsats = 255,
                 beslutningsdato = LocalDate.of(2023, 11, 10),
                 mottattDato = LocalDate.of(2023, 11, 7),
@@ -37,7 +37,7 @@ class ArenaSakDTOTest {
                 tomVedtaksperiode = LocalDate.of(2023, 11, 15),
                 status = ArenaVedtakStatus.IVERK,
                 rettighettype = ArenaRettighet.BASI,
-                aktivitetsfase = ArenaAktivitetFase.UVUP,
+                aktivitetsfase = ArenaAktivitetFase.UGJEN,
                 dagsats = 255,
                 beslutningsdato = LocalDate.of(2023, 11, 10),
                 mottattDato = LocalDate.of(2023, 11, 7),
@@ -55,7 +55,7 @@ class ArenaSakDTOTest {
                 tomVedtaksperiode = LocalDate.of(2023, 11, 10),
                 status = ArenaVedtakStatus.IVERK,
                 rettighettype = ArenaRettighet.BASI,
-                aktivitetsfase = ArenaAktivitetFase.UVUP,
+                aktivitetsfase = ArenaAktivitetFase.UGJEN,
                 dagsats = 255,
                 beslutningsdato = LocalDate.of(2023, 11, 10),
                 mottattDato = LocalDate.of(2023, 11, 7),
@@ -69,12 +69,12 @@ class ArenaSakDTOTest {
         ),
     )
 
-    val sakMedVedtakSomAlleHarSluttDato = ArenaSakDTO(
+    private val sakMedVedtakSomAlleHarSluttDato = ArenaSakDTO(
         aar = 2022,
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
-        ihtVedtak = listOf(
+        vedtak = listOf(
             ArenaVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
@@ -82,7 +82,7 @@ class ArenaSakDTOTest {
                 tomVedtaksperiode = LocalDate.of(2023, 11, 13),
                 status = ArenaVedtakStatus.IVERK,
                 rettighettype = ArenaRettighet.BASI,
-                aktivitetsfase = ArenaAktivitetFase.UVUP,
+                aktivitetsfase = ArenaAktivitetFase.UGJEN,
                 dagsats = 255,
                 beslutningsdato = LocalDate.of(2023, 11, 10),
                 mottattDato = LocalDate.of(2023, 11, 7),
@@ -100,7 +100,7 @@ class ArenaSakDTOTest {
                 tomVedtaksperiode = LocalDate.of(2023, 11, 15),
                 status = ArenaVedtakStatus.IVERK,
                 rettighettype = ArenaRettighet.BASI,
-                aktivitetsfase = ArenaAktivitetFase.UVUP,
+                aktivitetsfase = ArenaAktivitetFase.UGJEN,
                 dagsats = 255,
                 beslutningsdato = LocalDate.of(2023, 11, 10),
                 mottattDato = LocalDate.of(2023, 11, 7),
@@ -118,7 +118,7 @@ class ArenaSakDTOTest {
                 tomVedtaksperiode = LocalDate.of(2023, 11, 10),
                 status = ArenaVedtakStatus.IVERK,
                 rettighettype = ArenaRettighet.BASI,
-                aktivitetsfase = ArenaAktivitetFase.UVUP,
+                aktivitetsfase = ArenaAktivitetFase.UGJEN,
                 dagsats = 255,
                 beslutningsdato = LocalDate.of(2023, 11, 10),
                 mottattDato = LocalDate.of(2023, 11, 7),
@@ -132,12 +132,12 @@ class ArenaSakDTOTest {
         ),
     )
 
-    val sakMedVedtakHvorEttErÅpent = ArenaSakDTO(
+    private val sakMedVedtakHvorEttErÅpent = ArenaSakDTO(
         aar = 2022,
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
-        ihtVedtak = listOf(
+        vedtak = listOf(
             ArenaVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
@@ -145,7 +145,7 @@ class ArenaSakDTOTest {
                 tomVedtaksperiode = LocalDate.of(2023, 11, 13),
                 status = ArenaVedtakStatus.IVERK,
                 rettighettype = ArenaRettighet.BASI,
-                aktivitetsfase = ArenaAktivitetFase.UVUP,
+                aktivitetsfase = ArenaAktivitetFase.UGJEN,
                 dagsats = 255,
                 beslutningsdato = LocalDate.of(2023, 11, 10),
                 mottattDato = LocalDate.of(2023, 11, 7),
@@ -163,7 +163,7 @@ class ArenaSakDTOTest {
                 tomVedtaksperiode = LocalDate.of(2023, 11, 15),
                 status = ArenaVedtakStatus.IVERK,
                 rettighettype = ArenaRettighet.BASI,
-                aktivitetsfase = ArenaAktivitetFase.UVUP,
+                aktivitetsfase = ArenaAktivitetFase.UGJEN,
                 dagsats = 255,
                 beslutningsdato = LocalDate.of(2023, 11, 10),
                 mottattDato = LocalDate.of(2023, 11, 7),
@@ -181,7 +181,7 @@ class ArenaSakDTOTest {
                 tomVedtaksperiode = null,
                 status = ArenaVedtakStatus.IVERK,
                 rettighettype = ArenaRettighet.BASI,
-                aktivitetsfase = ArenaAktivitetFase.UVUP,
+                aktivitetsfase = ArenaAktivitetFase.UGJEN,
                 dagsats = 255,
                 beslutningsdato = LocalDate.of(2023, 11, 10),
                 mottattDato = LocalDate.of(2023, 11, 7),
@@ -195,12 +195,12 @@ class ArenaSakDTOTest {
         ),
     )
 
-    val sakUtenVedtak = ArenaSakDTO(
+    private val sakUtenVedtak = ArenaSakDTO(
         aar = 2022,
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
-        ihtVedtak = emptyList(),
+        vedtak = emptyList(),
     )
 
     @Test
