@@ -55,7 +55,7 @@ class SakRepository(
                     SECURELOG.info { "Fant ikke person med ident $fnr" }
                     return emptyList()
                 }
-                val saker = sakDAO.findByPersonIdAndPeriode(
+                val saker = sakDAO.findByPersonId(
                     personId = person.personId,
                     txSession = txSession,
                 )

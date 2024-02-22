@@ -20,7 +20,7 @@ class SakDAO(
             ArenaYtelse.valueOf(this)
     }
 
-    fun findByPersonIdAndPeriode(
+    fun findByPersonId(
         personId: Long,
         txSession: TransactionalSession,
     ): List<ArenaSakDTO> {
