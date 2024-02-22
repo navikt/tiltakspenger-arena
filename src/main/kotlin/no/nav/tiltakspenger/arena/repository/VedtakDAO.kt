@@ -52,13 +52,14 @@ class VedtakDAO(
         txSession: TransactionalSession,
     ): List<ArenaVedtakDTO> = findAlleBySakId(sakId, txSession)
         .asSequence()
-        // En del av filterne her gjøres også i SQL-koden, så det er overflødig..
         // TODO: Må sjekke om fraDato kan være null
-        .filter { it.isTiltakspenger() }
-        .filter { it.isNotAvbruttOrNei() }
-        .filter { it.isNyRettighetOrGjenopptakOrEndring() }
+        // En del av filterne her gjøres også i SQL-koden, så det er overflødig..
+        // .filter { it.isTiltakspenger() }
+        // .filter { it.isNotAvbruttOrNei() }
+        // .filter { it.isNyRettighetOrGjenopptakOrEndring() }
         .filter { it.isFraDatoNotNull() }
         .filter { it.isNotEngangsutbetaling() }
+        // Burde vi ikke filtrert på status også?
         .toList()
 
     private fun Row.toVedtak(txSession: TransactionalSession): ArenaVedtakDTO {
@@ -101,6 +102,7 @@ class VedtakDAO(
         AND v.rettighetkode = 'BASI'
         AND v.vedtaktypekode IN ('O', 'E', 'G') --Ny rettighet, endring, gjenopptak
         AND v.utfallkode NOT IN ('AVBRUTT', 'NEI') --Vi vil bare ha positive vedtak
+        AND v.vedtakstatuskode IN ('GODKJ', 'IVERK') --Vi vil bare ha vedtak som faktisk er vedtatt..
         ORDER BY v.lopenrvedtak DESC
         """.trimIndent()
 }
