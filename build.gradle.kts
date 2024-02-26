@@ -85,7 +85,7 @@ dependencies {
     // old version because of https://issues.apache.org/jira/browse/CXF-8727
     runtimeOnly("jakarta.annotation:jakarta.annotation-api:2.1.1")
 
-    implementation("org.slf4j:jul-to-slf4j:2.0.11")
+    implementation("org.slf4j:jul-to-slf4j:2.0.12")
     implementation("org.slf4j:log4j-over-slf4j:2.0.12")
     implementation("org.slf4j:jcl-over-slf4j:2.0.12")
 
