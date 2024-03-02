@@ -21,10 +21,7 @@ data class ArenaVedtakDTO(
     val relatertTiltak: String?,
     val antallBarn: Int?,
 ) {
-    // Har en hypotese om at fomVedtaksperiode aldri er null på iverksatte vedtak, så har gjort den ikke-nullable.
-    // Men venter med å endre på koden
-
-    fun fomGyldighetsdato(): LocalDateTime? = (fomVedtaksperiode ?: registrertDato)!!.atStartOfDay()
+    fun fomGyldighetsdato(): LocalDateTime? = fomVedtaksperiode.atStartOfDay()
     fun tomGyldighetsdato(): LocalDateTime? = tomVedtaksperiode?.atStartOfDay()
 
     fun isTiltakspenger(): Boolean = this.rettighettype == ArenaRettighet.BASI
@@ -34,14 +31,6 @@ data class ArenaVedtakDTO(
         this.vedtakType == ArenaVedtakType.O ||
             this.vedtakType == ArenaVedtakType.G ||
             this.vedtakType == ArenaVedtakType.E
-
-    fun isFraDatoNotNull(): Boolean = this.fomVedtaksperiode != null
-
-    fun isNotEngangsutbetaling(): Boolean =
-        isVedtaksperiodeÅpen() || !isEngangsutbetaling()
-
-    private fun isEngangsutbetaling(): Boolean =
-        this.tomVedtaksperiode != null && this.tomVedtaksperiode.isBefore(this.fomVedtaksperiode)
 
     fun isVedtaksperiodeÅpen(): Boolean = this.tomVedtaksperiode == null
 }

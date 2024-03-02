@@ -70,8 +70,6 @@ class ArenaVedtakDTOTest {
         vanligVedtak.isNyRettighetOrGjenopptakOrEndring() shouldBe true
         vanligVedtak.isNotAvbruttOrNei() shouldBe true
         vanligVedtak.isVedtaksperiodeÅpen() shouldBe false
-        vanligVedtak.isFraDatoNotNull() shouldBe true
-        vanligVedtak.isNotEngangsutbetaling() shouldBe true
     }
 
     @Test
@@ -81,8 +79,6 @@ class ArenaVedtakDTOTest {
         vedtakMedÅpenSluttdato.isNyRettighetOrGjenopptakOrEndring() shouldBe true
         vedtakMedÅpenSluttdato.isNotAvbruttOrNei() shouldBe true
         vedtakMedÅpenSluttdato.isVedtaksperiodeÅpen() shouldBe true
-        vedtakMedÅpenSluttdato.isFraDatoNotNull() shouldBe true
-        vedtakMedÅpenSluttdato.isNotEngangsutbetaling() shouldBe true
     }
 
     @Test
@@ -92,7 +88,5 @@ class ArenaVedtakDTOTest {
         vedtakEngangsutbetaling.isNyRettighetOrGjenopptakOrEndring() shouldBe true
         vedtakEngangsutbetaling.isNotAvbruttOrNei() shouldBe true
         vedtakEngangsutbetaling.isVedtaksperiodeÅpen() shouldBe false
-        vedtakEngangsutbetaling.isFraDatoNotNull() shouldBe true
-        vedtakEngangsutbetaling.isNotEngangsutbetaling() shouldBe false
     }
 }

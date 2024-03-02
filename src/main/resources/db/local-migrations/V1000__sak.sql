@@ -479,7 +479,7 @@ Insert into VEDTAK (VEDTAK_ID, SAK_ID, VEDTAKSTATUSKODE, VEDTAKTYPEKODE, REG_DAT
                     OPPSUMMERING_SB2, DATO_UTFORT_DEL1, DATO_UTFORT_DEL2, OVERFORT_NAVI, FRA_DATO, TIL_DATO,
                     SF_OPPFOLGING_ID, STATUS_SOSIALDATA, KONTOR_SOSIALDATA, TEKSTVARIANTKODE, VALGT_BESLUTTER,
                     TEKNISK_VEDTAK, DATO_INNSTILT, ER_UTLAND)
-values ('36926191', '13562768', 'REGIS', 'G', to_date('26.10.2022', 'DD.MM.RRRR'), 'MOK0219',
+values ('36926191', '13562768', 'AVSLU' , 'G', to_date('26.10.2022', 'DD.MM.RRRR'), 'MOK0219',
         to_date('26.10.2022', 'DD.MM.RRRR'), 'MOK0219', 'JA', 'ddd', 'MOK0219', '0219', '2022', '49879', '3', 'BASI',
         'UGJEN', null, null, to_date('01.09.2022', 'DD.MM.RRRR'), '36891331', null, '4886348', null, null, null, null,
         null, null, null, null, to_date('12.06.2022', 'DD.MM.RRRR'), null, null, 'N', null, null, null, null, null,
@@ -923,7 +923,7 @@ Insert into VEDTAK (VEDTAK_ID, SAK_ID, VEDTAKSTATUSKODE, VEDTAKTYPEKODE, REG_DAT
                     OPPSUMMERING_SB2, DATO_UTFORT_DEL1, DATO_UTFORT_DEL2, OVERFORT_NAVI, FRA_DATO, TIL_DATO,
                     SF_OPPFOLGING_ID, STATUS_SOSIALDATA, KONTOR_SOSIALDATA, TEKSTVARIANTKODE, VALGT_BESLUTTER,
                     TEKNISK_VEDTAK, DATO_INNSTILT, ER_UTLAND)
-values ('36961978', '13592260', 'INNST', 'O', to_date('15.03.2023', 'DD.MM.RRRR'), 'THA0387',
+values ('36961978', '13592260', 'AVSLU', 'O', to_date('15.03.2023', 'DD.MM.RRRR'), 'THA0387',
         to_date('15.03.2023', 'DD.MM.RRRR'), 'THA0387', 'JA', 'info om meldekort', 'THA0387', '0387', '2022', '79336',
         '3', 'BASI', 'UGJEN', '31053738', null, to_date('10.03.2023', 'DD.MM.RRRR'), null, null, '4870293', null, null,
         null, null, null, null, null, null, to_date('01.10.2022', 'DD.MM.RRRR'), to_date('10.10.2022', 'DD.MM.RRRR'),
@@ -1011,7 +1011,7 @@ Insert into VEDTAK (VEDTAK_ID, SAK_ID, VEDTAKSTATUSKODE, VEDTAKTYPEKODE, REG_DAT
                     OPPSUMMERING_SB2, DATO_UTFORT_DEL1, DATO_UTFORT_DEL2, OVERFORT_NAVI, FRA_DATO, TIL_DATO,
                     SF_OPPFOLGING_ID, STATUS_SOSIALDATA, KONTOR_SOSIALDATA, TEKSTVARIANTKODE, VALGT_BESLUTTER,
                     TEKNISK_VEDTAK, DATO_INNSTILT, ER_UTLAND)
-values ('36965834', '13614486', 'INNST', 'O', to_date('03.05.2023', 'DD.MM.RRRR'), 'KBP0111',
+values ('36965834', '13614486', 'AVSLU', 'O', to_date('03.05.2023', 'DD.MM.RRRR'), 'KBP0111',
         to_date('03.05.2023', 'DD.MM.RRRR'), 'KBP0111', 'JA', 'Gratulerer!', 'KBP0111', '0111', '2023', '6385', '1',
         'BASI', 'UGJEN', '31054618', null, to_date('02.05.2023', 'DD.MM.RRRR'), null, null, '4916897', null, null, null,
         null, null, null, null, null, to_date('01.05.2023', 'DD.MM.RRRR'), to_date('31.12.2023', 'DD.MM.RRRR'), null,

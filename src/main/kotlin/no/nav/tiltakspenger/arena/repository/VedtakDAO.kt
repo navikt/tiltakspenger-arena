@@ -51,16 +51,6 @@ class VedtakDAO(
         sakId: Long,
         txSession: TransactionalSession,
     ): List<ArenaVedtakDTO> = findAlleBySakId(sakId, txSession)
-        .asSequence()
-        // TODO: Må sjekke om fraDato kan være null
-        // En del av filterne her gjøres også i SQL-koden, så det er overflødig..
-        // .filter { it.isTiltakspenger() }
-        // .filter { it.isNotAvbruttOrNei() }
-        // .filter { it.isNyRettighetOrGjenopptakOrEndring() }
-        // .filter { it.isFraDatoNotNull() }
-        .filter { it.isNotEngangsutbetaling() }
-        // Burde vi ikke filtrert på status også?
-        .toList()
 
     private fun Row.toVedtak(txSession: TransactionalSession): ArenaVedtakDTO {
         val vedtakId = long("VEDTAK_ID")
@@ -90,8 +80,8 @@ class VedtakDAO(
         return dto
     }
 
-    // Vi vil bare ha positive vedtak,
-    // da det vi skal finne ut av er når brukeren har tiltakspenger
+    // Vi gjør filtreringen her i stedet for i Kotlin-koden, da de ulike where-clausene er ganske enkle å forstå,
+    // og det er kjappere å filtrere i db.
     @Language("SQL")
     private val findBySQL =
         """
@@ -102,7 +92,9 @@ class VedtakDAO(
         AND v.rettighetkode = 'BASI'
         AND v.vedtaktypekode IN ('O', 'E', 'G') --Ny rettighet, endring, gjenopptak
         AND v.utfallkode NOT IN ('AVBRUTT', 'NEI') --Vi vil bare ha positive vedtak
-        -- AND v.vedtakstatuskode = 'IVERK' --Vi vil bare ha vedtak som faktisk er vedtatt, men må endre testene først
+        AND v.vedtakstatuskode IN ('IVERK', 'AVSLU') --Vi vil bare ha vedtak som faktisk er vedtatt
+        AND v.fra_dato IS NOT NULL --Ekskluderer spesialutbetalinger
+        AND v.fra_dato <= NVL(v.til_dato, v.fra_dato) --Ekskluderer ugyldiggjorte vedtak
         ORDER BY v.lopenrvedtak DESC
         """.trimIndent()
 }
