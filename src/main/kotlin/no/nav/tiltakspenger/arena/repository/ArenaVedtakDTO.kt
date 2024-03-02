@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 data class ArenaVedtakDTO(
     val vedtakType: ArenaVedtakType,
     val uttaksgrad: Int,
-    val fomVedtaksperiode: LocalDate?,
+    val fomVedtaksperiode: LocalDate,
     val tomVedtaksperiode: LocalDate?,
     val status: ArenaVedtakStatus,
     val rettighettype: ArenaRettighet,
@@ -21,6 +21,16 @@ data class ArenaVedtakDTO(
     val relatertTiltak: String?,
     val antallBarn: Int?,
 ) {
-    fun fomGyldighetsdato(): LocalDateTime? = (fomVedtaksperiode ?: registrertDato)!!.atStartOfDay()
+    fun fomGyldighetsdato(): LocalDateTime? = fomVedtaksperiode.atStartOfDay()
     fun tomGyldighetsdato(): LocalDateTime? = tomVedtaksperiode?.atStartOfDay()
+
+    fun isTiltakspenger(): Boolean = this.rettighettype == ArenaRettighet.BASI
+    fun isIverksatt(): Boolean = this.status == ArenaVedtakStatus.IVERK
+    fun isNotAvbruttOrNei(): Boolean = !(this.utfall == ArenaUtfall.AVBRUTT || this.utfall == ArenaUtfall.NEI)
+    fun isNyRettighetOrGjenopptakOrEndring(): Boolean =
+        this.vedtakType == ArenaVedtakType.O ||
+            this.vedtakType == ArenaVedtakType.G ||
+            this.vedtakType == ArenaVedtakType.E
+
+    fun isVedtaksperiodeÅpen(): Boolean = this.tomVedtaksperiode == null
 }

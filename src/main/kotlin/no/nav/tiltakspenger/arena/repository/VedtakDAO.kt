@@ -33,7 +33,7 @@ class VedtakDAO(
             ArenaUtfall.valueOf(this)
     }
 
-    fun findBySakId(
+    fun findAlleBySakId(
         sakId: Long,
         txSession: TransactionalSession,
     ): List<ArenaVedtakDTO> {
@@ -47,6 +47,11 @@ class VedtakDAO(
         )
     }
 
+    fun findBySakId(
+        sakId: Long,
+        txSession: TransactionalSession,
+    ): List<ArenaVedtakDTO> = findAlleBySakId(sakId, txSession)
+
     private fun Row.toVedtak(txSession: TransactionalSession): ArenaVedtakDTO {
         val vedtakId = long("VEDTAK_ID")
         val vedtakFakta = vedtakfaktaDAO.findByVedtakId(vedtakId, txSession)
@@ -58,7 +63,7 @@ class VedtakDAO(
             rettighettype = string("RETTIGHETKODE").toRettighetType(),
             aktivitetsfase = string("AKTFASEKODE").toAktivitetFase(),
             dagsats = vedtakFakta.dagsats,
-            fomVedtaksperiode = localDateOrNull("FRA_DATO"),
+            fomVedtaksperiode = localDate("FRA_DATO"),
             tomVedtaksperiode = localDateOrNull("TIL_DATO"),
             mottattDato = localDate("DATO_MOTTATT"),
             registrertDato = localDateOrNull("REG_DATO"),
@@ -69,18 +74,14 @@ class VedtakDAO(
             antallBarn = vedtakFakta.antallBarn,
         )
 
-        if (!(
-                dto.status == ArenaVedtakStatus.GODKJ ||
-                    dto.status == ArenaVedtakStatus.IVERK
-                )
-        ) {
+        if (!(dto.status == ArenaVedtakStatus.GODKJ || dto.status == ArenaVedtakStatus.IVERK)) {
             LOG.info { "VedtakStatusType er ${dto.status}" }
         }
         return dto
     }
 
-    // Vi vil bare ha positive vedtak,
-    // da det vi skal finne ut av er når brukeren har tiltakspenger
+    // Vi gjør filtreringen her i stedet for i Kotlin-koden, da de ulike where-clausene er ganske enkle å forstå,
+    // og det er kjappere å filtrere i db.
     @Language("SQL")
     private val findBySQL =
         """
@@ -89,8 +90,11 @@ class VedtakDAO(
         WHERE v.sak_id = :sak_id
         -- AND v.rettighetkode IN ('BASI', 'BTIL') -- Venter litt med BTIL (Barnetillegg)
         AND v.rettighetkode = 'BASI'
-        AND v.vedtaktypekode IN ('O', 'E', 'G')
-        AND v.utfallkode NOT IN ('AVBRUTT', 'NEI')
+        AND v.vedtaktypekode IN ('O', 'E', 'G') --Ny rettighet, endring, gjenopptak
+        AND v.utfallkode NOT IN ('AVBRUTT', 'NEI') --Vi vil bare ha positive vedtak
+        AND v.vedtakstatuskode IN ('IVERK', 'AVSLU') --Vi vil bare ha vedtak som faktisk er vedtatt
+        AND v.fra_dato IS NOT NULL --Ekskluderer spesialutbetalinger
+        AND v.fra_dato <= NVL(v.til_dato, v.fra_dato) --Ekskluderer ugyldiggjorte vedtak
         ORDER BY v.lopenrvedtak DESC
         """.trimIndent()
 }
