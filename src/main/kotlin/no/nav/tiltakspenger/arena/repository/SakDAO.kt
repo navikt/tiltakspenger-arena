@@ -7,7 +7,8 @@ import mu.KotlinLogging
 import org.intellij.lang.annotations.Language
 
 class SakDAO(
-    private val vedtakDAO: VedtakDAO = VedtakDAO(),
+    private val tiltakspengerVedtakDAO: TiltakspengerVedtakDAO = TiltakspengerVedtakDAO(),
+    private val barnetilleggVedtakDAO: BarnetilleggVedtakDAO = BarnetilleggVedtakDAO(),
 ) {
     companion object {
         private val LOG = KotlinLogging.logger {}
@@ -36,16 +37,20 @@ class SakDAO(
 
     private fun Row.toSak(txSession: TransactionalSession): ArenaSakDTO {
         val sakId = long("SAK_ID")
-        val vedtak = vedtakDAO.findBySakId(sakId, txSession)
-        LOG.info { "Antall vedtak er ${vedtak.size} for sak med id $sakId" }
-        SECURELOG.info { "Antall vedtak er ${vedtak.size} for sak med id $sakId" }
+        val tiltakspengerVedtak = tiltakspengerVedtakDAO.findTiltakspengerBySakId(sakId, txSession)
+        val barnetilleggVedtak = barnetilleggVedtakDAO.findBarnetilleggBySakId(sakId, txSession)
+        LOG.info { "Antall tiltakspengerVedtak er ${tiltakspengerVedtak.size} for sak med id $sakId" }
+        LOG.info { "Antall barnetilleggVedtak er ${barnetilleggVedtak.size} for sak med id $sakId" }
+        SECURELOG.info { "Antall tiltakspengerVedtak er ${tiltakspengerVedtak.size} for sak med id $sakId" }
+        SECURELOG.info { "Antall barnetilleggVedtak er ${barnetilleggVedtak.size} for sak med id $sakId" }
 
         return ArenaSakDTO(
             aar = int("AAR"),
             lopenrSak = long("LOPENRSAK"),
             status = string("SAKSTATUSKODE").toStatus(),
             ytelsestype = string("SAKSKODE").toYtelse(),
-            vedtak = vedtak,
+            tiltakspengerVedtak = tiltakspengerVedtak,
+            barnetilleggVedtak = barnetilleggVedtak,
         )
     }
 

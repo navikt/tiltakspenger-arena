@@ -1,9 +1,11 @@
 package no.nav.tiltakspenger.arena.repository
 
+import no.nav.tiltakspenger.arena.felles.Periode
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-data class ArenaVedtakDTO(
+// Har ikke lagt til alle vedtaksfakta her ennå
+data class ArenaBarnetilleggVedtakDTO(
     val vedtakType: ArenaVedtakType,
     val uttaksgrad: Int,
     val fomVedtaksperiode: LocalDate,
@@ -21,8 +23,8 @@ data class ArenaVedtakDTO(
     val relatertTiltak: String?,
     val antallBarn: Int?,
 ) {
-    fun fomGyldighetsdato(): LocalDateTime? = fomVedtaksperiode.atStartOfDay()
-    fun tomGyldighetsdato(): LocalDateTime? = tomVedtaksperiode?.atStartOfDay()
+    fun fomGyldighetstidspunkt(): LocalDateTime = fomVedtaksperiode.atStartOfDay()
+    fun tomGyldighetstidspunkt(): LocalDateTime? = tomVedtaksperiode?.atStartOfDay()
 
     fun isTiltakspenger(): Boolean = this.rettighettype == ArenaRettighet.BASI
     fun isIverksatt(): Boolean = this.status == ArenaVedtakStatus.IVERK
@@ -31,6 +33,8 @@ data class ArenaVedtakDTO(
         this.vedtakType == ArenaVedtakType.O ||
             this.vedtakType == ArenaVedtakType.G ||
             this.vedtakType == ArenaVedtakType.E
+
+    fun vedtaksperiode(): Periode = Periode(fomVedtaksperiode, tomVedtaksperiode ?: LocalDate.MAX)
 
     fun isVedtaksperiodeÅpen(): Boolean = this.tomVedtaksperiode == null
 }

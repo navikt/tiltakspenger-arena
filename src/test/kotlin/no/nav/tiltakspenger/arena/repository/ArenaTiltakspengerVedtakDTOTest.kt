@@ -4,9 +4,9 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
-class ArenaVedtakDTOTest {
+class ArenaTiltakspengerVedtakDTOTest {
 
-    private val vanligVedtak = ArenaVedtakDTO(
+    private val vanligVedtak = ArenaTiltakspengerVedtakDTO(
         vedtakType = ArenaVedtakType.O,
         uttaksgrad = 100,
         fomVedtaksperiode = LocalDate.of(2023, 11, 14),
@@ -22,10 +22,9 @@ class ArenaVedtakDTOTest {
         antallDager = 5.0,
         opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
         relatertTiltak = "Tiltak",
-        antallBarn = 0,
     )
 
-    private val vedtakMedÅpenSluttdato = ArenaVedtakDTO(
+    private val vedtakMedÅpenSluttdato = ArenaTiltakspengerVedtakDTO(
         vedtakType = ArenaVedtakType.O,
         uttaksgrad = 100,
         fomVedtaksperiode = LocalDate.of(2023, 11, 14),
@@ -41,10 +40,9 @@ class ArenaVedtakDTOTest {
         antallDager = 5.0,
         opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
         relatertTiltak = "Tiltak",
-        antallBarn = 0,
     )
 
-    private val vedtakEngangsutbetaling = ArenaVedtakDTO(
+    private val vedtakEngangsutbetaling = ArenaTiltakspengerVedtakDTO(
         vedtakType = ArenaVedtakType.O,
         uttaksgrad = 100,
         fomVedtaksperiode = LocalDate.of(2023, 11, 14),
@@ -60,7 +58,6 @@ class ArenaVedtakDTOTest {
         antallDager = 5.0,
         opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
         relatertTiltak = "Tiltak",
-        antallBarn = 0,
     )
 
     @Test

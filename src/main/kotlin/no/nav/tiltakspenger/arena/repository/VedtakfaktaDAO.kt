@@ -12,7 +12,7 @@ class VedtakfaktaDAO {
         private val securelog = KotlinLogging.logger("tjenestekall")
     }
 
-    fun findByVedtakId(
+    fun findTiltakspengerVedtakfaktaByVedtakId(
         vedtakId: Long,
         txSession: TransactionalSession,
     ): ArenaTiltakspengerVedtakfaktaDTO {
@@ -24,6 +24,20 @@ class VedtakfaktaDAO {
                 .map { row -> row.toVedtakfakta() }
                 .asList,
         ).toArenaTiltakspengerVedtakfaktaDTO()
+    }
+
+    fun findBarnetilleggVedtakfaktaByVedtakId(
+        vedtakId: Long,
+        txSession: TransactionalSession,
+    ): ArenaBarnetilleggVedtakfaktaDTO {
+        val paramMap = mapOf(
+            "vedtak_id" to vedtakId.toString(),
+        )
+        return txSession.run(
+            queryOf(findBySQL, paramMap)
+                .map { row -> row.toVedtakfakta() }
+                .asList,
+        ).toArenaBarnetilleggVedtakfaktaDTO()
     }
 
     private fun Row.toVedtakfakta(): ArenaVedtakfaktaDTO {

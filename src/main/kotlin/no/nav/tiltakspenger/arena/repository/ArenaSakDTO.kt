@@ -1,5 +1,6 @@
 package no.nav.tiltakspenger.arena.repository
 
+import no.nav.tiltakspenger.arena.felles.Periode
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -8,40 +9,37 @@ data class ArenaSakDTO(
     val lopenrSak: Long,
     val status: ArenaSakStatus,
     val ytelsestype: ArenaYtelse,
-    val vedtak: List<ArenaVedtakDTO>,
+    val tiltakspengerVedtak: List<ArenaTiltakspengerVedtakDTO>,
+    val barnetilleggVedtak: List<ArenaBarnetilleggVedtakDTO>,
 ) {
+    // Denne vil feile på saker uten vedtak, men de skal filtreres bort!
     val fomGyldighetsperiode: LocalDateTime
-        get() = vedtak.mapNotNull { it.fomGyldighetsdato() }.min()
+        get() = tiltakspengerVedtak.minOf { it.fomGyldighetstidspunkt() }
     val tomGyldighetsperiode: LocalDateTime?
-        get() = vedtak.mapNotNull { it.tomGyldighetsdato() }.maxOrNull()
+        get() = tiltakspengerVedtak.mapNotNull { it.tomGyldighetstidspunkt() }.maxOrNull()
     val datoKravMottatt: LocalDate
-        get() = vedtak.first { it.vedtakType == ArenaVedtakType.O }.mottattDato
+        get() = tiltakspengerVedtak.first { it.vedtakType == ArenaVedtakType.O }.mottattDato
     val fagsystemSakId: String
         get() = aar.toString() + lopenrSak
 
-    fun harVedtakMedÅpenPeriode(): Boolean =
-        this.vedtak.any { it.isVedtaksperiodeÅpen() }
+    fun harTiltakspengerVedtak(): Boolean = this.tiltakspengerVedtak.isNotEmpty()
 
-    fun førsteFomVedtaksperiodeIsBeforeOrEqualTo(date: LocalDate): Boolean =
-        this.vedtak
-            .mapNotNull { it.fomVedtaksperiode }
-            .minOrNull()
-            ?.let { it == date || it.isBefore(date) } ?: true
+    fun harTiltakspengerVedtakMedÅpenPeriode(): Boolean =
+        this.tiltakspengerVedtak.any { it.isVedtaksperiodeÅpen() }
 
-    fun sisteVedtakMedLukketPeriodeIsAfterOrEqualTo(date: LocalDate): Boolean =
-        this.vedtak
-            .mapNotNull { it.tomVedtaksperiode }
-            .maxOrNull()
-            ?.let { it == date || it.isAfter(date) } ?: true
-
-    fun harVedtak(): Boolean = this.vedtak.isNotEmpty()
+    fun sakPeriode(): Periode? {
+        val fraDato = tiltakspengerVedtak.minOfOrNull { it.fomVedtaksperiode }
+        val tilDato = if (tiltakspengerVedtak.map { it.tomVedtaksperiode }.contains(null)) {
+            LocalDate.MAX
+        } else {
+            tiltakspengerVedtak.mapNotNull { it.tomVedtaksperiode }.maxOrNull() ?: LocalDate.MAX
+        }
+        return fraDato?.let { Periode(it, tilDato) }
+    }
 }
 
 // Jeg plasserer denne her og ikke der den brukes da det føles mer naturlig å både lese og teste denne i sammenheng med
 // funksjonene som er inni klassen.
 fun List<ArenaSakDTO>.kunSakerMedVedtakInnenforPeriode(fom: LocalDate, tom: LocalDate): List<ArenaSakDTO> =
-    this.filter { sak -> sak.harVedtak() }
-        .filter { sak -> sak.førsteFomVedtaksperiodeIsBeforeOrEqualTo(tom) }
-        .filter { sak ->
-            sak.harVedtakMedÅpenPeriode() || (sak.sisteVedtakMedLukketPeriodeIsAfterOrEqualTo(fom))
-        }
+    this.filter { sak -> sak.harTiltakspengerVedtak() }
+        .filter { sak -> sak.sakPeriode()?.overlapperMed(Periode(fom, tom)) ?: false }
