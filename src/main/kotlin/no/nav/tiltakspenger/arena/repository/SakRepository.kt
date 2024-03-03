@@ -35,7 +35,7 @@ class SakRepository(
     fun hentSakerForFnr(
         fnr: String,
         fom: LocalDate = LocalDate.of(1900, 1, 1),
-        tom: LocalDate = LocalDate.of(2299, 12, 31),
+        tom: LocalDate = LocalDate.of(2999, 12, 31),
     ): List<ArenaSakDTO> {
         val saker = hentAlleSakerForFnr(fnr)
             .kunSakerMedVedtakInnenforPeriode(fom, tom)

@@ -3,9 +3,8 @@ package no.nav.tiltakspenger.arena.service
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
 import no.nav.tiltakspenger.arena.Profile
-import no.nav.tiltakspenger.arena.felles.Periode
-import no.nav.tiltakspenger.arena.felles.inneholderOverlapp
-import no.nav.tiltakspenger.arena.felles.leggSammen
+import no.nav.tiltakspenger.arena.felles.PeriodeMedVerdier
+import no.nav.tiltakspenger.arena.repository.ArenaSakDTO
 import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.filterKunTiltakspenger
@@ -24,60 +23,44 @@ class TiltakepengerPerioderService(
         private val SECURELOG = KotlinLogging.logger("tjenestekall")
     }
 
-    fun hentTiltakspengerPerioder(ident: String, fom: LocalDate? = null, tom: LocalDate? = null): List<Periode> {
-        val dbRespons: ArenaYtelseResponsDTO =
-            if (Configuration.applicationProfile() == Profile.DEV) {
-                mapArenaYtelserFraDB(arenaSakRepository.hentSakerForFnr(fnr = ident))
-                    .also { LOG.info { "Antall saker fra db : ${it.saker?.size}" } }
-            } else {
-                ArenaYtelseResponsDTO(saker = null, feil = null)
-            }
-
-        val wsRespons: ArenaYtelseResponsDTO =
-            mapArenaYtelser(arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom))
-                .filterKunTiltakspenger()
-        LOG.info { "Antall saker fra ws : ${wsRespons.saker?.size}" }
-
+    fun hentTiltakspengerPerioder(
+        ident: String,
+        fom: LocalDate = LocalDate.of(1900, 1, 1),
+        tom: LocalDate = LocalDate.of(2999, 12, 31),
+    ): PeriodeMedVerdier<VedtakDetaljer>? {
         if (Configuration.applicationProfile() == Profile.DEV) {
-            try {
-                if (wsRespons == dbRespons) {
-                    LOG.info { "Lik response fra webservice og db" }
-                } else {
-                    LOG.info { "Ulik response fra webservice og db" }
-                    SECURELOG.info { "Ulik response fra webservice og db for ident $ident" }
-                    SECURELOG.info { "webservice: $wsRespons" }
-                    SECURELOG.info { "db: $dbRespons" }
-                }
-                LOG.info { "Antall vedtak fra webservicen er ${wsRespons.saker?.flatMap { it.vedtak }?.size ?: 0}" }
-                LOG.info { "Antall vedtak fra db er ${dbRespons.saker?.flatMap { it.vedtak }?.size ?: 0}" }
-
-                return sammenhengendePerioder(dbRespons)
-            } catch (e: Exception) {
-                LOG.info("Kall mot Arena db feilet", e)
-            }
+            val sakerFraDb = arenaSakRepository.hentSakerForFnr(fnr = ident, fom = fom, tom = tom)
+            sammenlignDbMedWs(ident, fom, tom, sakerFraDb)
+            return mapTiltakspengerFraArenaTilVedtaksperioder(sakerFraDb)
         } else {
-            LOG.info("Vi er visst ikke i dev")
+            return null
         }
-        return sammenhengendePerioder(wsRespons)
     }
 
-    private fun sammenhengendePerioder(respons: ArenaYtelseResponsDTO): List<Periode> {
-        val vedtakPerioder = respons.saker
-            ?.flatMap { it.vedtak }
-            ?.map {
-                Periode(
-                    it.vedtaksperiodeFom ?: LocalDate.MIN,
-                    it.vedtaksperiodeTom ?: LocalDate.MAX,
-                )
+    private fun sammenlignDbMedWs(
+        ident: String,
+        fom: LocalDate? = null,
+        tom: LocalDate? = null,
+        sakerFraDb: List<ArenaSakDTO>,
+    ) {
+        val sakerFraWs = arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom)
+        val wsRespons: ArenaYtelseResponsDTO = mapArenaYtelser(sakerFraWs).filterKunTiltakspenger()
+        val dbRespons: ArenaYtelseResponsDTO = mapArenaYtelserFraDB(sakerFraDb)
+        LOG.info { "Antall saker fra db : ${dbRespons.saker?.size}" }
+        LOG.info { "Antall saker fra ws : ${wsRespons.saker?.size}" }
+        try {
+            if (wsRespons == dbRespons) {
+                LOG.info { "Lik response fra webservice og db" }
+            } else {
+                LOG.info { "Ulik response fra webservice og db" }
+                SECURELOG.info { "Ulik response fra webservice og db for ident $ident" }
+                SECURELOG.info { "webservice: $wsRespons" }
+                SECURELOG.info { "db: $dbRespons" }
             }
-        if (vedtakPerioder != null) {
-            if (vedtakPerioder.inneholderOverlapp()) {
-                LOG.info { "Vedtaksperiodene fra Arena overlapper hverandre" }
-            }
-            val sammenhengendePerioder = vedtakPerioder.leggSammen()
-            LOG.info { "Antall sammenhengende vedtaksperioder er ${sammenhengendePerioder.size}" }
-            return sammenhengendePerioder
+            LOG.info { "Antall vedtak fra webservicen er ${wsRespons.saker?.flatMap { it.vedtak }?.size ?: 0}" }
+            LOG.info { "Antall vedtak fra db er ${dbRespons.saker?.flatMap { it.vedtak }?.size ?: 0}" }
+        } catch (e: Exception) {
+            LOG.info("Kall mot Arena db feilet", e)
         }
-        return emptyList()
     }
 }

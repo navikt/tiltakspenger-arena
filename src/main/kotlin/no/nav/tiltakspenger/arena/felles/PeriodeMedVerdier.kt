@@ -5,7 +5,7 @@ Denne klassen representerer en sammenhengende periode som kan ha ulike verdier f
 Perioden kan ikke ha "hull" som ikke har en verdi
  */
 data class PeriodeMedVerdier<T> private constructor(
-    private val totalePeriode: Periode,
+    val totalePeriode: Periode,
     private val defaultVerdi: T,
     private val perioderMedVerdi: List<PeriodeMedVerdi<T>>,
 ) {
