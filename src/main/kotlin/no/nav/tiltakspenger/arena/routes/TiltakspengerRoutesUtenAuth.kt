@@ -31,18 +31,20 @@ fun Route.tiltakspengerRoutesUtenAuth(service: TiltakepengerPerioderService) {
 }
 
 private fun PeriodeMedVerdier<VedtakDetaljer>?.toPeriodeDTO(): List<PeriodeDTO> =
-    this?.perioder()?.map {
-        PeriodeDTO(
-            fraOgMed = it.periode.fra,
-            tilOgMed = it.periode.til.toNullIfMax(),
-            antallDager = it.verdi.antallDager,
-            dagsatsTiltakspenger = it.verdi.dagsatsTiltakspenger,
-            dagsatsBarnetillegg = it.verdi.dagsatsBarnetillegg,
-            antallBarn = it.verdi.antallBarn,
-            relaterteTiltak = it.verdi.relaterteTiltak,
-            rettighet = it.verdi.rettighet,
-        )
-    } ?: emptyList()
+    this?.perioder()
+        ?.filter { it.verdi.rettighet == Rettighet.TILTAKSPENGER || it.verdi.rettighet == Rettighet.TILTAKSPENGER_OG_BARNETILLEGG }
+        ?.map {
+            PeriodeDTO(
+                fraOgMed = it.periode.fra,
+                tilOgMed = it.periode.til.toNullIfMax(),
+                antallDager = it.verdi.antallDager,
+                dagsatsTiltakspenger = it.verdi.dagsatsTiltakspenger,
+                dagsatsBarnetillegg = it.verdi.dagsatsBarnetillegg,
+                antallBarn = it.verdi.antallBarn,
+                relaterteTiltak = it.verdi.relaterteTiltak,
+                rettighet = it.verdi.rettighet,
+            )
+        } ?: emptyList()
 
 private fun LocalDate.toNullIfMax(): LocalDate? = if (this == LocalDate.MAX) {
     null
