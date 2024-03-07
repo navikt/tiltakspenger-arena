@@ -13,7 +13,7 @@ import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelserFraDB
 import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
 import java.time.LocalDate
 
-class TiltakepengerPerioderService(
+class TiltakspengerPerioderService(
     private val arenaSoapService: ArenaSoapService,
     private val arenaSakRepository: SakRepository,
 ) {
@@ -46,21 +46,20 @@ class TiltakepengerPerioderService(
         val sakerFraWs = arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom)
         val wsRespons: ArenaYtelseResponsDTO = mapArenaYtelser(sakerFraWs).filterKunTiltakspenger()
         val dbRespons: ArenaYtelseResponsDTO = mapArenaYtelserFraDB(sakerFraDb)
-        LOG.info { "Antall saker fra db : ${dbRespons.saker?.size}" }
-        LOG.info { "Antall saker fra ws : ${wsRespons.saker?.size}" }
+        SECURELOG.info { "Antall saker fra db : ${dbRespons.saker?.size}" }
+        SECURELOG.info { "Antall saker fra ws : ${wsRespons.saker?.size}" }
         try {
             if (wsRespons == dbRespons) {
-                LOG.info { "Lik response fra webservice og db" }
+                SECURELOG.info { "Lik response fra webservice og db" }
             } else {
-                LOG.info { "Ulik response fra webservice og db" }
                 SECURELOG.info { "Ulik response fra webservice og db for ident $ident" }
                 SECURELOG.info { "webservice: $wsRespons" }
                 SECURELOG.info { "db: $dbRespons" }
             }
-            LOG.info { "Antall vedtak fra webservicen er ${wsRespons.saker?.flatMap { it.vedtak }?.size ?: 0}" }
-            LOG.info { "Antall vedtak fra db er ${dbRespons.saker?.flatMap { it.vedtak }?.size ?: 0}" }
+            SECURELOG.info { "Antall vedtak fra webservicen er ${wsRespons.saker?.flatMap { it.vedtak }?.size ?: 0}" }
+            SECURELOG.info { "Antall vedtak fra db er ${dbRespons.saker?.flatMap { it.vedtak }?.size ?: 0}" }
         } catch (e: Exception) {
-            LOG.info("Kall mot Arena db feilet", e)
+            SECURELOG.info("Kall mot Arena db feilet", e)
         }
     }
 }

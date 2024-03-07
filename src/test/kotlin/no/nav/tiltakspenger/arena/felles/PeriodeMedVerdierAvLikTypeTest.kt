@@ -12,7 +12,7 @@ enum class Utfall {
 
 class PeriodeMedVerdierAvLikTypeTest {
     @Test
-    fun test1() {
+    fun `en oppfylt periode kombinert med en delvis oppfylt periode skal gi en delvis oppfylt periode`() {
         val aap =
             PeriodeMedVerdier(
                 Utfall.IKKE_OPPFYLT,
@@ -26,7 +26,7 @@ class PeriodeMedVerdierAvLikTypeTest {
                 Periode(1.oktober(2023), 10.oktober(2023)),
             )
 
-        val vedtak = aap.kombiner(dagpenger, ::kombinerToUfall)
+        val vedtak: PeriodeMedVerdier<Utfall> = aap.kombiner(dagpenger, ::kombinerToUfall)
         vedtak.perioder().size shouldBe 2
 
         vedtak.perioder().count { it.verdi == Utfall.OPPFYLT } shouldBe 1
@@ -39,7 +39,7 @@ class PeriodeMedVerdierAvLikTypeTest {
     }
 
     @Test
-    fun testFireVilkår() {
+    fun `å kombinere perioder med like type verdier (utfall) skal gi en periode med subperioder med riktige utfall`() {
         val aap =
             PeriodeMedVerdier(
                 Utfall.OPPFYLT,

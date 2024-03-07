@@ -41,7 +41,7 @@ class BarnetilleggVedtakDAO(
             "sak_id" to sakId,
         )
         return txSession.run(
-            queryOf(findBySQL, paramMap)
+            queryOf(sqlFindBarnetilleggVedtakOgFiltrerBortUønskede, paramMap)
                 .map { row -> row.toVedtak(txSession) }
                 .asList,
         )
@@ -83,7 +83,7 @@ class BarnetilleggVedtakDAO(
     // Vi gjør filtreringen her i stedet for i Kotlin-koden, da de ulike where-clausene er ganske enkle å forstå,
     // og det er kjappere å filtrere i db.
     @Language("SQL")
-    private val findBySQL =
+    private val sqlFindBarnetilleggVedtakOgFiltrerBortUønskede =
         """
         SELECT *
         FROM vedtak v

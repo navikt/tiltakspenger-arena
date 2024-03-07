@@ -8,7 +8,6 @@ import com.google.common.collect.RangeSet
 import com.google.common.collect.TreeRangeSet
 import java.time.LocalDate
 
-// TODO: Needs more work
 class LocalDateDiscreteDomain : DiscreteDomain<LocalDate>() {
     override fun next(value: LocalDate): LocalDate {
         return value.plusDays(1)
@@ -20,7 +19,6 @@ class LocalDateDiscreteDomain : DiscreteDomain<LocalDate>() {
 
     override fun distance(start: LocalDate, end: LocalDate): Long {
         return start.until(end).days.toLong()
-        // return DAYS.between(start, end)
     }
 }
 
@@ -59,10 +57,9 @@ class Periode(fra: LocalDate, til: LocalDate) {
         null
     }
 
-    // TODO: Trenger tester!
-    fun overlappenderPerioder(perioder: List<Periode>): List<Periode> {
+    fun overlappendePerioder(perioder: List<Periode>): List<Periode> {
         val rangeSet: RangeSet<LocalDate> = TreeRangeSet.create()
-        perioder.forEach { periode -> this.overlappendePeriode(periode)?.range.let { rangeSet.add(it!!) } }
+        perioder.forEach { periode -> this.overlappendePeriode(periode)?.range?.let { rangeSet.add(it) } }
         return rangeSet.asRanges().toPerioder()
     }
 
@@ -149,7 +146,6 @@ fun List<Periode>.leggSammenMed(perioder: List<Periode>, godtaOverlapp: Boolean 
     return (this + perioder).leggSammen(godtaOverlapp)
 }
 
-// TODO Legg til tester
 fun List<Periode>.overlappendePerioder(other: List<Periode>): List<Periode> {
     return this.flatMap { thisPeriode ->
         other.map { otherPeriode ->
@@ -157,7 +153,7 @@ fun List<Periode>.overlappendePerioder(other: List<Periode>): List<Periode> {
         }
     }
         .filterNotNull()
-        .leggSammen(false)
+        .leggSammen()
 }
 
 fun List<Periode>.trekkFra(perioder: List<Periode>): List<Periode> {

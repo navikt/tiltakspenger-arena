@@ -29,7 +29,7 @@ class SakDAO(
             "person_id" to personId.toString(),
         )
         return txSession.run(
-            queryOf(findBySQL, paramMap)
+            queryOf(sqlFindTiltakspengerSakerByPersonId, paramMap)
                 .map { row -> row.toSak(txSession) }
                 .asList,
         )
@@ -55,7 +55,7 @@ class SakDAO(
     }
 
     @Language("SQL")
-    private val findBySQL =
+    private val sqlFindTiltakspengerSakerByPersonId =
         """
         SELECT *
         FROM sak

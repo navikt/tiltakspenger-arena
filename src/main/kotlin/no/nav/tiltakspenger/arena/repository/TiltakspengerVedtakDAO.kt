@@ -41,7 +41,7 @@ class TiltakspengerVedtakDAO(
             "sak_id" to sakId,
         )
         return txSession.run(
-            queryOf(findBySQL, paramMap)
+            queryOf(sqlFindTiltakspengerVedtakOgFiltrerBortUønskede, paramMap)
                 .map { row -> row.toVedtak(txSession) }
                 .asList,
         )
@@ -71,7 +71,6 @@ class TiltakspengerVedtakDAO(
             antallDager = vedtakFakta.antallDager,
             opprinneligTomVedtaksperiode = vedtakFakta.opprinneligTilDato,
             relatertTiltak = vedtakFakta.relatertTiltak,
-
         )
 
         if (!(dto.status == ArenaVedtakStatus.GODKJ || dto.status == ArenaVedtakStatus.IVERK)) {
@@ -83,7 +82,7 @@ class TiltakspengerVedtakDAO(
     // Vi gjør filtreringen her i stedet for i Kotlin-koden, da de ulike where-clausene er ganske enkle å forstå,
     // og det er kjappere å filtrere i db.
     @Language("SQL")
-    private val findBySQL =
+    private val sqlFindTiltakspengerVedtakOgFiltrerBortUønskede =
         """
         SELECT *
         FROM vedtak v

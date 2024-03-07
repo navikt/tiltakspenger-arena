@@ -18,7 +18,7 @@ class PeriodeMedVerdierAvUlikTypeTest {
     }
 
     @Test
-    fun test1() {
+    fun `erstatter man alle dager i perioden med samme nye verdi vil den resulterende perioden være homogen og bare ha én subperiode`() {
         val perioderMedDagsats =
             PeriodeMedVerdier(255L, Periode(1.oktober(2023), 10.oktober(2023)))
                 .setVerdiForDelPeriode(300L, Periode(1.oktober(2023), 1.oktober(2023)))
@@ -35,7 +35,7 @@ class PeriodeMedVerdierAvUlikTypeTest {
     }
 
     @Test
-    fun test2() {
+    fun `erstatter man alle dager i perioden nye, unike verdier vil den resulterende perioden være en subperiode per dag`() {
         val perioderMedDagsats =
             PeriodeMedVerdier(255L, Periode(1.oktober(2023), 10.oktober(2023)))
                 .setVerdiForDelPeriode(300L, Periode(1.oktober(2023), 1.oktober(2023)))
@@ -52,7 +52,7 @@ class PeriodeMedVerdierAvUlikTypeTest {
     }
 
     @Test
-    fun test3() {
+    fun `subperioder med samme verdi skal slås sammen hvis de ligger inntil hverandre`() {
         val perioderMedDagsats =
             PeriodeMedVerdier(255L, Periode(1.oktober(2023), 10.oktober(2023)))
                 .setVerdiForDelPeriode(300L, Periode(1.oktober(2023), 1.oktober(2023)))
@@ -72,7 +72,7 @@ class PeriodeMedVerdierAvUlikTypeTest {
     }
 
     @Test
-    fun test4() {
+    fun `en periode som er en kombinasjon av to verdier kan splittes opp igjen i de enkeltstående verdiene`() {
         fun kontrollerDagsats(perioderMedDagsats: PeriodeMedVerdier<Long>) {
             perioderMedDagsats.perioder().size shouldBe 2
             perioderMedDagsats.perioder().count { it.verdi == 300L } shouldBe 1

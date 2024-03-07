@@ -18,21 +18,6 @@ FDATO	    Gjelder fra	                    Gjelder fra. VF_4_VEDTAK_116,VF_3_VEDT
 INNVF	    VEDTAKSDATO	                    VEDTAKSDATO	                                                                DATE
 KODETILTAK  Relatert tiltak	                Kode for knytting av tiltak til vedtaket	                                VARCHAR2
 
-Hvis jeg ikke trekker inn sak i spørringen får jeg disse - TODO å finne ut hvorfor det er ulikt antall..
-OPPRTDATO	Opprinnelig til-dato
-TILTAKNAVN	Knyttet til tiltak
-VEDTYPKONT	Vedtakstype som kontrolleres
-DAGS	DAGSATS
-FDATO	Gjelder fra
-TDATO	Gjelder til
-DAGUTBTILT	Antall dager med utbetaling
-KODETILTAK	Relatert tiltak
-INNVF	VEDTAKSDATO
-SATSKODE	Valgt sats
-SAKTYPKONT	Sakstype som kontrolleres
-TILBBETID	Vedtak id til tilbakebetalings
-MASKVEDTAK	Maskinelt vedtak
-
 For Barnetillegg finnes de følgende:
 DAGS	        DAGSATS	                    DAGSATS	                                                                                                    NUMBER
 SATSKODE	    Valgt sats	                Valgt sats
@@ -47,12 +32,6 @@ INNVF	        VEDTAKSDATO	                VEDTAKSDATO	                          
 KODETILTAK	    Relatert tiltak 	        Kode for knytting av tiltak til vedtaket	                                                                VARCHAR2
 
 Hentet ut med SQLene
-    select distinct(vf.vedtakfaktakode), vft.vedtakfaktanavn
-    from vedtakfaktatype vft, vedtakfakta vf, vedtak v, sak s
-    where vft.vedtakfaktakode = vf.vedtakfaktakode
-    and vf.vedtak_id = v.vedtak_id
-    and v.rettighetkode = 'BASI';
-evt
     select distinct(vf.vedtakfaktakode), vft.vedtakfaktanavn
     from vedtakfaktatype vft, vedtakfakta vf, vedtak v, sak s
     where vft.vedtakfaktakode = vf.vedtakfaktakode

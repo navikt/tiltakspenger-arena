@@ -9,13 +9,13 @@ import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.felles.Periode
 import no.nav.tiltakspenger.arena.felles.PeriodeMedVerdier
 import no.nav.tiltakspenger.arena.service.Rettighet
-import no.nav.tiltakspenger.arena.service.TiltakepengerPerioderService
+import no.nav.tiltakspenger.arena.service.TiltakspengerPerioderService
 import no.nav.tiltakspenger.arena.service.VedtakDetaljer
 import java.time.LocalDate
 
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
-fun Route.tiltakspengerRoutesUtenAuth(service: TiltakepengerPerioderService) {
+fun Route.tiltakspengerRoutesUtenAuth(service: TiltakspengerPerioderService) {
     post("/tiltakspengerUten") {
         try {
             val ident =
@@ -30,11 +30,11 @@ fun Route.tiltakspengerRoutesUtenAuth(service: TiltakepengerPerioderService) {
     }
 }
 
-private fun PeriodeMedVerdier<VedtakDetaljer>?.toPeriodeDTO(): List<PeriodeDTO> =
+private fun PeriodeMedVerdier<VedtakDetaljer>?.toPeriodeDTO(): List<ArenaTiltakspengerPeriode> =
     this?.perioder()
         ?.filter { it.verdi.rettighet == Rettighet.TILTAKSPENGER || it.verdi.rettighet == Rettighet.TILTAKSPENGER_OG_BARNETILLEGG }
         ?.map {
-            PeriodeDTO(
+            ArenaTiltakspengerPeriode(
                 fraOgMed = it.periode.fra,
                 tilOgMed = it.periode.til.toNullIfMax(),
                 antallDager = it.verdi.antallDager,
@@ -52,7 +52,7 @@ private fun LocalDate.toNullIfMax(): LocalDate? = if (this == LocalDate.MAX) {
     this
 }
 
-private data class PeriodeDTO(
+private data class ArenaTiltakspengerPeriode(
     val fraOgMed: LocalDate,
     val tilOgMed: LocalDate?,
     val antallDager: Double,

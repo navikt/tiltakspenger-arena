@@ -20,7 +20,7 @@ class VedtakfaktaDAO {
             "vedtak_id" to vedtakId.toString(),
         )
         return txSession.run(
-            queryOf(findBySQL, paramMap)
+            queryOf(sqlFindVedtaksfaktaByVedtakId, paramMap)
                 .map { row -> row.toVedtakfakta() }
                 .asList,
         ).toArenaTiltakspengerVedtakfaktaDTO()
@@ -34,7 +34,7 @@ class VedtakfaktaDAO {
             "vedtak_id" to vedtakId.toString(),
         )
         return txSession.run(
-            queryOf(findBySQL, paramMap)
+            queryOf(sqlFindVedtaksfaktaByVedtakId, paramMap)
                 .map { row -> row.toVedtakfakta() }
                 .asList,
         ).toArenaBarnetilleggVedtakfaktaDTO()
@@ -49,7 +49,7 @@ class VedtakfaktaDAO {
     }
 
     @Language("SQL")
-    private val findBySQL =
+    private val sqlFindVedtaksfaktaByVedtakId =
         """
         SELECT VF.VEDTAK_ID, VF.VEDTAKFAKTAKODE, VF.VEDTAKVERDI
         FROM VEDTAKFAKTA VF

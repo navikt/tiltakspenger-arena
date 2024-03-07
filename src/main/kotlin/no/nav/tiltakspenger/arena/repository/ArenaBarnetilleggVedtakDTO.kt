@@ -4,7 +4,6 @@ import no.nav.tiltakspenger.arena.felles.Periode
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-// Har ikke lagt til alle vedtaksfakta her ennå
 data class ArenaBarnetilleggVedtakDTO(
     val vedtakType: ArenaVedtakType,
     val uttaksgrad: Int,
