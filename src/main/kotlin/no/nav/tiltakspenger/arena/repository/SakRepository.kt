@@ -36,9 +36,11 @@ class SakRepository(
         fnr: String,
         fom: LocalDate = LocalDate.of(1900, 1, 1),
         tom: LocalDate = LocalDate.of(2999, 12, 31),
-    ): List<ArenaSakDTO> {
+    ): List<ArenaSakMedMinstEttVedtakDTO> {
         val saker = hentAlleSakerForFnr(fnr)
+            .logVedtakMedUgyldigeVerdier()
             .kunSakerMedVedtakInnenforPeriode(fom, tom)
+            .map { ArenaSakMedMinstEttVedtakDTO(it) }
         LOG.info { "Antall filtrerte saker er ${saker.size}" }
         SECURELOG.info { "Antall filtrerte saker er ${saker.size}" }
         return saker

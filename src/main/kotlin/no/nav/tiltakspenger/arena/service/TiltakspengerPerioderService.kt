@@ -4,7 +4,7 @@ import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
 import no.nav.tiltakspenger.arena.Profile
 import no.nav.tiltakspenger.arena.felles.PeriodeMedVerdier
-import no.nav.tiltakspenger.arena.repository.ArenaSakDTO
+import no.nav.tiltakspenger.arena.repository.ArenaSakMedMinstEttVedtakDTO
 import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.filterKunTiltakspenger
@@ -41,7 +41,7 @@ class TiltakspengerPerioderService(
         ident: String,
         fom: LocalDate? = null,
         tom: LocalDate? = null,
-        sakerFraDb: List<ArenaSakDTO>,
+        sakerFraDb: List<ArenaSakMedMinstEttVedtakDTO>,
     ) {
         val sakerFraWs = arenaSoapService.getYtelser(fnr = ident, fom = fom, tom = tom)
         val wsRespons: ArenaYtelseResponsDTO = mapArenaYtelser(sakerFraWs).filterKunTiltakspenger()

@@ -1,13 +1,13 @@
 package no.nav.tiltakspenger.arena.ytelser
 
-import no.nav.tiltakspenger.arena.repository.ArenaSakDTO
+import no.nav.tiltakspenger.arena.repository.ArenaSakMedMinstEttVedtakDTO
 import no.nav.tiltakspenger.arena.repository.ArenaTiltakspengerVedtakDTO
 import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
 
-fun mapArenaYtelserFraDB(saker: List<ArenaSakDTO>): ArenaYtelseResponsDTO =
+fun mapArenaYtelserFraDB(saker: List<ArenaSakMedMinstEttVedtakDTO>): ArenaYtelseResponsDTO =
     ArenaYtelseResponsDTO(saker = saker.map { mapSakFraDB(it) })
 
-fun mapSakFraDB(sak: ArenaSakDTO): ArenaYtelseResponsDTO.SakDTO =
+fun mapSakFraDB(sak: ArenaSakMedMinstEttVedtakDTO): ArenaYtelseResponsDTO.SakDTO =
     ArenaYtelseResponsDTO.SakDTO(
         gyldighetsperiodeFom = sak.fomGyldighetsperiode,
         gyldighetsperiodeTom = sak.tomGyldighetsperiode,
