@@ -6,7 +6,7 @@ import kotliquery.queryOf
 import mu.KotlinLogging
 import org.intellij.lang.annotations.Language
 
-class VedtakDAO(
+class BarnetilleggVedtakDAO(
     private val vedtakfaktaDAO: VedtakfaktaDAO = VedtakfaktaDAO(),
 ) {
 
@@ -33,29 +33,29 @@ class VedtakDAO(
             ArenaUtfall.valueOf(this)
     }
 
-    fun findAlleBySakId(
+    private fun findAlleBarnetilleggBySakId(
         sakId: Long,
         txSession: TransactionalSession,
-    ): List<ArenaVedtakDTO> {
+    ): List<ArenaBarnetilleggVedtakDTO> {
         val paramMap = mapOf(
             "sak_id" to sakId,
         )
         return txSession.run(
-            queryOf(findBySQL, paramMap)
+            queryOf(sqlFindBarnetilleggVedtakOgFiltrerBortUønskede, paramMap)
                 .map { row -> row.toVedtak(txSession) }
                 .asList,
         )
     }
 
-    fun findBySakId(
+    fun findBarnetilleggBySakId(
         sakId: Long,
         txSession: TransactionalSession,
-    ): List<ArenaVedtakDTO> = findAlleBySakId(sakId, txSession)
+    ): List<ArenaBarnetilleggVedtakDTO> = findAlleBarnetilleggBySakId(sakId, txSession)
 
-    private fun Row.toVedtak(txSession: TransactionalSession): ArenaVedtakDTO {
+    private fun Row.toVedtak(txSession: TransactionalSession): ArenaBarnetilleggVedtakDTO {
         val vedtakId = long("VEDTAK_ID")
-        val vedtakFakta = vedtakfaktaDAO.findByVedtakId(vedtakId, txSession)
-        val dto = ArenaVedtakDTO(
+        val vedtakFakta = vedtakfaktaDAO.findBarnetilleggVedtakfaktaByVedtakId(vedtakId, txSession)
+        val dto = ArenaBarnetilleggVedtakDTO(
             beslutningsdato = vedtakFakta.beslutningsdato,
             vedtakType = string("VEDTAKTYPEKODE").toVedtakType(),
             uttaksgrad = 100,
@@ -83,13 +83,12 @@ class VedtakDAO(
     // Vi gjør filtreringen her i stedet for i Kotlin-koden, da de ulike where-clausene er ganske enkle å forstå,
     // og det er kjappere å filtrere i db.
     @Language("SQL")
-    private val findBySQL =
+    private val sqlFindBarnetilleggVedtakOgFiltrerBortUønskede =
         """
         SELECT *
         FROM vedtak v
         WHERE v.sak_id = :sak_id
-        -- AND v.rettighetkode IN ('BASI', 'BTIL') -- Venter litt med BTIL (Barnetillegg)
-        AND v.rettighetkode = 'BASI'
+        AND v.rettighetkode = 'BTIL'
         AND v.vedtaktypekode IN ('O', 'E', 'G') --Ny rettighet, endring, gjenopptak
         AND v.utfallkode NOT IN ('AVBRUTT', 'NEI') --Vi vil bare ha positive vedtak
         AND v.vedtakstatuskode IN ('IVERK', 'AVSLU') --Vi vil bare ha vedtak som faktisk er vedtatt

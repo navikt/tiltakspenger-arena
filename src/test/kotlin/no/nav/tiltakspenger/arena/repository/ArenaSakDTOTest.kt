@@ -11,8 +11,8 @@ class ArenaSakDTOTest {
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
-        vedtak = listOf(
-            ArenaVedtakDTO(
+        tiltakspengerVedtak = listOf(
+            ArenaTiltakspengerVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 11),
@@ -28,9 +28,8 @@ class ArenaSakDTOTest {
                 antallDager = 5.0,
                 opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
                 relatertTiltak = "Tiltak",
-                antallBarn = 0,
             ),
-            ArenaVedtakDTO(
+            ArenaTiltakspengerVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 14),
@@ -46,9 +45,8 @@ class ArenaSakDTOTest {
                 antallDager = 5.0,
                 opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
                 relatertTiltak = "Tiltak",
-                antallBarn = 0,
             ),
-            ArenaVedtakDTO(
+            ArenaTiltakspengerVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 7),
@@ -64,9 +62,9 @@ class ArenaSakDTOTest {
                 antallDager = 5.0,
                 opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
                 relatertTiltak = "Tiltak",
-                antallBarn = 0,
             ),
         ),
+        barnetilleggVedtak = emptyList(),
     )
 
     private val sakMedVedtakSomAlleHarSluttDato = ArenaSakDTO(
@@ -74,8 +72,8 @@ class ArenaSakDTOTest {
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
-        vedtak = listOf(
-            ArenaVedtakDTO(
+        tiltakspengerVedtak = listOf(
+            ArenaTiltakspengerVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 11),
@@ -91,9 +89,8 @@ class ArenaSakDTOTest {
                 antallDager = 5.0,
                 opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
                 relatertTiltak = "Tiltak",
-                antallBarn = 0,
             ),
-            ArenaVedtakDTO(
+            ArenaTiltakspengerVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 14),
@@ -109,9 +106,8 @@ class ArenaSakDTOTest {
                 antallDager = 5.0,
                 opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
                 relatertTiltak = "Tiltak",
-                antallBarn = 0,
             ),
-            ArenaVedtakDTO(
+            ArenaTiltakspengerVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 7),
@@ -127,9 +123,9 @@ class ArenaSakDTOTest {
                 antallDager = 5.0,
                 opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
                 relatertTiltak = "Tiltak",
-                antallBarn = 0,
             ),
         ),
+        barnetilleggVedtak = emptyList(),
     )
 
     private val sakMedVedtakHvorEttErÅpent = ArenaSakDTO(
@@ -137,8 +133,8 @@ class ArenaSakDTOTest {
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
-        vedtak = listOf(
-            ArenaVedtakDTO(
+        tiltakspengerVedtak = listOf(
+            ArenaTiltakspengerVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 11),
@@ -154,9 +150,8 @@ class ArenaSakDTOTest {
                 antallDager = 5.0,
                 opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
                 relatertTiltak = "Tiltak",
-                antallBarn = 0,
             ),
-            ArenaVedtakDTO(
+            ArenaTiltakspengerVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 14),
@@ -172,9 +167,8 @@ class ArenaSakDTOTest {
                 antallDager = 5.0,
                 opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
                 relatertTiltak = "Tiltak",
-                antallBarn = 0,
             ),
-            ArenaVedtakDTO(
+            ArenaTiltakspengerVedtakDTO(
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 7),
@@ -190,9 +184,9 @@ class ArenaSakDTOTest {
                 antallDager = 5.0,
                 opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
                 relatertTiltak = "Tiltak",
-                antallBarn = 0,
             ),
         ),
+        barnetilleggVedtak = emptyList(),
     )
 
     private val sakUtenVedtak = ArenaSakDTO(
@@ -200,22 +194,23 @@ class ArenaSakDTOTest {
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
-        vedtak = emptyList(),
+        tiltakspengerVedtak = emptyList(),
+        barnetilleggVedtak = emptyList(),
     )
 
     @Test
     fun `harVedtakMedÅpenPeriode skal fungere for sak med vedtak som alle har sluttdato`() {
-        sakMedVedtakSomAlleHarSluttDato.harVedtakMedÅpenPeriode() shouldBe false
+        sakMedVedtakSomAlleHarSluttDato.harTiltakspengerVedtakMedÅpenPeriode() shouldBe false
     }
 
     @Test
     fun `harVedtakMedÅpenPeriode skal fungere for sak med vedtak hvor ett har åpen sluttdato`() {
-        sakMedVedtakHvorEttErÅpent.harVedtakMedÅpenPeriode() shouldBe true
+        sakMedVedtakHvorEttErÅpent.harTiltakspengerVedtakMedÅpenPeriode() shouldBe true
     }
 
     @Test
     fun `harVedtakMedÅpenPeriode skal fungere for sak uten vedtak`() {
-        sakUtenVedtak.harVedtakMedÅpenPeriode() shouldBe false
+        sakUtenVedtak.harTiltakspengerVedtakMedÅpenPeriode() shouldBe false
     }
 
     @Test
@@ -241,24 +236,5 @@ class ArenaSakDTOTest {
             fom = LocalDate.of(2023, 11, 20),
             tom = LocalDate.of(2023, 11, 29),
         ).size shouldBe 1
-    }
-
-    @Test
-    fun `førsteFomVedtaksperiodeIsBefore skal fungere også når vedtak ikke er i rekkefølge`() {
-        sakHvorVedtakIkkeErIRekkefølge.førsteFomVedtaksperiodeIsBeforeOrEqualTo(
-            LocalDate.of(2023, 11, 11),
-        ) shouldBe true
-        sakHvorVedtakIkkeErIRekkefølge.førsteFomVedtaksperiodeIsBeforeOrEqualTo(
-            LocalDate.of(2023, 11, 8),
-        ) shouldBe true
-        sakHvorVedtakIkkeErIRekkefølge.førsteFomVedtaksperiodeIsBeforeOrEqualTo(
-            LocalDate.of(2023, 11, 15),
-        ) shouldBe true
-        sakHvorVedtakIkkeErIRekkefølge.førsteFomVedtaksperiodeIsBeforeOrEqualTo(
-            LocalDate.of(2023, 11, 6),
-        ) shouldBe false
-        sakHvorVedtakIkkeErIRekkefølge.førsteFomVedtaksperiodeIsBeforeOrEqualTo(
-            LocalDate.of(2023, 11, 7),
-        ) shouldBe true
     }
 }

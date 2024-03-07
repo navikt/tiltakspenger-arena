@@ -8,7 +8,6 @@ import com.google.common.collect.RangeSet
 import com.google.common.collect.TreeRangeSet
 import java.time.LocalDate
 
-// TODO: Needs more work
 class LocalDateDiscreteDomain : DiscreteDomain<LocalDate>() {
     override fun next(value: LocalDate): LocalDate {
         return value.plusDays(1)
@@ -20,7 +19,6 @@ class LocalDateDiscreteDomain : DiscreteDomain<LocalDate>() {
 
     override fun distance(start: LocalDate, end: LocalDate): Long {
         return start.until(end).days.toLong()
-        // return DAYS.between(start, end)
     }
 }
 
@@ -59,10 +57,9 @@ class Periode(fra: LocalDate, til: LocalDate) {
         null
     }
 
-    // TODO: Trenger tester!
-    fun overlappenderPerioder(perioder: List<Periode>): List<Periode> {
+    fun overlappendePerioder(perioder: List<Periode>): List<Periode> {
         val rangeSet: RangeSet<LocalDate> = TreeRangeSet.create()
-        perioder.forEach { periode -> this.overlappendePeriode(periode)?.range.let { rangeSet.add(it!!) } }
+        perioder.forEach { periode -> this.overlappendePeriode(periode)?.range?.let { rangeSet.add(it) } }
         return rangeSet.asRanges().toPerioder()
     }
 
@@ -94,7 +91,7 @@ class Periode(fra: LocalDate, til: LocalDate) {
     }
 
     override fun toString(): String {
-        return "Periode(range=$range)"
+        return "Periode(fra=$fra til=$til)"
     }
 
     fun inneholder(dato: LocalDate): Boolean = range.contains(dato)
@@ -111,6 +108,9 @@ class Periode(fra: LocalDate, til: LocalDate) {
         val ranges = opprinneligeRangeSet.difference(andrePeriodeRangeSet).asRanges()
         return ranges.filter { !it.canonical(domain).isEmpty }.map { it.toPeriode() }
     }
+
+    fun leggTil(annenPeriode: Periode): List<Periode> =
+        listOf(this).leggSammenMed(annenPeriode, true)
 
     fun tilDager(): List<LocalDate> {
         return fra.datesUntil(til.plusDays(1)).toList()
@@ -136,6 +136,24 @@ fun List<Periode>.leggSammen(godtaOverlapp: Boolean = true): List<Periode> {
     val rangeSet = TreeRangeSet.create<LocalDate>()
     rangeSet.addAll(this.map { it.range })
     return rangeSet.asRanges().toPerioder()
+}
+
+fun List<Periode>.leggSammenMed(periode: Periode, godtaOverlapp: Boolean = true): List<Periode> {
+    return (this + periode).leggSammen(godtaOverlapp)
+}
+
+fun List<Periode>.leggSammenMed(perioder: List<Periode>, godtaOverlapp: Boolean = true): List<Periode> {
+    return (this + perioder).leggSammen(godtaOverlapp)
+}
+
+fun List<Periode>.overlappendePerioder(other: List<Periode>): List<Periode> {
+    return this.flatMap { thisPeriode ->
+        other.map { otherPeriode ->
+            thisPeriode.overlappendePeriode(otherPeriode)
+        }
+    }
+        .filterNotNull()
+        .leggSammen()
 }
 
 fun List<Periode>.trekkFra(perioder: List<Periode>): List<Periode> {
