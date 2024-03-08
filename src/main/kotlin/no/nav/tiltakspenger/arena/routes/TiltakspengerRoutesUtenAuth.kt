@@ -8,20 +8,20 @@ import io.ktor.server.routing.post
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.felles.Periode
 import no.nav.tiltakspenger.arena.felles.PeriodeMedVerdier
-import no.nav.tiltakspenger.arena.service.Rettighet
-import no.nav.tiltakspenger.arena.service.TiltakspengerPerioderService
-import no.nav.tiltakspenger.arena.service.VedtakDetaljer
+import no.nav.tiltakspenger.arena.service.vedtakdetaljer.Rettighet
+import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljer
+import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl
 import java.time.LocalDate
 
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
-fun Route.tiltakspengerRoutesUtenAuth(service: TiltakspengerPerioderService) {
+fun Route.tiltakspengerRoutesUtenAuth(service: VedtakDetaljerServiceImpl) {
     post("/tiltakspengerUten") {
         try {
             val ident =
                 call.receive<RequestBody>().ident
             val periode: PeriodeMedVerdier<VedtakDetaljer>? =
-                service.hentTiltakspengerPerioder(ident = ident)
+                service.hentVedtakDetaljerPerioder(ident = ident)
             call.respond(periode.toPeriodeDTO())
         } catch (e: Exception) {
             SECURELOG.warn("Feil i kall mot Arena for å hente tiltakspenger ${e.message}", e)

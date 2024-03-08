@@ -1,4 +1,4 @@
-package no.nav.tiltakspenger.arena.service
+package no.nav.tiltakspenger.arena.service.vedtakdetaljer
 
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
@@ -13,25 +13,25 @@ import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelserFraDB
 import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
 import java.time.LocalDate
 
-class TiltakspengerPerioderService(
+class VedtakDetaljerServiceImpl(
     private val arenaSoapService: ArenaSoapService,
     private val arenaSakRepository: SakRepository,
-) {
+) : VedtakDetaljerService {
 
     companion object {
         private val LOG = KotlinLogging.logger {}
         private val SECURELOG = KotlinLogging.logger("tjenestekall")
     }
 
-    fun hentTiltakspengerPerioder(
+    override fun hentVedtakDetaljerPerioder(
         ident: String,
-        fom: LocalDate = LocalDate.of(1900, 1, 1),
-        tom: LocalDate = LocalDate.of(2999, 12, 31),
+        fom: LocalDate,
+        tom: LocalDate,
     ): PeriodeMedVerdier<VedtakDetaljer>? =
         if (Configuration.applicationProfile() == Profile.DEV) {
             val sakerFraDb = arenaSakRepository.hentSakerForFnr(fnr = ident, fom = fom, tom = tom)
             sammenlignDbMedWs(ident, fom, tom, sakerFraDb)
-            mapTiltakspengerFraArenaTilVedtaksperioder(sakerFraDb)
+            ArenaTilVedtakDetaljerMapper.mapTiltakspengerFraArenaTilVedtaksperioder(sakerFraDb)
         } else {
             null
         }
