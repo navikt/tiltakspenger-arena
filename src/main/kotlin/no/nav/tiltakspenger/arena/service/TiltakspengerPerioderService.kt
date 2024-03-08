@@ -27,15 +27,14 @@ class TiltakspengerPerioderService(
         ident: String,
         fom: LocalDate = LocalDate.of(1900, 1, 1),
         tom: LocalDate = LocalDate.of(2999, 12, 31),
-    ): PeriodeMedVerdier<VedtakDetaljer>? {
+    ): PeriodeMedVerdier<VedtakDetaljer>? =
         if (Configuration.applicationProfile() == Profile.DEV) {
             val sakerFraDb = arenaSakRepository.hentSakerForFnr(fnr = ident, fom = fom, tom = tom)
             sammenlignDbMedWs(ident, fom, tom, sakerFraDb)
-            return mapTiltakspengerFraArenaTilVedtaksperioder(sakerFraDb)
+            mapTiltakspengerFraArenaTilVedtaksperioder(sakerFraDb)
         } else {
-            return null
+            null
         }
-    }
 
     private fun sammenlignDbMedWs(
         ident: String,
