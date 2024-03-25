@@ -66,7 +66,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("no.nav.security:token-validation-ktor-v2:$tokenSupportVersion")
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
-    implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.1.0")
+    implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.2.0")
     implementation("no.nav.common:cxf:3.2024.01.24_10.14-f70bae69bd65")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:3.0.1")
     implementation("jakarta.xml.soap:jakarta.xml.soap-api:3.0.1")
