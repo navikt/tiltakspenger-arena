@@ -42,7 +42,7 @@ dependencies {
     implementation("org.jetbrains:annotations:24.1.0")
     implementation("com.natpryce:konfig:1.6.10.0")
     implementation("net.logstash.logback:logstash-logback-encoder:7.4")
-    implementation("ch.qos.logback:logback-classic:1.5.4")
+    implementation("ch.qos.logback:logback-classic:1.5.5")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     implementation("io.ktor:ktor-server:$ktorVersion")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
