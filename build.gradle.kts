@@ -87,7 +87,7 @@ dependencies {
 
     implementation("org.slf4j:jul-to-slf4j:2.0.12")
     implementation("org.slf4j:log4j-over-slf4j:2.0.12")
-    implementation("org.slf4j:jcl-over-slf4j:2.0.12")
+    implementation("org.slf4j:jcl-over-slf4j:2.0.13")
 
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
