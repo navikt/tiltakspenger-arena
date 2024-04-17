@@ -5,6 +5,8 @@ import mu.KotlinLogging
 import no.nav.helse.rapids_rivers.RapidApplication
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.tiltakspenger.arena.repository.SakRepository
+import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServiceImpl
+import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClientImpl
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsTokenProviderClient
 import no.nav.tiltakspenger.arena.ytelser.ArenaClientConfiguration
@@ -21,14 +23,20 @@ internal class ApplicationBuilder(val config: ApplicationConfig) : RapidsConnect
         arenaOrdsTokenProvider = tokenProviderClient,
     )
 
+    val vedtakDetaljerService = VedtakDetaljerServiceImpl(
+        arenaSoapService = arenaSoapService,
+        arenaSakRepository = arenaSakRepository,
+    )
+    val rettighetDetaljerService = RettighetDetaljerServiceImpl(vedtakDetaljerService)
+
     val rapidsConnection: RapidsConnection = RapidApplication.Builder(
         RapidApplication.RapidApplicationConfig.fromEnv(Configuration.rapidsAndRivers),
     )
         .withKtorModule {
             tiltakApi(
-                arenaSoapService = arenaSoapService,
-                arenaSakRepository = arenaSakRepository,
                 arenaOrdsClient = arenaOrdsClient,
+                vedtakDetaljerService = vedtakDetaljerService,
+                rettighetDetaljerService = rettighetDetaljerService,
                 config = config,
             )
         }

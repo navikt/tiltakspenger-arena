@@ -41,11 +41,13 @@ object ArenaTilVedtakDetaljerMapper {
     private fun periodeMedDefaultVerdierForTiltakspenger(totalePeriode: Periode) =
         PeriodeMedVerdier(
             totalePeriode = totalePeriode,
-            defaultVerdi = VedtakDetaljerUtenBarnetillegg(
+            defaultVerdi = VedtakDetaljerKunTiltakspenger(
                 antallDager = defaultAntallDager,
                 dagsats = defaultDagsats,
                 relaterteTiltak = defaultRelaterteTiltak,
                 rettighet = Rettighet.INGENTING,
+                vedtakId = 0L,
+                sakId = 0L,
             ),
         )
 
@@ -63,17 +65,19 @@ object ArenaTilVedtakDetaljerMapper {
 
     private fun fyllTiltakspengerPeriodenMedReelleVerdier(
         saker: List<ArenaSakMedMinstEttVedtakDTO>,
-        periodeMedTiltakspengerInit: PeriodeMedVerdier<VedtakDetaljerUtenBarnetillegg>,
+        periodeMedTiltakspengerInit: PeriodeMedVerdier<VedtakDetaljerKunTiltakspenger>,
     ) =
         saker
             .flatMap { it.tiltakspengerVedtak }
-            .fold(periodeMedTiltakspengerInit) { periodeMedVerdier: PeriodeMedVerdier<VedtakDetaljerUtenBarnetillegg>, arenaTiltakspengerVedtakDTO: ArenaTiltakspengerVedtakDTO ->
+            .fold(periodeMedTiltakspengerInit) { periodeMedVerdier: PeriodeMedVerdier<VedtakDetaljerKunTiltakspenger>, arenaTiltakspengerVedtakDTO: ArenaTiltakspengerVedtakDTO ->
                 periodeMedVerdier.setVerdiForDelPeriode(
-                    VedtakDetaljerUtenBarnetillegg(
+                    VedtakDetaljerKunTiltakspenger(
                         antallDager = arenaTiltakspengerVedtakDTO.antallDager ?: defaultAntallDager,
                         dagsats = arenaTiltakspengerVedtakDTO.dagsats ?: defaultDagsats,
                         relaterteTiltak = arenaTiltakspengerVedtakDTO.relatertTiltak ?: defaultRelaterteTiltak,
                         rettighet = Rettighet.TILTAKSPENGER,
+                        vedtakId = arenaTiltakspengerVedtakDTO.vedtakId,
+                        sakId = arenaTiltakspengerVedtakDTO.tilhørendeSakId,
                     ),
                     arenaTiltakspengerVedtakDTO.vedtaksperiode(),
                 )
@@ -120,7 +124,7 @@ object ArenaTilVedtakDetaljerMapper {
             }
 
     private fun kombinerTiltakspengerMedBarnetillegg(
-        periodeMedTiltakspenger: PeriodeMedVerdier<VedtakDetaljerUtenBarnetillegg>,
+        periodeMedTiltakspenger: PeriodeMedVerdier<VedtakDetaljerKunTiltakspenger>,
         periodeMedBarnetillegg: PeriodeMedVerdier<VedtakDetaljerBarnetillegg>,
     ) =
         periodeMedTiltakspenger.kombiner(periodeMedBarnetillegg) { vt, vb ->
@@ -137,10 +141,12 @@ object ArenaTilVedtakDetaljerMapper {
                 antallBarn = vb.antallBarn,
                 relaterteTiltak = vt.relaterteTiltak,
                 rettighet = kombinerRettighet(vt, vb),
+                vedtakId = vt.vedtakId,
+                sakId = vt.sakId,
             )
         }
 
-    private fun kombinerRettighet(vt: VedtakDetaljerUtenBarnetillegg, vb: VedtakDetaljerBarnetillegg) =
+    private fun kombinerRettighet(vt: VedtakDetaljerKunTiltakspenger, vb: VedtakDetaljerBarnetillegg) =
         if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG) {
             Rettighet.TILTAKSPENGER_OG_BARNETILLEGG
         } else if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.INGENTING) {

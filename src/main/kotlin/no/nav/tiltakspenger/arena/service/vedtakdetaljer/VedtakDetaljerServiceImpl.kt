@@ -6,6 +6,7 @@ import no.nav.tiltakspenger.arena.Profile
 import no.nav.tiltakspenger.arena.felles.PeriodeMedVerdier
 import no.nav.tiltakspenger.arena.repository.ArenaSakMedMinstEttVedtakDTO
 import no.nav.tiltakspenger.arena.repository.SakRepository
+import no.nav.tiltakspenger.arena.tilgang.Bruker
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.filterKunTiltakspenger
 import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelser
@@ -27,14 +28,16 @@ class VedtakDetaljerServiceImpl(
         ident: String,
         fom: LocalDate,
         tom: LocalDate,
-    ): PeriodeMedVerdier<VedtakDetaljer>? =
-        if (Configuration.applicationProfile() == Profile.DEV) {
+        bruker: Bruker,
+    ): PeriodeMedVerdier<VedtakDetaljer>? {
+        return if (Configuration.applicationProfile() == Profile.DEV) {
             val sakerFraDb = arenaSakRepository.hentSakerForFnr(fnr = ident, fom = fom, tom = tom)
             sammenlignDbMedWs(ident, fom, tom, sakerFraDb)
             ArenaTilVedtakDetaljerMapper.mapTiltakspengerFraArenaTilVedtaksperioder(sakerFraDb)
         } else {
             null
         }
+    }
 
     private fun sammenlignDbMedWs(
         ident: String,

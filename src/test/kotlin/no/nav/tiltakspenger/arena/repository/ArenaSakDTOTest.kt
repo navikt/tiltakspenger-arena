@@ -7,12 +7,15 @@ import java.time.LocalDate
 class ArenaSakDTOTest {
 
     private val sakHvorVedtakIkkeErIRekkefølge = ArenaSakDTO(
+        sakId = 1000L,
         aar = 2022,
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
         tiltakspengerVedtak = listOf(
             ArenaTiltakspengerVedtakDTO(
+                vedtakId = 1L,
+                tilhørendeSakId = 1000L,
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 11),
@@ -30,6 +33,8 @@ class ArenaSakDTOTest {
                 relatertTiltak = "Tiltak",
             ),
             ArenaTiltakspengerVedtakDTO(
+                vedtakId = 2L,
+                tilhørendeSakId = 1000L,
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 14),
@@ -47,6 +52,8 @@ class ArenaSakDTOTest {
                 relatertTiltak = "Tiltak",
             ),
             ArenaTiltakspengerVedtakDTO(
+                vedtakId = 3L,
+                tilhørendeSakId = 1000L,
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 7),
@@ -68,12 +75,15 @@ class ArenaSakDTOTest {
     )
 
     private val sakMedVedtakSomAlleHarSluttDato = ArenaSakDTO(
+        sakId = 1001L,
         aar = 2022,
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
         tiltakspengerVedtak = listOf(
             ArenaTiltakspengerVedtakDTO(
+                vedtakId = 11L,
+                tilhørendeSakId = 1001L,
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 11),
@@ -91,6 +101,8 @@ class ArenaSakDTOTest {
                 relatertTiltak = "Tiltak",
             ),
             ArenaTiltakspengerVedtakDTO(
+                vedtakId = 12L,
+                tilhørendeSakId = 1001L,
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 14),
@@ -108,6 +120,8 @@ class ArenaSakDTOTest {
                 relatertTiltak = "Tiltak",
             ),
             ArenaTiltakspengerVedtakDTO(
+                vedtakId = 13L,
+                tilhørendeSakId = 1001L,
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 7),
@@ -129,12 +143,15 @@ class ArenaSakDTOTest {
     )
 
     private val sakMedVedtakHvorEttErÅpent = ArenaSakDTO(
+        sakId = 1002L,
         aar = 2022,
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
         tiltakspengerVedtak = listOf(
             ArenaTiltakspengerVedtakDTO(
+                vedtakId = 20L,
+                tilhørendeSakId = 1003L,
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 11),
@@ -152,6 +169,8 @@ class ArenaSakDTOTest {
                 relatertTiltak = "Tiltak",
             ),
             ArenaTiltakspengerVedtakDTO(
+                vedtakId = 21L,
+                tilhørendeSakId = 1003L,
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 14),
@@ -169,6 +188,8 @@ class ArenaSakDTOTest {
                 relatertTiltak = "Tiltak",
             ),
             ArenaTiltakspengerVedtakDTO(
+                vedtakId = 22L,
+                tilhørendeSakId = 1003L,
                 vedtakType = ArenaVedtakType.O,
                 uttaksgrad = 100,
                 fomVedtaksperiode = LocalDate.of(2023, 11, 7),
@@ -190,6 +211,7 @@ class ArenaSakDTOTest {
     )
 
     private val sakUtenVedtak = ArenaSakDTO(
+        sakId = 1004L,
         aar = 2022,
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,

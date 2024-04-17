@@ -4,3 +4,12 @@ vaultpath: prod
 ingress:
   url: https://tiltakspenger-arena.prod-fss-pub.nais.io
 cluster: prod-gcp
+tenant: nav.no
+azure:
+  groups:
+    - name: ROLE_FORTROLIG
+      id: 9ec6487d-f37a-4aad-a027-cd221c1ac32b
+    - name: ROLE_STRENGT_FORTROLIG
+      id: ad7b87a6-9180-467c-affc-20a566b0fec0
+    - name: ROLE_SKJERMING
+      id: e750ceb5-b70b-4d94-b4fa-9d22467b786b

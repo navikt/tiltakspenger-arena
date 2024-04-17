@@ -1,28 +1,37 @@
 apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ name }}
+  name: { { name } }
   namespace: tpts
   labels:
     team: tpts
 spec:
-  image: {{ image }}
+  image: { { image } }
   port: 8080
   ingresses:
-    - {{ ingress.url }}
+    - { { ingress.url } }
   azure:
     application:
       enabled: true
+      tenant: { { tenant } }
+      claims:
+        groups:
+        { { #each azure.groups}}
+            - id: {{this.id } }
+        {{/each}}
+        extra:
+          - NAVident
+          - azp_name
   tokenx:
     enabled: true
   accessPolicy:
     inbound:
       rules:
         - application: tiltakspenger-soknad-api
-          cluster: {{ cluster }}
+          cluster: { { cluster } }
         - application: tiltakspenger-tiltak
           namespace: tpts
-          cluster: {{ cluster }}
+          cluster: { { cluster } }
   liveness:
     path: /isalive
   readiness:
@@ -36,13 +45,18 @@ spec:
     min: 2
     max: 2
   kafka:
-    pool: {{ kafka.pool }}
+    pool: { { kafka.pool } }
   secureLogs:
     enabled: true
   webproxy: true
   envFrom:
     - secret: ords-arena
     - secret: db-arena
+  env:
+    { { #each azure.groups}}
+        - name: {{this.name } }
+    value: {{this.id}}
+    {{/each}}
   vault:
     enabled: true
     paths:

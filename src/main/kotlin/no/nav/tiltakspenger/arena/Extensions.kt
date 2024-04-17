@@ -13,3 +13,7 @@ internal fun ApplicationCall.getClaim(issuer: String, name: String): String? =
 fun ApplicationCall.fødselsnummer(): String? {
     return this.getClaim("tokendings", "pid")
 }
+
+fun ApplicationCall.navAnsatt(): String? {
+    return this.getClaim("azure", "NAVident") ?: this.getClaim("azure", "azp_name")
+}

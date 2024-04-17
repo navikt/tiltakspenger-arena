@@ -5,6 +5,8 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class ArenaBarnetilleggVedtakDTO(
+    val vedtakId: Long,
+    val tilhørendeSakId: Long,
     val vedtakType: ArenaVedtakType,
     val uttaksgrad: Int,
     val fomVedtaksperiode: LocalDate,
