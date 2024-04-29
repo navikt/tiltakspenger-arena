@@ -107,7 +107,7 @@ data class PeriodeMedVerdier<T> private constructor(
             throw IllegalArgumentException("Listen inneholder overlappende perioder")
         }
         val verdi: T = this.firstOrNull()!!.verdi
-        return this.map { it.periode }.leggSammen(false).map { PeriodeMedVerdi(verdi, it) }
+        return this.map { it.periode }.leggSammen(true).map { PeriodeMedVerdi(verdi, it) }
     }
 
     // Krever at alle elementer i lista har samme verdi for å fungere!
