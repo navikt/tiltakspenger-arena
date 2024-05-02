@@ -78,7 +78,7 @@ dependencies {
     implementation("org.apache.cxf:cxf-core:$cxfVersjon")
 
     //implementation("org.flywaydb:flyway-core:9.19.3")
-    implementation("org.flywaydb:flyway-database-oracle:10.11.1")
+    implementation("org.flywaydb:flyway-database-oracle:10.12.0")
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("com.oracle.database.jdbc:ojdbc8:23.3.0.23.09") //TODO: Er denne riktig?
     implementation("com.github.seratch:kotliquery:1.9.0")
@@ -87,7 +87,7 @@ dependencies {
     runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersjon")
     runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:3.0.3")
     // old version because of https://issues.apache.org/jira/browse/CXF-8727
-    runtimeOnly("jakarta.annotation:jakarta.annotation-api:2.1.1")
+    runtimeOnly("jakarta.annotation:jakarta.annotation-api:3.0.0")
 
     implementation("org.slf4j:jul-to-slf4j:2.0.13")
     implementation("org.slf4j:log4j-over-slf4j:2.0.13")
