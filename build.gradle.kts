@@ -78,7 +78,7 @@ dependencies {
     implementation("org.apache.cxf:cxf-core:$cxfVersjon")
 
     //implementation("org.flywaydb:flyway-core:9.19.3")
-    implementation("org.flywaydb:flyway-database-oracle:10.12.0")
+    implementation("org.flywaydb:flyway-database-oracle:10.13.0")
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("com.oracle.database.jdbc:ojdbc8:23.4.0.24.05") //TODO: Er denne riktig?
     implementation("com.github.seratch:kotliquery:1.9.0")
