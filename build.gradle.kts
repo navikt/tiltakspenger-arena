@@ -73,7 +73,7 @@ dependencies {
             strictly("3.0.1")
         }
     }
-    implementation("jakarta.xml.soap:jakarta.xml.soap-api:3.0.1")
+    implementation("jakarta.xml.soap:jakarta.xml.soap-api:3.0.2")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersjon")
     implementation("org.apache.cxf:cxf-core:$cxfVersjon")
 
