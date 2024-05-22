@@ -85,7 +85,7 @@ dependencies {
 
 
     runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersjon")
-    runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:3.0.3")
+    runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:3.0.4")
     // old version because of https://issues.apache.org/jira/browse/CXF-8727
     runtimeOnly("jakarta.annotation:jakarta.annotation-api:3.0.0")
 
