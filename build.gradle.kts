@@ -34,7 +34,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     // implementation("com.github.navikt:tiltakspenger-libs:0.0.7")
     implementation("com.google.guava:guava:33.2.0-jre")
-    implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:0.0.108")
+    implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:0.0.120")
     implementation("com.github.navikt.tiltakspenger-libs:arenaytelser-dtos:0.0.108")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
     implementation("com.github.navikt:rapids-and-rivers:2024041714471713358051.71746f05c18e")
