@@ -6,7 +6,7 @@ val mockkVersion = "1.13.11"
 val kotlinxCoroutinesVersion = "1.8.1"
 val tokenSupportVersion = "4.1.7"
 val testContainersVersion = "1.19.8"
-val kotestVersion = "5.9.0"
+val kotestVersion = "5.9.1"
 
 project.base.archivesName.set("app")
 
