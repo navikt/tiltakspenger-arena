@@ -1,7 +1,7 @@
 package no.nav.tiltakspenger.arena.repository
 
 import mu.KotlinLogging
-import no.nav.tiltakspenger.arena.felles.Periode
+import no.nav.tiltakspenger.libs.periodisering.Periode
 import java.time.LocalDate
 import java.time.LocalDateTime
 

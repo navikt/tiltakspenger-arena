@@ -6,11 +6,11 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import mu.KotlinLogging
-import no.nav.tiltakspenger.arena.felles.Periode
-import no.nav.tiltakspenger.arena.felles.PeriodeMedVerdier
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.Rettighet
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljer
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl
+import no.nav.tiltakspenger.libs.periodisering.Periode
+import no.nav.tiltakspenger.libs.periodisering.Periodisering
 import java.time.LocalDate
 
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
@@ -20,7 +20,7 @@ fun Route.tiltakspengerRoutesUtenAuth(service: VedtakDetaljerServiceImpl) {
         try {
             val ident =
                 call.receive<RequestBody>().ident
-            val periode: PeriodeMedVerdier<VedtakDetaljer>? =
+            val periode: Periodisering<VedtakDetaljer>? =
                 service.hentVedtakDetaljerPerioder(ident = ident)
             call.respond(periode.toPeriodeDTO())
         } catch (e: Exception) {
@@ -30,7 +30,7 @@ fun Route.tiltakspengerRoutesUtenAuth(service: VedtakDetaljerServiceImpl) {
     }
 }
 
-private fun PeriodeMedVerdier<VedtakDetaljer>?.toPeriodeDTO(): List<ArenaTiltakspengerPeriode> =
+private fun Periodisering<VedtakDetaljer>?.toPeriodeDTO(): List<ArenaTiltakspengerPeriode> =
     this?.perioder()
         ?.filter { it.verdi.rettighet == Rettighet.TILTAKSPENGER || it.verdi.rettighet == Rettighet.TILTAKSPENGER_OG_BARNETILLEGG }
         ?.map {
