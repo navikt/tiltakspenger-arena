@@ -69,7 +69,7 @@ dependencies {
     implementation("no.nav.security:token-validation-ktor-v2:$tokenSupportVersion")
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.2.0")
-    implementation("no.nav.common:cxf:3.2024.05.23_05.46-2b29fa343e8e")
+    implementation("no.nav.common:cxf:3.2024.04.22_13.50-7815154a2573")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api") {
         version {
             strictly("3.0.1")
