@@ -23,6 +23,9 @@ spec:
         - application: tiltakspenger-tiltak
           namespace: tpts
           cluster: {{ cluster }}
+        - application: tiltakspenger-datadeling
+          namespace: tpts
+          cluster: {{ cluster }}
   liveness:
     path: /isalive
   readiness:
