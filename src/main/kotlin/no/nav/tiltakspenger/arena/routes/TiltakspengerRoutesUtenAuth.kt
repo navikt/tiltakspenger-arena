@@ -18,10 +18,13 @@ private val SECURELOG = KotlinLogging.logger("tjenestekall")
 fun Route.tiltakspengerRoutesUtenAuth(service: VedtakDetaljerServiceImpl) {
     post("/tiltakspengerUten") {
         try {
-            val ident =
-                call.receive<RequestBody>().ident
+            val req = call.receive<VedtakRequest>()
             val periode: Periodisering<VedtakDetaljer>? =
-                service.hentVedtakDetaljerPerioder(ident = ident)
+                service.hentVedtakDetaljerPerioder(
+                    ident = req.ident,
+                    fom = req.fom ?: LocalDate.of(1900, 1, 1),
+                    tom = req.tom ?: LocalDate.of(2999, 12, 31),
+                )
             call.respond(periode.toPeriodeDTO())
         } catch (e: Exception) {
             SECURELOG.warn("Feil i kall mot Arena for å hente tiltakspenger ${e.message}", e)
@@ -51,6 +54,12 @@ private fun LocalDate.toNullIfMax(): LocalDate? = if (this == LocalDate.MAX) {
 } else {
     this
 }
+
+private data class VedtakRequest(
+    val ident: String,
+    val fom: LocalDate?,
+    val tom: LocalDate?,
+)
 
 private data class ArenaTiltakspengerPeriode(
     val fraOgMed: LocalDate,
