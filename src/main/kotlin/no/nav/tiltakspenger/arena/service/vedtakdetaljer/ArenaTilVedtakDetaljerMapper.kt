@@ -21,8 +21,8 @@ object ArenaTilVedtakDetaljerMapper {
             SECURELOG.info { "Returnerer null pga ingen saker" }
             return null
         }
-        val totalePeriodeFra = saker.minOf { it.sakPeriode().fra }
-        val totalePeriodeTil = saker.maxOf { it.sakPeriode().til }
+        val totalePeriodeFra = saker.minOf { it.sakPeriode().fraOgMed }
+        val totalePeriodeTil = saker.maxOf { it.sakPeriode().tilOgMed }
         val totalePeriode = Periode(totalePeriodeFra, totalePeriodeTil)
 
         val periodeMedTiltakspengerInit = periodeMedDefaultVerdierForTiltakspenger(totalePeriode)

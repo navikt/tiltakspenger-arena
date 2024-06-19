@@ -38,8 +38,8 @@ private fun Periodisering<VedtakDetaljer>?.toPeriodeDTO(): List<ArenaTiltakspeng
         ?.filter { it.verdi.rettighet == Rettighet.TILTAKSPENGER || it.verdi.rettighet == Rettighet.TILTAKSPENGER_OG_BARNETILLEGG }
         ?.map {
             ArenaTiltakspengerPeriode(
-                fraOgMed = it.periode.fra,
-                tilOgMed = it.periode.til.toNullIfMax(),
+                fraOgMed = it.periode.fraOgMed,
+                tilOgMed = it.periode.tilOgMed.toNullIfMax(),
                 antallDager = it.verdi.antallDager,
                 dagsatsTiltakspenger = it.verdi.dagsatsTiltakspenger,
                 dagsatsBarnetillegg = it.verdi.dagsatsBarnetillegg,
