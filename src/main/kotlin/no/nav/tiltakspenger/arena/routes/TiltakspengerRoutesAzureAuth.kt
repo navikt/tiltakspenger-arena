@@ -15,6 +15,7 @@ import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServic
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljer
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
 import no.nav.tiltakspenger.libs.periodisering.Periodisering
+import java.time.LocalDate
 
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
@@ -33,11 +34,13 @@ fun Route.tiltakspengerRoutesAzureAuth(
                 innloggetSaksbehandlerProvider.krevInnloggetSaksbehandler(call)
             }
              */
-            val ident = call.receive<RequestBody>().ident
-            // SECURELOG.info { "$bruker spør om vedtaksperioder for $ident" }
-
+            val req = call.receive<VedtakRequest>()
             val periode: Periodisering<VedtakDetaljer>? =
-                vedtakDetaljerService.hentVedtakDetaljerPerioder(ident = ident)
+                vedtakDetaljerService.hentVedtakDetaljerPerioder(
+                    ident = req.ident,
+                    fom = req.fom ?: LocalDate.of(1900, 1, 1),
+                    tom = req.tom ?: LocalDate.of(2999, 12, 31),
+                )
             call.respond(periode.toArenaTiltakspengerVedtakPeriode())
         } catch (e: Exception) {
             SECURELOG.warn("Feilet å hente tiltakspenger ${e.message}", e)
@@ -56,12 +59,13 @@ fun Route.tiltakspengerRoutesAzureAuth(
                 innloggetSaksbehandlerProvider.krevInnloggetSaksbehandler(call)
             }
              */
-            val ident =
-                call.receive<RequestBody>().ident
-            // SECURELOG.info { "$bruker spør om rettighetsperioder for $ident" }
-
+            val req = call.receive<VedtakRequest>()
             val periode: Periodisering<RettighetDetaljer>? =
-                rettighetDetaljerService.hentRettighetDetaljerPerioder(ident = ident)
+                rettighetDetaljerService.hentRettighetDetaljerPerioder(
+                    ident = req.ident,
+                    fom = req.fom ?: LocalDate.of(1900, 1, 1),
+                    tom = req.tom ?: LocalDate.of(2999, 12, 31),
+                )
             call.respond(periode.toArenaTiltakspengerRettighetPeriode())
         } catch (e: Exception) {
             SECURELOG.warn("Feilet å hente tiltakspenger ${e.message}", e)
