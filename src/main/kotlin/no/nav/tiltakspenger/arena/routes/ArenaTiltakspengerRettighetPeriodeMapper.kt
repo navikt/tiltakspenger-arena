@@ -1,12 +1,12 @@
 package no.nav.tiltakspenger.arena.routes
 
-import no.nav.tiltakspenger.arena.felles.PeriodeMedVerdier
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.Rettighet
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljer
+import no.nav.tiltakspenger.libs.periodisering.Periodisering
 import java.time.LocalDate
 
 object ArenaTiltakspengerRettighetPeriodeMapper {
-    fun PeriodeMedVerdier<RettighetDetaljer>?.toArenaTiltakspengerRettighetPeriode(): List<ArenaTiltakspengerRettighetPeriode> =
+    fun Periodisering<RettighetDetaljer>?.toArenaTiltakspengerRettighetPeriode(): List<ArenaTiltakspengerRettighetPeriode> =
         this?.perioder()
             ?.filter {
                 it.verdi.rettighet == Rettighet.TILTAKSPENGER ||
@@ -14,8 +14,8 @@ object ArenaTiltakspengerRettighetPeriodeMapper {
             }
             ?.map {
                 ArenaTiltakspengerRettighetPeriode(
-                    fraOgMed = it.periode.fra,
-                    tilOgMed = it.periode.til.toNullIfMax(),
+                    fraOgMed = it.periode.fraOgMed,
+                    tilOgMed = it.periode.tilOgMed.toNullIfMax(),
                 )
             } ?: emptyList()
 

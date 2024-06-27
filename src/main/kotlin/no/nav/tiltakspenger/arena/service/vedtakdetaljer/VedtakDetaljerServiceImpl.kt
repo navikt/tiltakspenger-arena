@@ -3,15 +3,14 @@ package no.nav.tiltakspenger.arena.service.vedtakdetaljer
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
 import no.nav.tiltakspenger.arena.Profile
-import no.nav.tiltakspenger.arena.felles.PeriodeMedVerdier
 import no.nav.tiltakspenger.arena.repository.ArenaSakMedMinstEttVedtakDTO
 import no.nav.tiltakspenger.arena.repository.SakRepository
-import no.nav.tiltakspenger.arena.tilgang.Bruker
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.filterKunTiltakspenger
 import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelser
 import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelserFraDB
 import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
+import no.nav.tiltakspenger.libs.periodisering.Periodisering
 import java.time.LocalDate
 
 class VedtakDetaljerServiceImpl(
@@ -28,8 +27,7 @@ class VedtakDetaljerServiceImpl(
         ident: String,
         fom: LocalDate,
         tom: LocalDate,
-        bruker: Bruker,
-    ): PeriodeMedVerdier<VedtakDetaljer>? {
+    ): Periodisering<VedtakDetaljer>? {
         return if (Configuration.applicationProfile() == Profile.DEV) {
             val sakerFraDb = arenaSakRepository.hentSakerForFnr(fnr = ident, fom = fom, tom = tom)
             sammenlignDbMedWs(ident, fom, tom, sakerFraDb)

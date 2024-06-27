@@ -14,6 +14,7 @@ import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljer
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljer
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
+import no.nav.tiltakspenger.libs.periodisering.Periodisering
 
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
@@ -24,8 +25,8 @@ fun Route.tiltakspengerRoutesUtenAuth(
     post("/kundev/tiltakspenger/vedtaksperioder") {
         try {
             val ident = call.receive<RequestBody>().ident
-            val periode: PeriodeMedVerdier<VedtakDetaljer>? =
-                vedtakDetaljerService.hentVedtakDetaljerPerioder(ident = ident, bruker = bruker)
+            val periode: Periodisering<VedtakDetaljer>? =
+                vedtakDetaljerService.hentVedtakDetaljerPerioder(ident = ident)
             call.respond(periode.toArenaTiltakspengerVedtakPeriode())
         } catch (e: Exception) {
             SECURELOG.warn("Feilet å hente tiltakspenger ${e.message}", e)
@@ -37,8 +38,8 @@ fun Route.tiltakspengerRoutesUtenAuth(
         try {
             val ident =
                 call.receive<RequestBody>().ident
-            val periode: PeriodeMedVerdier<RettighetDetaljer>? =
-                rettighetDetaljerService.hentRettighetDetaljerPerioder(ident = ident, bruker = bruker)
+            val periode: Periodisering<RettighetDetaljer>? =
+                rettighetDetaljerService.hentRettighetDetaljerPerioder(ident = ident)
             call.respond(periode.toArenaTiltakspengerRettighetPeriode())
         } catch (e: Exception) {
             SECURELOG.warn("Feilet å hente tiltakspenger ${e.message}", e)

@@ -1,7 +1,6 @@
 package no.nav.tiltakspenger.arena.service.vedtakdetaljer
 
-import no.nav.tiltakspenger.arena.felles.PeriodeMedVerdier
-import no.nav.tiltakspenger.arena.tilgang.Bruker
+import no.nav.tiltakspenger.libs.periodisering.Periodisering
 import java.time.LocalDate
 
 class RettighetDetaljerServiceImpl(
@@ -12,7 +11,6 @@ class RettighetDetaljerServiceImpl(
         ident: String,
         fom: LocalDate,
         tom: LocalDate,
-        bruker: Bruker,
-    ): PeriodeMedVerdier<RettighetDetaljer>? = vedtakDetaljerService.hentVedtakDetaljerPerioder(ident, fom, tom, bruker)
-        ?.splitt { vedtakDetaljer -> RettighetDetaljer(vedtakDetaljer.rettighet) }
+    ): Periodisering<RettighetDetaljer>? = vedtakDetaljerService.hentVedtakDetaljerPerioder(ident, fom, tom)
+        ?.map { vedtakDetaljer -> RettighetDetaljer(vedtakDetaljer.rettighet) }
 }

@@ -16,7 +16,6 @@ import no.nav.security.token.support.v2.tokenValidationSupport
 import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutesAzureAuth
-import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutesSluttbruker
 import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutesUtenAuth
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
@@ -62,7 +61,6 @@ fun Application.tiltakApi(
     routing {
         authenticate(issuerName) {
             tiltakRoutes(arenaOrdsClient = arenaOrdsClient)
-            tiltakspengerRoutesSluttbruker(vedtakDetaljerService, rettighetDetaljerService)
         }
         authenticate(issuerAzure) {
             tiltakAzureRoutes(arenaOrdsClient = arenaOrdsClient)

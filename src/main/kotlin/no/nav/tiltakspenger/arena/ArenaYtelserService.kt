@@ -7,14 +7,14 @@ import no.nav.helse.rapids_rivers.JsonMessage
 import no.nav.helse.rapids_rivers.MessageContext
 import no.nav.helse.rapids_rivers.RapidsConnection
 import no.nav.helse.rapids_rivers.River
-import no.nav.tiltakspenger.arena.felles.Periode
-import no.nav.tiltakspenger.arena.felles.inneholderOverlapp
-import no.nav.tiltakspenger.arena.felles.leggSammen
 import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelser
 import no.nav.tiltakspenger.arena.ytelser.mapArenaYtelserFraDB
 import no.nav.tiltakspenger.libs.arena.ytelse.ArenaYtelseResponsDTO
+import no.nav.tiltakspenger.libs.periodisering.Periode
+import no.nav.tiltakspenger.libs.periodisering.inneholderOverlapp
+import no.nav.tiltakspenger.libs.periodisering.leggSammen
 import java.time.LocalDate
 
 private val LOG = KotlinLogging.logger {}

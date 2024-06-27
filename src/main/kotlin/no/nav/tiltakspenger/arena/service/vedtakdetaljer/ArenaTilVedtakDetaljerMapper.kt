@@ -1,11 +1,11 @@
 package no.nav.tiltakspenger.arena.service.vedtakdetaljer
 
 import mu.KotlinLogging
-import no.nav.tiltakspenger.arena.felles.Periode
-import no.nav.tiltakspenger.arena.felles.PeriodeMedVerdier
 import no.nav.tiltakspenger.arena.repository.ArenaBarnetilleggVedtakDTO
 import no.nav.tiltakspenger.arena.repository.ArenaSakMedMinstEttVedtakDTO
 import no.nav.tiltakspenger.arena.repository.ArenaTiltakspengerVedtakDTO
+import no.nav.tiltakspenger.libs.periodisering.Periode
+import no.nav.tiltakspenger.libs.periodisering.Periodisering
 
 private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
@@ -16,13 +16,13 @@ private const val defaultDagsats: Int = 0
 private const val defaultAntallDager: Double = 0.0
 
 object ArenaTilVedtakDetaljerMapper {
-    fun mapTiltakspengerFraArenaTilVedtaksperioder(saker: List<ArenaSakMedMinstEttVedtakDTO>): PeriodeMedVerdier<VedtakDetaljer>? {
+    fun mapTiltakspengerFraArenaTilVedtaksperioder(saker: List<ArenaSakMedMinstEttVedtakDTO>): Periodisering<VedtakDetaljer>? {
         if (saker.isEmpty()) {
             SECURELOG.info { "Returnerer null pga ingen saker" }
             return null
         }
-        val totalePeriodeFra = saker.minOf { it.sakPeriode().fra }
-        val totalePeriodeTil = saker.maxOf { it.sakPeriode().til }
+        val totalePeriodeFra = saker.minOf { it.sakPeriode().fraOgMed }
+        val totalePeriodeTil = saker.maxOf { it.sakPeriode().tilOgMed }
         val totalePeriode = Periode(totalePeriodeFra, totalePeriodeTil)
 
         val periodeMedTiltakspengerInit = periodeMedDefaultVerdierForTiltakspenger(totalePeriode)
@@ -39,9 +39,9 @@ object ArenaTilVedtakDetaljerMapper {
     }
 
     private fun periodeMedDefaultVerdierForTiltakspenger(totalePeriode: Periode) =
-        PeriodeMedVerdier(
+        Periodisering(
             totalePeriode = totalePeriode,
-            defaultVerdi = VedtakDetaljerKunTiltakspenger(
+            initiellVerdi = VedtakDetaljerKunTiltakspenger(
                 antallDager = defaultAntallDager,
                 dagsats = defaultDagsats,
                 relaterteTiltak = defaultRelaterteTiltak,
@@ -52,9 +52,9 @@ object ArenaTilVedtakDetaljerMapper {
         )
 
     private fun periodeMedDefaultVerdierForBarnetillegg(totalePeriode: Periode) =
-        PeriodeMedVerdier(
+        Periodisering(
             totalePeriode = totalePeriode,
-            defaultVerdi = VedtakDetaljerBarnetillegg(
+            initiellVerdi = VedtakDetaljerBarnetillegg(
                 antallDager = defaultAntallDager,
                 dagsats = defaultDagsats,
                 antallBarn = defaultAntallBarn,
@@ -65,11 +65,11 @@ object ArenaTilVedtakDetaljerMapper {
 
     private fun fyllTiltakspengerPeriodenMedReelleVerdier(
         saker: List<ArenaSakMedMinstEttVedtakDTO>,
-        periodeMedTiltakspengerInit: PeriodeMedVerdier<VedtakDetaljerKunTiltakspenger>,
+        periodeMedTiltakspengerInit: Periodisering<VedtakDetaljerKunTiltakspenger>,
     ) =
         saker
             .flatMap { it.tiltakspengerVedtak }
-            .fold(periodeMedTiltakspengerInit) { periodeMedVerdier: PeriodeMedVerdier<VedtakDetaljerKunTiltakspenger>, arenaTiltakspengerVedtakDTO: ArenaTiltakspengerVedtakDTO ->
+            .fold(periodeMedTiltakspengerInit) { periodeMedVerdier: Periodisering<VedtakDetaljerKunTiltakspenger>, arenaTiltakspengerVedtakDTO: ArenaTiltakspengerVedtakDTO ->
                 periodeMedVerdier.setVerdiForDelPeriode(
                     VedtakDetaljerKunTiltakspenger(
                         antallDager = arenaTiltakspengerVedtakDTO.antallDager ?: defaultAntallDager,
@@ -85,12 +85,12 @@ object ArenaTilVedtakDetaljerMapper {
 
     private fun fyllBarnetilleggPeriodenMedReelleVerdier(
         saker: List<ArenaSakMedMinstEttVedtakDTO>,
-        periodeMedBarnetilleggInit: PeriodeMedVerdier<VedtakDetaljerBarnetillegg>,
+        periodeMedBarnetilleggInit: Periodisering<VedtakDetaljerBarnetillegg>,
         totalePeriode: Periode,
     ) =
         saker
             .flatMap { it.barnetilleggVedtak }
-            .fold(periodeMedBarnetilleggInit) { periodeMedVerdier: PeriodeMedVerdier<VedtakDetaljerBarnetillegg>, arenaBarnetilleggVedtakDTO: ArenaBarnetilleggVedtakDTO ->
+            .fold(periodeMedBarnetilleggInit) { periodeMedVerdier: Periodisering<VedtakDetaljerBarnetillegg>, arenaBarnetilleggVedtakDTO: ArenaBarnetilleggVedtakDTO ->
                 if (totalePeriode.inneholderHele(arenaBarnetilleggVedtakDTO.vedtaksperiode())) {
                     LOG.info { "Perioden for barnetillegg (${arenaBarnetilleggVedtakDTO.vedtaksperiode()}) er innenfor saksperioden ($totalePeriode) " }
                     // Legger til hele perioden
@@ -124,8 +124,8 @@ object ArenaTilVedtakDetaljerMapper {
             }
 
     private fun kombinerTiltakspengerMedBarnetillegg(
-        periodeMedTiltakspenger: PeriodeMedVerdier<VedtakDetaljerKunTiltakspenger>,
-        periodeMedBarnetillegg: PeriodeMedVerdier<VedtakDetaljerBarnetillegg>,
+        periodeMedTiltakspenger: Periodisering<VedtakDetaljerKunTiltakspenger>,
+        periodeMedBarnetillegg: Periodisering<VedtakDetaljerBarnetillegg>,
     ) =
         periodeMedTiltakspenger.kombiner(periodeMedBarnetillegg) { vt, vb ->
             if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG && vt.antallDager != vb.antallDager) {
