@@ -7,6 +7,7 @@ val kotlinxCoroutinesVersion = "1.8.0"
 val tokenSupportVersion = "4.1.3"
 val testContainersVersion = "1.19.7"
 val kotestVersion = "5.8.1"
+val felleslibVersion = "0.0.129"
 
 project.base.archivesName.set("app")
 
@@ -34,8 +35,9 @@ dependencies {
     implementation(kotlin("stdlib"))
     // implementation("com.github.navikt:tiltakspenger-libs:0.0.7")
     implementation("com.google.guava:guava:33.1.0-jre")
-    implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:0.0.89")
-    implementation("com.github.navikt.tiltakspenger-libs:arenaytelser-dtos:0.0.89")
+    implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:$felleslibVersion")
+    implementation("com.github.navikt.tiltakspenger-libs:arenaytelser-dtos:$felleslibVersion")
+    implementation("com.github.navikt.tiltakspenger-libs:periodisering:$felleslibVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
     implementation("com.github.navikt:rapids-and-rivers:2024022311041708682651.01821651ed22")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
