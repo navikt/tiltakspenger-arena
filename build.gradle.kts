@@ -117,6 +117,8 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
     testImplementation("io.kotest:kotest-extensions:$kotestVersion")
+
+    testImplementation("no.nav.security:mock-oauth2-server:2.1.5")
 }
 
 configurations.all {
