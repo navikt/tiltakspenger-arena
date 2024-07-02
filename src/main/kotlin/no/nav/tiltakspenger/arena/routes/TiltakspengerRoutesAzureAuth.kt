@@ -19,21 +19,12 @@ import java.time.LocalDate
 
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
-fun Route.tiltakspengerRoutesAzureAuth(
+fun Route.tiltakspengerRoutes(
     vedtakDetaljerService: VedtakDetaljerService,
     rettighetDetaljerService: RettighetDetaljerService,
 ) {
     post("/azure/tiltakspenger/vedtaksperioder") {
         try {
-            /*
-            val bruker = if (call.getClaim("azure", "idtyp") != null) {
-                // Systembruker
-                innloggetSystembrukerProvider.krevInnloggetSystembruker(call)
-            } else {
-                // OBO
-                innloggetSaksbehandlerProvider.krevInnloggetSaksbehandler(call)
-            }
-             */
             val req = call.receive<VedtakRequest>()
             val periode: Periodisering<VedtakDetaljer>? =
                 vedtakDetaljerService.hentVedtakDetaljerPerioder(
@@ -50,15 +41,6 @@ fun Route.tiltakspengerRoutesAzureAuth(
 
     post("/azure/tiltakspenger/rettighetsperioder") {
         try {
-            /*
-            val bruker = if (call.getClaim("azure", "idtyp") != null) {
-                // Systembruker
-                innloggetSystembrukerProvider.krevInnloggetSystembruker(call)
-            } else {
-                // OBO
-                innloggetSaksbehandlerProvider.krevInnloggetSaksbehandler(call)
-            }
-             */
             val req = call.receive<VedtakRequest>()
             val periode: Periodisering<RettighetDetaljer>? =
                 rettighetDetaljerService.hentRettighetDetaljerPerioder(
@@ -73,3 +55,9 @@ fun Route.tiltakspengerRoutesAzureAuth(
         }
     }
 }
+
+data class VedtakRequest(
+    val ident: String,
+    val fom: LocalDate?,
+    val tom: LocalDate?,
+)

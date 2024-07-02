@@ -15,8 +15,7 @@ import no.nav.security.token.support.v2.RequiredClaims
 import no.nav.security.token.support.v2.tokenValidationSupport
 import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
-import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutesAzureAuth
-import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutesUtenAuth
+import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutes
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
@@ -27,16 +26,15 @@ fun Application.tiltakApi(
     rettighetDetaljerService: RettighetDetaljerService,
     config: ApplicationConfig,
 ) {
-    val issuerName = "tokendings"
+    val issuerTokenX = "tokendings"
     val issuerAzure = "azure"
     install(Authentication) {
         val requiredClaimsMap = arrayOf("acr=Level4")
-//        val requiredClaimsMapAzure = arrayOf("aud=Level4")
         tokenValidationSupport(
-            name = issuerName,
+            name = issuerTokenX,
             config = config,
             requiredClaims = RequiredClaims(
-                issuer = issuerName,
+                issuer = issuerTokenX,
                 claimMap = requiredClaimsMap,
                 combineWithOr = false,
             ),
@@ -44,11 +42,6 @@ fun Application.tiltakApi(
         tokenValidationSupport(
             name = issuerAzure,
             config = config,
-            requiredClaims = RequiredClaims(
-                issuer = issuerAzure,
-                claimMap = arrayOf(),
-                combineWithOr = false,
-            ),
         )
     }
     install(ContentNegotiation) {
@@ -59,15 +52,12 @@ fun Application.tiltakApi(
         }
     }
     routing {
-        authenticate(issuerName) {
+        authenticate(issuerTokenX) {
             tiltakRoutes(arenaOrdsClient = arenaOrdsClient)
         }
         authenticate(issuerAzure) {
             tiltakAzureRoutes(arenaOrdsClient = arenaOrdsClient)
-            tiltakspengerRoutesAzureAuth(vedtakDetaljerService, rettighetDetaljerService)
-        }
-        if (Configuration.applicationProfile() == Profile.DEV) {
-            tiltakspengerRoutesUtenAuth(vedtakDetaljerService, rettighetDetaljerService)
+            tiltakspengerRoutes(vedtakDetaljerService, rettighetDetaljerService)
         }
     }
 }
