@@ -7,6 +7,8 @@ import java.time.LocalDate
 class ArenaTiltakspengerVedtakDTOTest {
 
     private val vanligVedtak = ArenaTiltakspengerVedtakDTO(
+        vedtakId = 1L,
+        tilhørendeSakId = 1001L,
         vedtakType = ArenaVedtakType.O,
         uttaksgrad = 100,
         fomVedtaksperiode = LocalDate.of(2023, 11, 14),
@@ -25,6 +27,8 @@ class ArenaTiltakspengerVedtakDTOTest {
     )
 
     private val vedtakMedÅpenSluttdato = ArenaTiltakspengerVedtakDTO(
+        vedtakId = 2L,
+        tilhørendeSakId = 1002L,
         vedtakType = ArenaVedtakType.O,
         uttaksgrad = 100,
         fomVedtaksperiode = LocalDate.of(2023, 11, 14),
@@ -43,6 +47,8 @@ class ArenaTiltakspengerVedtakDTOTest {
     )
 
     private val vedtakEngangsutbetaling = ArenaTiltakspengerVedtakDTO(
+        vedtakId = 3L,
+        tilhørendeSakId = 1003L,
         vedtakType = ArenaVedtakType.O,
         uttaksgrad = 100,
         fomVedtaksperiode = LocalDate.of(2023, 11, 14),

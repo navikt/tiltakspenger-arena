@@ -6,6 +6,8 @@ import java.time.LocalDateTime
 
 // Har ikke lagt til alle vedtaksfakta her ennå
 data class ArenaTiltakspengerVedtakDTO(
+    val vedtakId: Long,
+    val tilhørendeSakId: Long,
     val vedtakType: ArenaVedtakType,
     val uttaksgrad: Int,
     val fomVedtaksperiode: LocalDate,

@@ -27,14 +27,15 @@ class VedtakDetaljerServiceImpl(
         ident: String,
         fom: LocalDate,
         tom: LocalDate,
-    ): Periodisering<VedtakDetaljer>? =
-        if (Configuration.applicationProfile() == Profile.DEV) {
+    ): Periodisering<VedtakDetaljer>? {
+        return if (Configuration.applicationProfile() == Profile.DEV) {
             val sakerFraDb = arenaSakRepository.hentSakerForFnr(fnr = ident, fom = fom, tom = tom)
             sammenlignDbMedWs(ident, fom, tom, sakerFraDb)
             ArenaTilVedtakDetaljerMapper.mapTiltakspengerFraArenaTilVedtaksperioder(sakerFraDb)
         } else {
             null
         }
+    }
 
     private fun sammenlignDbMedWs(
         ident: String,
