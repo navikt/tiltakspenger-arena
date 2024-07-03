@@ -4,5 +4,5 @@ vaultpath: dev
 ingress:
   url: https://tiltakspenger-arena.dev-fss-pub.nais.io
 cluster: dev-gcp
-vault_db_config_path: oracle/data/dev/config/arena_q2
-vault_db_creds_path: oracle/data/dev/creds/arena_q2-arena_tilgang_ind
+vault_db_config_path: /oracle/data/dev/config/arena_q2
+vault_db_creds_path: /oracle/data/dev/creds/arena_q2-arena_tilgang_ind
