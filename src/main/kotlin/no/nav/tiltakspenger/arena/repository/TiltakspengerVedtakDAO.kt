@@ -42,7 +42,7 @@ class TiltakspengerVedtakDAO(
         )
         return txSession.run(
             queryOf(sqlFindTiltakspengerVedtakOgFiltrerBortUønskede, paramMap)
-                .map { row -> row.toVedtak(txSession) }
+                .map { row -> row.toVedtak(txSession, sakId) }
                 .asList,
         )
     }
@@ -52,10 +52,12 @@ class TiltakspengerVedtakDAO(
         txSession: TransactionalSession,
     ): List<ArenaTiltakspengerVedtakDTO> = findAlleTiltakspengerBySakId(sakId, txSession)
 
-    private fun Row.toVedtak(txSession: TransactionalSession): ArenaTiltakspengerVedtakDTO {
+    private fun Row.toVedtak(txSession: TransactionalSession, sakId: Long): ArenaTiltakspengerVedtakDTO {
         val vedtakId = long("VEDTAK_ID")
         val vedtakFakta = vedtakfaktaDAO.findTiltakspengerVedtakfaktaByVedtakId(vedtakId, txSession)
         val dto = ArenaTiltakspengerVedtakDTO(
+            vedtakId = vedtakId,
+            tilhørendeSakId = sakId,
             beslutningsdato = vedtakFakta.beslutningsdato,
             vedtakType = string("VEDTAKTYPEKODE").toVedtakType(),
             uttaksgrad = 100,

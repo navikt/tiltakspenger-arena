@@ -45,6 +45,7 @@ class SakDAO(
         SECURELOG.info { "Antall barnetilleggVedtak er ${barnetilleggVedtak.size} for sak med id $sakId" }
 
         return ArenaSakDTO(
+            sakId = sakId,
             aar = int("AAR"),
             lopenrSak = long("LOPENRSAK"),
             status = string("SAKSTATUSKODE").toStatus(),

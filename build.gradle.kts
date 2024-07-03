@@ -1,4 +1,5 @@
 val javaVersion = JavaVersion.VERSION_21
+
 val cxfVersjon = "4.0.4"
 val ktorVersion = "2.3.12"
 val jacksonVersion = "2.17.1"
@@ -116,6 +117,8 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
     testImplementation("io.kotest:kotest-extensions:$kotestVersion")
+
+    testImplementation("no.nav.security:mock-oauth2-server:2.1.5")
 }
 
 configurations.all {

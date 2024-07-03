@@ -7,4 +7,6 @@ data class VedtakDetaljer(
     val antallBarn: Int,
     val relaterteTiltak: String,
     val rettighet: Rettighet,
+    val vedtakId: Long,
+    val sakId: Long,
 )

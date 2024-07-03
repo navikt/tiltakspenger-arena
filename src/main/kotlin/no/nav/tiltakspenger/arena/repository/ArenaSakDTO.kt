@@ -9,6 +9,7 @@ private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
 data class ArenaSakDTO(
+    val sakId: Long,
     val aar: Int,
     val lopenrSak: Long,
     val status: ArenaSakStatus,
