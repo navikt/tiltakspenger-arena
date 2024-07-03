@@ -51,5 +51,7 @@ spec:
     paths:
       - kvPath: /serviceuser/data/{{ vaultpath }}/srvtpts-arena
         mountPath: /secrets/serviceuser
-      - kvPath: /oracle/data/{{oraclepath}}
+      - kvPath: /oracle/data/{{ oraclepath }}
+        mountPath: /secrets/oracledb
+      - kvPath: /oracle/data/{{ vaultpath }}/config/arena_q2
         mountPath: /secrets/oracledb
