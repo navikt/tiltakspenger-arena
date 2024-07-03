@@ -54,4 +54,4 @@ spec:
       - kvPath: /oracle/data/{{ oraclepath }}
         mountPath: /secrets/oracledb
       - kvPath: /oracle/data/{{ vaultpath }}/config/arena_q2
-        mountPath: /secrets/oracledb
+        mountPath: /secrets/oracleurl
