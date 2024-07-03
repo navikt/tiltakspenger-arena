@@ -4,3 +4,4 @@ vaultpath: prod
 ingress:
   url: https://tiltakspenger-arena.prod-fss-pub.nais.io
 cluster: prod-gcp
+oraclepath: prod/creds/arena-arena_tilgang_ind
