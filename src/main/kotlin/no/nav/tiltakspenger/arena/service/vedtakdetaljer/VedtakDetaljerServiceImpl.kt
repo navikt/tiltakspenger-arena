@@ -1,8 +1,6 @@
 package no.nav.tiltakspenger.arena.service.vedtakdetaljer
 
 import mu.KotlinLogging
-import no.nav.tiltakspenger.arena.Configuration
-import no.nav.tiltakspenger.arena.Profile
 import no.nav.tiltakspenger.arena.repository.ArenaSakMedMinstEttVedtakDTO
 import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
@@ -28,13 +26,9 @@ class VedtakDetaljerServiceImpl(
         fom: LocalDate,
         tom: LocalDate,
     ): Periodisering<VedtakDetaljer>? {
-        return if (Configuration.applicationProfile() == Profile.DEV) {
-            val sakerFraDb = arenaSakRepository.hentSakerForFnr(fnr = ident, fom = fom, tom = tom)
-            sammenlignDbMedWs(ident, fom, tom, sakerFraDb)
-            ArenaTilVedtakDetaljerMapper.mapTiltakspengerFraArenaTilVedtaksperioder(sakerFraDb)
-        } else {
-            null
-        }
+        val sakerFraDb = arenaSakRepository.hentSakerForFnr(fnr = ident, fom = fom, tom = tom)
+        sammenlignDbMedWs(ident, fom, tom, sakerFraDb)
+        return ArenaTilVedtakDetaljerMapper.mapTiltakspengerFraArenaTilVedtaksperioder(sakerFraDb)
     }
 
     private fun sammenlignDbMedWs(
