@@ -110,7 +110,7 @@ dependencies {
     testImplementation("org.hamcrest:hamcrest-core:2.2")
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
-    testImplementation("org.testcontainers:oracle-xe:1.19.8")
+    testImplementation("org.testcontainers:oracle-xe:1.20.0")
     // need quarkus-junit-4-mock because of https://github.com/testcontainers/testcontainers-java/issues/970
     testImplementation("io.quarkus:quarkus-junit4-mock:3.12.3")
 
