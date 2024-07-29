@@ -15,21 +15,21 @@ import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 private val LOG = KotlinLogging.logger {}
 
 internal class ApplicationBuilder(val config: ApplicationConfig) : RapidsConnection.StatusListener {
-    val arenaSoapService = ArenaSoapService(ArenaClientConfiguration().ytelseskontraktV3())
-    val tokenProviderClient = ArenaOrdsTokenProviderClient(Configuration.ArenaOrdsConfig())
-    val arenaSakRepository = SakRepository()
-    val arenaOrdsClient = ArenaOrdsClientImpl(
+    private val arenaSoapService = ArenaSoapService(ArenaClientConfiguration().ytelseskontraktV3())
+    private val tokenProviderClient = ArenaOrdsTokenProviderClient(Configuration.ArenaOrdsConfig())
+    private val arenaSakRepository = SakRepository()
+    private val arenaOrdsClient = ArenaOrdsClientImpl(
         arenaOrdsConfig = Configuration.ArenaOrdsConfig(),
         arenaOrdsTokenProvider = tokenProviderClient,
     )
 
-    val vedtakDetaljerService = VedtakDetaljerServiceImpl(
+    private val vedtakDetaljerService = VedtakDetaljerServiceImpl(
         arenaSoapService = arenaSoapService,
         arenaSakRepository = arenaSakRepository,
     )
-    val rettighetDetaljerService = RettighetDetaljerServiceImpl(vedtakDetaljerService)
+    private val rettighetDetaljerService = RettighetDetaljerServiceImpl(vedtakDetaljerService)
 
-    val rapidsConnection: RapidsConnection = RapidApplication.Builder(
+    private val rapidsConnection: RapidsConnection = RapidApplication.Builder(
         RapidApplication.RapidApplicationConfig.fromEnv(Configuration.rapidsAndRivers),
     )
         .withKtorModule {
@@ -41,17 +41,6 @@ internal class ApplicationBuilder(val config: ApplicationConfig) : RapidsConnect
             )
         }
         .build()
-        .apply {
-            ArenaYtelserService(
-                rapidsConnection = this,
-                arenaSoapService = arenaSoapService,
-                arenaSakRepository = arenaSakRepository,
-            )
-            ArenaTiltakService(
-                rapidsConnection = this,
-                arenaOrdsClient = arenaOrdsClient,
-            )
-        }
 
     init {
         rapidsConnection.register(this)
