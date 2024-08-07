@@ -93,7 +93,7 @@ dependencies {
     runtimeOnly("jakarta.annotation:jakarta.annotation-api:3.0.0")
 
     implementation("org.slf4j:jul-to-slf4j:2.0.13")
-    implementation("org.slf4j:log4j-over-slf4j:2.0.13")
+    implementation("org.slf4j:log4j-over-slf4j:2.0.14")
     implementation("org.slf4j:jcl-over-slf4j:2.0.13")
 
     testImplementation(platform("org.junit:junit-bom:5.10.3"))
