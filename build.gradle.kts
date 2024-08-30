@@ -7,7 +7,7 @@ val mockkVersion = "1.13.12"
 val kotlinxCoroutinesVersion = "1.8.1"
 val tokenSupportVersion = "5.0.2"
 val testContainersVersion = "1.20.1"
-val felleslibVersion = "0.0.198"
+val felleslibVersion = "0.0.207"
 val kotestVersion = "5.9.1"
 
 project.base.archivesName.set("app")
@@ -139,7 +139,7 @@ spotless {
 
 wsdl2java {
     wsdlDir.set(layout.projectDirectory.dir("src/main/resources/wsdl"))
-    cxfVersion.set("$cxfVersjon")
+    cxfVersion.set(cxfVersjon)
     bindingFile.set(layout.projectDirectory.file("src/main/resources/bindings/bindings.xml"))
 }
 
