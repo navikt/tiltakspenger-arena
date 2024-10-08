@@ -9,13 +9,10 @@ import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServic
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClientImpl
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsTokenProviderClient
-import no.nav.tiltakspenger.arena.ytelser.ArenaClientConfiguration
-import no.nav.tiltakspenger.arena.ytelser.ArenaSoapService
 
 private val LOG = KotlinLogging.logger {}
 
 internal class ApplicationBuilder(val config: ApplicationConfig) : RapidsConnection.StatusListener {
-    private val arenaSoapService = ArenaSoapService(ArenaClientConfiguration().ytelseskontraktV3())
     private val tokenProviderClient = ArenaOrdsTokenProviderClient(Configuration.ArenaOrdsConfig())
     private val arenaSakRepository = SakRepository()
     private val arenaOrdsClient = ArenaOrdsClientImpl(
@@ -24,7 +21,6 @@ internal class ApplicationBuilder(val config: ApplicationConfig) : RapidsConnect
     )
 
     private val vedtakDetaljerService = VedtakDetaljerServiceImpl(
-        arenaSoapService = arenaSoapService,
         arenaSakRepository = arenaSakRepository,
     )
     private val rettighetDetaljerService = RettighetDetaljerServiceImpl(vedtakDetaljerService)
