@@ -1,6 +1,5 @@
 val javaVersion = JavaVersion.VERSION_21
 
-val cxfVersjon = "4.0.5"
 val ktorVersion = "2.3.12"
 val jacksonVersion = "2.17.2"
 val mockkVersion = "1.13.12"
@@ -31,10 +30,8 @@ repositories {
 }
 
 dependencies {
-    // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
-    // implementation("com.github.navikt:tiltakspenger-libs:0.0.7")
     implementation("com.google.guava:guava:33.3.0-jre")
     implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:arenaytelser-dtos:$felleslibVersion")
@@ -71,26 +68,17 @@ dependencies {
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.2.0")
     implementation("no.nav.common:cxf:3.2024.05.23_05.46-2b29fa343e8e")
-    implementation("jakarta.xml.bind:jakarta.xml.bind-api") {
-        version {
-            strictly("3.0.1")
-        }
-    }
-    implementation("jakarta.xml.soap:jakarta.xml.soap-api:3.0.2")
-    implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersjon")
-    implementation("org.apache.cxf:cxf-core:$cxfVersjon")
+//    implementation("jakarta.xml.bind:jakarta.xml.bind-api") {
+//        version {
+//            strictly("3.0.1")
+//        }
+//    }
 
     //implementation("org.flywaydb:flyway-core:9.19.3")
     implementation("org.flywaydb:flyway-database-oracle:10.17.0")
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("com.oracle.database.jdbc:ojdbc8:23.5.0.24.07") //TODO: Er denne riktig?
     implementation("com.github.seratch:kotliquery:1.9.0")
-
-
-    runtimeOnly("org.apache.cxf:cxf-rt-features-metrics:$cxfVersjon")
-    runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl:3.0.4")
-    // old version because of https://issues.apache.org/jira/browse/CXF-8727
-    runtimeOnly("jakarta.annotation:jakarta.annotation-api:3.0.0")
 
     implementation("org.slf4j:jul-to-slf4j:2.0.16")
     implementation("org.slf4j:log4j-over-slf4j:2.0.15")
@@ -135,16 +123,6 @@ spotless {
     kotlin {
         ktlint("0.48.2")
     }
-}
-
-wsdl2java {
-    wsdlDir.set(layout.projectDirectory.dir("src/main/resources/wsdl"))
-    cxfVersion.set(cxfVersjon)
-    bindingFile.set(layout.projectDirectory.file("src/main/resources/bindings/bindings.xml"))
-}
-
-java.sourceSets["main"].java {
-    srcDir("build/generated/sources/wsdl2java/java")
 }
 
 tasks {

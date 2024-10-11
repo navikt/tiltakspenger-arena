@@ -31,7 +31,6 @@ object Configuration {
     private val localProperties = ConfigurationMap(
         mapOf(
             "stsUrl" to "",
-            "ytelseskontraktUrl" to "",
             "application.profile" to Profile.LOCAL.toString(),
             "ARENA_ORDS_URL" to "",
         ),
@@ -39,7 +38,6 @@ object Configuration {
     private val devProperties = ConfigurationMap(
         mapOf(
             "stsUrl" to "https://sts-q1.preprod.local/SecurityTokenServiceProvider/",
-            "ytelseskontraktUrl" to "https://arena-q2.adeo.no/ail_ws/Ytelseskontrakt_v3",
             "application.profile" to Profile.DEV.toString(),
             "ARENA_ORDS_URL" to "https://arena-ords-q2.nais.preprod.local",
         ),
@@ -47,7 +45,6 @@ object Configuration {
     private val prodProperties = ConfigurationMap(
         mapOf(
             "stsUrl" to "https://sts.adeo.no/SecurityTokenServiceProvider/",
-            "ytelseskontraktUrl" to "https://arena.adeo.no/ail_ws/Ytelseskontrakt_v3",
             "application.profile" to Profile.PROD.toString(),
             "ARENA_ORDS_URL" to "https://arena-ords.nais.adeo.no",
         ),
@@ -64,13 +61,6 @@ object Configuration {
             systemProperties() overriding EnvironmentVariables overriding localProperties overriding defaultProperties
         }
     }
-
-    data class ArenaSoapConfig(
-        val ytelseskontraktUrl: String = config()[Key("ytelseskontraktUrl", stringType)],
-        val stsUrl: String = config()[Key("stsUrl", stringType)],
-        val stsUsername: String = config()[Key("SERVICEUSER_TPTS_USERNAME", stringType)],
-        val stsPassword: String = config()[Key("SERVICEUSER_TPTS_PASSWORD", stringType)],
-    )
 
     data class ArenaOrdsConfig(
         val arenaOrdsUrl: String = config()[Key("ARENA_ORDS_URL", stringType)],
