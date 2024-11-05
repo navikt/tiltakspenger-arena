@@ -45,6 +45,7 @@ fun mapDeltakerStatus(deltakerStatus: ArenaAktiviteterDTO.Tiltaksaktivitet.Delta
         DeltakerStatusType.NEITAKK -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.NEITAKK
         DeltakerStatusType.TILBUD -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.TILBUD
         DeltakerStatusType.VENTELISTE -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.VENTELISTE
+        DeltakerStatusType.FEILREG -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.FEILREG
     }
 
 fun mapTiltakType(tiltaksnavn: Tiltaksnavn):

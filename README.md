@@ -1,8 +1,6 @@
 tiltakspenger-arena
 ================
 
-TODO jah: Flyttes inn i tiltakspenger-libs og brukes fra søknad/vedtak som et bibliotek, deretter arkiveres denne.
-
 Håndterer Arena-koblinger for tiltakspenger
 
 En del av satsningen ["Flere i arbeid – P4"](https://memu.no/artikler/stor-satsing-skal-fornye-navs-utdaterte-it-losninger-og-digitale-verktoy/)
