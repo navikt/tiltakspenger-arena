@@ -187,6 +187,7 @@ data class ArenaAktiviteterDTO(
             NEITAKK("Takket nei til tilbud"),
             TILBUD("Godkjent tiltaksplass"),
             VENTELISTE("Venteliste"),
+            FEILREG("Feilregistrert");
         }
     }
 
