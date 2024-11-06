@@ -26,31 +26,14 @@ import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.Unauthori
 private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
+// Lenke til dokumentasjon i confluence
+// Aktiviteter: https://confluence.adeo.no/pages/viewpage.action?pageId=470748287
+//
 class ArenaOrdsClientImpl(
     private val arenaOrdsConfig: Configuration.ArenaOrdsConfig,
     private val arenaOrdsTokenProvider: ArenaOrdsTokenProviderClient,
     private val client: HttpClient = cioHttpClient(),
 ) : ArenaOrdsClient {
-
-    // fun checkHealth(): HealthCheckResult {
-    //     return HealthCheckUtils.pingUrl(UrlUtils.joinPaths(arenaOrdsUrl, "arena/api/v1/test/ping"), client)
-    // }
-
-    override suspend fun hentArenaOppfolgingsstatus(fnr: String): ArenaOppfølgingsstatusDTO {
-        val url = arenaOrdsConfig.arenaOrdsUrl + "/arena/api/v1/person/oppfoelging/oppfoelgingsstatus?p_fnr=$fnr"
-        val response: ArenaOppfølgingsstatusDTO = client.get(urlString = url) {
-            bearerAuth(arenaOrdsTokenProvider.token())
-        }.body()
-        return response
-    }
-
-    override suspend fun hentArenaOppfolgingssak(fnr: String): ArenaOppfølgingssakDTO {
-        val url = arenaOrdsConfig.arenaOrdsUrl + "/arena/api/v1/person/oppfoelging/oppfoelgingssak?p_fnr=$fnr"
-        val response: ArenaOppfølgingssakDTO = client.get(urlString = url) {
-            bearerAuth(arenaOrdsTokenProvider.token())
-        }.body()
-        return response
-    }
 
     override suspend fun hentArenaAktiviteter(fnr: String): ArenaAktiviteterDTO {
         val url = arenaOrdsConfig.arenaOrdsUrl + "/arena/api/v1/person/oppfoelging/aktiviteter"

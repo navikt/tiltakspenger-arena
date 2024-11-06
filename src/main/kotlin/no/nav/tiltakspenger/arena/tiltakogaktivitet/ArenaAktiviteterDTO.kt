@@ -12,8 +12,8 @@ import java.time.LocalDate
 data class ArenaAktiviteterDTO(
     val response: Response,
 ) {
-    // Denne klassen er sjekket opp mot
-    // https://confluence.adeo.no/display/ARENA/Arena+-+Tjeneste+Webservice+-+TiltakOgAktivitet_v1#ArenaTjenesteWebserviceTiltakOgAktivitet_v1-HentTiltakOgAktiviteterForBrukerResponse
+    // Lenke til dokumentasjon i confluence
+    // Aktiviteter: https://confluence.adeo.no/pages/viewpage.action?pageId=470748287
     // De variablene som er merket som mandatory der er satt til ikke å være nullable her
     data class Response(
         val tiltaksaktivitetListe: List<Tiltaksaktivitet> = emptyList(),
