@@ -52,7 +52,7 @@ data class ArenaSakDTO(
         this.barnetilleggVedtak.forEach {
             if (it.dagsats == null) LOG.warn { "Dagsats er ikke med for barnetilleggvedtak med vedtaksperiode ${it.vedtaksperiode()} for sak med løpenr ${this.lopenrSak}" }
             if (it.antallDager == null) LOG.warn { "Antall dager er ikke med for barnetilleggvedtak med vedtaksperiode ${it.vedtaksperiode()} for sak med løpenr ${this.lopenrSak}" }
-            if (it.relatertTiltak == null) LOG.warn { "RelatertTiltak er ikke med for barnetilleggvedtak med vedtaksperiode ${it.vedtaksperiode()} for sak med løpenr ${this.lopenrSak}" }
+            if (it.tiltakGjennomføringsId == null) LOG.warn { "tiltakGjennomføringsId er ikke med for barnetilleggvedtak med vedtaksperiode ${it.vedtaksperiode()} for sak med løpenr ${this.lopenrSak}" }
             if (it.antallBarn == null) LOG.warn { "Antall barn er ikke med for barnetilleggvedtak med vedtaksperiode ${it.vedtaksperiode()} for sak med løpenr ${this.lopenrSak}" }
         }
     }

@@ -10,7 +10,8 @@ import no.nav.tiltakspenger.libs.periodisering.Periodisering
 private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
-private const val defaultRelaterteTiltak: String = ""
+// TODO post-mvp jah: Dette føles ikke riktig. Hvorfor kan vi ikke behandle den som null istedet?
+private const val defaultTiltakGjennomføringsId: String = ""
 private const val defaultAntallBarn: Int = 0
 private const val defaultDagsats: Int = 0
 private const val defaultAntallDager: Double = 0.0
@@ -44,7 +45,7 @@ object ArenaTilVedtakDetaljerMapper {
             initiellVerdi = VedtakDetaljerKunTiltakspenger(
                 antallDager = defaultAntallDager,
                 dagsats = defaultDagsats,
-                relaterteTiltak = defaultRelaterteTiltak,
+                tiltakGjennomføringsId = defaultTiltakGjennomføringsId,
                 rettighet = Rettighet.INGENTING,
                 vedtakId = 0L,
                 sakId = 0L,
@@ -58,7 +59,7 @@ object ArenaTilVedtakDetaljerMapper {
                 antallDager = defaultAntallDager,
                 dagsats = defaultDagsats,
                 antallBarn = defaultAntallBarn,
-                relaterteTiltak = defaultRelaterteTiltak,
+                relaterteTiltak = defaultTiltakGjennomføringsId,
                 rettighet = Rettighet.INGENTING,
             ),
         )
@@ -74,7 +75,7 @@ object ArenaTilVedtakDetaljerMapper {
                     VedtakDetaljerKunTiltakspenger(
                         antallDager = arenaTiltakspengerVedtakDTO.antallDager ?: defaultAntallDager,
                         dagsats = arenaTiltakspengerVedtakDTO.dagsats ?: defaultDagsats,
-                        relaterteTiltak = arenaTiltakspengerVedtakDTO.relatertTiltak ?: defaultRelaterteTiltak,
+                        tiltakGjennomføringsId = arenaTiltakspengerVedtakDTO.relatertTiltak ?: defaultTiltakGjennomføringsId,
                         rettighet = Rettighet.TILTAKSPENGER,
                         vedtakId = arenaTiltakspengerVedtakDTO.vedtakId,
                         sakId = arenaTiltakspengerVedtakDTO.tilhørendeSakId,
@@ -99,7 +100,7 @@ object ArenaTilVedtakDetaljerMapper {
                             antallDager = arenaBarnetilleggVedtakDTO.antallDager ?: defaultAntallDager,
                             dagsats = arenaBarnetilleggVedtakDTO.dagsats ?: defaultDagsats,
                             antallBarn = arenaBarnetilleggVedtakDTO.antallBarn ?: defaultAntallBarn,
-                            relaterteTiltak = arenaBarnetilleggVedtakDTO.relatertTiltak ?: defaultRelaterteTiltak,
+                            relaterteTiltak = arenaBarnetilleggVedtakDTO.tiltakGjennomføringsId ?: defaultTiltakGjennomføringsId,
                             rettighet = Rettighet.BARNETILLEGG,
                         ),
                         arenaBarnetilleggVedtakDTO.vedtaksperiode(),
@@ -111,7 +112,7 @@ object ArenaTilVedtakDetaljerMapper {
                             antallDager = arenaBarnetilleggVedtakDTO.antallDager ?: defaultAntallDager,
                             dagsats = arenaBarnetilleggVedtakDTO.dagsats ?: defaultDagsats,
                             antallBarn = arenaBarnetilleggVedtakDTO.antallBarn ?: defaultAntallBarn,
-                            relaterteTiltak = arenaBarnetilleggVedtakDTO.relatertTiltak ?: defaultRelaterteTiltak,
+                            relaterteTiltak = arenaBarnetilleggVedtakDTO.tiltakGjennomføringsId ?: defaultTiltakGjennomføringsId,
                             rettighet = Rettighet.BARNETILLEGG,
                         ),
                         arenaBarnetilleggVedtakDTO.vedtaksperiode().overlappendePeriode(totalePeriode)!!,
@@ -131,15 +132,15 @@ object ArenaTilVedtakDetaljerMapper {
             if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG && vt.antallDager != vb.antallDager) {
                 SECURELOG.info { "Vedtaket om tiltakspenger (${vt.antallDager}) og vedtaket om barnetillegg (${vb.antallDager}) har ikke samme antall dager" }
             }
-            if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG && vt.relaterteTiltak != vb.relaterteTiltak) {
-                SECURELOG.info { "Vedtaket om tiltakspenger (${vt.relaterteTiltak}) og vedtaket om barnetillegg (${vb.relaterteTiltak}) har ikke samme relaterte tiltak" }
+            if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG && vt.tiltakGjennomføringsId != vb.relaterteTiltak) {
+                SECURELOG.info { "Vedtaket om tiltakspenger (${vt.tiltakGjennomføringsId}) og vedtaket om barnetillegg (${vb.relaterteTiltak}) har ikke samme relaterte tiltak" }
             }
             VedtakDetaljer(
                 antallDager = vt.antallDager,
                 dagsatsTiltakspenger = vt.dagsats,
                 dagsatsBarnetillegg = vb.dagsats,
                 antallBarn = vb.antallBarn,
-                relaterteTiltak = vt.relaterteTiltak,
+                tiltakGjennomføringsId = vt.tiltakGjennomføringsId,
                 rettighet = kombinerRettighet(vt, vb),
                 vedtakId = vt.vedtakId,
                 sakId = vt.sakId,

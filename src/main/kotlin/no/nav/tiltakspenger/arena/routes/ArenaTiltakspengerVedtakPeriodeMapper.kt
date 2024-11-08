@@ -21,7 +21,7 @@ object ArenaTiltakspengerVedtakPeriodeMapper {
                     dagsatsTiltakspenger = it.verdi.dagsatsTiltakspenger,
                     dagsatsBarnetillegg = it.verdi.dagsatsBarnetillegg,
                     antallBarn = it.verdi.antallBarn,
-                    relaterteTiltak = it.verdi.relaterteTiltak,
+                    relaterteTiltak = it.verdi.tiltakGjennomføringsId,
                     rettighet = it.verdi.rettighet,
                     vedtakId = it.verdi.vedtakId,
                     sakId = it.verdi.sakId,

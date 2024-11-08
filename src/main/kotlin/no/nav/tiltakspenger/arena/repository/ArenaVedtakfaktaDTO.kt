@@ -62,7 +62,13 @@ enum class ArenaVedtakFakta(val navn: String) {
     DAGUTBTILT("Antall dager med utbetaling"),
     FDATO("Gjelder fra"),
     INNVF("VEDTAKSDATO"),
-    KODETILTAK("Relatert tiltak"),
+
+    /**
+     * https://nav-it.slack.com/archives/C01DE03F4LS/p1710748569601879
+     *
+     * KODETILTAK inneholder referanse til tiltaksgjennomføring (tiltakgjennomforing.tiltakgjennomforing_id)
+     */
+    KODETILTAK("tiltakgjennomforing.tiltakgjennomforing_id"),
     BARNMSTON(" Antall barn med stønad"), // Bare aktuell for barnetillegg
 }
 
@@ -89,7 +95,7 @@ data class ArenaBarnetilleggVedtakfaktaDTO(
     val beslutningsdato: LocalDate?,
     val dagsats: Int?,
     val antallDager: Double?,
-    val relatertTiltak: String?,
+    val tiltakGjennomføringsId: String?,
     val relatertTiltakNavn: String?,
     val opprinneligTilDato: LocalDate?,
     val antallBarn: Int?,
@@ -104,7 +110,7 @@ fun List<ArenaVedtakfaktaDTO>.toArenaBarnetilleggVedtakfaktaDTO() =
         beslutningsdato = this.beslutningsdato(),
         dagsats = this.dagsats(),
         antallDager = this.antallDager(),
-        relatertTiltak = this.relatertTiltak(),
+        tiltakGjennomføringsId = this.tiltakGjennomføringsId(),
         relatertTiltakNavn = this.relatertTiltakNavn(),
         opprinneligTilDato = this.opprinneligTilDato(),
         antallBarn = this.antallBarn(),
@@ -119,7 +125,7 @@ fun List<ArenaVedtakfaktaDTO>.toArenaTiltakspengerVedtakfaktaDTO() =
         beslutningsdato = this.beslutningsdato(),
         dagsats = this.dagsats(),
         antallDager = this.antallDager(),
-        relatertTiltak = this.relatertTiltak(),
+        relatertTiltak = this.tiltakGjennomføringsId(),
         relatertTiltakNavn = this.relatertTiltakNavn(),
         opprinneligTilDato = this.opprinneligTilDato(),
         gjelderFra = this.gjelderFra(),
@@ -149,7 +155,7 @@ private fun List<ArenaVedtakfaktaDTO>.antallDager(): Double? =
         .also { log.info { "${ArenaVedtakFakta.DAGUTBTILT.name}: $it" } }
         ?.toDouble()
 
-private fun List<ArenaVedtakfaktaDTO>.relatertTiltak(): String? =
+private fun List<ArenaVedtakfaktaDTO>.tiltakGjennomføringsId(): String? =
     this.find { it.vedtakfaktaKode == ArenaVedtakFakta.KODETILTAK.name }?.vedtakfaktaVerdi
         .also { log.info { "${ArenaVedtakFakta.KODETILTAK.name}: $it" } }
 

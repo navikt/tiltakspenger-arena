@@ -24,6 +24,10 @@ data class ArenaAktiviteterDTO(
     data class Tiltaksaktivitet(
         @JsonDeserialize(using = ArenaTiltaksnavnDeserializer::class)
         val tiltaksnavn: Tiltaksnavn,
+        /**
+         * 'TA' + TILTAKDELTAKER.TILTAKDELTAKER_ID
+         * Det er en unik id for en tiltakdeltaker, dvs én person på ett tiltak (tiltaksgjennomføring).
+         * */
         val aktivitetId: String,
         val tiltakLokaltNavn: String?,
         val arrangoer: String?,

@@ -5,7 +5,7 @@ data class VedtakDetaljer(
     val dagsatsTiltakspenger: Int,
     val dagsatsBarnetillegg: Int,
     val antallBarn: Int,
-    val relaterteTiltak: String,
+    val tiltakGjennomføringsId: String,
     val rettighet: Rettighet,
     val vedtakId: Long,
     val sakId: Long,

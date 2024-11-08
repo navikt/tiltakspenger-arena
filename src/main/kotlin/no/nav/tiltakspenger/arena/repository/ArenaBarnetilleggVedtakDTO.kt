@@ -21,7 +21,7 @@ data class ArenaBarnetilleggVedtakDTO(
     val utfall: ArenaUtfall,
     val antallDager: Double?,
     val opprinneligTomVedtaksperiode: LocalDate?,
-    val relatertTiltak: String?,
+    val tiltakGjennomføringsId: String?,
     val antallBarn: Int?,
 ) {
     fun fomGyldighetstidspunkt(): LocalDateTime = fomVedtaksperiode.atStartOfDay()

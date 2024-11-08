@@ -72,7 +72,7 @@ class BarnetilleggVedtakDAO(
             utfall = string("UTFALLKODE").toUtfall(),
             antallDager = vedtakFakta.antallDager,
             opprinneligTomVedtaksperiode = vedtakFakta.opprinneligTilDato,
-            relatertTiltak = vedtakFakta.relatertTiltak,
+            tiltakGjennomføringsId = vedtakFakta.tiltakGjennomføringsId,
             antallBarn = vedtakFakta.antallBarn,
         )
 
