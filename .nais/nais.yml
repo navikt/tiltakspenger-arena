@@ -54,3 +54,7 @@ spec:
         mountPath: /secrets/dbconfig
       - kvPath: {{ vault_db_creds_path }}
         mountPath: /secrets/dbcreds
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
