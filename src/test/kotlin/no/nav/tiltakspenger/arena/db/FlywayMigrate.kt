@@ -15,19 +15,11 @@ private fun localFlyway() = Flyway
     .dataSource(Datasource.hikariDataSource)
     .connectRetries(5)
     .cleanDisabled(false)
-    .cleanOnValidationError(true)
     .load()
 
 fun flywayMigrate() {
     when (Configuration.applicationProfile()) {
         Profile.LOCAL -> localFlyway().migrate()
-        else -> LOG.info { "Skipping flyway when not local" }
-    }
-}
-
-fun flywayCleanAndMigrate() {
-    when (Configuration.applicationProfile()) {
-        Profile.LOCAL -> localFlyway().let { it.clean(); it.migrate() }
         else -> LOG.info { "Skipping flyway when not local" }
     }
 }
