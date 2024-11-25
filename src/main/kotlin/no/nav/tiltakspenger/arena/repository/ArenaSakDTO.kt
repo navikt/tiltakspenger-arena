@@ -1,5 +1,6 @@
 package no.nav.tiltakspenger.arena.repository
 
+import com.google.common.base.CharMatcher.any
 import mu.KotlinLogging
 import no.nav.tiltakspenger.libs.periodisering.Periode
 import java.time.LocalDate
@@ -34,10 +35,9 @@ data class ArenaSakDTO(
 
     fun sakPeriode(): Periode? {
         val fraDato = tiltakspengerVedtak.minOfOrNull { it.fomVedtaksperiode }
-        val tilDato = if (tiltakspengerVedtak.map { it.tomVedtaksperiode }.contains(null)) {
-            LocalDate.MAX
-        } else {
-            tiltakspengerVedtak.mapNotNull { it.tomVedtaksperiode }.maxOrNull() ?: LocalDate.MAX
+        val tilDato = when {
+            tiltakspengerVedtak.any { it.tomVedtaksperiode == null } -> LocalDate.MAX
+            else -> tiltakspengerVedtak.maxOfOrNull { it.tomVedtaksperiode!! } ?: LocalDate.MAX
         }
         return fraDato?.let { Periode(it, tilDato) }
     }
