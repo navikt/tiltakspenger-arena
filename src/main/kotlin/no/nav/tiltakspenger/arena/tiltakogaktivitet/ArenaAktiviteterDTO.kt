@@ -88,7 +88,7 @@ data class ArenaAktiviteterDTO(
             BIA("Bedriftsintern attføring"),
             BIO("Bedriftsintern opplæring (BIO)"),
             BREVKURS("Brevkurs"),
-            DIGIOPPARB("Digitalt jobbsøkerkurs"),
+            DIGIOPPARB("Digitalt oppfølgingstiltak for arbeidsledige (jobbklubb)"),
             DIVTILT("Diverse tiltak"),
             ETAB("Egenetablering"),
             EKSPEBIST("Ekspertbistand"),
