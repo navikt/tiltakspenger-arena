@@ -7,12 +7,11 @@ import java.time.LocalDate
 
 object ArenaTiltakspengerVedtakPeriodeMapper {
     fun Periodisering<VedtakDetaljer>?.toArenaTiltakspengerVedtakPeriode(): List<ArenaTiltakspengerVedtakPeriode> =
-        this?.perioder()
-            ?.filter {
-                it.verdi.rettighet == Rettighet.TILTAKSPENGER ||
-                    it.verdi.rettighet == Rettighet.TILTAKSPENGER_OG_BARNETILLEGG ||
-                    it.verdi.rettighet == Rettighet.BARNETILLEGG
-            }
+        this?.filter {
+            it.verdi.rettighet == Rettighet.TILTAKSPENGER ||
+                it.verdi.rettighet == Rettighet.TILTAKSPENGER_OG_BARNETILLEGG ||
+                it.verdi.rettighet == Rettighet.BARNETILLEGG
+        }
             ?.map {
                 ArenaTiltakspengerVedtakPeriode(
                     fraOgMed = it.periode.fraOgMed,
