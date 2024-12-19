@@ -74,7 +74,7 @@ dependencies {
     //implementation("org.flywaydb:flyway-core:9.19.3")
     implementation("org.flywaydb:flyway-database-oracle:10.17.0")
     implementation("com.zaxxer:HikariCP:5.1.0")
-    implementation("com.oracle.database.jdbc:ojdbc8:23.5.0.24.07") //TODO: Er denne riktig?
+    implementation("com.oracle.database.jdbc:ojdbc8:23.6.0.24.10") //TODO: Er denne riktig?
     implementation("com.github.seratch:kotliquery:1.9.0")
 
     implementation("org.slf4j:jul-to-slf4j:2.0.16")
