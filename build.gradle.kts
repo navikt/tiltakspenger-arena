@@ -72,7 +72,7 @@ dependencies {
     implementation("no.nav.common:cxf:3.2024.11.26_16.35-432a29107830")
 
     //implementation("org.flywaydb:flyway-core:9.19.3")
-    implementation("org.flywaydb:flyway-database-oracle:10.17.0")
+    implementation("org.flywaydb:flyway-database-oracle:11.1.0")
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("com.oracle.database.jdbc:ojdbc8:23.6.0.24.10") //TODO: Er denne riktig?
     implementation("com.github.seratch:kotliquery:1.9.0")
