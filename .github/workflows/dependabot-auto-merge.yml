@@ -25,6 +25,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Notify Slack on new major version and abort
         if: steps.metadata.outputs.update-type == 'version-update:semver-major' && steps.metadata.outputs.package-ecosystem != 'github_actions'
+        id: major
         run: |
           curl -X POST --data-urlencode "payload={ \"attachments\": [{ \"pretext\": \"[${{ github.event.repository.name }}] Ny major dependency versjon!\", \"color\": \"info\", \"fields\": [ { \"title\": \"Commit\", \"value\": \"<https://github.com/${{ github.repository }}/commit/$PR_SHA|$PR_SHA>\", \"short\": false }, { \"title\": \"Dependency\", \"value\": \"$DEPENDENCY_NAME $VERSION_CHANGE\", \"short\": false } ] }] }" $WEBHOOK_URL
           exit 1
@@ -51,7 +52,7 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Notify Slack in case of merge failure
-        if: failure() && (steps.build.conclusion == 'failure' || steps.merge.conclusion == 'failure')
+        if: failure() && steps.major.conclusion == 'skipped'
         run: |
           curl -X POST --data-urlencode "payload={ \"attachments\": [{ \"pretext\": \"[${{ github.event.repository.name }}] Dependabot auto-merge failed :cry:\", \"color\": \"danger\", \"fields\": [ { \"title\": \"Commit\", \"value\": \"<https://github.com/${{ github.repository }}/commit/$PR_SHA|$PR_SHA>\", \"short\": false }, { \"title\": \"Dependency\", \"value\": \"$DEPENDENCY_NAME $VERSION_CHANGE\", \"short\": false } ] }] }" $WEBHOOK_URL
         env:
