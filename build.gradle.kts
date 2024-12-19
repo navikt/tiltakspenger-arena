@@ -5,7 +5,7 @@ val jvmVersion = JvmTarget.JVM_21
 
 val ktorVersion = "2.3.12"
 val jacksonVersion = "2.17.2"
-val mockkVersion = "1.13.12"
+val mockkVersion = "1.13.13"
 val kotlinxCoroutinesVersion = "1.8.1"
 val tokenSupportVersion = "5.0.5"
 val testContainersVersion = "1.20.1"
