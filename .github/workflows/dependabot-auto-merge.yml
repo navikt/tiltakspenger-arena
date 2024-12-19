@@ -51,7 +51,7 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Notify Slack in case of merge failure
-        if: steps.build.conclusion == 'failure' || steps.merge.conclusion == 'failure'
+        if: failure() && (steps.build.conclusion == 'failure' || steps.merge.conclusion == 'failure')
         run: |
           curl -X POST --data-urlencode "payload={ \"attachments\": [{ \"pretext\": \"[${{ github.event.repository.name }}] Dependabot auto-merge failed :cry:\", \"color\": \"danger\", \"fields\": [ { \"title\": \"Commit\", \"value\": \"<https://github.com/${{ github.repository }}/commit/$PR_SHA|$PR_SHA>\", \"short\": false }, { \"title\": \"Dependency\", \"value\": \"$DEPENDENCY_NAME $VERSION_CHANGE\", \"short\": false } ] }] }" $WEBHOOK_URL
         env:
