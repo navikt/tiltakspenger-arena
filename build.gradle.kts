@@ -78,7 +78,7 @@ dependencies {
     implementation("com.github.seratch:kotliquery:1.9.0")
 
     implementation("org.slf4j:jul-to-slf4j:2.0.16")
-    implementation("org.slf4j:log4j-over-slf4j:2.0.15")
+    implementation("org.slf4j:log4j-over-slf4j:2.0.16")
     implementation("org.slf4j:jcl-over-slf4j:2.0.16")
 
     testImplementation(platform("org.junit:junit-bom:5.11.0"))
