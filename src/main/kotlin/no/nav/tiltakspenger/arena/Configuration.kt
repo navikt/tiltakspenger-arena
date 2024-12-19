@@ -4,21 +4,11 @@ import com.natpryce.konfig.ConfigurationMap
 import com.natpryce.konfig.ConfigurationProperties.Companion.systemProperties
 import com.natpryce.konfig.EnvironmentVariables
 import com.natpryce.konfig.Key
+import com.natpryce.konfig.intType
 import com.natpryce.konfig.overriding
 import com.natpryce.konfig.stringType
 
 object Configuration {
-
-    val rapidsAndRivers = mapOf(
-        "RAPID_APP_NAME" to "tiltakspenger-arena",
-        "KAFKA_BROKERS" to System.getenv("KAFKA_BROKERS"),
-        "KAFKA_CREDSTORE_PASSWORD" to System.getenv("KAFKA_CREDSTORE_PASSWORD"),
-        "KAFKA_TRUSTSTORE_PATH" to System.getenv("KAFKA_TRUSTSTORE_PATH"),
-        "KAFKA_KEYSTORE_PATH" to System.getenv("KAFKA_KEYSTORE_PATH"),
-        "KAFKA_RAPID_TOPIC" to "tpts.rapid.v1",
-        "KAFKA_RESET_POLICY" to "latest",
-        "KAFKA_CONSUMER_GROUP_ID" to "tiltakspenger-arena-v1",
-    )
 
     private val otherDefaultProperties = mapOf(
         "application.httpPort" to 8080.toString(),
@@ -27,7 +17,7 @@ object Configuration {
         "ARENA_ORDS_CLIENT_ID" to System.getenv("ARENA_ORDS_CLIENT_ID"),
         "ARENA_ORDS_CLIENT_SECRET" to System.getenv("ARENA_ORDS_CLIENT_SECRET"),
     )
-    private val defaultProperties = ConfigurationMap(rapidsAndRivers + otherDefaultProperties)
+    private val defaultProperties = ConfigurationMap(otherDefaultProperties)
     private val localProperties = ConfigurationMap(
         mapOf(
             "stsUrl" to "",
@@ -73,6 +63,8 @@ object Configuration {
         "prod-fss" -> Profile.PROD
         else -> Profile.LOCAL
     }
+
+    fun httpPort() = config()[Key("application.httpPort", intType)]
 }
 
 enum class Profile {
