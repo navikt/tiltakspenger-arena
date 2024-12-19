@@ -17,7 +17,7 @@ project.base.archivesName.set("app")
 plugins {
     application
     id("java")
-    kotlin("jvm") version "2.0.20"
+    kotlin("jvm") version "2.1.0"
     id("com.diffplug.spotless") version "6.25.0"
     id("com.github.bjornvester.wsdl2java") version "2.0.2"
 }
