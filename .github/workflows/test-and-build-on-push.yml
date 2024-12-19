@@ -9,6 +9,7 @@ jobs:
   build:
     name: Test and build
     uses: ./.github/workflows/.test-and-build.yml
+    if: github.actor != 'dependabot[bot]'
     permissions:
       contents: read
       id-token: write
