@@ -19,6 +19,5 @@ fun main() {
     }
 
     val config = ApplicationConfig("application.conf")
-    val applicationBuilder = ApplicationBuilder(config = config)
-    applicationBuilder.start()
+    start(config)
 }
