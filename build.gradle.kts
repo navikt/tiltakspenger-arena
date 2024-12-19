@@ -81,7 +81,7 @@ dependencies {
     implementation("org.slf4j:log4j-over-slf4j:2.0.16")
     implementation("org.slf4j:jcl-over-slf4j:2.0.16")
 
-    testImplementation(platform("org.junit:junit-bom:5.11.0"))
+    testImplementation(platform("org.junit:junit-bom:5.11.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
