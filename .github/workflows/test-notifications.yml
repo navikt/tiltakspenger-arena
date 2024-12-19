@@ -28,4 +28,4 @@ jobs:
           curl -X POST --data-urlencode "payload={ \"attachments\": [{ \"pretext\": \"[${{ github.event.repository.name }}] Merge failed :cry:\", \"color\": \"danger\", \"fields\": [ { \"title\": \"Commit\", \"value\": \"<https://github.com/${{ github.repository }}/commit/$PR_SHA|$PR_SHA>\", \"short\": false }, { \"title\": \"Dependency\", \"value\": \"$DEPENDENCY_NAME $VERSION_CHANGE\", \"short\": false } ] }] }" $WEBHOOK_URL
         env:
           DEPENDENCY_NAME: Blah blah
-          VERSION_CHANGE: "1.0 -> 1.1"
+          VERSION_CHANGE: "1.0 -> 1.2"
