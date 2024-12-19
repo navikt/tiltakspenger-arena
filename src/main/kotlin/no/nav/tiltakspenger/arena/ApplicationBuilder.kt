@@ -3,14 +3,11 @@ package no.nav.tiltakspenger.arena
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServiceImpl
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClientImpl
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsTokenProviderClient
-
-private val LOG = KotlinLogging.logger {}
 
 internal fun start(
     config: ApplicationConfig,

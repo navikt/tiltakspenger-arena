@@ -13,6 +13,7 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
 import no.nav.security.token.support.v2.RequiredClaims
 import no.nav.security.token.support.v2.tokenValidationSupport
+import no.nav.tiltakspenger.arena.routes.healthRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutes
@@ -59,5 +60,6 @@ fun Application.tiltakApi(
             tiltakAzureRoutes(arenaOrdsClient = arenaOrdsClient)
             tiltakspengerRoutes(vedtakDetaljerService, rettighetDetaljerService)
         }
+        healthRoutes()
     }
 }
