@@ -69,7 +69,7 @@ dependencies {
     implementation("no.nav.security:token-validation-ktor-v2:$tokenSupportVersion")
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.2.0")
-    implementation("no.nav.common:cxf:3.2024.05.23_05.46-2b29fa343e8e")
+    implementation("no.nav.common:cxf:3.2024.11.26_16.35-432a29107830")
 
     //implementation("org.flywaydb:flyway-core:9.19.3")
     implementation("org.flywaydb:flyway-database-oracle:10.17.0")
