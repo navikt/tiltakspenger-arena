@@ -71,10 +71,9 @@ dependencies {
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.2.0")
     implementation("no.nav.common:cxf:3.2024.11.26_16.35-432a29107830")
 
-    //implementation("org.flywaydb:flyway-core:9.19.3")
     implementation("org.flywaydb:flyway-database-oracle:10.17.0")
     implementation("com.zaxxer:HikariCP:5.1.0")
-    implementation("com.oracle.database.jdbc:ojdbc8:23.6.0.24.10") //TODO: Er denne riktig?
+    implementation("com.oracle.database.jdbc:ojdbc11:23.6.0.24.10")
     implementation("com.github.seratch:kotliquery:1.9.0")
 
     implementation("org.slf4j:jul-to-slf4j:2.0.16")
@@ -95,7 +94,7 @@ dependencies {
     testImplementation("org.hamcrest:hamcrest-core:3.0")
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
-    testImplementation("org.testcontainers:oracle-xe:1.20.4")
+    testImplementation("org.testcontainers:oracle-free:$testContainersVersion")
     // need quarkus-junit-4-mock because of https://github.com/testcontainers/testcontainers-java/issues/970
     testImplementation("io.quarkus:quarkus-junit4-mock:3.17.5")
 
