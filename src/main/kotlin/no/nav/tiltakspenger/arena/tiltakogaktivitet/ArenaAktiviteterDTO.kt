@@ -1,4 +1,4 @@
-@file:Suppress("ktlint:no-semi", "ktlint:trailing-comma-on-declaration-site")
+@file:Suppress("ktlint:standard:no-semi", "ktlint:standard:trailing-comma-on-declaration-site")
 
 package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
@@ -216,9 +216,11 @@ data class ArenaAktiviteterDTO(
     ) {
         data class Moteplan(
             val startDato: LocalDate,
-            val startKlokkeslett: String?, // f.eks: 13:00:00
+            // f.eks: 13:00:00
+            val startKlokkeslett: String?,
             val sluttDato: LocalDate,
-            val sluttKlokkeslett: String?, // f.eks: 14:00:00
+            // f.eks: 14:00:00
+            val sluttKlokkeslett: String?,
             val sted: String?,
         )
     }

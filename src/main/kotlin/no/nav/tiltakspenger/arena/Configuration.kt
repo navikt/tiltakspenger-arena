@@ -68,5 +68,7 @@ object Configuration {
 }
 
 enum class Profile {
-    LOCAL, DEV, PROD
+    LOCAL,
+    DEV,
+    PROD,
 }

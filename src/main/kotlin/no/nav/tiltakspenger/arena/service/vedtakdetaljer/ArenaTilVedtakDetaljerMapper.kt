@@ -11,10 +11,10 @@ private val LOG = KotlinLogging.logger {}
 private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
 // TODO post-mvp jah: Dette føles ikke riktig. Hvorfor kan vi ikke behandle den som null istedet?
-private const val defaultTiltakGjennomføringsId: String = ""
-private const val defaultAntallBarn: Int = 0
-private const val defaultDagsats: Int = 0
-private const val defaultAntallDager: Double = 0.0
+private const val DEFAULT_TILTAK_GJENNOMFØRINGS_ID: String = ""
+private const val DEFAULT_ANTALL_BARN: Int = 0
+private const val DEFAULT_DAGSATS: Int = 0
+private const val DEFAULT_ANTALL_DAGER: Double = 0.0
 
 object ArenaTilVedtakDetaljerMapper {
     fun mapTiltakspengerFraArenaTilVedtaksperioder(saker: List<ArenaSakMedMinstEttVedtakDTO>): Periodisering<VedtakDetaljer>? {
@@ -43,9 +43,9 @@ object ArenaTilVedtakDetaljerMapper {
         Periodisering(
             totalePeriode = totalePeriode,
             initiellVerdi = VedtakDetaljerKunTiltakspenger(
-                antallDager = defaultAntallDager,
-                dagsats = defaultDagsats,
-                tiltakGjennomføringsId = defaultTiltakGjennomføringsId,
+                antallDager = DEFAULT_ANTALL_DAGER,
+                dagsats = DEFAULT_DAGSATS,
+                tiltakGjennomføringsId = DEFAULT_TILTAK_GJENNOMFØRINGS_ID,
                 rettighet = Rettighet.INGENTING,
                 vedtakId = 0L,
                 sakId = 0L,
@@ -56,10 +56,10 @@ object ArenaTilVedtakDetaljerMapper {
         Periodisering(
             totalePeriode = totalePeriode,
             initiellVerdi = VedtakDetaljerBarnetillegg(
-                antallDager = defaultAntallDager,
-                dagsats = defaultDagsats,
-                antallBarn = defaultAntallBarn,
-                relaterteTiltak = defaultTiltakGjennomføringsId,
+                antallDager = DEFAULT_ANTALL_DAGER,
+                dagsats = DEFAULT_DAGSATS,
+                antallBarn = DEFAULT_ANTALL_BARN,
+                relaterteTiltak = DEFAULT_TILTAK_GJENNOMFØRINGS_ID,
                 rettighet = Rettighet.INGENTING,
             ),
         )
@@ -73,9 +73,9 @@ object ArenaTilVedtakDetaljerMapper {
             .fold(periodeMedTiltakspengerInit) { periodeMedVerdier: Periodisering<VedtakDetaljerKunTiltakspenger>, arenaTiltakspengerVedtakDTO: ArenaTiltakspengerVedtakDTO ->
                 periodeMedVerdier.setVerdiForDelPeriode(
                     VedtakDetaljerKunTiltakspenger(
-                        antallDager = arenaTiltakspengerVedtakDTO.antallDager ?: defaultAntallDager,
-                        dagsats = arenaTiltakspengerVedtakDTO.dagsats ?: defaultDagsats,
-                        tiltakGjennomføringsId = arenaTiltakspengerVedtakDTO.relatertTiltak ?: defaultTiltakGjennomføringsId,
+                        antallDager = arenaTiltakspengerVedtakDTO.antallDager ?: DEFAULT_ANTALL_DAGER,
+                        dagsats = arenaTiltakspengerVedtakDTO.dagsats ?: DEFAULT_DAGSATS,
+                        tiltakGjennomføringsId = arenaTiltakspengerVedtakDTO.relatertTiltak ?: DEFAULT_TILTAK_GJENNOMFØRINGS_ID,
                         rettighet = Rettighet.TILTAKSPENGER,
                         vedtakId = arenaTiltakspengerVedtakDTO.vedtakId,
                         sakId = arenaTiltakspengerVedtakDTO.tilhørendeSakId,
@@ -97,10 +97,10 @@ object ArenaTilVedtakDetaljerMapper {
                     // Legger til hele perioden
                     periodeMedVerdier.setVerdiForDelPeriode(
                         VedtakDetaljerBarnetillegg(
-                            antallDager = arenaBarnetilleggVedtakDTO.antallDager ?: defaultAntallDager,
-                            dagsats = arenaBarnetilleggVedtakDTO.dagsats ?: defaultDagsats,
-                            antallBarn = arenaBarnetilleggVedtakDTO.antallBarn ?: defaultAntallBarn,
-                            relaterteTiltak = arenaBarnetilleggVedtakDTO.tiltakGjennomføringsId ?: defaultTiltakGjennomføringsId,
+                            antallDager = arenaBarnetilleggVedtakDTO.antallDager ?: DEFAULT_ANTALL_DAGER,
+                            dagsats = arenaBarnetilleggVedtakDTO.dagsats ?: DEFAULT_DAGSATS,
+                            antallBarn = arenaBarnetilleggVedtakDTO.antallBarn ?: DEFAULT_ANTALL_BARN,
+                            relaterteTiltak = arenaBarnetilleggVedtakDTO.tiltakGjennomføringsId ?: DEFAULT_TILTAK_GJENNOMFØRINGS_ID,
                             rettighet = Rettighet.BARNETILLEGG,
                         ),
                         arenaBarnetilleggVedtakDTO.vedtaksperiode(),
@@ -109,10 +109,10 @@ object ArenaTilVedtakDetaljerMapper {
                     LOG.warn { "Perioden for barnetillegg (${arenaBarnetilleggVedtakDTO.vedtaksperiode()}) overlapper med saksperioden ($totalePeriode) " }
                     periodeMedVerdier.setVerdiForDelPeriode(
                         VedtakDetaljerBarnetillegg(
-                            antallDager = arenaBarnetilleggVedtakDTO.antallDager ?: defaultAntallDager,
-                            dagsats = arenaBarnetilleggVedtakDTO.dagsats ?: defaultDagsats,
-                            antallBarn = arenaBarnetilleggVedtakDTO.antallBarn ?: defaultAntallBarn,
-                            relaterteTiltak = arenaBarnetilleggVedtakDTO.tiltakGjennomføringsId ?: defaultTiltakGjennomføringsId,
+                            antallDager = arenaBarnetilleggVedtakDTO.antallDager ?: DEFAULT_ANTALL_DAGER,
+                            dagsats = arenaBarnetilleggVedtakDTO.dagsats ?: DEFAULT_DAGSATS,
+                            antallBarn = arenaBarnetilleggVedtakDTO.antallBarn ?: DEFAULT_ANTALL_BARN,
+                            relaterteTiltak = arenaBarnetilleggVedtakDTO.tiltakGjennomføringsId ?: DEFAULT_TILTAK_GJENNOMFØRINGS_ID,
                             rettighet = Rettighet.BARNETILLEGG,
                         ),
                         arenaBarnetilleggVedtakDTO.vedtaksperiode().overlappendePeriode(totalePeriode)!!,
