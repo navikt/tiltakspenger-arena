@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 val javaVersion = JavaVersion.VERSION_21
 val jvmVersion = JvmTarget.JVM_21
 
-val ktorVersion = "2.3.12"
+val ktorVersion = "3.0.3"
 val jacksonVersion = "2.18.2"
 val mockkVersion = "1.13.13"
 val kotlinxCoroutinesVersion = "1.9.0"
@@ -66,7 +66,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-    implementation("no.nav.security:token-validation-ktor-v2:$tokenSupportVersion")
+    implementation("no.nav.security:token-validation-ktor-v3:$tokenSupportVersion")
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.2.0")
     implementation("no.nav.common:cxf:3.2024.11.26_16.35-432a29107830")

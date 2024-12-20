@@ -11,8 +11,8 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
-import no.nav.security.token.support.v2.RequiredClaims
-import no.nav.security.token.support.v2.tokenValidationSupport
+import no.nav.security.token.support.v3.RequiredClaims
+import no.nav.security.token.support.v3.tokenValidationSupport
 import no.nav.tiltakspenger.arena.routes.healthRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.ContentType
 import io.ktor.http.content.OutgoingContent
 import io.ktor.http.content.TextContent
@@ -46,31 +45,16 @@ class JacksonXmlConverter(private val xmlMapper: XmlMapper = xmlMapper()) : Cont
         return xmlMapper.readValue(reader, typeInfo.type.javaObjectType)
     }
 
-    @Deprecated("TODO")
     override suspend fun serialize(
         contentType: ContentType,
         charset: Charset,
         typeInfo: TypeInfo,
-        value: Any,
-    ): OutgoingContent =
-        TextContent(xmlMapper.writeValueAsString(value), contentType.withCharset(charset))
+        value: Any?,
+    ): OutgoingContent? {
+        if (value == null) return null
+        return TextContent(xmlMapper.writeValueAsString(value), contentType.withCharset(charset))
+    }
 }
-
-/**
- * Register Jackson XML converter into [ContentNegotiation] feature
- */
-fun ContentNegotiation.Config.xml(
-    contentType: ContentType = ContentType.Application.Xml,
-    xmlTextElementName: String = XML_TEXT_ELEMENT_NAME,
-    block: XmlMapper.() -> Unit = {},
-) {
-    val mapper = xmlMapper(xmlTextElementName)
-    mapper.apply(block)
-    val converter = JacksonXmlConverter(mapper)
-    register(contentType, converter)
-}
-
-val module = JacksonXmlModule()
 
 private fun xmlMapper(xmlTextElementName: String = XML_TEXT_ELEMENT_NAME): XmlMapper {
     val module = JacksonXmlModule().apply {
