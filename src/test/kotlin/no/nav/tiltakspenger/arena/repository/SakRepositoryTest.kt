@@ -7,9 +7,9 @@ import no.nav.tiltakspenger.arena.db.flywayMigrate
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import org.testcontainers.containers.OracleContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import org.testcontainers.oracle.OracleContainer
 
 @Testcontainers
 class SakRepositoryTest {
@@ -21,7 +21,9 @@ class SakRepositoryTest {
         private const val FNR_MED_2_SAKER = "2"
 
         @Container
-        val container: OracleContainer = OracleContainer("gvenzl/oracle-xe:18.4.0-slim-faststart")
+        val container: OracleContainer = OracleContainer("gvenzl/oracle-free:23.6-slim-faststart")
+            .withStartupTimeoutSeconds(30)
+            .withConnectTimeoutSeconds(30)
 
         @BeforeAll
         @JvmStatic
