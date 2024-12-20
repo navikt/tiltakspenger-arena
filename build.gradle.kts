@@ -71,7 +71,7 @@ dependencies {
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.2.0")
     implementation("no.nav.common:cxf:3.2024.11.26_16.35-432a29107830")
 
-    implementation("org.flywaydb:flyway-database-oracle:10.17.0")
+    implementation("org.flywaydb:flyway-database-oracle:11.1.0")
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("com.oracle.database.jdbc:ojdbc11:23.6.0.24.10")
     implementation("com.github.seratch:kotliquery:1.9.0")
