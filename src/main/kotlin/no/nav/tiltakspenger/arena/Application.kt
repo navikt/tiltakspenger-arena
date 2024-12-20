@@ -4,6 +4,9 @@ import io.ktor.server.config.ApplicationConfig
 import mu.KotlinLogging
 import org.slf4j.bridge.SLF4JBridgeHandler
 
+/**
+ * TODO jah: Dersom man ønsker kjøre opp denne lokalt må man lage en LokalMain.kt som ligger i test scope. Se eksempel i tiltakspenger-saksbehandling-api
+ */
 fun main() {
     System.setProperty("logback.configurationFile", "egenLogback.xml")
     System.setProperty("oracle.jdbc.fanEnabled", "false")

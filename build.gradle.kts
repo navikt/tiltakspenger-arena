@@ -71,7 +71,6 @@ dependencies {
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.2.0")
     implementation("no.nav.common:cxf:3.2024.11.26_16.35-432a29107830")
 
-    implementation("org.flywaydb:flyway-database-oracle:10.17.0")
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("com.oracle.database.jdbc:ojdbc11:23.6.0.24.10")
     implementation("com.github.seratch:kotliquery:1.9.0")
@@ -92,6 +91,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
     testImplementation("org.xmlunit:xmlunit-matchers:2.10.0")
     testImplementation("org.hamcrest:hamcrest-core:3.0")
+    testImplementation("org.flywaydb:flyway-database-oracle:11.1.0")
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
     testImplementation("org.testcontainers:oracle-free:$testContainersVersion")
