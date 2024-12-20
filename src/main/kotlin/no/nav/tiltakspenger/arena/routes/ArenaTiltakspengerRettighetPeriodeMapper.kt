@@ -7,11 +7,10 @@ import java.time.LocalDate
 
 object ArenaTiltakspengerRettighetPeriodeMapper {
     fun Periodisering<RettighetDetaljer>?.toArenaTiltakspengerRettighetPeriode(): List<ArenaTiltakspengerRettighetPeriode> =
-        this?.perioder()
-            ?.filter {
-                it.verdi.rettighet == Rettighet.TILTAKSPENGER ||
-                    it.verdi.rettighet == Rettighet.TILTAKSPENGER_OG_BARNETILLEGG
-            }
+        this?.filter {
+            it.verdi.rettighet == Rettighet.TILTAKSPENGER ||
+                it.verdi.rettighet == Rettighet.TILTAKSPENGER_OG_BARNETILLEGG
+        }
             ?.map {
                 ArenaTiltakspengerRettighetPeriode(
                     fraOgMed = it.periode.fraOgMed,
