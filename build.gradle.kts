@@ -70,7 +70,7 @@ dependencies {
     implementation("no.nav.security:token-validation-ktor-v3:$tokenSupportVersion")
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
     implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.2.0")
-    implementation("no.nav.common:cxf:3.2024.11.26_16.35-432a29107830")
+    implementation("no.nav.common:cxf:3.2025.01.14_14.19-79b3041cae56")
 
     implementation("com.zaxxer:HikariCP:6.2.1")
     implementation("com.oracle.database.jdbc:ojdbc11:23.6.0.24.10")
