@@ -55,121 +55,230 @@ data class ArenaAktiviteterDTO(
             val status: DeltakerStatusType,
         )
 
-        enum class Tiltaksnavn(val tekst: String) {
-            AMBF1("AMB Avklaring (fase 1)"),
-            KURS("Andre kurs"),
-            ANNUTDANN("Annen utdanning"),
-            ABOPPF("Arbeid med bistand A oppfølging"),
-            ABUOPPF("Arbeid med bistand A utvidet oppfølging"),
-            ABIST("Arbeid med Bistand (AB)"),
-            ABTBOPPF("Arbeid med bistand B"),
-            LONNTILAAP("Arbeidsavklaringspenger som lønnstilskudd"),
-            ARBFORB("Arbeidsforberedende trening (AFT)"),
-            AMO("Arbeidsmarkedsopplæring (AMO)"),
-            AMOE("Arbeidsmarkedsopplæring (AMO) enkeltplass"),
-            AMOB("Arbeidsmarkedsopplæring (AMO) i bedrift"),
-            AMOY("Arbeidsmarkedsopplæring (AMO) yrkeshemmede"),
-            PRAKSORD("Arbeidspraksis i ordinær virksomhet"),
-            PRAKSKJERM("Arbeidspraksis i skjermet virksomhet"),
-            ARBRRHBAG("Arbeidsrettet rehabilitering"),
-            ARBRRHBSM("Arbeidsrettet rehabilitering - sykmeldt arbeidstaker"),
-            ARBRRHDAG("Arbeidsrettet rehabilitering (dag)"),
-            ARBRDAGSM("Arbeidsrettet rehabilitering (dag) - sykmeldt arbeidstaker"),
-            ARBRRDOGN("Arbeidsrettet rehabilitering (døgn)"),
-            ARBDOGNSM("Arbeidsrettet rehabilitering (døgn) - sykmeldt arbeidstaker"),
-            ASV("Arbeidssamvirke (ASV)"),
-            ARBTREN("Arbeidstrening"),
-            ATG("Arbeidstreningsgrupper"),
-            AVKLARAG("Avklaring"),
-            AVKLARUS("Avklaring"),
-            AVKLARSP("Avklaring - sykmeldt arbeidstaker"),
-            AVKLARKV("Avklaring av kortere varighet"),
-            AVKLARSV("Avklaring i skjermet virksomhet"),
-            BIA("Bedriftsintern attføring"),
-            BIO("Bedriftsintern opplæring (BIO)"),
-            BREVKURS("Brevkurs"),
-            DIGIOPPARB("Digitalt oppfølgingstiltak for arbeidsledige (jobbklubb)"),
-            DIVTILT("Diverse tiltak"),
-            ETAB("Egenetablering"),
-            EKSPEBIST("Ekspertbistand"),
-            ENKELAMO("Enkeltplass AMO"),
-            ENKFAGYRKE("Enkeltplass Fag- og yrkesopplæring VGS og høyere yrkesfaglig utdanning"),
-            FLEKSJOBB("Fleksibel jobb - lønnstilskudd av lengre varighet"),
-            TILRTILSK("Forebyggings- og tilretteleggingstilskudd IA virksomheter og BHT-honorar"),
-            KAT("Formidlingstjenester"),
-            VALS("Formidlingstjenester - Ventelønn"),
-            FORSAMOENK("Forsøk AMO enkeltplass"),
-            FORSAMOGRU("Forsøk AMO gruppe"),
-            FORSFAGENK("Forsøk fag- og yrkesopplæring enkeltplass"),
-            FORSFAGGRU("Forsøk fag- og yrkesopplæring gruppe"),
-            FORSHOYUTD("Forsøk høyere utdanning"),
-            FORSOPPLEV("Forsøk opplæringstiltak av lengre varighet"),
-            FUNKSJASS("Funksjonsassistanse"),
-            GRUNNSKOLE("Grunnskole"),
-            GRUPPEAMO("Gruppe AMO"),
-            GRUFAGYRKE("Gruppe Fag- og yrkesopplæring VGS og høyere yrkesfaglig utdanning"),
-            HOYEREUTD("Høyere utdanning"),
-            HOYSKOLE("Høyskole/Universitet"),
-            INDJOBSTOT("Individuell jobbstøtte (IPS)"),
-            IPSUNG("Individuell karrierestøtte (IPS Ung)"),
-            INDOPPFOLG("Individuelt oppfølgingstiltak"),
-            INKLUTILS("Inkluderingstilskudd"),
-            ITGRTILS("Integreringstilskudd"),
-            JOBBKLUBB("Intern jobbklubb"),
-            JOBBFOKUS("Jobbfokus/Utvidet formidlingsbistand"),
-            JOBBK("Jobbklubb"),
-            JOBBBONUS("Jobbklubb med bonusordning"),
-            JOBBSKAP("Jobbskapingsprosjekter"),
-            AMBF2("Kvalifisering i arbeidsmarkedsbedrift"),
-            TESTING("Lenes testtiltak"),
-            STATLAERL("Lærlinger i statlige etater"),
-            LONNTILS("Lønnstilskudd"),
-            REAKTUFOR("Lønnstilskudd - reaktivisering av uførepensjonister"),
-            LONNTILL("Lønnstilskudd av lengre varighet"),
-            MENTOR("Mentor"),
-            MIDLONTIL("Midlertidig lønnstilskudd"),
-            NETTAMO("Nettbasert arbeidsmarkedsopplæring (AMO)"),
-            NETTKURS("Nettkurs"),
-            INST_S("Nye plasser institusjonelle tiltak"),
-            NYTEST("Nytt testtiltak"),
-            INDOPPFAG("Oppfølging"),
-            INDOPPFSP("Oppfølging - sykmeldt arbeidstaker"),
-            PV("Produksjonsverksted (PV)"),
-            INDOPPRF("Resultatbasert finansiering av formidlingsbistand"),
-            REFINO("Resultatbasert finansiering av oppfølging"),
-            SPA("Spa prosjekter"),
-            SUPPEMP("Supported Employment"),
-            SYSSLANG("Sysselsettingstiltak for langtidsledige"),
-            YHEMMOFF("Sysselsettingstiltak for yrkeshemmede"),
-            SYSSOFF("Sysselsettingstiltak i offentlig sektor for yrkeshemmede"),
-            LONNTIL("Tidsbegrenset lønnstilskudd"),
-            TIDSUBLONN("Tidsubestemt lønnstilskudd"),
-            AMBF3("Tilrettelagt arbeid i arbeidsmarkedsbedrift"),
-            TILRETTEL("Tilrettelegging for arbeidstaker"),
-            TILPERBED("Tilretteleggingstilskudd for arbeidssøker"),
-            TILSJOBB("Tilskudd til sommerjobb"),
-            UFØREPENLØ("Uførepensjon som lønnstilskudd"),
-            UTDYRK("Utdanning"),
-            UTDPERMVIK("Utdanningspermisjoner"),
-            VIKARBLED("Utdanningsvikariater"),
-            UTBHLETTPS("Utredning/behandling lettere psykiske lidelser"),
-            UTBHPSLD("Utredning/behandling lettere psykiske og sammensatte lidelser"),
-            UTBHSAMLI("Utredning/behandling sammensatte lidelser"),
-            UTVAOONAV("Arbeid med støtte"),
-            UTVOPPFOPL("Utvidet oppfølging i opplæring"),
-            VARLONTIL("Varig lønnstilskudd"),
-            VATIAROR("Varig tilrettelagt arbeid i ordinær virksomhet"),
-            VASV("Varig tilrettelagt arbeid i skjermet virksomhet"),
-            VV("Varig vernet arbeid (VVA)"),
-            VIDRSKOLE("Videregående skole"),
-            OPPLT2AAR("2-årig opplæringstiltak");
+        enum class Tiltaksnavn {
+            AMBF1,
+            KURS,
+            ANNUTDANN,
+            ABOPPF,
+            ABUOPPF,
+            ABIST,
+            ABTBOPPF,
+            LONNTILAAP,
+            ARBFORB,
+            AMO,
+            AMOE,
+            AMOB,
+            AMOY,
+            PRAKSORD,
+            PRAKSKJERM,
+            ARBRRHBAG,
+            ARBRRHBSM,
+            ARBRRHDAG,
+            ARBRDAGSM,
+            ARBRRDOGN,
+            ARBDOGNSM,
+            ASV,
+            ARBTREN,
+            ATG,
+            AVKLARAG,
+            AVKLARUS,
+            AVKLARSP,
+            AVKLARKV,
+            AVKLARSV,
+            BIA,
+            BIO,
+            BREVKURS,
+            DIGIOPPARB,
+            DIVTILT,
+            ETAB,
+            EKSPEBIST,
+            ENKELAMO,
+            ENKFAGYRKE,
+            FLEKSJOBB,
+            TILRTILSK,
+            KAT,
+            VALS,
+            FORSAMOENK,
+            FORSAMOGRU,
+            FORSFAGENK,
+            FORSFAGGRU,
+            FORSHOYUTD,
+            FORSOPPLEV,
+            FUNKSJASS,
+            GRUNNSKOLE,
+            GRUPPEAMO,
+            GRUFAGYRKE,
+            HOYEREUTD,
+            HOYSKOLE,
+            INDJOBSTOT,
+            IPSUNG,
+            INDOPPFOLG,
+            INKLUTILS,
+            ITGRTILS,
+            JOBBKLUBB,
+            JOBBFOKUS,
+            JOBBK,
+            JOBBBONUS,
+            JOBBSKAP,
+            AMBF2,
+            TESTING,
+            STATLAERL,
+            LONNTILS,
+            REAKTUFOR,
+            LONNTILL,
+            MENTOR,
+            MIDLONTIL,
+            NETTAMO,
+            NETTKURS,
+            INST_S,
+            NYTEST,
+            INDOPPFAG,
+            INDOPPFSP,
+            PV,
+            INDOPPRF,
+            REFINO,
+            SPA,
+            SUPPEMP,
+            SYSSLANG,
+            YHEMMOFF,
+            SYSSOFF,
+            LONNTIL,
+            TIDSUBLONN,
+            AMBF3,
+            TILRETTEL,
+            TILPERBED,
+            TILSJOBB,
+            UFØREPENLØ,
+            UTDYRK,
+            UTDPERMVIK,
+            VIKARBLED,
+            UTBHLETTPS,
+            UTBHPSLD,
+            UTBHSAMLI,
+            UTVAOONAV,
+            UTVOPPFOPL,
+            VARLONTIL,
+            VATIAROR,
+            VASV,
+            VV,
+            VIDRSKOLE,
+            OPPLT2AAR;
 
             companion object {
                 fun fromTekst(tekst: String): Tiltaksnavn {
-                    return Tiltaksnavn.values().find { it.tekst == tekst }
-                        ?: throw IllegalArgumentException(
+                    return when (tekst) {
+                        "AMB Avklaring (fase 1)" -> AMBF1
+                        "Andre kurs" -> KURS
+                        "Annen utdanning" -> ANNUTDANN
+                        "Arbeid med bistand A oppfølging" -> ABOPPF
+                        "Arbeid med bistand A utvidet oppfølging" -> ABUOPPF
+                        "Arbeid med Bistand (AB)" -> ABIST
+                        "Arbeid med bistand B" -> ABTBOPPF
+                        "Arbeidsavklaringspenger som lønnstilskudd" -> LONNTILAAP
+                        "Arbeidsforberedende trening (AFT)" -> ARBFORB
+                        "Arbeidsmarkedsopplæring (AMO)" -> AMO
+                        "Arbeidsmarkedsopplæring (AMO) enkeltplass" -> AMOE
+                        "Arbeidsmarkedsopplæring (AMO) i bedrift" -> AMOB
+                        "Arbeidsmarkedsopplæring (AMO) yrkeshemmede" -> AMOY
+                        "Arbeidspraksis i ordinær virksomhet" -> PRAKSORD
+                        "Arbeidspraksis i skjermet virksomhet" -> PRAKSKJERM
+                        "Arbeidsrettet rehabilitering" -> ARBRRHBAG
+                        "Arbeidsrettet rehabilitering - sykmeldt arbeidstaker" -> ARBRRHBSM
+                        "Arbeidsrettet rehabilitering (dag)" -> ARBRRHDAG
+                        "Arbeidsrettet rehabilitering (dag) - sykmeldt arbeidstaker" -> ARBRDAGSM
+                        "Arbeidsrettet rehabilitering (døgn)" -> ARBRRDOGN
+                        "Arbeidsrettet rehabilitering (døgn) - sykmeldt arbeidstaker" -> ARBDOGNSM
+                        "Arbeidssamvirke (ASV)" -> ASV
+                        "Arbeidstrening" -> ARBTREN
+                        "Arbeidstreningsgrupper" -> ATG
+                        "Avklaring" -> AVKLARAG
+                        "Avklaring" -> AVKLARUS
+                        "Avklaring - sykmeldt arbeidstaker" -> AVKLARSP
+                        "Avklaring av kortere varighet" -> AVKLARKV
+                        "Avklaring i skjermet virksomhet" -> AVKLARSV
+                        "Bedriftsintern attføring" -> BIA
+                        "Bedriftsintern opplæring (BIO)" -> BIO
+                        "Brevkurs" -> BREVKURS
+                        "Digitalt oppfølgingstiltak for arbeidsledige (jobbklubb)" -> DIGIOPPARB
+                        "Diverse tiltak" -> DIVTILT
+                        "Egenetablering" -> ETAB
+                        "Ekspertbistand" -> EKSPEBIST
+                        "Enkeltplass AMO" -> ENKELAMO
+                        "Enkeltplass Fag- og yrkesopplæring VGS og høyere yrkesfaglig utdanning" -> ENKFAGYRKE
+                        "Fleksibel jobb - lønnstilskudd av lengre varighet" -> FLEKSJOBB
+                        "Forebyggings- og tilretteleggingstilskudd IA virksomheter og BHT-honorar" -> TILRTILSK
+                        "Formidlingstjenester" -> KAT
+                        "Formidlingstjenester - Ventelønn" -> VALS
+                        "Forsøk AMO enkeltplass" -> FORSAMOENK
+                        "Forsøk AMO gruppe" -> FORSAMOGRU
+                        "Forsøk fag- og yrkesopplæring enkeltplass" -> FORSFAGENK
+                        "Forsøk fag- og yrkesopplæring gruppe" -> FORSFAGGRU
+                        "Forsøk høyere utdanning" -> FORSHOYUTD
+                        "Forsøk opplæringstiltak av lengre varighet" -> FORSOPPLEV
+                        "Funksjonsassistanse" -> FUNKSJASS
+                        "Grunnskole" -> GRUNNSKOLE
+                        "Gruppe AMO" -> GRUPPEAMO
+                        "Gruppe Fag- og yrkesopplæring VGS og høyere yrkesfaglig utdanning" -> GRUFAGYRKE
+                        "Høyere utdanning" -> HOYEREUTD
+                        "Høyskole/Universitet" -> HOYSKOLE
+                        "Individuell jobbstøtte (IPS)" -> INDJOBSTOT
+                        "Individuell karrierestøtte (IPS Ung)" -> IPSUNG
+                        "Individuelt oppfølgingstiltak" -> INDOPPFOLG
+                        "Inkluderingstilskudd" -> INKLUTILS
+                        "Integreringstilskudd" -> ITGRTILS
+                        "Intern jobbklubb" -> JOBBKLUBB
+                        "Jobbfokus/Utvidet formidlingsbistand" -> JOBBFOKUS
+                        "Jobbklubb" -> JOBBK
+                        "Jobbklubb med bonusordning" -> JOBBBONUS
+                        "Jobbskapingsprosjekter" -> JOBBSKAP
+                        "Kvalifisering i arbeidsmarkedsbedrift" -> AMBF2
+                        "Lenes testtiltak" -> TESTING
+                        "Lærlinger i statlige etater" -> STATLAERL
+                        "Lønnstilskudd" -> LONNTILS
+                        "Lønnstilskudd - reaktivisering av uførepensjonister" -> REAKTUFOR
+                        "Lønnstilskudd av lengre varighet" -> LONNTILL
+                        "Mentor" -> MENTOR
+                        "Midlertidig lønnstilskudd" -> MIDLONTIL
+                        "Nettbasert arbeidsmarkedsopplæring (AMO)" -> NETTAMO
+                        "Nettkurs" -> NETTKURS
+                        "Nye plasser institusjonelle tiltak" -> INST_S
+                        "Nytt testtiltak" -> NYTEST
+                        "Oppfølging" -> INDOPPFAG
+                        "Oppfølging - sykmeldt arbeidstaker" -> INDOPPFSP
+                        "Produksjonsverksted (PV)" -> PV
+                        "Resultatbasert finansiering av formidlingsbistand" -> INDOPPRF
+                        "Resultatbasert finansiering av oppfølging" -> REFINO
+                        "Spa prosjekter" -> SPA
+                        "Supported Employment" -> SUPPEMP
+                        "Sysselsettingstiltak for langtidsledige" -> SYSSLANG
+                        "Sysselsettingstiltak for yrkeshemmede" -> YHEMMOFF
+                        "Sysselsettingstiltak i offentlig sektor for yrkeshemmede" -> SYSSOFF
+                        "Tidsbegrenset lønnstilskudd" -> LONNTIL
+                        "Tidsubestemt lønnstilskudd" -> TIDSUBLONN
+                        "Tilrettelagt arbeid i arbeidsmarkedsbedrift" -> AMBF3
+                        "Tilrettelegging for arbeidstaker" -> TILRETTEL
+                        "Tilretteleggingstilskudd for arbeidssøker" -> TILPERBED
+                        "Tilskudd til sommerjobb" -> TILSJOBB
+                        "Uførepensjon som lønnstilskudd" -> UFØREPENLØ
+                        "Utdanning" -> UTDYRK
+                        "Utdanningspermisjoner" -> UTDPERMVIK
+                        "Utdanningsvikariater" -> VIKARBLED
+                        "Utredning/behandling lettere psykiske lidelser" -> UTBHLETTPS
+                        "Utredning/behandling lettere psykiske og sammensatte lidelser" -> UTBHPSLD
+                        "Utredning/behandling sammensatte lidelser" -> UTBHSAMLI
+                        "Arbeid med støtte" -> UTVAOONAV
+                        "Tilpasset jobbstøtte",
+                        "Utvidet oppfølging i opplæring" -> UTVOPPFOPL
+                        "Varig lønnstilskudd" -> VARLONTIL
+                        "Varig tilrettelagt arbeid i ordinær virksomhet" -> VATIAROR
+                        "Varig tilrettelagt arbeid i skjermet virksomhet" -> VASV
+                        "Varig vernet arbeid (VVA)" -> VV
+                        "Videregående skole" -> VIDRSKOLE
+                        "2-årig opplæringstiltak" -> OPPLT2AAR
+                        else -> throw IllegalArgumentException(
                             "Tiltaksnavn '$tekst' ikke funnet, sjekk lovlige verdier i Arena",
                         )
+                    }
                 }
             }
         }
