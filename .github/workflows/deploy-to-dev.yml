@@ -18,6 +18,9 @@ jobs:
     name: Deploy to NAIS dev
     needs: build
     uses: ./.github/workflows/.deploy-to-nais.yml
+    permissions:
+      contents: read
+      id-token: write
     with:
       NAIS_ENV: dev
       IMAGE: ${{ needs.build.outputs.IMAGE }}
