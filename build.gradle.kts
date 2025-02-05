@@ -73,7 +73,7 @@ dependencies {
     implementation("no.nav.common:cxf:3.2025.01.14_14.19-79b3041cae56")
 
     implementation("com.zaxxer:HikariCP:6.2.1")
-    implementation("com.oracle.database.jdbc:ojdbc11:23.6.0.24.10")
+    implementation("com.oracle.database.jdbc:ojdbc11:23.7.0.25.01")
     implementation("com.github.seratch:kotliquery:1.9.1")
 
     implementation("org.slf4j:jul-to-slf4j:2.0.16")
