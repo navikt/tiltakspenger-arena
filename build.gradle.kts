@@ -10,7 +10,7 @@ val mockkVersion = "1.13.16"
 val kotlinxCoroutinesVersion = "1.10.1"
 val tokenSupportVersion = "5.0.16"
 val testContainersVersion = "1.20.4"
-val felleslibVersion = "0.0.358"
+val felleslibVersion = "0.0.362"
 val kotestVersion = "5.9.1"
 
 project.base.archivesName.set("app")
