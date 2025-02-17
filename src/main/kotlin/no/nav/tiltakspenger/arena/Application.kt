@@ -8,7 +8,7 @@ import org.slf4j.bridge.SLF4JBridgeHandler
  * Kjør opp lokalt via LokalMain.kt
  */
 fun main() {
-    System.setProperty("logback.configurationFile", "egenLogback.xml")
+    System.setProperty("logback.configurationFile", "logback.xml")
     System.setProperty("oracle.jdbc.fanEnabled", "false")
     SLF4JBridgeHandler.removeHandlersForRootLogger()
     SLF4JBridgeHandler.install()
