@@ -9,7 +9,7 @@ val jacksonVersion = "2.18.2"
 val mockkVersion = "1.13.16"
 val kotlinxCoroutinesVersion = "1.10.1"
 val tokenSupportVersion = "5.0.17"
-val testContainersVersion = "1.20.4"
+val testContainersVersion = "1.20.5"
 val felleslibVersion = "0.0.368"
 val kotestVersion = "5.9.1"
 
