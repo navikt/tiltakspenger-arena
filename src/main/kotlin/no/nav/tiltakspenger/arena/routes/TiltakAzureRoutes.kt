@@ -1,9 +1,7 @@
 package no.nav.tiltakspenger.arena.routes
 
-import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
-import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
@@ -35,6 +33,7 @@ fun Route.tiltakAzureRoutes(
                 runBlocking(MDCContext()) {
                     val ident =
                         call.receive<RequestBody>().ident
+                    logger.info { "Saksbehandler henter tiltak for innbygger" }
                     val arenaTiltak =
                         mapArenaTiltak(arenaOrdsClient.hentArenaAktiviteter(ident).response.tiltaksaktivitetListe)
                     call.respond(arenaTiltak)
@@ -48,9 +47,6 @@ fun Route.tiltakAzureRoutes(
                         feil = null,
                     ),
                 )
-            } catch (e: IllegalStateException) {
-                logger.warn { "Mangler fødselsnummer" }
-                call.respondText(text = "Bad Request", status = HttpStatusCode.BadRequest)
             }
         }
     }

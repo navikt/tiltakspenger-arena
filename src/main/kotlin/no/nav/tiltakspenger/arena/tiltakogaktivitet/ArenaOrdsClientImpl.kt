@@ -10,6 +10,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.isSuccess
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
+import no.nav.tiltakspenger.arena.auth.texas.log
 import no.nav.tiltakspenger.arena.httpClientXml
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.OtherException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.PersonNotFoundException
@@ -56,7 +57,7 @@ class ArenaOrdsClientImpl(
             sikkerlogg.warn { "Bruker (person) finnes ikke i Arena: $text" }
             throw PersonNotFoundException("Bruker (person) finnes ikke i Arena: $text")
         }
-        val arenaAktiviteter = response.body<ArenaAktiviteterDTO>()
-        return arenaAktiviteter
+        LOG.info { "Hentet arena-aktiviteter" }
+        return response.body<ArenaAktiviteterDTO>()
     }
 }

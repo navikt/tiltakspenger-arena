@@ -28,6 +28,7 @@ fun Route.tiltakRoutes(
             try {
                 runBlocking(MDCContext()) {
                     val ident = call.fnr()
+                    logger.info { "Henter tiltak for innbygger" }
                     val arenaTiltak =
                         mapArenaTiltak(arenaOrdsClient.hentArenaAktiviteter(ident).response.tiltaksaktivitetListe)
                     call.respond(arenaTiltak)

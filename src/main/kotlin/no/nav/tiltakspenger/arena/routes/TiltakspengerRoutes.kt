@@ -32,12 +32,14 @@ fun Route.tiltakspengerRoutes(
         post("/vedtaksperioder") {
             try {
                 val req = call.receive<VedtakRequest>()
+                logger.info { "Saksbehandler henter vedtaksperioder" }
                 val periode: Periodisering<VedtakDetaljer>? =
                     vedtakDetaljerService.hentVedtakDetaljerPerioder(
                         ident = req.ident,
                         fom = req.fom ?: LocalDate.of(1900, 1, 1),
                         tom = req.tom ?: LocalDate.of(2999, 12, 31),
                     )
+                logger.info { "Saksbehandler har hentet vedtaksperioder" }
                 call.respond(periode.toArenaTiltakspengerVedtakPeriode())
             } catch (e: Exception) {
                 sikkerlogg.warn(e) { "Feilet å hente tiltakspenger ${e.message}" }
@@ -49,12 +51,14 @@ fun Route.tiltakspengerRoutes(
         post("/rettighetsperioder") {
             try {
                 val req = call.receive<VedtakRequest>()
+                logger.info { "Saksbehandler henter rettighetsperioder" }
                 val periode: Periodisering<RettighetDetaljer>? =
                     rettighetDetaljerService.hentRettighetDetaljerPerioder(
                         ident = req.ident,
                         fom = req.fom ?: LocalDate.of(1900, 1, 1),
                         tom = req.tom ?: LocalDate.of(2999, 12, 31),
                     )
+                logger.info { "Saksbehandler har hentet rettighetsperioder" }
                 call.respond(periode.toArenaTiltakspengerRettighetPeriode())
             } catch (e: Exception) {
                 sikkerlogg.warn(e) { "Feilet å hente tiltakspenger ${e.message}" }
