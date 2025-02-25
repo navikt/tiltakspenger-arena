@@ -10,7 +10,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.isSuccess
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
-import no.nav.tiltakspenger.arena.auth.texas.log
 import no.nav.tiltakspenger.arena.httpClientXml
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.OtherException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.PersonNotFoundException
