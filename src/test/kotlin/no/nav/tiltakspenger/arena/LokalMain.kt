@@ -1,6 +1,5 @@
 package no.nav.tiltakspenger.arena
 
-import io.ktor.server.config.ApplicationConfig
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.db.flywayMigrate
 import org.slf4j.bridge.SLF4JBridgeHandler
@@ -18,8 +17,7 @@ fun main() {
         securelog.error(e) { e.message }
     }
 
-    val config = ApplicationConfig("applicationTest.conf")
     // TODO jah: Må legge til oracle-db i docker-compose.yml. Gjetter på man kan fjerne zookeeper+kafka, men må synkronisere mock-oauth2-server med docker-compose.yml i tiltakspenger root.
     flywayMigrate()
-    start(config)
+    start()
 }

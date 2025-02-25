@@ -6,13 +6,9 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
-import io.ktor.server.auth.Authentication
-import io.ktor.server.auth.authenticate
-import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
-import no.nav.security.token.support.v3.RequiredClaims
-import no.nav.security.token.support.v3.tokenValidationSupport
+import no.nav.tiltakspenger.arena.auth.texas.client.TexasClient
 import no.nav.tiltakspenger.arena.routes.healthRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
@@ -25,26 +21,8 @@ fun Application.tiltakApi(
     arenaOrdsClient: ArenaOrdsClient,
     vedtakDetaljerService: VedtakDetaljerService,
     rettighetDetaljerService: RettighetDetaljerService,
-    config: ApplicationConfig,
+    texasClient: TexasClient,
 ) {
-    val issuerTokenX = "tokendings"
-    val issuerAzure = "azure"
-    install(Authentication) {
-        val requiredClaimsMap = arrayOf("acr=Level4")
-        tokenValidationSupport(
-            name = issuerTokenX,
-            config = config,
-            requiredClaims = RequiredClaims(
-                issuer = issuerTokenX,
-                claimMap = requiredClaimsMap,
-                combineWithOr = false,
-            ),
-        )
-        tokenValidationSupport(
-            name = issuerAzure,
-            config = config,
-        )
-    }
     install(ContentNegotiation) {
         jackson {
             configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
@@ -53,13 +31,20 @@ fun Application.tiltakApi(
         }
     }
     routing {
-        authenticate(issuerTokenX) {
-            tiltakRoutes(arenaOrdsClient = arenaOrdsClient)
-        }
-        authenticate(issuerAzure) {
-            tiltakAzureRoutes(arenaOrdsClient = arenaOrdsClient)
-            tiltakspengerRoutes(vedtakDetaljerService, rettighetDetaljerService)
-        }
+        tiltakRoutes(
+            texasClient = texasClient,
+            arenaOrdsClient = arenaOrdsClient,
+        )
+        tiltakAzureRoutes(
+            texasClient = texasClient,
+            arenaOrdsClient = arenaOrdsClient,
+        )
+        tiltakspengerRoutes(
+            texasClient = texasClient,
+            vedtakDetaljerService = vedtakDetaljerService,
+            rettighetDetaljerService = rettighetDetaljerService,
+
+        )
         healthRoutes()
     }
 }

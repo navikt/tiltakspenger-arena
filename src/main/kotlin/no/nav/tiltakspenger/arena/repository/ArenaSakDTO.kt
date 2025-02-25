@@ -1,13 +1,11 @@
 package no.nav.tiltakspenger.arena.repository
 
-import com.google.common.base.CharMatcher.any
 import mu.KotlinLogging
 import no.nav.tiltakspenger.libs.periodisering.Periode
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 private val LOG = KotlinLogging.logger {}
-private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
 data class ArenaSakDTO(
     val sakId: Long,

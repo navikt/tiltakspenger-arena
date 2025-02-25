@@ -4,6 +4,7 @@ import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
 import mu.KotlinLogging
+import no.nav.tiltakspenger.libs.logging.sikkerlogg
 import org.intellij.lang.annotations.Language
 
 class SakDAO(
@@ -12,7 +13,6 @@ class SakDAO(
 ) {
     companion object {
         private val LOG = KotlinLogging.logger {}
-        private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
         private fun String.toStatus(): ArenaSakStatus =
             ArenaSakStatus.valueOf(this)
@@ -41,8 +41,8 @@ class SakDAO(
         val barnetilleggVedtak = barnetilleggVedtakDAO.findBarnetilleggBySakId(sakId, txSession)
         LOG.info { "Antall tiltakspengerVedtak er ${tiltakspengerVedtak.size} for sak med id $sakId" }
         LOG.info { "Antall barnetilleggVedtak er ${barnetilleggVedtak.size} for sak med id $sakId" }
-        SECURELOG.info { "Antall tiltakspengerVedtak er ${tiltakspengerVedtak.size} for sak med id $sakId" }
-        SECURELOG.info { "Antall barnetilleggVedtak er ${barnetilleggVedtak.size} for sak med id $sakId" }
+        sikkerlogg.info { "Antall tiltakspengerVedtak er ${tiltakspengerVedtak.size} for sak med id $sakId" }
+        sikkerlogg.info { "Antall barnetilleggVedtak er ${barnetilleggVedtak.size} for sak med id $sakId" }
 
         return ArenaSakDTO(
             sakId = sakId,

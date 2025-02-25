@@ -4,73 +4,54 @@ import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.basicAuth
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
-import io.ktor.serialization.jackson.jackson
-import kotlinx.coroutines.runBlocking
+import io.ktor.http.isSuccess
 import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.Configuration
+import no.nav.tiltakspenger.arena.httpClientApache
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
-private val LOG = KotlinLogging.logger {}
-private val SECURELOG = KotlinLogging.logger("tjenestekall")
+private val logger = KotlinLogging.logger {}
 
-private object TokenProviderSecurelogWrapper : Logger {
-    override fun log(message: String) {
-        LOG.info("HttpClient detaljer logget til securelog")
-        SECURELOG.info(message)
-    }
-}
-
-class ArenaOrdsTokenProviderClient(private val arenaOrdsConfig: Configuration.ArenaOrdsConfig) {
+class ArenaOrdsTokenProviderClient(
+    private val arenaOrdsConfig: Configuration.ArenaOrdsConfig,
+    private val httpClient: HttpClient = httpClientApache(),
+) {
     companion object {
         private const val MINIMUM_TIME_TO_EXPIRE_BEFORE_REFRESH: Long = 60
     }
 
     private var tokenCache: TokenCache? = null
 
-    private val client = HttpClient(CIO) {
-        install(ContentNegotiation) {
-            jackson()
-        }
-        install(Logging) {
-            logger = TokenProviderSecurelogWrapper
-            level = LogLevel.NONE
-        }
-        this.expectSuccess = true
-    }
-
-    fun token(): String {
+    suspend fun token(): String {
         if (tokenIsSoonExpired()) {
             return refreshToken().accessToken
         }
         return tokenCache!!.ordsToken.accessToken
     }
 
-    private fun refreshToken(): OrdsToken {
-        val response: OrdsToken =
-            runBlocking {
-                client.submitForm(
-                    url = arenaOrdsConfig.arenaOrdsUrl + "/arena/api/oauth/token",
-                    formParameters = Parameters.build {
-                        append("grant_type", "client_credentials")
-                    },
-                ) {
-                    basicAuth(arenaOrdsConfig.arenaOrdsClientId, arenaOrdsConfig.arenaOrdsClientSecret)
-                    header(HttpHeaders.CacheControl, "no-cache")
-                }.body()
-            }
-        tokenCache = TokenCache(response)
-        return response
+    private suspend fun refreshToken(): OrdsToken {
+        val response = httpClient.submitForm(
+            url = arenaOrdsConfig.arenaOrdsUrl + "/arena/api/oauth/token",
+            formParameters = Parameters.build {
+                append("grant_type", "client_credentials")
+            },
+        ) {
+            basicAuth(arenaOrdsConfig.arenaOrdsClientId, arenaOrdsConfig.arenaOrdsClientSecret)
+            header(HttpHeaders.CacheControl, "no-cache")
+        }
+        if (!response.status.isSuccess()) {
+            logger.error { "Kunne ikke hente token fra Arena-ords, responskode: ${response.status.value}" }
+            throw RuntimeException("Kunne ikke hente token fra Arena-ords")
+        }
+        val ordsToken = response.body<OrdsToken>()
+        tokenCache = TokenCache(ordsToken)
+        return ordsToken
     }
 
     private fun tokenIsSoonExpired(): Boolean {

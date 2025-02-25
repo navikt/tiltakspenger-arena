@@ -12,7 +12,6 @@ class TiltakspengerVedtakDAO(
 
     companion object {
         private val LOG = KotlinLogging.logger {}
-        private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
         private fun String.toVedtakType(): ArenaVedtakType =
             ArenaVedtakType.valueOf(this)

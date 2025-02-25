@@ -5,6 +5,8 @@ metadata:
   namespace: tpts
   labels:
     team: tpts
+  annotations:
+    texas.nais.io/enabled: "true"
 spec:
   image: {{ image }}
   port: 8080

@@ -4,7 +4,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.engine.mock.respondError
-import io.ktor.client.plugins.ClientRequestException
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
@@ -13,6 +12,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.tiltakspenger.arena.Configuration.ArenaOrdsConfig
+import no.nav.tiltakspenger.arena.setupXmlClient
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaAktiviteterDTO.Tiltaksaktivitet.DeltakerStatusType
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaAktiviteterDTO.Tiltaksaktivitet.Tiltaksnavn
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.OtherException
@@ -40,7 +40,7 @@ internal class ArenaOrdsClientImplTest {
                 headers = headersOf(HttpHeaders.ContentType, ContentType.Text.Xml.toString()),
             )
         }
-        return HttpClient(mockEngine) { setupHttpClient() }
+        return HttpClient(mockEngine) { setupXmlClient() }
     }
 
     private fun mockClientError(statusCode: HttpStatusCode): HttpClient {
@@ -53,7 +53,7 @@ internal class ArenaOrdsClientImplTest {
                 ),
             )
         }
-        return HttpClient(mockEngine) { setupHttpClient() }
+        return HttpClient(mockEngine) { setupXmlClient() }
     }
 
     @Test
@@ -154,7 +154,7 @@ internal class ArenaOrdsClientImplTest {
             mockClientError(HttpStatusCode.NotFound),
         )
 
-        assertThrows(ClientRequestException::class.java) {
+        assertThrows(RuntimeException::class.java) {
             runBlocking {
                 arenaOrdsService.hentArenaAktiviteter("01019012345")
             }
