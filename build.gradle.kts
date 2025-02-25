@@ -8,7 +8,6 @@ val ktorVersion = "3.1.0"
 val jacksonVersion = "2.18.2"
 val mockkVersion = "1.13.16"
 val kotlinxCoroutinesVersion = "1.10.1"
-val tokenSupportVersion = "5.0.17"
 val testContainersVersion = "1.20.5"
 val felleslibVersion = "0.0.368"
 val kotestVersion = "5.9.1"
@@ -20,7 +19,6 @@ plugins {
     id("java")
     kotlin("jvm") version "2.1.10"
     id("com.diffplug.spotless") version "7.0.2"
-    id("com.github.bjornvester.wsdl2java") version "2.0.2"
 }
 
 repositories {
@@ -36,10 +34,11 @@ repositories {
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
-    implementation("com.google.guava:guava:33.4.0-jre")
     implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:arenaytelser-dtos:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:periodisering:$felleslibVersion")
+    implementation("com.github.navikt.tiltakspenger-libs:logging:$felleslibVersion")
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains:annotations:26.0.2")
@@ -47,30 +46,24 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
     implementation("ch.qos.logback:logback-classic:1.5.16")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
+
     implementation("io.ktor:ktor-server:$ktorVersion")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
     implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-client-cio-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-client-apache:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation-jvm:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jvm:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
-    implementation("io.ktor:ktor-utils-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-http-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-io-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-    implementation("no.nav.security:token-validation-ktor-v3:$tokenSupportVersion")
-    implementation("no.nav.security:token-client-core:$tokenSupportVersion")
-    implementation("io.github.threeten-jaxb:threeten-jaxb-core:2.2.0")
-    implementation("no.nav.common:cxf:3.2025.01.14_14.19-79b3041cae56")
 
     implementation("com.zaxxer:HikariCP:6.2.1")
     implementation("com.oracle.database.jdbc:ojdbc11:23.7.0.25.01")
@@ -86,12 +79,8 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
-    testImplementation("org.skyscreamer:jsonassert:1.5.3")
-    testImplementation("org.junit-pioneer:junit-pioneer:2.3.0")
     testImplementation("io.ktor:ktor-client-mock-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
-    testImplementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
-    testImplementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
     testImplementation("org.xmlunit:xmlunit-matchers:2.10.0")
     testImplementation("org.hamcrest:hamcrest-core:3.0")
     testImplementation("org.flywaydb:flyway-database-oracle:11.3.3")

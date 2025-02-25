@@ -1,7 +1,9 @@
 package no.nav.tiltakspenger.arena
 
-import io.ktor.server.config.ApplicationConfig
+import io.ktor.server.application.Application
+import io.ktor.util.AttributeKey
 import mu.KotlinLogging
+import no.nav.tiltakspenger.libs.logging.sikkerlogg
 import org.slf4j.bridge.SLF4JBridgeHandler
 
 /**
@@ -14,13 +16,15 @@ fun main() {
     SLF4JBridgeHandler.install()
 
     val log = KotlinLogging.logger {}
-    val securelog = KotlinLogging.logger("tjenestekall")
     log.info { "starting server" }
     Thread.setDefaultUncaughtExceptionHandler { _, e ->
         log.error { "Uncaught exception logget i securelog" }
-        securelog.error(e) { e.message }
+        sikkerlogg.error(e) { e.message }
     }
 
-    val config = ApplicationConfig("application.conf")
-    start(config)
+    start()
 }
+
+val isReadyKey = AttributeKey<Boolean>("isReady")
+
+fun Application.isReady() = attributes.getOrNull(isReadyKey) == true

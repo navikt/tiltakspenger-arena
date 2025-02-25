@@ -3,15 +3,9 @@ package no.nav.tiltakspenger.arena.repository
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
-import mu.KotlinLogging
 import org.intellij.lang.annotations.Language
 
 class VedtakfaktaDAO {
-    companion object {
-        private val log = KotlinLogging.logger {}
-        private val securelog = KotlinLogging.logger("tjenestekall")
-    }
-
     fun findTiltakspengerVedtakfaktaByVedtakId(
         vedtakId: Long,
         txSession: TransactionalSession,

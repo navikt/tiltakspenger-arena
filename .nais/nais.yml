@@ -5,6 +5,8 @@ metadata:
   namespace: tpts
   labels:
     team: tpts
+  annotations:
+    texas.nais.io/enabled: "true"
 spec:
   image: {{ image }}
   port: 8080
@@ -58,3 +60,7 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: java
+    logging:
+      destinations:
+        - id: elastic
+        - id: loki

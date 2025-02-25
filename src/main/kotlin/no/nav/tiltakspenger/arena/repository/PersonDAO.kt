@@ -3,16 +3,9 @@ package no.nav.tiltakspenger.arena.repository
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
-import mu.KotlinLogging
 import org.intellij.lang.annotations.Language
 
 class PersonDAO {
-
-    companion object {
-        private val LOG = KotlinLogging.logger {}
-        private val SECURELOG = KotlinLogging.logger("tjenestekall")
-    }
-
     fun findByFnr(
         fnr: String,
         txSession: TransactionalSession,

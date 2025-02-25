@@ -10,20 +10,6 @@
         <appender-ref ref="STDOUT"/>
     </logger>
 
-    <logger name="no.nav.common.cxf.CXFMaskSAMLTokenLoggingOutInterceptor.Ytelseskontrakt_v3.Ytelseskontrakt_v3Port.Ytelseskontrakt_v3"
-            level="WARN" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-
-    <logger name="org.apache.cxf.services.SecurityTokenServiceProvider.SecurityTokenServiceSOAP.SecurityTokenServiceIssuer"
-            level="DEBUG" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-
-    <logger name="org.apache.cxf.services.Ytelseskontrakt_v3.REQ_OUT" level="DEBUG" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>

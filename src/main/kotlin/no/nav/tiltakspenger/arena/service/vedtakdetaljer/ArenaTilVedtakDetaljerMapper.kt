@@ -4,11 +4,11 @@ import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.repository.ArenaBarnetilleggVedtakDTO
 import no.nav.tiltakspenger.arena.repository.ArenaSakMedMinstEttVedtakDTO
 import no.nav.tiltakspenger.arena.repository.ArenaTiltakspengerVedtakDTO
+import no.nav.tiltakspenger.libs.logging.sikkerlogg
 import no.nav.tiltakspenger.libs.periodisering.Periode
 import no.nav.tiltakspenger.libs.periodisering.Periodisering
 
 private val LOG = KotlinLogging.logger {}
-private val SECURELOG = KotlinLogging.logger("tjenestekall")
 
 // TODO post-mvp jah: Dette føles ikke riktig. Hvorfor kan vi ikke behandle den som null istedet?
 private const val DEFAULT_TILTAK_GJENNOMFØRINGS_ID: String = ""
@@ -19,7 +19,7 @@ private const val DEFAULT_ANTALL_DAGER: Double = 0.0
 object ArenaTilVedtakDetaljerMapper {
     fun mapTiltakspengerFraArenaTilVedtaksperioder(saker: List<ArenaSakMedMinstEttVedtakDTO>): Periodisering<VedtakDetaljer>? {
         if (saker.isEmpty()) {
-            SECURELOG.info { "Returnerer null pga ingen saker" }
+            sikkerlogg.info { "Returnerer null pga ingen saker" }
             return null
         }
         val totalePeriodeFra = saker.minOf { it.sakPeriode().fraOgMed }
@@ -33,8 +33,8 @@ object ArenaTilVedtakDetaljerMapper {
         val periodeMedBarnetillegg =
             fyllBarnetilleggPeriodenMedReelleVerdier(saker, periodeMedBarnetilleggInit, totalePeriode)
 
-        SECURELOG.info { "Periode med tiltakspenger: $periodeMedTiltakspenger" }
-        SECURELOG.info { "Periode med barnetillegg: $periodeMedBarnetillegg" }
+        sikkerlogg.info { "Periode med tiltakspenger: $periodeMedTiltakspenger" }
+        sikkerlogg.info { "Periode med barnetillegg: $periodeMedBarnetillegg" }
 
         return kombinerTiltakspengerMedBarnetillegg(periodeMedTiltakspenger, periodeMedBarnetillegg)
     }
@@ -130,10 +130,10 @@ object ArenaTilVedtakDetaljerMapper {
     ) =
         periodeMedTiltakspenger.kombiner(periodeMedBarnetillegg) { vt, vb ->
             if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG && vt.antallDager != vb.antallDager) {
-                SECURELOG.info { "Vedtaket om tiltakspenger (${vt.antallDager}) og vedtaket om barnetillegg (${vb.antallDager}) har ikke samme antall dager" }
+                sikkerlogg.info { "Vedtaket om tiltakspenger (${vt.antallDager}) og vedtaket om barnetillegg (${vb.antallDager}) har ikke samme antall dager" }
             }
             if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG && vt.tiltakGjennomføringsId != vb.relaterteTiltak) {
-                SECURELOG.info { "Vedtaket om tiltakspenger (${vt.tiltakGjennomføringsId}) og vedtaket om barnetillegg (${vb.relaterteTiltak}) har ikke samme relaterte tiltak" }
+                sikkerlogg.info { "Vedtaket om tiltakspenger (${vt.tiltakGjennomføringsId}) og vedtaket om barnetillegg (${vb.relaterteTiltak}) har ikke samme relaterte tiltak" }
             }
             VedtakDetaljer(
                 antallDager = vt.antallDager,
@@ -153,7 +153,7 @@ object ArenaTilVedtakDetaljerMapper {
         } else if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.INGENTING) {
             Rettighet.TILTAKSPENGER
         } else if (vt.rettighet == Rettighet.INGENTING && vb.rettighet == Rettighet.BARNETILLEGG) {
-            SECURELOG.info { "Her har vi en periode med barnetillegg men ikke tiltakspenger - det skal ikke egentlig kunne skje!" }
+            sikkerlogg.info { "Her har vi en periode med barnetillegg men ikke tiltakspenger - det skal ikke egentlig kunne skje!" }
             Rettighet.BARNETILLEGG
         } else {
             Rettighet.INGENTING

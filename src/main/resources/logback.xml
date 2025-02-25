@@ -28,21 +28,6 @@
         <appender-ref ref="secureLog"/>
     </logger>
 
-    <logger name="no.nav.common.cxf.CXFMaskSAMLTokenLoggingOutInterceptor.Ytelseskontrakt_v3.Ytelseskontrakt_v3Port.Ytelseskontrakt_v3"
-            level="WARN" additivity="false">
-        <appender-ref ref="secureLog"/>
-    </logger>
-
-    <logger name="org.apache.cxf.services.SecurityTokenServiceProvider.SecurityTokenServiceSOAP.SecurityTokenServiceIssuer"
-            level="DEBUG" additivity="false">
-        <appender-ref ref="secureLog"/>
-    </logger>
-
-    <!-- Denne fungerer, den ender opp i securelogs: -->
-    <logger name="org.apache.cxf.services.Ytelseskontrakt_v3.REQ_OUT" level="DEBUG" additivity="false">
-        <appender-ref ref="secureLog"/>
-    </logger>
-
     <root level="INFO">
         <appender-ref ref="STDOUT_JSON"/>
     </root>

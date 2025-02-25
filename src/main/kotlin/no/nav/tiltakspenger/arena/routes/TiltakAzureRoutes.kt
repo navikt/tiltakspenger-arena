@@ -1,46 +1,57 @@
 package no.nav.tiltakspenger.arena.routes
 
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import io.ktor.server.routing.route
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.slf4j.MDCContext
 import mu.KotlinLogging
+import no.nav.tiltakspenger.arena.auth.texas.TexasAuthEntraId
+import no.nav.tiltakspenger.arena.auth.texas.client.TexasClient
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.mapArenaTiltak
 import no.nav.tiltakspenger.libs.arena.tiltak.ArenaTiltaksaktivitetResponsDTO
-
-private val SECURELOG = KotlinLogging.logger("tjenestekall")
+import no.nav.tiltakspenger.libs.logging.sikkerlogg
 
 data class RequestBody(
     val ident: String,
 )
 
-fun Route.tiltakAzureRoutes(arenaOrdsClient: ArenaOrdsClient) {
-    post("/tiltakAzure") {
-        try {
-            runBlocking(MDCContext()) {
-                val ident = call.receive<RequestBody>().ident //  .fødselsnummer() ?: throw IllegalStateException("Mangler fødselsnummer")
-                val arenaTiltak = mapArenaTiltak(arenaOrdsClient.hentArenaAktiviteter(ident).response.tiltaksaktivitetListe)
-                call.respond(arenaTiltak)
+private val logger = KotlinLogging.logger {}
+
+fun Route.tiltakAzureRoutes(
+    texasClient: TexasClient,
+    arenaOrdsClient: ArenaOrdsClient,
+) {
+    route("/tiltakAzure") {
+        install(TexasAuthEntraId) { client = texasClient }
+        post {
+            try {
+                runBlocking(MDCContext()) {
+                    val ident =
+                        call.receive<RequestBody>().ident
+                    val arenaTiltak =
+                        mapArenaTiltak(arenaOrdsClient.hentArenaAktiviteter(ident).response.tiltaksaktivitetListe)
+                    call.respond(arenaTiltak)
+                }
+            } catch (e: ArenaOrdsException.PersonNotFoundException) {
+                logger.warn { "Person ikke funnet i Arena Tiltak" }
+                sikkerlogg.warn { "Person ikke funnet i Arena Tiltak ${e.message}" }
+                call.respond(
+                    ArenaTiltaksaktivitetResponsDTO(
+                        tiltaksaktiviteter = emptyList(),
+                        feil = null,
+                    ),
+                )
+            } catch (e: IllegalStateException) {
+                logger.warn { "Mangler fødselsnummer" }
+                call.respondText(text = "Bad Request", status = HttpStatusCode.BadRequest)
             }
-        } catch (e: ArenaOrdsException.PersonNotFoundException) {
-            SECURELOG.warn { "Person ikke funnet i Arena Tiltak ${e.message}" }
-            call.respond(
-                ArenaTiltaksaktivitetResponsDTO(
-                    tiltaksaktiviteter = emptyList(),
-                    feil = null,
-                ),
-            )
-        } catch (e: IllegalStateException) {
-            SECURELOG.warn { "Mangler fødselsnummer" }
-            call.respondText(text = "Bad Request", status = HttpStatusCode.BadRequest)
         }
     }
 }
