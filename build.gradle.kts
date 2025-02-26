@@ -70,7 +70,7 @@ dependencies {
     implementation("com.github.seratch:kotliquery:1.9.1")
 
     implementation("org.slf4j:jul-to-slf4j:2.0.17")
-    implementation("org.slf4j:log4j-over-slf4j:2.0.16")
+    implementation("org.slf4j:log4j-over-slf4j:2.0.17")
     implementation("org.slf4j:jcl-over-slf4j:2.0.17")
 
     testImplementation(platform("org.junit:junit-bom:5.12.0"))
