@@ -2,6 +2,7 @@ package no.nav.tiltakspenger.arena.tiltakogaktivitet
 
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaAktiviteterDTO.Tiltaksaktivitet.DeltakerStatusType
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaAktiviteterDTO.Tiltaksaktivitet.Tiltaksnavn
+import no.nav.tiltakspenger.libs.arena.tiltak.ArenaDeltakerStatusType
 import no.nav.tiltakspenger.libs.arena.tiltak.ArenaTiltaksaktivitetResponsDTO
 
 fun mapArenaTiltak(aktiviteter: List<ArenaAktiviteterDTO.Tiltaksaktivitet>): ArenaTiltaksaktivitetResponsDTO {
@@ -27,23 +28,23 @@ fun mapTiltaksaktivitet(tiltaksaktivitet: ArenaAktiviteterDTO.Tiltaksaktivitet):
     )
 }
 
-fun mapDeltakerStatus(deltakerStatus: ArenaAktiviteterDTO.Tiltaksaktivitet.DeltakerStatus): ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType =
+fun mapDeltakerStatus(deltakerStatus: ArenaAktiviteterDTO.Tiltaksaktivitet.DeltakerStatus): ArenaDeltakerStatusType =
     when (deltakerStatus.status) {
-        DeltakerStatusType.AKTUELL -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.AKTUELL
-        DeltakerStatusType.AVSLAG -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.AVSLAG
-        DeltakerStatusType.DELAVB -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.DELAVB
-        DeltakerStatusType.FULLF -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.FULLF
-        DeltakerStatusType.GJENN -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.GJENN
-        DeltakerStatusType.GJENN_AVB -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.GJENN_AVB
-        DeltakerStatusType.GJENN_AVL -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.GJENN_AVL
-        DeltakerStatusType.IKKAKTUELL -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.IKKAKTUELL
-        DeltakerStatusType.IKKEM -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.IKKEM
-        DeltakerStatusType.INFOMOETE -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.INFOMOETE
-        DeltakerStatusType.JATAKK -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.JATAKK
-        DeltakerStatusType.NEITAKK -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.NEITAKK
-        DeltakerStatusType.TILBUD -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.TILBUD
-        DeltakerStatusType.VENTELISTE -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.VENTELISTE
-        DeltakerStatusType.FEILREG -> ArenaTiltaksaktivitetResponsDTO.DeltakerStatusType.FEILREG
+        DeltakerStatusType.AKTUELL -> ArenaDeltakerStatusType.AKTUELL
+        DeltakerStatusType.AVSLAG -> ArenaDeltakerStatusType.AVSLAG
+        DeltakerStatusType.DELAVB -> ArenaDeltakerStatusType.DELAVB
+        DeltakerStatusType.FULLF -> ArenaDeltakerStatusType.FULLF
+        DeltakerStatusType.GJENN -> ArenaDeltakerStatusType.GJENN
+        DeltakerStatusType.GJENN_AVB -> ArenaDeltakerStatusType.GJENN_AVB
+        DeltakerStatusType.GJENN_AVL -> ArenaDeltakerStatusType.GJENN_AVL
+        DeltakerStatusType.IKKAKTUELL -> ArenaDeltakerStatusType.IKKAKTUELL
+        DeltakerStatusType.IKKEM -> ArenaDeltakerStatusType.IKKEM
+        DeltakerStatusType.INFOMOETE -> ArenaDeltakerStatusType.INFOMOETE
+        DeltakerStatusType.JATAKK -> ArenaDeltakerStatusType.JATAKK
+        DeltakerStatusType.NEITAKK -> ArenaDeltakerStatusType.NEITAKK
+        DeltakerStatusType.TILBUD -> ArenaDeltakerStatusType.TILBUD
+        DeltakerStatusType.VENTELISTE -> ArenaDeltakerStatusType.VENTELISTE
+        DeltakerStatusType.FEILREG -> ArenaDeltakerStatusType.FEILREG
     }
 
 fun mapTiltakType(tiltaksnavn: Tiltaksnavn): ArenaTiltaksaktivitetResponsDTO.TiltakType =
