@@ -8,7 +8,7 @@ val ktorVersion = "3.1.1"
 val jacksonVersion = "2.18.3"
 val mockkVersion = "1.13.17"
 val kotlinxCoroutinesVersion = "1.10.1"
-val testContainersVersion = "1.20.5"
+val testContainersVersion = "1.20.6"
 val felleslibVersion = "0.0.387"
 val kotestVersion = "5.9.1"
 
