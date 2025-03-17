@@ -73,7 +73,7 @@ dependencies {
     implementation("org.slf4j:log4j-over-slf4j:2.0.17")
     implementation("org.slf4j:jcl-over-slf4j:2.0.17")
 
-    testImplementation(platform("org.junit:junit-bom:5.12.0"))
+    testImplementation(platform("org.junit:junit-bom:5.12.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
