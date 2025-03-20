@@ -1,6 +1,6 @@
 package no.nav.tiltakspenger.arena.service.vedtakdetaljer
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import no.nav.tiltakspenger.arena.repository.ArenaBarnetilleggVedtakDTO
 import no.nav.tiltakspenger.arena.repository.ArenaSakMedMinstEttVedtakDTO
 import no.nav.tiltakspenger.arena.repository.ArenaTiltakspengerVedtakDTO

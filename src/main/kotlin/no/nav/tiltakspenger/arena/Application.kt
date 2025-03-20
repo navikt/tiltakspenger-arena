@@ -1,8 +1,8 @@
 package no.nav.tiltakspenger.arena
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.application.Application
 import io.ktor.util.AttributeKey
-import mu.KotlinLogging
 import no.nav.tiltakspenger.libs.logging.sikkerlogg
 import org.slf4j.bridge.SLF4JBridgeHandler
 

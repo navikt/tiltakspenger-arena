@@ -1,6 +1,6 @@
 package no.nav.tiltakspenger.arena
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import no.nav.tiltakspenger.arena.db.flywayMigrate
 import org.slf4j.bridge.SLF4JBridgeHandler
 

@@ -1,6 +1,6 @@
 package no.nav.tiltakspenger.arena.repository
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

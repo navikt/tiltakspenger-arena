@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
@@ -17,7 +18,6 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.ContentType
 import io.ktor.serialization.jackson.jackson
-import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.felles.JacksonXmlConverter
 import no.nav.tiltakspenger.libs.logging.sikkerlogg
 import java.time.Duration
@@ -64,8 +64,8 @@ private fun HttpClient.config(timeout: Long) =
             logger =
                 object : Logger {
                     override fun log(message: String) {
-                        LOG.info("HttpClient detaljer logget til securelog")
-                        sikkerlogg.info(message)
+                        LOG.info { "HttpClient detaljer logget til securelog" }
+                        sikkerlogg.info { message }
                     }
                 }
             level = LogLevel.INFO
@@ -80,8 +80,8 @@ fun HttpClientConfig<*>.setupXmlClient() {
     install(Logging) {
         logger = object : Logger {
             override fun log(message: String) {
-                LOG.info("XmlHttpClient detaljer logget til securelog")
-                sikkerlogg.info(message)
+                LOG.info { "XmlHttpClient detaljer logget til securelog" }
+                sikkerlogg.info { message }
             }
         }
     }

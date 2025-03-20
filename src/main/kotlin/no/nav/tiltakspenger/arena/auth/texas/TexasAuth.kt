@@ -1,5 +1,6 @@
 package no.nav.tiltakspenger.arena.auth.texas
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.PipelineCall
@@ -7,7 +8,6 @@ import io.ktor.server.application.createRouteScopedPlugin
 import io.ktor.server.request.authorization
 import io.ktor.server.response.respond
 import io.ktor.util.AttributeKey
-import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.auth.texas.client.TexasClient
 import no.nav.tiltakspenger.arena.auth.texas.client.TexasIntrospectionResponse
 
