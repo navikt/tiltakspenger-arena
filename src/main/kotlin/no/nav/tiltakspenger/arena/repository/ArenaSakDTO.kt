@@ -1,6 +1,6 @@
 package no.nav.tiltakspenger.arena.repository
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import no.nav.tiltakspenger.libs.periodisering.Periode
 import java.time.LocalDate
 import java.time.LocalDateTime

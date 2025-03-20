@@ -1,12 +1,12 @@
 package no.nav.tiltakspenger.arena.routes
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.slf4j.MDCContext
-import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.auth.texas.TexasAuthTokenX
 import no.nav.tiltakspenger.arena.auth.texas.client.TexasClient
 import no.nav.tiltakspenger.arena.auth.texas.fnr

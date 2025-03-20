@@ -1,7 +1,7 @@
 package no.nav.tiltakspenger.arena.repository
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.sessionOf
-import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.db.Datasource
 import no.nav.tiltakspenger.libs.logging.sikkerlogg
 import java.time.LocalDate

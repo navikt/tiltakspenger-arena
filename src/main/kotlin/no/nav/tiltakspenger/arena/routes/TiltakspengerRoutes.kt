@@ -1,5 +1,6 @@
 package no.nav.tiltakspenger.arena.routes
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -7,7 +8,6 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
-import mu.KotlinLogging
 import no.nav.tiltakspenger.arena.auth.texas.TexasAuthEntraId
 import no.nav.tiltakspenger.arena.auth.texas.client.TexasClient
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerRettighetPeriodeMapper.toArenaTiltakspengerRettighetPeriode

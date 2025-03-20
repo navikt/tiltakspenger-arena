@@ -1,9 +1,9 @@
 package no.nav.tiltakspenger.arena.repository
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
-import mu.KotlinLogging
 import org.intellij.lang.annotations.Language
 
 class BarnetilleggVedtakDAO(
