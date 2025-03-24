@@ -1,4 +1,11 @@
-FROM ghcr.io/navikt/baseimages/temurin:21
+FROM gcr.io/distroless/java21-debian12
 
-COPY .nais/init.sh /init-scripts/init.sh
+ENV TZ='Europe/Oslo'
+ENV LC_ALL='nb_NO.UTF-8'
+ENV LANG='nb_NO.UTF-8'
+
+WORKDIR /app
+
 COPY build/install/tiltakspenger-arena/lib/*.jar .
+
+CMD ["tiltakspenger-arena.jar"]

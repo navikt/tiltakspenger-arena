@@ -7,37 +7,42 @@ import com.natpryce.konfig.Key
 import com.natpryce.konfig.intType
 import com.natpryce.konfig.overriding
 import com.natpryce.konfig.stringType
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 object Configuration {
 
     private val defaultProperties = ConfigurationMap(
         mapOf(
             "application.httpPort" to 8080.toString(),
-            "SERVICEUSER_TPTS_USERNAME" to System.getenv("SERVICEUSER_TPTS_USERNAME"),
-            "SERVICEUSER_TPTS_PASSWORD" to System.getenv("SERVICEUSER_TPTS_PASSWORD"),
             "ARENA_ORDS_CLIENT_ID" to System.getenv("ARENA_ORDS_CLIENT_ID"),
             "ARENA_ORDS_CLIENT_SECRET" to System.getenv("ARENA_ORDS_CLIENT_SECRET"),
             "NAIS_TOKEN_INTROSPECTION_ENDPOINT" to System.getenv("NAIS_TOKEN_INTROSPECTION_ENDPOINT"),
+            "ARENADB_URL" to fromFile("/secrets/dbconfig/jdbc_url"),
+            "ARENADB_USERNAME" to fromFile("/secrets/dbcreds/username"),
+            "ARENADB_PASSWORD" to fromFile("/secrets/dbcreds/password"),
         ),
     )
     private val localProperties = ConfigurationMap(
         mapOf(
-            "stsUrl" to "",
             "application.profile" to Profile.LOCAL.toString(),
             "ARENA_ORDS_URL" to "",
             "NAIS_TOKEN_INTROSPECTION_ENDPOINT" to "",
+            "ARENADB_URL" to System.getProperty("ARENADB_URL"),
+            "ARENADB_USERNAME" to System.getProperty("ARENADB_USERNAME"),
+            "ARENADB_PASSWORD" to System.getProperty("ARENADB_PASSWORD"),
         ),
     )
     private val devProperties = ConfigurationMap(
         mapOf(
-            "stsUrl" to "https://sts-q1.preprod.local/SecurityTokenServiceProvider/",
             "application.profile" to Profile.DEV.toString(),
             "ARENA_ORDS_URL" to "https://arena-ords-q2.nais.preprod.local",
         ),
     )
     private val prodProperties = ConfigurationMap(
         mapOf(
-            "stsUrl" to "https://sts.adeo.no/SecurityTokenServiceProvider/",
             "application.profile" to Profile.PROD.toString(),
             "ARENA_ORDS_URL" to "https://arena-ords.nais.adeo.no",
         ),
@@ -61,6 +66,12 @@ object Configuration {
         val arenaOrdsClientSecret: String = config()[Key("ARENA_ORDS_CLIENT_SECRET", stringType)],
     )
 
+    data class ArenaDbConfig(
+        val arenaDbUrl: String = config()[Key("ARENADB_URL", stringType)],
+        val arenaDbUsername: String = config()[Key("ARENADB_USERNAME", stringType)],
+        val arenaDbPassword: String = config()[Key("ARENADB_PASSWORD", stringType)],
+    )
+
     val naisTokenIntrospectionEndpoint: String = config()[Key("NAIS_TOKEN_INTROSPECTION_ENDPOINT", stringType)]
 
     fun applicationProfile() = when (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")) {
@@ -70,6 +81,16 @@ object Configuration {
     }
 
     fun httpPort() = config()[Key("application.httpPort", intType)]
+
+    private fun fromFile(filename: String): String {
+        try {
+            val file: Path = Paths.get(filename)
+            val lines = Files.readAllLines(file)
+            return lines.first()
+        } catch (exception: IOException) {
+            throw RuntimeException("Failed to read property value from $filename", exception)
+        }
+    }
 }
 
 enum class Profile {

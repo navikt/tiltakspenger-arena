@@ -7,6 +7,10 @@ import org.flywaydb.core.Flyway
 
 private val LOG = KotlinLogging.logger {}
 
+const val DB_URL = "ARENADB_URL"
+const val DB_USERNAME_KEY = "ARENADB_USERNAME"
+const val DB_PASSWORD_KEY = "ARENADB_PASSWORD"
+
 private fun localFlyway() = Flyway
     .configure()
     .loggers("slf4j")

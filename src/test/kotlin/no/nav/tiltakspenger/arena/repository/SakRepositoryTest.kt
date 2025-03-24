@@ -2,7 +2,9 @@ package no.nav.tiltakspenger.arena.repository
 
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import no.nav.tiltakspenger.arena.db.Datasource
+import no.nav.tiltakspenger.arena.db.DB_PASSWORD_KEY
+import no.nav.tiltakspenger.arena.db.DB_URL
+import no.nav.tiltakspenger.arena.db.DB_USERNAME_KEY
 import no.nav.tiltakspenger.arena.db.flywayMigrate
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -31,9 +33,9 @@ class SakRepositoryTest {
             container.start()
             container.let {
                 println(it.jdbcUrl)
-                System.setProperty(Datasource.DB_URL, it.jdbcUrl)
-                System.setProperty(Datasource.DB_USERNAME_KEY, it.username)
-                System.setProperty(Datasource.DB_PASSWORD_KEY, it.password)
+                System.setProperty(DB_URL, it.jdbcUrl)
+                System.setProperty(DB_USERNAME_KEY, it.username)
+                System.setProperty(DB_PASSWORD_KEY, it.password)
             }
 
             flywayMigrate()
@@ -44,9 +46,9 @@ class SakRepositoryTest {
         fun teardown() {
             container.let {
                 println(it.jdbcUrl)
-                System.clearProperty(Datasource.DB_URL)
-                System.clearProperty(Datasource.DB_USERNAME_KEY)
-                System.clearProperty(Datasource.DB_PASSWORD_KEY)
+                System.clearProperty(DB_URL)
+                System.clearProperty(DB_USERNAME_KEY)
+                System.clearProperty(DB_PASSWORD_KEY)
             }
             container.stop()
         }
