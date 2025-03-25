@@ -8,4 +8,6 @@ WORKDIR /app
 
 COPY build/install/tiltakspenger-arena/lib/*.jar .
 
+USER nobody
+
 CMD ["tiltakspenger-arena.jar"]
