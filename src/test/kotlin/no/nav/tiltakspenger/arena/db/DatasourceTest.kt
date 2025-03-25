@@ -22,9 +22,9 @@ internal class DatasourceTest {
             container.start()
             container.let {
                 println(it.jdbcUrl)
-                System.setProperty(Datasource.DB_URL, it.jdbcUrl)
-                System.setProperty(Datasource.DB_USERNAME_KEY, it.username)
-                System.setProperty(Datasource.DB_PASSWORD_KEY, it.password)
+                System.setProperty(DB_URL, it.jdbcUrl)
+                System.setProperty(DB_USERNAME_KEY, it.username)
+                System.setProperty(DB_PASSWORD_KEY, it.password)
             }
         }
 
@@ -33,9 +33,9 @@ internal class DatasourceTest {
         fun teardown() {
             container.let {
                 println(it.jdbcUrl)
-                System.clearProperty(Datasource.DB_URL)
-                System.clearProperty(Datasource.DB_USERNAME_KEY)
-                System.clearProperty(Datasource.DB_PASSWORD_KEY)
+                System.clearProperty(DB_URL)
+                System.clearProperty(DB_USERNAME_KEY)
+                System.clearProperty(DB_PASSWORD_KEY)
             }
             container.stop()
         }

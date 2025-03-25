@@ -50,8 +50,6 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: /serviceuser/data/{{ vaultpath }}/srvtpts-arena
-        mountPath: /secrets/serviceuser
       - kvPath: {{ vault_db_config_path }}
         mountPath: /secrets/dbconfig
       - kvPath: {{ vault_db_creds_path }}

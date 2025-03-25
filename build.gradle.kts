@@ -12,8 +12,6 @@ val testContainersVersion = "1.20.6"
 val felleslibVersion = "0.0.418"
 val kotestVersion = "5.9.1"
 
-project.base.archivesName.set("app")
-
 plugins {
     application
     id("java")
@@ -102,6 +100,10 @@ configurations.all {
     exclude(group = "junit", module = "junit")
 }
 
+application {
+    mainClass.set("no.nav.tiltakspenger.arena.ApplicationKt")
+}
+
 java {
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
@@ -145,7 +147,7 @@ tasks {
         manifest.attributes["Class-Path"] = configurations
             .runtimeClasspath
             .get()
-            .joinToString(separator = " ") { file -> "${file.name}" }
+            .joinToString(separator = " ") { file -> file.name }
     }
     register<Copy>("gitHooks") {
         from(file(".scripts/pre-commit"))
