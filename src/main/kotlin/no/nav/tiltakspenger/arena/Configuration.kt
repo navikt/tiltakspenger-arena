@@ -13,16 +13,15 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 object Configuration {
-
     private val defaultProperties = ConfigurationMap(
         mapOf(
             "application.httpPort" to 8080.toString(),
             "ARENA_ORDS_CLIENT_ID" to System.getenv("ARENA_ORDS_CLIENT_ID"),
             "ARENA_ORDS_CLIENT_SECRET" to System.getenv("ARENA_ORDS_CLIENT_SECRET"),
             "NAIS_TOKEN_INTROSPECTION_ENDPOINT" to System.getenv("NAIS_TOKEN_INTROSPECTION_ENDPOINT"),
-            "ARENADB_URL" to fromFile("/secrets/dbconfig/jdbc_url"),
-            "ARENADB_USERNAME" to fromFile("/secrets/dbcreds/username"),
-            "ARENADB_PASSWORD" to fromFile("/secrets/dbcreds/password"),
+            "ARENADB_URL" to fromFileOrSystemProperty("/secrets/dbconfig/jdbc_url", "ARENADB_URL"),
+            "ARENADB_USERNAME" to fromFileOrSystemProperty("/secrets/dbcreds/username", "ARENADB_USERNAME"),
+            "ARENADB_PASSWORD" to fromFileOrSystemProperty("/secrets/dbcreds/password", "ARENADB_PASSWORD"),
         ),
     )
     private val localProperties = ConfigurationMap(
@@ -30,9 +29,6 @@ object Configuration {
             "application.profile" to Profile.LOCAL.toString(),
             "ARENA_ORDS_URL" to "",
             "NAIS_TOKEN_INTROSPECTION_ENDPOINT" to "",
-            "ARENADB_URL" to System.getProperty("ARENADB_URL"),
-            "ARENADB_USERNAME" to System.getProperty("ARENADB_USERNAME"),
-            "ARENADB_PASSWORD" to System.getProperty("ARENADB_PASSWORD"),
         ),
     )
     private val devProperties = ConfigurationMap(
@@ -82,7 +78,10 @@ object Configuration {
 
     fun httpPort() = config()[Key("application.httpPort", intType)]
 
-    private fun fromFile(filename: String): String {
+    private fun fromFileOrSystemProperty(filename: String, property: String): String {
+        if (applicationProfile() == Profile.LOCAL) {
+            return System.getProperty(property)
+        }
         try {
             val file: Path = Paths.get(filename)
             val lines = Files.readAllLines(file)
