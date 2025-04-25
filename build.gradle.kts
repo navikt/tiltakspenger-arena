@@ -9,7 +9,7 @@ val jacksonVersion = "2.18.3"
 val mockkVersion = "1.14.0"
 val kotlinxCoroutinesVersion = "1.10.2"
 val testContainersVersion = "1.21.0"
-val felleslibVersion = "0.0.442"
+val felleslibVersion = "0.0.448"
 val kotestVersion = "5.9.1"
 
 plugins {
