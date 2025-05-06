@@ -64,7 +64,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
     implementation("com.zaxxer:HikariCP:6.3.0")
-    implementation("com.oracle.database.jdbc:ojdbc11:23.7.0.25.01")
+    implementation("com.oracle.database.jdbc:ojdbc11:23.8.0.25.04")
     implementation("com.github.seratch:kotliquery:1.9.1")
 
     implementation("org.slf4j:jul-to-slf4j:2.0.17")
