@@ -16,7 +16,7 @@ import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljer
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljer
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
-import no.nav.tiltakspenger.libs.logging.sikkerlogg
+import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import no.nav.tiltakspenger.libs.periodisering.Periodisering
 import java.time.LocalDate
 
@@ -42,7 +42,7 @@ fun Route.tiltakspengerRoutes(
                 logger.info { "Saksbehandler har hentet vedtaksperioder" }
                 call.respond(periode.toArenaTiltakspengerVedtakPeriode())
             } catch (e: Exception) {
-                sikkerlogg.warn(e) { "Feilet å hente tiltakspenger ${e.message}" }
+                Sikkerlogg.warn(e) { "Feilet å hente tiltakspenger ${e.message}" }
                 logger.warn { "Kunne ikke hente vedtaksperioder" }
                 call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
             }
@@ -61,7 +61,7 @@ fun Route.tiltakspengerRoutes(
                 logger.info { "Saksbehandler har hentet rettighetsperioder" }
                 call.respond(periode.toArenaTiltakspengerRettighetPeriode())
             } catch (e: Exception) {
-                sikkerlogg.warn(e) { "Feilet å hente tiltakspenger ${e.message}" }
+                Sikkerlogg.warn(e) { "Feilet å hente tiltakspenger ${e.message}" }
                 logger.warn { "Kunne ikke hente rettighetsperioder" }
                 call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
             }

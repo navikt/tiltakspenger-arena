@@ -3,7 +3,7 @@ package no.nav.tiltakspenger.arena.repository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.sessionOf
 import no.nav.tiltakspenger.arena.db.Datasource
-import no.nav.tiltakspenger.libs.logging.sikkerlogg
+import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.LocalDate
 
 /*
@@ -42,7 +42,6 @@ class SakRepository(
             .kunSakerMedVedtakInnenforPeriode(fom, tom)
             .map { ArenaSakMedMinstEttVedtakDTO(it) }
         LOG.info { "Antall filtrerte saker er ${saker.size}" }
-        sikkerlogg.info { "Antall filtrerte saker er ${saker.size}" }
         return saker
     }
 
@@ -54,7 +53,7 @@ class SakRepository(
                 val person = personDAO.findByFnr(fnr, txSession)
                 if (person == null) {
                     LOG.info { "Fant ikke person" }
-                    sikkerlogg.info { "Fant ikke person med ident $fnr" }
+                    Sikkerlogg.info { "Fant ikke person med ident $fnr" }
                     return emptyList()
                 }
                 val saker = sakDAO.findByPersonId(
@@ -62,7 +61,6 @@ class SakRepository(
                     txSession = txSession,
                 )
                 LOG.info { "Antall saker er ${saker.size}" }
-                sikkerlogg.info { "Antall saker er ${saker.size}" }
                 return saker
             }
         }

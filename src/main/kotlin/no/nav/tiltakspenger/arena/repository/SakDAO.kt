@@ -4,7 +4,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
-import no.nav.tiltakspenger.libs.logging.sikkerlogg
 import org.intellij.lang.annotations.Language
 
 class SakDAO(
@@ -41,8 +40,6 @@ class SakDAO(
         val barnetilleggVedtak = barnetilleggVedtakDAO.findBarnetilleggBySakId(sakId, txSession)
         LOG.info { "Antall tiltakspengerVedtak er ${tiltakspengerVedtak.size} for sak med id $sakId" }
         LOG.info { "Antall barnetilleggVedtak er ${barnetilleggVedtak.size} for sak med id $sakId" }
-        sikkerlogg.info { "Antall tiltakspengerVedtak er ${tiltakspengerVedtak.size} for sak med id $sakId" }
-        sikkerlogg.info { "Antall barnetilleggVedtak er ${barnetilleggVedtak.size} for sak med id $sakId" }
 
         return ArenaSakDTO(
             sakId = sakId,
