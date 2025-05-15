@@ -4,7 +4,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import no.nav.tiltakspenger.arena.repository.ArenaBarnetilleggVedtakDTO
 import no.nav.tiltakspenger.arena.repository.ArenaSakMedMinstEttVedtakDTO
 import no.nav.tiltakspenger.arena.repository.ArenaTiltakspengerVedtakDTO
-import no.nav.tiltakspenger.libs.logging.sikkerlogg
+import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import no.nav.tiltakspenger.libs.periodisering.Periode
 import no.nav.tiltakspenger.libs.periodisering.Periodisering
 
@@ -19,7 +19,7 @@ private const val DEFAULT_ANTALL_DAGER: Double = 0.0
 object ArenaTilVedtakDetaljerMapper {
     fun mapTiltakspengerFraArenaTilVedtaksperioder(saker: List<ArenaSakMedMinstEttVedtakDTO>): Periodisering<VedtakDetaljer>? {
         if (saker.isEmpty()) {
-            sikkerlogg.info { "Returnerer null pga ingen saker" }
+            LOG.info { "Returnerer null pga ingen saker" }
             return null
         }
         val totalePeriodeFra = saker.minOf { it.sakPeriode().fraOgMed }
@@ -33,8 +33,8 @@ object ArenaTilVedtakDetaljerMapper {
         val periodeMedBarnetillegg =
             fyllBarnetilleggPeriodenMedReelleVerdier(saker, periodeMedBarnetilleggInit, totalePeriode)
 
-        sikkerlogg.info { "Periode med tiltakspenger: $periodeMedTiltakspenger" }
-        sikkerlogg.info { "Periode med barnetillegg: $periodeMedBarnetillegg" }
+        Sikkerlogg.info { "Periode med tiltakspenger: $periodeMedTiltakspenger" }
+        Sikkerlogg.info { "Periode med barnetillegg: $periodeMedBarnetillegg" }
 
         return kombinerTiltakspengerMedBarnetillegg(periodeMedTiltakspenger, periodeMedBarnetillegg)
     }
@@ -130,10 +130,10 @@ object ArenaTilVedtakDetaljerMapper {
     ) =
         periodeMedTiltakspenger.kombiner(periodeMedBarnetillegg) { vt, vb ->
             if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG && vt.antallDager != vb.antallDager) {
-                sikkerlogg.info { "Vedtaket om tiltakspenger (${vt.antallDager}) og vedtaket om barnetillegg (${vb.antallDager}) har ikke samme antall dager" }
+                LOG.info { "Vedtaket om tiltakspenger (${vt.antallDager}) og vedtaket om barnetillegg (${vb.antallDager}) har ikke samme antall dager" }
             }
             if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG && vt.tiltakGjennomføringsId != vb.relaterteTiltak) {
-                sikkerlogg.info { "Vedtaket om tiltakspenger (${vt.tiltakGjennomføringsId}) og vedtaket om barnetillegg (${vb.relaterteTiltak}) har ikke samme relaterte tiltak" }
+                LOG.info { "Vedtaket om tiltakspenger (${vt.tiltakGjennomføringsId}) og vedtaket om barnetillegg (${vb.relaterteTiltak}) har ikke samme relaterte tiltak" }
             }
             VedtakDetaljer(
                 antallDager = vt.antallDager,
@@ -153,7 +153,7 @@ object ArenaTilVedtakDetaljerMapper {
         } else if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.INGENTING) {
             Rettighet.TILTAKSPENGER
         } else if (vt.rettighet == Rettighet.INGENTING && vb.rettighet == Rettighet.BARNETILLEGG) {
-            sikkerlogg.info { "Her har vi en periode med barnetillegg men ikke tiltakspenger - det skal ikke egentlig kunne skje!" }
+            LOG.warn { "Her har vi en periode med barnetillegg men ikke tiltakspenger - det skal ikke egentlig kunne skje!" }
             Rettighet.BARNETILLEGG
         } else {
             Rettighet.INGENTING

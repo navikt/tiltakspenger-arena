@@ -14,7 +14,7 @@ import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.mapArenaTiltak
 import no.nav.tiltakspenger.libs.arena.tiltak.ArenaTiltaksaktivitetResponsDTO
-import no.nav.tiltakspenger.libs.logging.sikkerlogg
+import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 
 data class RequestBody(
     val ident: String,
@@ -40,7 +40,7 @@ fun Route.tiltakAzureRoutes(
                 }
             } catch (e: ArenaOrdsException.PersonNotFoundException) {
                 logger.warn { "Person ikke funnet i Arena Tiltak" }
-                sikkerlogg.warn { "Person ikke funnet i Arena Tiltak ${e.message}" }
+                Sikkerlogg.warn { "Person ikke funnet i Arena Tiltak ${e.message}" }
                 call.respond(
                     ArenaTiltaksaktivitetResponsDTO(
                         tiltaksaktiviteter = emptyList(),

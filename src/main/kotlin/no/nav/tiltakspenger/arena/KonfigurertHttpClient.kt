@@ -19,7 +19,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.ContentType
 import io.ktor.serialization.jackson.jackson
 import no.nav.tiltakspenger.arena.felles.JacksonXmlConverter
-import no.nav.tiltakspenger.libs.logging.sikkerlogg
+import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.Duration
 
 private val LOG = KotlinLogging.logger {}
@@ -65,7 +65,7 @@ private fun HttpClient.config(timeout: Long) =
                 object : Logger {
                     override fun log(message: String) {
                         LOG.info { "HttpClient detaljer logget til securelog" }
-                        sikkerlogg.info { message }
+                        Sikkerlogg.info { message }
                     }
                 }
             level = LogLevel.INFO
@@ -81,7 +81,7 @@ fun HttpClientConfig<*>.setupXmlClient() {
         logger = object : Logger {
             override fun log(message: String) {
                 LOG.info { "XmlHttpClient detaljer logget til securelog" }
-                sikkerlogg.info { message }
+                Sikkerlogg.info { message }
             }
         }
     }

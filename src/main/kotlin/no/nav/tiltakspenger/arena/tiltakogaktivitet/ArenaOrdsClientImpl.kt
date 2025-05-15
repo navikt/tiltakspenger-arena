@@ -14,7 +14,7 @@ import no.nav.tiltakspenger.arena.httpClientXml
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.OtherException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.PersonNotFoundException
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsException.UnauthorizedException
-import no.nav.tiltakspenger.libs.logging.sikkerlogg
+import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 
 private val LOG = KotlinLogging.logger {}
 
@@ -46,15 +46,15 @@ class ArenaOrdsClientImpl(
                 else -> {
                     val text = response.bodyAsText()
                     LOG.error { "Noe gikk galt ved henting av aktiviteter, responskode ${response.status}" }
-                    sikkerlogg.error { "Kunne ikke hente aktiviteter: $text" }
+                    Sikkerlogg.error { "Kunne ikke hente aktiviteter: $text" }
                     throw RuntimeException("Kunne ikke hente aktiviteter")
                 }
             }
         } else if (response.status == HttpStatusCode.NoContent) {
             val text = response.bodyAsText()
             LOG.warn { "Bruker (person) finnes ikke i Arena" }
-            sikkerlogg.warn { "Bruker (person) finnes ikke i Arena: $text" }
-            throw PersonNotFoundException("Bruker (person) finnes ikke i Arena: $text")
+            Sikkerlogg.warn { "Bruker (person) finnes ikke i Arena: $text" }
+            throw PersonNotFoundException("Bruker (person) finnes ikke i Arena")
         }
         LOG.info { "Hentet arena-aktiviteter" }
         return response.body<ArenaAktiviteterDTO>()

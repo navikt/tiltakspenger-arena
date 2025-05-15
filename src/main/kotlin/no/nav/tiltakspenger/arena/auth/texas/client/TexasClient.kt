@@ -15,7 +15,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
 import no.nav.tiltakspenger.arena.auth.texas.log
 import no.nav.tiltakspenger.arena.httpClientApache
-import no.nav.tiltakspenger.libs.logging.sikkerlogg
+import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 
 class TexasClient(
     private val introspectionUrl: String,
@@ -34,7 +34,7 @@ class TexasClient(
         if (!response.status.isSuccess()) {
             log.error { "Kall for autentisering mot Texas feilet med responskode ${response.status.value}, se sikker logg for detaljer" }
             val feilmelding = response.bodyAsText()
-            sikkerlogg.error { "Kall for autentisering mot Texas feilet, melding: $feilmelding" }
+            Sikkerlogg.error { "Kall for autentisering mot Texas feilet, melding: $feilmelding" }
             throw RuntimeException("Kall for autentisering mot Texas feilet")
         }
         return response.body<TexasIntrospectionResponse>()
