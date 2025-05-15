@@ -22,7 +22,6 @@ spec:
       rules:
         - application: logging
           namespace: nais-system
-          cluster: {{ cluster }}
     inbound:
       rules:
         - application: tiltakspenger-soknad-api
