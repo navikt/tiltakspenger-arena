@@ -41,7 +41,6 @@ object ArenaTilVedtakDetaljerMapper {
 
     private fun periodeMedDefaultVerdierForTiltakspenger(totalePeriode: Periode) =
         Periodisering(
-            totalePeriode = totalePeriode,
             initiellVerdi = VedtakDetaljerKunTiltakspenger(
                 antallDager = DEFAULT_ANTALL_DAGER,
                 dagsats = DEFAULT_DAGSATS,
@@ -50,11 +49,11 @@ object ArenaTilVedtakDetaljerMapper {
                 vedtakId = 0L,
                 sakId = 0L,
             ),
+            totalPeriode = totalePeriode,
         )
 
     private fun periodeMedDefaultVerdierForBarnetillegg(totalePeriode: Periode) =
         Periodisering(
-            totalePeriode = totalePeriode,
             initiellVerdi = VedtakDetaljerBarnetillegg(
                 antallDager = DEFAULT_ANTALL_DAGER,
                 dagsats = DEFAULT_DAGSATS,
@@ -62,6 +61,7 @@ object ArenaTilVedtakDetaljerMapper {
                 relaterteTiltak = DEFAULT_TILTAK_GJENNOMFØRINGS_ID,
                 rettighet = Rettighet.INGENTING,
             ),
+            totalPeriode = totalePeriode,
         )
 
     private fun fyllTiltakspengerPeriodenMedReelleVerdier(

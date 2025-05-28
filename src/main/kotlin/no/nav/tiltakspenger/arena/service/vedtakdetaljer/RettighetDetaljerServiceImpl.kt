@@ -12,5 +12,5 @@ class RettighetDetaljerServiceImpl(
         fom: LocalDate,
         tom: LocalDate,
     ): Periodisering<RettighetDetaljer>? = vedtakDetaljerService.hentVedtakDetaljerPerioder(ident, fom, tom)
-        ?.map { vedtakDetaljer -> RettighetDetaljer(vedtakDetaljer.rettighet) }
+        ?.map { vedtakDetaljer, _ -> RettighetDetaljer(vedtakDetaljer.rettighet) }
 }
