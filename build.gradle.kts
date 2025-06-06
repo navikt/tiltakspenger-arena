@@ -92,7 +92,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
     testImplementation("io.kotest:kotest-extensions:$kotestVersion")
 
-    testImplementation("no.nav.security:mock-oauth2-server:2.1.11")
+    testImplementation("no.nav.security:mock-oauth2-server:2.2.1")
 }
 
 configurations.all {
