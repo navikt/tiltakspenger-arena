@@ -24,8 +24,6 @@ spec:
           namespace: nais-system
     inbound:
       rules:
-        - application: tiltakspenger-soknad-api
-          cluster: {{ cluster }}
         - application: tiltakspenger-tiltak
           namespace: tpts
           cluster: {{ cluster }}
