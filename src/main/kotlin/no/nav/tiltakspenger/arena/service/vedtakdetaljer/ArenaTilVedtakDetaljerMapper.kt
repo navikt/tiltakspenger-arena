@@ -71,7 +71,7 @@ object ArenaTilVedtakDetaljerMapper {
         saker
             .flatMap { it.tiltakspengerVedtak }
             .fold(periodeMedTiltakspengerInit) { periodeMedVerdier: Periodisering<VedtakDetaljerKunTiltakspenger>, arenaTiltakspengerVedtakDTO: ArenaTiltakspengerVedtakDTO ->
-                periodeMedVerdier.setVerdiForDelPeriode(
+                periodeMedVerdier.setVerdiForDelperiode(
                     VedtakDetaljerKunTiltakspenger(
                         antallDager = arenaTiltakspengerVedtakDTO.antallDager ?: DEFAULT_ANTALL_DAGER,
                         dagsats = arenaTiltakspengerVedtakDTO.dagsats ?: DEFAULT_DAGSATS,
@@ -95,7 +95,7 @@ object ArenaTilVedtakDetaljerMapper {
                 if (totalePeriode.inneholderHele(arenaBarnetilleggVedtakDTO.vedtaksperiode())) {
                     LOG.info { "Perioden for barnetillegg (${arenaBarnetilleggVedtakDTO.vedtaksperiode()}) er innenfor saksperioden ($totalePeriode) " }
                     // Legger til hele perioden
-                    periodeMedVerdier.setVerdiForDelPeriode(
+                    periodeMedVerdier.setVerdiForDelperiode(
                         VedtakDetaljerBarnetillegg(
                             antallDager = arenaBarnetilleggVedtakDTO.antallDager ?: DEFAULT_ANTALL_DAGER,
                             dagsats = arenaBarnetilleggVedtakDTO.dagsats ?: DEFAULT_DAGSATS,
@@ -107,7 +107,7 @@ object ArenaTilVedtakDetaljerMapper {
                     )
                 } else if (totalePeriode.overlapperMed(arenaBarnetilleggVedtakDTO.vedtaksperiode())) {
                     LOG.warn { "Perioden for barnetillegg (${arenaBarnetilleggVedtakDTO.vedtaksperiode()}) overlapper med saksperioden ($totalePeriode) " }
-                    periodeMedVerdier.setVerdiForDelPeriode(
+                    periodeMedVerdier.setVerdiForDelperiode(
                         VedtakDetaljerBarnetillegg(
                             antallDager = arenaBarnetilleggVedtakDTO.antallDager ?: DEFAULT_ANTALL_DAGER,
                             dagsats = arenaBarnetilleggVedtakDTO.dagsats ?: DEFAULT_DAGSATS,

@@ -25,7 +25,7 @@ object ArenaTiltakspengerVedtakPeriodeMapper {
                     vedtakId = it.verdi.vedtakId,
                     sakId = it.verdi.sakId,
                 )
-            } ?: emptyList()
+            }?.verdier ?: emptyList()
 
     private fun LocalDate.toNullIfMax(): LocalDate? = if (this == LocalDate.MAX) {
         null

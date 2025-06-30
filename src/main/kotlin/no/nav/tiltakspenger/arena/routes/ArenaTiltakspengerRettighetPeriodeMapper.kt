@@ -6,8 +6,8 @@ import no.nav.tiltakspenger.libs.periodisering.Periodisering
 import java.time.LocalDate
 
 object ArenaTiltakspengerRettighetPeriodeMapper {
-    fun Periodisering<RettighetDetaljer>?.toArenaTiltakspengerRettighetPeriode(): List<ArenaTiltakspengerRettighetPeriode> =
-        this?.filter {
+    fun Periodisering<RettighetDetaljer>?.toArenaTiltakspengerRettighetPeriode(): List<ArenaTiltakspengerRettighetPeriode> {
+        return this?.filter {
             it.verdi.rettighet == Rettighet.TILTAKSPENGER ||
                 it.verdi.rettighet == Rettighet.TILTAKSPENGER_OG_BARNETILLEGG
         }
@@ -16,11 +16,14 @@ object ArenaTiltakspengerRettighetPeriodeMapper {
                     fraOgMed = it.periode.fraOgMed,
                     tilOgMed = it.periode.tilOgMed.toNullIfMax(),
                 )
-            } ?: emptyList()
+            }?.verdier ?: emptyList()
+    }
 
-    private fun LocalDate.toNullIfMax(): LocalDate? = if (this == LocalDate.MAX) {
-        null
-    } else {
-        this
+    private fun LocalDate.toNullIfMax(): LocalDate? {
+        return if (this == LocalDate.MAX) {
+            null
+        } else {
+            this
+        }
     }
 }
