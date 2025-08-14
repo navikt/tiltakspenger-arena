@@ -10,17 +10,18 @@ import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.mockk
 import no.nav.security.mock.oauth2.MockOAuth2Server
-import no.nav.tiltakspenger.arena.auth.texas.client.TexasClient
-import no.nav.tiltakspenger.arena.auth.texas.client.TexasIntrospectionResponse
 import no.nav.tiltakspenger.arena.configureTestApplication
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
+import no.nav.tiltakspenger.libs.texas.IdentityProvider
+import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
+import no.nav.tiltakspenger.libs.texas.client.TexasIntrospectionResponse
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class TiltakspengerRoutesAuthTest {
-    private val texasClient = mockk<TexasClient>()
+    private val texasClient = mockk<TexasHttpClient>()
 
     companion object {
         private val mockOAuth2Server = MockOAuth2Server().also {
@@ -66,7 +67,7 @@ internal class TiltakspengerRoutesAuthTest {
 
     @Test
     fun `post med ugyldig token skal gi 401`() {
-        coEvery { texasClient.introspectToken(any(), "azuread") } returns TexasIntrospectionResponse(
+        coEvery { texasClient.introspectToken(any(), IdentityProvider.AZUREAD) } returns TexasIntrospectionResponse(
             active = false,
             error = "Ikke gyldig token",
         )
@@ -83,7 +84,7 @@ internal class TiltakspengerRoutesAuthTest {
 
     @Test
     fun `post med gyldig token skal gi 200`() {
-        coEvery { texasClient.introspectToken(any(), "azuread") } returns TexasIntrospectionResponse(
+        coEvery { texasClient.introspectToken(any(), IdentityProvider.AZUREAD) } returns TexasIntrospectionResponse(
             active = true,
             error = null,
         )
@@ -105,7 +106,7 @@ internal class TiltakspengerRoutesAuthTest {
 
     @Test
     fun `post med utgått token skal gi 401`() {
-        coEvery { texasClient.introspectToken(any(), "azuread") } returns TexasIntrospectionResponse(
+        coEvery { texasClient.introspectToken(any(), IdentityProvider.AZUREAD) } returns TexasIntrospectionResponse(
             active = false,
             error = "Utløpt token",
         )
@@ -122,7 +123,7 @@ internal class TiltakspengerRoutesAuthTest {
 
     @Test
     fun `post med feil issuer token skal gi 401`() {
-        coEvery { texasClient.introspectToken(any(), "azuread") } returns TexasIntrospectionResponse(
+        coEvery { texasClient.introspectToken(any(), IdentityProvider.AZUREAD) } returns TexasIntrospectionResponse(
             active = false,
             error = "Feil issuer",
         )
@@ -139,7 +140,7 @@ internal class TiltakspengerRoutesAuthTest {
 
     @Test
     fun `post med feil audience token skal gi 401`() {
-        coEvery { texasClient.introspectToken(any(), "azuread") } returns TexasIntrospectionResponse(
+        coEvery { texasClient.introspectToken(any(), IdentityProvider.AZUREAD) } returns TexasIntrospectionResponse(
             active = false,
             error = "Feil audience",
         )

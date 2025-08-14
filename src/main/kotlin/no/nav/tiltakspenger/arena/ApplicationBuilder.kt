@@ -2,18 +2,20 @@ package no.nav.tiltakspenger.arena
 
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import no.nav.tiltakspenger.arena.auth.texas.client.TexasClient
 import no.nav.tiltakspenger.arena.repository.SakRepository
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServiceImpl
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClientImpl
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsTokenProviderClient
+import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
 
 internal fun start(
     port: Int = Configuration.httpPort(),
 ) {
-    val texasClient = TexasClient(
+    val texasClient = TexasHttpClient(
         introspectionUrl = Configuration.naisTokenIntrospectionEndpoint,
+        tokenUrl = Configuration.naisTokenEndpoint,
+        tokenExchangeUrl = Configuration.tokenExchangeEndpoint,
     )
     val tokenProviderClient = ArenaOrdsTokenProviderClient(Configuration.ArenaOrdsConfig())
     val arenaSakRepository = SakRepository()
