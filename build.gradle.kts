@@ -34,8 +34,10 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("com.github.navikt.tiltakspenger-libs:arenatiltak-dtos:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:arenaytelser-dtos:$felleslibVersion")
+    implementation("com.github.navikt.tiltakspenger-libs:common:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:periodisering:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:logging:$felleslibVersion")
+    implementation("com.github.navikt.tiltakspenger-libs:texas:$felleslibVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")

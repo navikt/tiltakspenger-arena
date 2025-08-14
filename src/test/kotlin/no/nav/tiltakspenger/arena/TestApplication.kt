@@ -9,16 +9,16 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.mockk.mockk
-import no.nav.tiltakspenger.arena.auth.texas.client.TexasClient
 import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutes
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
+import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
 
 fun ApplicationTestBuilder.configureTestApplication(
-    texasClient: TexasClient = mockk(),
+    texasClient: TexasHttpClient = mockk(),
     arenaOrdsClient: ArenaOrdsClient = mockk(),
     vedtakDetaljerService: VedtakDetaljerService = mockk(),
     rettighetDetaljerService: RettighetDetaljerService = mockk(),
@@ -31,17 +31,15 @@ fun ApplicationTestBuilder.configureTestApplication(
                 registerModule(KotlinModule.Builder().build())
             }
         }
+        setupAuthentication(texasClient)
         routing {
             tiltakRoutes(
-                texasClient = texasClient,
                 arenaOrdsClient = arenaOrdsClient,
             )
             tiltakAzureRoutes(
-                texasClient = texasClient,
                 arenaOrdsClient = arenaOrdsClient,
             )
             tiltakspengerRoutes(
-                texasClient = texasClient,
                 vedtakDetaljerService = vedtakDetaljerService,
                 rettighetDetaljerService = rettighetDetaljerService,
             )

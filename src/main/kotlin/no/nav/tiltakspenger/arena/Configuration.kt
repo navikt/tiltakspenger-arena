@@ -19,6 +19,8 @@ object Configuration {
             "ARENA_ORDS_CLIENT_ID" to System.getenv("ARENA_ORDS_CLIENT_ID"),
             "ARENA_ORDS_CLIENT_SECRET" to System.getenv("ARENA_ORDS_CLIENT_SECRET"),
             "NAIS_TOKEN_INTROSPECTION_ENDPOINT" to System.getenv("NAIS_TOKEN_INTROSPECTION_ENDPOINT"),
+            "NAIS_TOKEN_ENDPOINT" to System.getenv("NAIS_TOKEN_ENDPOINT"),
+            "NAIS_TOKEN_EXCHANGE_ENDPOINT" to System.getenv("NAIS_TOKEN_EXCHANGE_ENDPOINT"),
             "ARENADB_URL" to fromFileOrSystemProperty("/secrets/dbconfig/jdbc_url", "ARENADB_URL"),
             "ARENADB_USERNAME" to fromFileOrSystemProperty("/secrets/dbcreds/username", "ARENADB_USERNAME"),
             "ARENADB_PASSWORD" to fromFileOrSystemProperty("/secrets/dbcreds/password", "ARENADB_PASSWORD"),
@@ -29,6 +31,8 @@ object Configuration {
             "application.profile" to Profile.LOCAL.toString(),
             "ARENA_ORDS_URL" to "",
             "NAIS_TOKEN_INTROSPECTION_ENDPOINT" to "",
+            "NAIS_TOKEN_ENDPOINT" to "",
+            "NAIS_TOKEN_EXCHANGE_ENDPOINT" to "",
         ),
     )
     private val devProperties = ConfigurationMap(
@@ -69,6 +73,8 @@ object Configuration {
     )
 
     val naisTokenIntrospectionEndpoint: String = config()[Key("NAIS_TOKEN_INTROSPECTION_ENDPOINT", stringType)]
+    val naisTokenEndpoint: String = config()[Key("NAIS_TOKEN_ENDPOINT", stringType)]
+    val tokenExchangeEndpoint: String = config()[Key("NAIS_TOKEN_EXCHANGE_ENDPOINT", stringType)]
 
     fun applicationProfile() = when (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")) {
         "dev-fss" -> Profile.DEV
