@@ -70,6 +70,8 @@ internal class TiltakspengerRoutesAuthTest {
         coEvery { texasClient.introspectToken(any(), IdentityProvider.AZUREAD) } returns TexasIntrospectionResponse(
             active = false,
             error = "Ikke gyldig token",
+            groups = null,
+            roles = null,
         )
         testApplication {
             configureTestApplication(texasClient = texasClient)
@@ -87,6 +89,8 @@ internal class TiltakspengerRoutesAuthTest {
         coEvery { texasClient.introspectToken(any(), IdentityProvider.AZUREAD) } returns TexasIntrospectionResponse(
             active = true,
             error = null,
+            groups = null,
+            roles = null,
         )
         val vedtakDetaljerServiceMock = mockk<VedtakDetaljerService>(relaxed = true)
 
@@ -109,6 +113,8 @@ internal class TiltakspengerRoutesAuthTest {
         coEvery { texasClient.introspectToken(any(), IdentityProvider.AZUREAD) } returns TexasIntrospectionResponse(
             active = false,
             error = "Utløpt token",
+            groups = null,
+            roles = null,
         )
         testApplication {
             configureTestApplication(texasClient = texasClient)
@@ -126,6 +132,8 @@ internal class TiltakspengerRoutesAuthTest {
         coEvery { texasClient.introspectToken(any(), IdentityProvider.AZUREAD) } returns TexasIntrospectionResponse(
             active = false,
             error = "Feil issuer",
+            groups = null,
+            roles = null,
         )
         testApplication {
             configureTestApplication(texasClient = texasClient)
@@ -143,6 +151,8 @@ internal class TiltakspengerRoutesAuthTest {
         coEvery { texasClient.introspectToken(any(), IdentityProvider.AZUREAD) } returns TexasIntrospectionResponse(
             active = false,
             error = "Feil audience",
+            groups = null,
+            roles = null,
         )
         testApplication {
             configureTestApplication(texasClient = texasClient)
