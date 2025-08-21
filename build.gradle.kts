@@ -9,8 +9,8 @@ val jacksonVersion = "2.19.2"
 val mockkVersion = "1.14.5"
 val kotlinxCoroutinesVersion = "1.10.2"
 val testContainersVersion = "1.21.3"
-val felleslibVersion = "0.0.557"
-val kotestVersion = "5.9.1"
+val felleslibVersion = "0.0.562"
+val kotestVersion = "6.0.0"
 
 plugins {
     application
@@ -83,7 +83,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("org.xmlunit:xmlunit-matchers:2.10.3")
     testImplementation("org.hamcrest:hamcrest-core:3.0")
-    testImplementation("org.flywaydb:flyway-database-oracle:11.11.0")
+    testImplementation("org.flywaydb:flyway-database-oracle:11.11.1")
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
     testImplementation("org.testcontainers:oracle-free:$testContainersVersion")
