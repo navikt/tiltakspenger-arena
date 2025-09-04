@@ -10,7 +10,7 @@ val mockkVersion = "1.14.5"
 val kotlinxCoroutinesVersion = "1.10.2"
 val testContainersVersion = "1.21.3"
 val felleslibVersion = "0.0.569"
-val kotestVersion = "6.0.1"
+val kotestVersion = "6.0.2"
 
 plugins {
     application
