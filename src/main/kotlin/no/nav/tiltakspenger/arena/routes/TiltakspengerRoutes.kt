@@ -11,6 +11,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerRettighetPeriodeMapper.toArenaTiltakspengerRettighetPeriode
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerVedtakPeriodeMapper.toArenaTiltakspengerVedtakPeriode
+import no.nav.tiltakspenger.arena.service.vedtakdetaljer.Rettighet
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljer
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljer
@@ -39,10 +40,34 @@ fun Route.tiltakspengerRoutes(
                             tom = req.tom ?: LocalDate.of(2999, 12, 31),
                         )
                     logger.info { "Saksbehandler har hentet vedtaksperioder" }
-                    call.respond(periode.toArenaTiltakspengerVedtakPeriode())
+                    val filtrertPeriode = periode?.filter {
+                        it.verdi.rettighet == Rettighet.TILTAKSPENGER ||
+                            it.verdi.rettighet == Rettighet.TILTAKSPENGER_OG_BARNETILLEGG ||
+                            it.verdi.rettighet == Rettighet.BARNETILLEGG
+                    }
+                    call.respond(filtrertPeriode.toArenaTiltakspengerVedtakPeriode())
                 } catch (e: Exception) {
                     Sikkerlogg.warn(e) { "Feilet å hente tiltakspenger ${e.message}" }
                     logger.warn { "Kunne ikke hente vedtaksperioder" }
+                    call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
+                }
+            }
+
+            post("/vedtak") {
+                try {
+                    val req = call.receive<VedtakRequest>()
+                    logger.info { "Saksbehandler henter vedtak fra arena" }
+                    val periode: Periodisering<VedtakDetaljer>? =
+                        vedtakDetaljerService.hentVedtakDetaljerPerioder(
+                            ident = req.ident,
+                            fom = req.fom ?: LocalDate.of(1900, 1, 1),
+                            tom = req.tom ?: LocalDate.of(2999, 12, 31),
+                        )
+                    logger.info { "Saksbehandler har hentet vedtak fra arena" }
+                    call.respond(periode.toArenaTiltakspengerVedtakPeriode())
+                } catch (e: Exception) {
+                    Sikkerlogg.warn(e) { "Feilet å hente vedtak fra arena ${e.message}" }
+                    logger.warn { "Kunne ikke hente vedtak fra arena" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
