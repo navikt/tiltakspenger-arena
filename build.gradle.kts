@@ -15,7 +15,7 @@ val kotestVersion = "6.0.3"
 plugins {
     application
     id("java")
-    kotlin("jvm") version "2.2.10"
+    kotlin("jvm") version "2.2.20"
     id("com.diffplug.spotless") version "7.2.1"
 }
 
