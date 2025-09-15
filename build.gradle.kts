@@ -5,7 +5,8 @@ val javaVersion = JavaVersion.VERSION_21
 val jvmVersion = JvmTarget.JVM_21
 
 val ktorVersion = "3.3.0"
-val jacksonVersion = "2.19.2"
+val jacksonVersion = "2.20.0"
+val jacksonAnnotationsVersion = "2.20"
 val mockkVersion = "1.14.5"
 val kotlinxCoroutinesVersion = "1.10.2"
 val testContainersVersion = "1.21.3"
@@ -60,7 +61,7 @@ dependencies {
 
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonAnnotationsVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
@@ -88,13 +89,13 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
     testImplementation("org.testcontainers:oracle-free:$testContainersVersion")
     // need quarkus-junit-4-mock because of https://github.com/testcontainers/testcontainers-java/issues/970
-    testImplementation("io.quarkus:quarkus-junit4-mock:3.26.2")
+    testImplementation("io.quarkus:quarkus-junit4-mock:3.26.3")
 
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
     testImplementation("io.kotest:kotest-extensions:$kotestVersion")
 
-    testImplementation("no.nav.security:mock-oauth2-server:2.2.1")
+    testImplementation("no.nav.security:mock-oauth2-server:2.3.0")
 }
 
 configurations.all {
