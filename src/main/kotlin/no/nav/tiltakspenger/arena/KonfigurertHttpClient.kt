@@ -84,6 +84,7 @@ fun HttpClientConfig<*>.setupXmlClient() {
                 Sikkerlogg.info { message }
             }
         }
+        level = LogLevel.INFO
     }
     expectSuccess = false
 }
