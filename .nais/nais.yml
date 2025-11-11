@@ -10,6 +10,11 @@ spec:
   port: 8080
   ingresses:
     - {{ ingress.url }}
+  resources:
+    limits:
+      memory: 1500Mi
+    requests:
+      memory: 750Mi
   azure:
     application:
       enabled: true
