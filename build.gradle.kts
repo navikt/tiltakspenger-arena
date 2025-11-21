@@ -9,7 +9,7 @@ val jacksonVersion = "2.20.1"
 val jacksonAnnotationsVersion = "2.20"
 val mockkVersion = "1.14.6"
 val kotlinxCoroutinesVersion = "1.10.2"
-val testContainersVersion = "1.21.3"
+val testContainersVersion = "2.0.2"
 val felleslibVersion = "0.0.622"
 val kotestVersion = "6.0.5"
 
@@ -86,8 +86,8 @@ dependencies {
     testImplementation("org.hamcrest:hamcrest-core:3.0")
     testImplementation("org.flywaydb:flyway-database-oracle:11.17.1")
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
-    testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
-    testImplementation("org.testcontainers:oracle-free:$testContainersVersion")
+    testImplementation("org.testcontainers:testcontainers-junit-jupiter:$testContainersVersion")
+    testImplementation("org.testcontainers:testcontainers-oracle-free:$testContainersVersion")
     // need quarkus-junit-4-mock because of https://github.com/testcontainers/testcontainers-java/issues/970
     testImplementation("io.quarkus:quarkus-junit4-mock:3.30.0")
 
