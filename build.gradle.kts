@@ -84,7 +84,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("org.xmlunit:xmlunit-matchers:2.11.0")
     testImplementation("org.hamcrest:hamcrest-core:3.0")
-    testImplementation("org.flywaydb:flyway-database-oracle:11.17.2")
+    testImplementation("org.flywaydb:flyway-database-oracle:11.18.0")
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter:$testContainersVersion")
     testImplementation("org.testcontainers:testcontainers-oracle-free:$testContainersVersion")
