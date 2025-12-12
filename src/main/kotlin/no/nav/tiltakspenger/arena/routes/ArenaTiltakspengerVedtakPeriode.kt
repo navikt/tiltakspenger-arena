@@ -15,4 +15,5 @@ data class ArenaTiltakspengerVedtakPeriode(
     val rettighet: Rettighet,
     val vedtakId: Long,
     val sakId: Long,
+    val beslutningsdato: LocalDate?,
 )
