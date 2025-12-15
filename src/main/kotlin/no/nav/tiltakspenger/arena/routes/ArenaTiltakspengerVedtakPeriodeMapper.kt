@@ -19,6 +19,11 @@ object ArenaTiltakspengerVedtakPeriodeMapper {
                 vedtakId = it.verdi.vedtakId,
                 sakId = it.verdi.sakId,
                 beslutningsdato = it.verdi.beslutningsdato,
+                sak = ArenaTiltakspengerVedtakPeriode.Sak(
+                    saksnummer = it.verdi.sak.saksnummer,
+                    opprettetDato = it.verdi.sak.opprettetDato,
+                    status = it.verdi.sak.status,
+                ),
             )
         }?.verdier ?: emptyList()
 

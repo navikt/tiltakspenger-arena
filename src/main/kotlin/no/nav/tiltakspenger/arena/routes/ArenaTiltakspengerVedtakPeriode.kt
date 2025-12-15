@@ -10,10 +10,16 @@ data class ArenaTiltakspengerVedtakPeriode(
     val dagsatsTiltakspenger: Int,
     val dagsatsBarnetillegg: Int,
     val antallBarn: Int,
-    // TODO post-mvp jah: Endre til tiltakGjennomføringsId
     val relaterteTiltak: String,
     val rettighet: Rettighet,
     val vedtakId: Long,
     val sakId: Long,
     val beslutningsdato: LocalDate?,
-)
+    val sak: Sak,
+) {
+    data class Sak(
+        val saksnummer: String,
+        val opprettetDato: LocalDate,
+        val status: String,
+    )
+}

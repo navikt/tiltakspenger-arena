@@ -12,6 +12,7 @@ class ArenaSakDTOTest {
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
+        opprettetDato = LocalDate.of(2022, 1, 8),
         tiltakspengerVedtak = listOf(
             ArenaTiltakspengerVedtakDTO(
                 vedtakId = 1L,
@@ -80,6 +81,7 @@ class ArenaSakDTOTest {
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
+        opprettetDato = LocalDate.of(2022, 1, 8),
         tiltakspengerVedtak = listOf(
             ArenaTiltakspengerVedtakDTO(
                 vedtakId = 11L,
@@ -148,6 +150,7 @@ class ArenaSakDTOTest {
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
+        opprettetDato = LocalDate.of(2022, 1, 8),
         tiltakspengerVedtak = listOf(
             ArenaTiltakspengerVedtakDTO(
                 vedtakId = 20L,
@@ -216,6 +219,7 @@ class ArenaSakDTOTest {
         lopenrSak = 11,
         status = ArenaSakStatus.AKTIV,
         ytelsestype = ArenaYtelse.INDIV,
+        opprettetDato = LocalDate.of(2022, 1, 8),
         tiltakspengerVedtak = emptyList(),
         barnetilleggVedtak = emptyList(),
     )

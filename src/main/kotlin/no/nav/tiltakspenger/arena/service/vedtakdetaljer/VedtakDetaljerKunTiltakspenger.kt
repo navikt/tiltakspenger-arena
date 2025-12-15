@@ -10,4 +10,7 @@ data class VedtakDetaljerKunTiltakspenger(
     val vedtakId: Long,
     val sakId: Long,
     val beslutningsdato: LocalDate?,
+    val saksnummer: String,
+    val sakOpprettetDato: LocalDate,
+    val sakStatus: String,
 )
