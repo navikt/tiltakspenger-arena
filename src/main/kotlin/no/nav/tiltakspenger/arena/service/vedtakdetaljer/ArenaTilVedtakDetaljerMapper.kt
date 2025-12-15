@@ -48,6 +48,7 @@ object ArenaTilVedtakDetaljerMapper {
                 rettighet = Rettighet.INGENTING,
                 vedtakId = 0L,
                 sakId = 0L,
+                beslutningsdato = null,
             ),
             totalPeriode = totalePeriode,
         )
@@ -79,6 +80,7 @@ object ArenaTilVedtakDetaljerMapper {
                         rettighet = Rettighet.TILTAKSPENGER,
                         vedtakId = arenaTiltakspengerVedtakDTO.vedtakId,
                         sakId = arenaTiltakspengerVedtakDTO.tilhørendeSakId,
+                        beslutningsdato = arenaTiltakspengerVedtakDTO.beslutningsdato,
                     ),
                     arenaTiltakspengerVedtakDTO.vedtaksperiode(),
                 )
@@ -144,6 +146,7 @@ object ArenaTilVedtakDetaljerMapper {
                 rettighet = kombinerRettighet(vt, vb),
                 vedtakId = vt.vedtakId,
                 sakId = vt.sakId,
+                beslutningsdato = vt.beslutningsdato,
             )
         }
 

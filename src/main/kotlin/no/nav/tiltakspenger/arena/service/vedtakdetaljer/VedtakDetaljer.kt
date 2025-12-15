@@ -1,5 +1,7 @@
 package no.nav.tiltakspenger.arena.service.vedtakdetaljer
 
+import java.time.LocalDate
+
 data class VedtakDetaljer(
     val antallDager: Double,
     val dagsatsTiltakspenger: Int,
@@ -9,4 +11,5 @@ data class VedtakDetaljer(
     val rettighet: Rettighet,
     val vedtakId: Long,
     val sakId: Long,
+    val beslutningsdato: LocalDate?,
 )
