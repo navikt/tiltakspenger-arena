@@ -5,10 +5,12 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class ArenaSakMedMinstEttVedtakDTO(
+    val sakId: Long,
     val aar: Int,
     val lopenrSak: Long,
     val status: ArenaSakStatus,
     val ytelsestype: ArenaYtelse,
+    val opprettetDato: LocalDate,
     val tiltakspengerVedtak: List<ArenaTiltakspengerVedtakDTO>,
     val barnetilleggVedtak: List<ArenaBarnetilleggVedtakDTO>,
 ) {
@@ -19,10 +21,12 @@ class ArenaSakMedMinstEttVedtakDTO(
                 throw IllegalStateException("Kan ikke opprette ArenaSakMedMinstEttVedtakDTO når saken ikke har vedtak")
             }
             return ArenaSakMedMinstEttVedtakDTO(
+                sakId = arenaSakDTO.sakId,
                 aar = arenaSakDTO.aar,
                 lopenrSak = arenaSakDTO.lopenrSak,
                 status = arenaSakDTO.status,
                 ytelsestype = arenaSakDTO.ytelsestype,
+                opprettetDato = arenaSakDTO.opprettetDato,
                 tiltakspengerVedtak = arenaSakDTO.tiltakspengerVedtak,
                 barnetilleggVedtak = arenaSakDTO.barnetilleggVedtak,
             )

@@ -47,6 +47,7 @@ class SakDAO(
             lopenrSak = long("LOPENRSAK"),
             status = string("SAKSTATUSKODE").toStatus(),
             ytelsestype = string("SAKSKODE").toYtelse(),
+            opprettetDato = localDate("REG_DATO"),
             tiltakspengerVedtak = tiltakspengerVedtak,
             barnetilleggVedtak = barnetilleggVedtak,
         )

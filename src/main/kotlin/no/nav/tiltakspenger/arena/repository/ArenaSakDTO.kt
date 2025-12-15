@@ -13,6 +13,7 @@ data class ArenaSakDTO(
     val lopenrSak: Long,
     val status: ArenaSakStatus,
     val ytelsestype: ArenaYtelse,
+    val opprettetDato: LocalDate,
     val tiltakspengerVedtak: List<ArenaTiltakspengerVedtakDTO>,
     val barnetilleggVedtak: List<ArenaBarnetilleggVedtakDTO>,
 ) {

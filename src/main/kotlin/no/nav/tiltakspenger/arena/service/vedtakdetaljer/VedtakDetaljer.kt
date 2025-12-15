@@ -12,4 +12,11 @@ data class VedtakDetaljer(
     val vedtakId: Long,
     val sakId: Long,
     val beslutningsdato: LocalDate?,
-)
+    val sak: Sak,
+) {
+    data class Sak(
+        val saksnummer: String,
+        val opprettetDato: LocalDate,
+        val status: String,
+    )
+}

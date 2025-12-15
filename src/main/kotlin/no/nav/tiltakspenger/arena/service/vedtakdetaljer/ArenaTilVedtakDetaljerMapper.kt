@@ -7,6 +7,7 @@ import no.nav.tiltakspenger.arena.repository.ArenaTiltakspengerVedtakDTO
 import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import no.nav.tiltakspenger.libs.periodisering.Periode
 import no.nav.tiltakspenger.libs.periodisering.Periodisering
+import java.time.LocalDate
 
 private val LOG = KotlinLogging.logger {}
 
@@ -49,6 +50,9 @@ object ArenaTilVedtakDetaljerMapper {
                 vedtakId = 0L,
                 sakId = 0L,
                 beslutningsdato = null,
+                saksnummer = "",
+                sakOpprettetDato = LocalDate.MIN,
+                sakStatus = "",
             ),
             totalPeriode = totalePeriode,
         )
@@ -72,6 +76,7 @@ object ArenaTilVedtakDetaljerMapper {
         saker
             .flatMap { it.tiltakspengerVedtak }
             .fold(periodeMedTiltakspengerInit) { periodeMedVerdier: Periodisering<VedtakDetaljerKunTiltakspenger>, arenaTiltakspengerVedtakDTO: ArenaTiltakspengerVedtakDTO ->
+                val sak = saker.first { it.sakId == arenaTiltakspengerVedtakDTO.tilhørendeSakId }
                 periodeMedVerdier.setVerdiForDelperiode(
                     VedtakDetaljerKunTiltakspenger(
                         antallDager = arenaTiltakspengerVedtakDTO.antallDager ?: DEFAULT_ANTALL_DAGER,
@@ -81,6 +86,9 @@ object ArenaTilVedtakDetaljerMapper {
                         vedtakId = arenaTiltakspengerVedtakDTO.vedtakId,
                         sakId = arenaTiltakspengerVedtakDTO.tilhørendeSakId,
                         beslutningsdato = arenaTiltakspengerVedtakDTO.beslutningsdato,
+                        saksnummer = sak.fagsystemSakId,
+                        sakOpprettetDato = sak.opprettetDato,
+                        sakStatus = sak.status.navn,
                     ),
                     arenaTiltakspengerVedtakDTO.vedtaksperiode(),
                 )
@@ -147,6 +155,11 @@ object ArenaTilVedtakDetaljerMapper {
                 vedtakId = vt.vedtakId,
                 sakId = vt.sakId,
                 beslutningsdato = vt.beslutningsdato,
+                sak = VedtakDetaljer.Sak(
+                    saksnummer = vt.saksnummer,
+                    opprettetDato = vt.sakOpprettetDato,
+                    status = vt.sakStatus,
+                ),
             )
         }
 
