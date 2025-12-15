@@ -10,7 +10,6 @@ data class ArenaTiltakspengerVedtakPeriode(
     val dagsatsTiltakspenger: Int,
     val dagsatsBarnetillegg: Int,
     val antallBarn: Int,
-    // TODO post-mvp jah: Endre til tiltakGjennomføringsId
     val relaterteTiltak: String,
     val rettighet: Rettighet,
     val vedtakId: Long,
