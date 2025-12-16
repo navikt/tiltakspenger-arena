@@ -1,24 +1,45 @@
 package no.nav.tiltakspenger.arena.repository
 
-import kotlinx.datetime.LocalDate
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 /**
  * Dokumentasjon https://confluence.adeo.no/x/W4NQBw
  */
 class ArenaMeldekortDTO(
     val meldekortId: String,
-    val personId: String,
-    val datoInnkommet: LocalDate,       // mottatt
-    val datoFra: LocalDate,             // fra og med
-    val datoTil: LocalDate,             // til og med
-    val statusArbeidet: Boolean,        // true hvis arbeidetTimer > 0
-    val statusKurs: Boolean,
-    val statusFerie: Boolean,
-    val statusSyk: Boolean,
-    val statusAnnetFravaer: Boolean,
-    val regDato: LocalDate,             // opprettet
-    val modDato: LocalDate,             // sist endret
-    val mksKortKode: String,            // Typen meldekort.. blant annet for å utlede om meldekort er korrigert (10 - med samme periode eller henvisning(?) til dette)
-    val beregningstatusKode: String,    // KLAR, FERDI/...?
-    ) {
+    val personId: Long,
+    val datoInnkommet: LocalDate?,      // mottatt
+    val statusArbeidet: String,         // J/N, J hvis arbeidetTimer > 0
+    val statusKurs: String,             // J/N
+    val statusFerie: String,            // J/N
+    val statusSyk: String,              // J/N
+    val statusAnnetFravaer: String,     // J/N
+    val regDato: LocalDateTime,         // opprettet
+    val modDato: LocalDateTime,         // sist endret
+    val mksKortKode: MKSKortKode,       // Typen meldekort.. blant annet for å utlede om meldekort er korrigert (10 - med samme periode eller henvisning(?) til dette)
+    val beregningstatusKode: BeregningStatusKode,
+    val aar: Int,
+    val periodekode: Int,
+    val meldekortperiode: ArenaMeldekortperiodeDTO,
+    val dager: List<ArenaMeldekortDagDTO>,
+) {
+    enum class BeregningStatusKode {
+        FERDI,
+        KLAR,
+        OPPRE,
+        FEIL,
+        IKKE,
+        NYKTR,
+        OVERM,
+        VENTE
+    }
+
+    enum class MKSKortKode(kode: String) {
+        VANLIG_MELDEKORT("05"),
+        UKJENT_FOR_MEG_2("07"), // Aner ikke, kan være Papir?
+        ETTERREGISTRERING("09"),
+        KORRIGERING("10"),
+        ;
+    }
 }
