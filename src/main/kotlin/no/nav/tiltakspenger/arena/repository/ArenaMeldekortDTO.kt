@@ -8,7 +8,6 @@ import java.time.LocalDateTime
  */
 class ArenaMeldekortDTO(
     val meldekortId: String,
-    val personId: Long,
     val datoInnkommet: LocalDate?,      // mottatt
     val statusArbeidet: String,         // J/N, J hvis arbeidetTimer > 0
     val statusKurs: String,             // J/N
@@ -17,10 +16,10 @@ class ArenaMeldekortDTO(
     val statusAnnetFravaer: String,     // J/N
     val regDato: LocalDateTime,         // opprettet
     val modDato: LocalDateTime,         // sist endret
-    val mksKortKode: MKSKortKode,       // Typen meldekort.. blant annet for å utlede om meldekort er korrigert (10 - med samme periode eller henvisning(?) til dette)
+    val mksKortKode: MKSKortKode,
     val beregningstatusKode: BeregningStatusKode,
     val aar: Int,
-    val periodekode: Int,
+    val totaltArbeidetTimer: Int,
     val meldekortperiode: ArenaMeldekortperiodeDTO,
     val dager: List<ArenaMeldekortDagDTO>,
 ) {
@@ -35,11 +34,24 @@ class ArenaMeldekortDTO(
         VENTE
     }
 
+    /**
+     * 05 - Elektronisk (Elektronisk kort)
+     * 06 - Automatisk utfylt (Automatisk kort)
+     * 07 - Manuelt - ordinær (Manuelt kort)
+     * 09 - Manuelt - Korrigering (Manuelt kort – opprettet av saksbehandler eller kort som opprettes tilbake i tid)
+     * 10 - Elektronisk - Korrigering (Elektronisk kort - korrigert av bruker)
+     *
+     * Det er 05, 06, 07 som stammer fra meldeformtypene EMELD - Elektronisk, AUTO - Automatisk, MANU - Manuell
+     * Papirkort ble sist benyttet i 2020, er av type 01 , 03 og  04. 01 gjelder meldeform PAPIR - Papir
+     *
+     * https://nav-it.slack.com/archives/C09TZJD8UN5/p1767786698799009
+     */
     enum class MKSKortKode(kode: String) {
-        VANLIG_MELDEKORT("05"),
-        UKJENT_FOR_MEG_2("07"), // Aner ikke, kan være Papir?
-        ETTERREGISTRERING("09"),
-        KORRIGERING("10"),
+        ELEKTRONISK("05"),
+        AUTOMATISK_UTFYLT("06"),
+        MANUELT_ORDINÆR("07"),
+        MANUELT_KORRIGERING("09"),
+        ELEKTRONISK_KORRIGERING("10"),
         ;
     }
 }

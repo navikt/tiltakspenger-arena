@@ -13,4 +13,5 @@ class ArenaMeldekortDagDTO(
     val statusAnnetfravaer: String,     // J/N
     val regUser: String,                // opprettetAv (GRENSESN = bruker).
     val regDato: LocalDateTime,         // opprettetDato.
+    val arbeidetTimer: Int,
 )

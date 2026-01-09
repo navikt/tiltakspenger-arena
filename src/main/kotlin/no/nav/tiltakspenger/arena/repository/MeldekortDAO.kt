@@ -5,17 +5,19 @@ import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
 import no.nav.tiltakspenger.libs.logging.Sikkerlogg
+import java.time.LocalDate
 
 class MeldekortDAO(
     private val personDao: PersonDAO,
     private val meldekortdagDAO: MeldekortdagDAO,
-    private val meldekortperiodeDAO: MeldekortperiodeDAO,
 ) {
     private val logger = KotlinLogging.logger {}
 
 
     fun findByFnr(
         fnr: String,
+        fraOgMedDato: LocalDate,
+        tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
     ): List<ArenaMeldekortDTO> {
         val person = personDao.findByFnr(fnr, txSession)
@@ -31,24 +33,37 @@ class MeldekortDAO(
                     //language=SQL
                     """
                         SELECT 
-                            PERSON_ID,
-                            MELDEKORT_ID,
-                            DATO_INNKOMMET,
-                            STATUS_ARBEIDET,
-                            STATUS_KURS,
-                            STATUS_FERIE,
-                            STATUS_SYK,
-                            STATUS_ANNETFRAVAER,
-                            REG_DATO,
-                            MOD_DATO,
-                            MKSKORTKODE,
-                            BEREGNINGSTATUSKODE,
-                            AAR,
-                            PERIODEKODE
-                        FROM MELDEKORT
-                        WHERE PERSON_ID = :personId
+                            m.MELDEKORT_ID            AS MELDEKORT_ID,
+                            m.DATO_INNKOMMET          AS DATO_INNKOMMET,
+                            m.STATUS_ARBEIDET         AS STATUS_ARBEIDET,
+                            m.STATUS_KURS             AS STATUS_KURS,
+                            m.STATUS_FERIE            AS STATUS_FERIE,
+                            m.STATUS_SYK              AS STATUS_SYK,
+                            m.STATUS_ANNETFRAVAER     AS STATUS_ANNETFRAVAER,
+                            m.REG_DATO                AS REG_DATO,
+                            m.MOD_DATO                AS MOD_DATO,
+                            m.MKSKORTKODE             AS MKSKORTKODE,
+                            m.BEREGNINGSTATUSKODE     AS BEREGNINGSTATUSKODE,
+                            mp.AAR                    AS AAR,
+                            mp.PERIODEKODE            AS PERIODEKODE,
+                            mp.UKENR_UKE1             AS UKENR_UKE1,
+                            mp.UKENR_UKE2             AS UKENR_UKE2,
+                            mp.DATO_FRA               AS DATO_FRA,
+                            mp.DATO_TIL               AS DATO_TIL
+                        FROM MELDEKORT m
+                            INNER JOIN PERSON p on m.PERSON_ID = p.PERSON_ID
+                            INNER JOIN MELDEKORTPERIODE mp on m.AAR = mp.AAR AND m.PERIODEKODE = mp.PERIODEKODE
+                        WHERE p.FODSELSNR = :fnr
+                        AND (
+                            mp.DATO_FRA <= TO_DATE(:tilOgMedDato, 'YYYY-MM-DD') 
+                            AND mp.DATO_TIL >= TO_DATE(:fraOgMedDato, 'YYYY-MM-DD')
+                        )
                     """.trimIndent(),
-                paramMap = mapOf("personId" to person.personId),
+                paramMap = mapOf(
+                    "fnr" to fnr,
+                    "fraOgMedDato" to fraOgMedDato,
+                    "tilOgMedDato" to tilOgMedDato,
+                ),
             ).map { row -> row.toMeldekort(txSession) }
                 .asList,
         )
@@ -57,14 +72,10 @@ class MeldekortDAO(
     private fun Row.toMeldekort(txSession: TransactionalSession): ArenaMeldekortDTO {
         val meldekortId = string("MELDEKORT_ID")
         val aar = int("AAR")
-        val periodekode = int("PERIODEKODE")
-        val meldekortperiode = meldekortperiodeDAO.findByAarOgPeriodekode(aar, periodekode, txSession)
-            ?: throw IllegalStateException("Fant ikke meldekortperiode for aar $aar og periodekode $periodekode")
         val dager = meldekortdagDAO.findByMeldekortId(meldekortId, txSession)
 
         return ArenaMeldekortDTO(
             meldekortId = meldekortId,
-            personId = long("PERSON_ID"),
             datoInnkommet = localDateOrNull("DATO_INNKOMMET"),
             statusArbeidet = string("STATUS_ARBEIDET"),
             statusKurs = string("STATUS_KURS"),
@@ -76,9 +87,16 @@ class MeldekortDAO(
             mksKortKode = string("MKSKORTKODE").let { ArenaMeldekortDTO.MKSKortKode.valueOf(it) },
             beregningstatusKode = string("BEREGNINGSTATUSKODE").let { ArenaMeldekortDTO.BeregningStatusKode.valueOf(it) },
             aar = aar,
-            periodekode = periodekode,
             dager = dager,
-            meldekortperiode = meldekortperiode,
+            totaltArbeidetTimer = dager.sumOf { it.arbeidetTimer },
+            meldekortperiode = ArenaMeldekortperiodeDTO(
+                aar = aar,
+                periodekode = int("PERIODEKODE"),
+                ukenrUke1 = int("UKENR_UKE1"),
+                ukenrUke2 = int("UKENR_UKE2"),
+                datoFra = localDate("DATO_FRA"),
+                datoTil = localDate("DATO_TIL"),
+            ),
         )
     }
 }

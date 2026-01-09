@@ -13,7 +13,18 @@ class MeldekortdagDAO {
                 statement =
                     //language=SQL
                     """
-                        SELECT *
+                        SELECT 
+                            MELDEKORT_ID,
+                            UKENR,
+                            DAGNR,
+                            STATUS_ARBEIDSDAG,
+                            STATUS_FERIE,
+                            STATUS_KURS,
+                            STATUS_SYK,
+                            STATUS_ANNETFRAVAER,
+                            REG_USER,
+                            REG_DATO,
+                            TIMER_ARBEIDET
                         FROM MELDEKORTDAG
                         WHERE MELDEKORT_ID = :meldekortId
                     """.trimIndent(),
@@ -36,6 +47,7 @@ class MeldekortdagDAO {
             statusAnnetfravaer = string("STATUS_ANNETFRAVAER"),
             regUser = string("REG_USER"),
             regDato = localDateTime("REG_DATO"),
+            arbeidetTimer = int("TIMER_ARBEIDET"),
         )
     }
 }
