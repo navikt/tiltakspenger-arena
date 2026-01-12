@@ -6,10 +6,10 @@ import kotliquery.queryOf
 import org.intellij.lang.annotations.Language
 
 class VedtakfaktaDAO {
-    fun findTiltakspengerVedtakfaktaByVedtakId(
+    private fun findVedtakFaktaByVedtakId(
         vedtakId: Long,
         txSession: TransactionalSession,
-    ): ArenaTiltakspengerVedtakfaktaDTO {
+    ): List<ArenaVedtakfaktaDTO> {
         val paramMap = mapOf(
             "vedtak_id" to vedtakId.toString(),
         )
@@ -17,21 +17,28 @@ class VedtakfaktaDAO {
             queryOf(sqlFindVedtaksfaktaByVedtakId, paramMap)
                 .map { row -> row.toVedtakfakta() }
                 .asList,
-        ).toArenaTiltakspengerVedtakfaktaDTO()
+        )
+    }
+
+    fun findTiltakspengerVedtakfaktaByVedtakId(
+        vedtakId: Long,
+        txSession: TransactionalSession,
+    ): ArenaTiltakspengerVedtakfaktaDTO {
+        return findVedtakFaktaByVedtakId(vedtakId, txSession).toArenaTiltakspengerVedtakfaktaDTO()
     }
 
     fun findBarnetilleggVedtakfaktaByVedtakId(
         vedtakId: Long,
         txSession: TransactionalSession,
     ): ArenaBarnetilleggVedtakfaktaDTO {
-        val paramMap = mapOf(
-            "vedtak_id" to vedtakId.toString(),
-        )
-        return txSession.run(
-            queryOf(sqlFindVedtaksfaktaByVedtakId, paramMap)
-                .map { row -> row.toVedtakfakta() }
-                .asList,
-        ).toArenaBarnetilleggVedtakfaktaDTO()
+        return findVedtakFaktaByVedtakId(vedtakId, txSession).toArenaBarnetilleggVedtakfaktaDTO()
+    }
+
+    fun findBeregningVedtakfaktaByVedtakId(
+        vedtakId: Long,
+        txSession: TransactionalSession,
+    ): ArenaBeregningVedtakfaktaDTO {
+        return findVedtakFaktaByVedtakId(vedtakId, txSession).toArenaBeregningVedtakfaktaDTO()
     }
 
     private fun Row.toVedtakfakta(): ArenaVedtakfaktaDTO {

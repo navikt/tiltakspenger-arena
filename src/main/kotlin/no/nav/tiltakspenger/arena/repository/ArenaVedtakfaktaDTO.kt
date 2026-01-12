@@ -105,6 +105,12 @@ data class ArenaBarnetilleggVedtakfaktaDTO(
     val maskineltVedtak: String?,
 )
 
+data class ArenaBeregningVedtakfaktaDTO(
+    val dagsats: Int?,
+    val gjelderFra: LocalDate?,
+    val gjelderTil: LocalDate?,
+)
+
 fun List<ArenaVedtakfaktaDTO>.toArenaBarnetilleggVedtakfaktaDTO() =
     ArenaBarnetilleggVedtakfaktaDTO(
         beslutningsdato = this.beslutningsdato(),
@@ -132,6 +138,13 @@ fun List<ArenaVedtakfaktaDTO>.toArenaTiltakspengerVedtakfaktaDTO() =
         gjelderTil = this.gjelderTil(),
         satsKode = this.satsKode(),
         maskineltVedtak = this.maskineltVedtak(),
+    )
+
+fun List<ArenaVedtakfaktaDTO>.toArenaBeregningVedtakfaktaDTO() =
+    ArenaBeregningVedtakfaktaDTO(
+        dagsats = this.dagsats(),
+        gjelderFra = this.gjelderFra(),
+        gjelderTil = this.gjelderTil(),
     )
 
 // Kan være null for tiltakspenger, selv om det kanskje er litt rart?
