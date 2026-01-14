@@ -7,7 +7,7 @@ class ArenaUtbetalingsgrunnlagDTO(
     datoPostert: LocalDate,
     transaksjonstypenavn: String,
     sats: Double,
-    status: String,
+    status: String = "Ikke overført utbetaling",
     vedtakId: Int?,
     beløp: Double,
     datoPeriodeFra: LocalDate,

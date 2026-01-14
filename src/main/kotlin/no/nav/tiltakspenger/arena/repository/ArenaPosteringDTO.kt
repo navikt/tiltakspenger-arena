@@ -7,7 +7,7 @@ class ArenaPosteringDTO(
     datoPostert: LocalDate,
     transaksjonstypenavn: String,
     sats: Double,
-    status: String,
+    status: String = "Overført utbetaling",
     vedtakId: Int?,
     beløp: Double,
     datoPeriodeFra: LocalDate,
