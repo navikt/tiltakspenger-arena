@@ -81,7 +81,7 @@ class AnmerkningDAO(
                     "fraOgMedDato" to fraOgMedDato,
                     "tilOgMedDato" to tilOgMedDato,
                 ),
-            ).map { row -> row.toUtbetalingshistorikk() }
+            ).map { row -> row.tilUtbetalingshistorikk() }
                 .asList,
         )
     }
@@ -126,7 +126,7 @@ class AnmerkningDAO(
         )
     }
 
-    private fun Row.toUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
+    private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
         return ArenaUtbetalingshistorikkDTO(
             meldekortId = string("meldekort_id"),
             datoPostert = localDate("dato_postert"),

@@ -16,7 +16,7 @@ class BeregningsloggDAO(
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
-    ): List<ArenaBeregningsloggDTO> {
+    ): List<ArenaUtbetalingshistorikkDTO> {
         return txSession.run(
             action = queryOf(
                 statement =
@@ -58,18 +58,20 @@ class BeregningsloggDAO(
                     "fraOgMedDato" to fraOgMedDato,
                     "tilOgMedDato" to tilOgMedDato,
                 ),
-            ).map { row -> row.toBeregningslogg() }
+            ).map { row -> row.tilUtbetalingshistorikk() }
                 .asList,
         )
     }
 
-    private fun Row.toBeregningslogg(): ArenaBeregningsloggDTO {
-        return ArenaBeregningsloggDTO(
+    private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
+        return ArenaUtbetalingshistorikkDTO(
             meldekortId = string("meldekort_id"),
             datoPostert = localDate("dato_postert"),
             transaksjonstypenavn = string("transaksjonstypenavn"),
+            sats = 0.0,
             status = string("status"),
             vedtakId = intOrNull("vedtak_id"),
+            beløp = 0.0,
             datoPeriodeFra = localDate("dato_periode_fra"),
             datoPeriodeTil = localDate("dato_periode_til"),
         )

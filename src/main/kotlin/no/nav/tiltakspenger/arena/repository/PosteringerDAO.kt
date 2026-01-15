@@ -17,7 +17,7 @@ class PosteringerDAO(
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
-    ): List<ArenaPosteringDTO> {
+    ): List<ArenaUtbetalingshistorikkDTO> {
         val person = personDao.findByFnr(fnr, txSession)
         if (person == null) {
             logger.info { "Fant ikke person" }
@@ -53,17 +53,18 @@ class PosteringerDAO(
                     "fraOgMedDato" to fraOgMedDato,
                     "tilOgMedDato" to tilOgMedDato,
                 ),
-            ).map { row -> row.toPostering() }
+            ).map { row -> row.tilUtbetalingshistorikk() }
                 .asList,
         )
     }
 
-    private fun Row.toPostering(): ArenaPosteringDTO {
-        return ArenaPosteringDTO(
+    private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
+        return ArenaUtbetalingshistorikkDTO(
             meldekortId = string("MELDEKORT_ID"),
             datoPostert = localDate("DATO_POSTERT"),
             transaksjonstypenavn = string("TRANSAKSJONSTYPENAVN"),
             sats = double("SATS"),
+            status = "Overført utbetaling",
             vedtakId = intOrNull("VEDTAK_ID"),
             beløp = double("BELOEP"),
             datoPeriodeFra = localDate("DATO_PERIODE_FRA"),

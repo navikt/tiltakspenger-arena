@@ -16,7 +16,7 @@ class UtbetalingsgrunnlagDAO(
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
-    ): List<ArenaUtbetalingsgrunnlagDTO> {
+    ): List<ArenaUtbetalingshistorikkDTO> {
         return txSession.run(
             action = queryOf(
                 statement =
@@ -45,17 +45,18 @@ class UtbetalingsgrunnlagDAO(
                     "fraOgMedDato" to fraOgMedDato,
                     "tilOgMedDato" to tilOgMedDato,
                 ),
-            ).map { row -> row.toUtbetalingsgrunnlag() }
+            ).map { row -> row.tilUtbetalingshistorikk() }
                 .asList,
         )
     }
 
-    private fun Row.toUtbetalingsgrunnlag(): ArenaUtbetalingsgrunnlagDTO {
-        return ArenaUtbetalingsgrunnlagDTO(
+    private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
+        return ArenaUtbetalingshistorikkDTO(
             meldekortId = string("MELDEKORT_ID"),
             datoPostert = localDate("DATO_POSTERT"),
             transaksjonstypenavn = string("TRANSAKSJONSTYPENAVN"),
             sats = double("SATS"),
+            status = "Ikke overført utbetaling",
             vedtakId = intOrNull("VEDTAK_ID"),
             beløp = double("BELOEP"),
             datoPeriodeFra = localDate("DATO_PERIODE_FRA"),
