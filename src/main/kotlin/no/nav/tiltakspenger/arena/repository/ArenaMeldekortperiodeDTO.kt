@@ -7,6 +7,6 @@ class ArenaMeldekortperiodeDTO(
     val periodekode: Int,
     val ukenrUke1: Int,
     val ukenrUke2: Int,
-    val datoFra: LocalDate,             // fra og med
-    val datoTil: LocalDate,             // til og med
+    val datoFra: LocalDate, // fra og med
+    val datoTil: LocalDate, // til og med
 )

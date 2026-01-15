@@ -8,14 +8,14 @@ import java.time.LocalDateTime
  */
 class ArenaMeldekortDTO(
     val meldekortId: String,
-    val datoInnkommet: LocalDate?,      // mottatt
-    val statusArbeidet: String,         // J/N, J hvis arbeidetTimer > 0
-    val statusKurs: String,             // J/N
-    val statusFerie: String,            // J/N
-    val statusSyk: String,              // J/N
-    val statusAnnetFravaer: String,     // J/N
-    val regDato: LocalDateTime,         // opprettet
-    val modDato: LocalDateTime,         // sist endret
+    val datoInnkommet: LocalDate?, // mottatt
+    val statusArbeidet: String, // J/N, J hvis arbeidetTimer > 0
+    val statusKurs: String, // J/N
+    val statusFerie: String, // J/N
+    val statusSyk: String, // J/N
+    val statusAnnetFravaer: String, // J/N
+    val regDato: LocalDateTime, // opprettet
+    val modDato: LocalDateTime, // sist endret
     val mksKortKode: MKSKortKode,
     val beregningstatusKode: BeregningStatusKode,
     val aar: Int,
@@ -31,7 +31,7 @@ class ArenaMeldekortDTO(
         IKKE,
         NYKTR,
         OVERM,
-        VENTE
+        VENTE,
     }
 
     /**
@@ -52,6 +52,5 @@ class ArenaMeldekortDTO(
         MANUELT_ORDINÆR("07"),
         MANUELT_KORRIGERING("09"),
         ELEKTRONISK_KORRIGERING("10"),
-        ;
     }
 }
