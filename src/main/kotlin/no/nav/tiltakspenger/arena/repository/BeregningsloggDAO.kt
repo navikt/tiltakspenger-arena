@@ -25,19 +25,21 @@ class BeregningsloggDAO(
                         SELECT 
                             b.OBJEKT_ID                 AS MELDEKORT_ID,
                             b.REG_DATO                  AS REG_DATO,
-                            t.TRANSAKSJONSTYPENAVN      AS TRANSAKSJONSTYPENAVN,
+                            r.RETTIGHETNAVN             AS RETTIGHETNAVN,
                             bs.BEREGNINGSTATUSNAVN      AS BEREGNINGSTATUSNAVN,
                             b.VEDTAK_ID                 AS VEDTAK_ID,
                             b.DATO_FRA                  AS DATO_FRA,
                             b.DATO_TIL                  AS DATO_TIL
                         FROM BEREGNINGSLOGG b
-                        INNER JOIN PERSON pe on pe.PERSON_ID = b.PERSON_ID
-                        INNER JOIN TRANSAKSJONSTYPE t on t.TRANSAKSJONSKODE = b.TRANSAKSJONSKODE
-                        INNER JOIN BEREGNINGSTATUS bs on bs.BEREGNINGSTATUSKODE = b.BEREGNINGSTATUSKODE
+                        INNER JOIN PERSON pe ON pe.PERSON_ID = b.PERSON_ID
+                        INNER JOIN VEDTAK v ON b.vedtak_id = v.vedtak_id
+                        INNER JOIN RETTIGHETTYPE r ON v.RETTIGHETKODE = r.RETTIGHETKODE
+                        INNER JOIN MELDEKORT m ON m.MELDEKORT_ID = b.OBJEKT_ID
+                        INNER JOIN BEREGNINGSTATUS bs ON bs.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE
                         WHERE pe.FODSELSNR = :fnr
                         AND (
-                            b.DATO_PERIODE_FRA <= :tilOgMedDato 
-                            AND b.DATO_PERIODE_TIL >= :fraOgMedDato
+                            b.DATO_FRA <= :tilOgMedDato 
+                            AND b.DATO_TIL >= :fraOgMedDato
                         )
                         AND b.TABELLNAVNALIAS = 'MKORT'
                         AND NOT EXISTS (
@@ -67,7 +69,7 @@ class BeregningsloggDAO(
         return ArenaUtbetalingshistorikkDTO(
             meldekortId = string("MELDEKORT_ID"),
             dato = localDate("REG_DATO"),
-            transaksjonstype = string("TRANSAKSJONSTYPENAVN"),
+            transaksjonstype = string("RETTIGHETNAVN"),
             sats = 0.0,
             status = string("BEREGNINGSTATUSNAVN"),
             vedtakId = intOrNull("VEDTAK_ID"),

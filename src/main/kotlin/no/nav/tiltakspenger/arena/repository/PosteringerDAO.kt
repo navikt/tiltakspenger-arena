@@ -26,11 +26,11 @@ class PosteringerDAO {
                             t.TRANSAKSJONSTYPENAVN  AS TRANSAKSJONSTYPENAVN,
                             p.POSTERINGSATS         AS POSTERINGSATS,
                             p.VEDTAK_ID             AS VEDTAK_ID,
-                            p.BELOEP                AS BELOEP,
+                            p.BELOP                 AS BELOP,
                             p.DATO_PERIODE_FRA      AS DATO_PERIODE_FRA,
                             p.DATO_PERIODE_TIL      AS DATO_PERIODE_TIL
                         FROM POSTERING p
-                        INNER JOIN TRANSAKSJONSTYPE t on t.TRANSAKSJONSKODE = p.TRANSAKSJONSKODE
+                        INNER JOIN TRANSAKSJONTYPE t on t.TRANSAKSJONSKODE = p.TRANSAKSJONSKODE
                         INNER JOIN PERSON pe on pe.PERSON_ID = p.PERSON_ID
                         WHERE pe.FODSELSNR = :fnr
                         AND (

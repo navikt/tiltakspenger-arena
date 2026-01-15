@@ -28,11 +28,11 @@ class UtbetalingsgrunnlagDAO(
                             t.TRANSAKSJONSTYPENAVN      AS TRANSAKSJONSTYPENAVN,
                             u.POSTERINGSATS             AS POSTERINGSATS,
                             u.VEDTAK_ID                 AS VEDTAK_ID,
-                            u.BELOEP                    AS BELOEP,
+                            u.BELOP                     AS BELOP,
                             u.DATO_PERIODE_FRA          AS DATO_PERIODE_FRA,
                             u.DATO_PERIODE_TIL          AS DATO_PERIODE_TIL
                         FROM UTBETALINGSGRUNNLAG u
-                        INNER JOIN TRANSAKSJONSTYPE t on t.TRANSAKSJONSKODE = u.TRANSAKSJONSKODE
+                        INNER JOIN TRANSAKSJONTYPE t on t.TRANSAKSJONSKODE = u.TRANSAKSJONSKODE
                         INNER JOIN PERSON pe on pe.PERSON_ID = u.PERSON_ID
                         WHERE pe.FODSELSNR = :fnr
                         AND (
@@ -58,7 +58,7 @@ class UtbetalingsgrunnlagDAO(
             sats = double("POSTERINGSATS"),
             status = "Ikke overført utbetaling",
             vedtakId = intOrNull("VEDTAK_ID"),
-            beløp = double("BELOEP"),
+            beløp = double("BELOP"),
             fraDato = localDate("DATO_PERIODE_FRA"),
             tilDato = localDate("DATO_PERIODE_TIL"),
         )

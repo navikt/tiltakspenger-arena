@@ -31,18 +31,18 @@ class AnmerkningDAO(
                         SELECT 
                             a.OBJECT_ID                 AS MELDEKORT_ID,
                             a.REG_DATO                  AS REG_DATO,
-                            r.RETTIGHETSNAVN            AS TRANSAKSJONSTYPENAVN,
+                            r.RETTIGHETNAVN             AS RETTIGHETNAVN,
                             bs.BEREGNINGSTATUSNAVN      AS BEREGNINGSTATUSNAVN,
                             a.VEDTAK_ID                 AS VEDTAK_ID,
                             mk.DATO_FRA                 AS DATO_FRA,
                             mk.DATO_TIL                 AS DATO_TIL
                         FROM ANMERKNING a
-                        INNER JOIN VEDTAK v on a.VEDTAK_ID = v.VEDTAK_ID
-                        INNER JOIN RETTIGHETSTYPE r on r.RETTIGHETKODE = v.RETTIGHETKODE
-                        INNER JOIN MELDEKORT m on m.MELDEKORT_ID = a.OBJEKT_ID
-                        INNER JOIN MELDEKORTPERIODE mk on mk.AAR = m.AAR AND mk.PERIODEKODE = m.PERIODEKODE
-                        INNER JOIN BEREGNINGSTATUS bs on bs.BEREGNINGSTATUSKODE = a.BEREGNINGSTATUSKODE
-                        INNER JOIN PERSON pe on pe.PERSON_ID = m.PERSON_ID
+                        INNER JOIN VEDTAK v ON a.VEDTAK_ID = v.VEDTAK_ID
+                        INNER JOIN RETTIGHETTYPE r ON r.RETTIGHETKODE = v.RETTIGHETKODE
+                        INNER JOIN MELDEKORT m ON m.MELDEKORT_ID = a.OBJEKT_ID
+                        INNER JOIN MELDEKORTPERIODE mk ON mk.AAR = m.AAR AND mk.PERIODEKODE = m.PERIODEKODE
+                        INNER JOIN BEREGNINGSTATUS bs ON bs.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE
+                        INNER JOIN PERSON pe ON pe.PERSON_ID = m.PERSON_ID
                         WHERE pe.FODSELSNR = :fnr 
                         AND a.TABELLNAVNALIAS = 'MKORT'
                         AND (
@@ -130,7 +130,7 @@ class AnmerkningDAO(
         return ArenaUtbetalingshistorikkDTO(
             meldekortId = string("MELDEKORT_ID"),
             dato = localDate("REG_DATO"),
-            transaksjonstype = string("TRANSAKSJONSTYPENAVN"),
+            transaksjonstype = string("RETTIGHETNAVN"),
             sats = 0.0,
             status = string("BEREGNINGSTATUSNAVN"),
             vedtakId = intOrNull("VEDTAK_ID"),
