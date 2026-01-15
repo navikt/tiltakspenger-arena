@@ -25,8 +25,8 @@ class AnmerkningDAO(
     ): List<ArenaUtbetalingshistorikkDTO> {
         return txSession.run(
             action = queryOf(
+            //language=SQL
                 statement =
-                    //language=SQL
                     """
                         SELECT 
                             a.OBJECT_ID                 AS MELDEKORT_ID,

@@ -19,8 +19,8 @@ class UtbetalingsgrunnlagDAO(
     ): List<ArenaUtbetalingshistorikkDTO> {
         return txSession.run(
             action = queryOf(
+                //language=SQL
                 statement =
-                    //language=SQL
                     """
                         SELECT 
                             u.MELDEKORT_ID              AS MELDEKORT_ID,
