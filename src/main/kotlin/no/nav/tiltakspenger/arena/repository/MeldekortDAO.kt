@@ -54,9 +54,9 @@ class MeldekortDAO(
                             INNER JOIN PERSON p on m.PERSON_ID = p.PERSON_ID
                             INNER JOIN MELDEKORTPERIODE mp on m.AAR = mp.AAR AND m.PERIODEKODE = mp.PERIODEKODE
                         WHERE p.FODSELSNR = :fnr
-                        AND (
-                            mp.DATO_FRA <= TO_DATE(:tilOgMedDato, 'YYYY-MM-DD') 
-                            AND mp.DATO_TIL >= TO_DATE(:fraOgMedDato, 'YYYY-MM-DD')
+                        AND (   
+                            mp.DATO_FRA <= :tilOgMedDato 
+                            AND mp.DATO_TIL >= :fraOgMedDato
                         )
                     """.trimIndent(),
                 paramMap = mapOf(
@@ -65,6 +65,71 @@ class MeldekortDAO(
                     "tilOgMedDato" to tilOgMedDato,
                 ),
             ).map { row -> row.toMeldekort(txSession) }
+                .asList,
+        )
+    }
+
+    /**
+     * Finner meldekort som er beregnet, men som det ikke finnes posteringer, utbetalingsgrunnlag, beregningslogg eller
+     * anmerkninger for. Dette er da meldekort som er forsøkt beregnet, men som har feilet uten at det har blitt laget
+     * en anmerkning.
+     */
+    fun hentVedtakForUtbetalingshistorikk(
+        fnr: String,
+        fraOgMedDato: LocalDate,
+        tilOgMedDato: LocalDate,
+        txSession: TransactionalSession,
+    ): List<ArenaUtbetalingshistorikkDTO> {
+        return txSession.run(
+            action = queryOf(
+                statement =
+                    //language=SQL
+                    """
+                        SELECT 
+                            m.MELDEKORT_ID            AS MELDEKORT_ID,
+                            m.MOD_DATO                AS MOD_DATO,
+                            m.MELDEKORTKODE           AS MELDEKORTKODE,
+                            be.BEREGNINGSTATUSNAVN    AS BEREGNINGSTATUSNAVN,
+                            mp.DATO_FRA               AS DATO_FRA,
+                            mp.DATO_TIL               AS DATO_TIL
+                        FROM MELDEKORT m
+                            INNER JOIN PERSON p ON m.PERSON_ID = p.PERSON_ID
+                            INNER JOIN MELDEKORTPERIODE mp ON m.AAR = mp.AAR AND m.PERIODEKODE = mp.PERIODEKODE
+                            INNER JOIN BEREGNINGSTATUS be ON be.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE 
+                                AND m.BEREGNINGSTATUSKODE IN ('FERDI','FEIL','VENTE','KLAR')
+                        WHERE p.FODSELSNR = :fnr
+                        AND (
+                            mp.DATO_FRA <= :tilOgMedDato 
+                            AND mp.DATO_TIL >= :fraOgMedDato
+                        )
+                        AND NOT EXISTS (
+                            SELECT 1
+                            FROM  UTBETALINGSGRUNNLAG u
+                            WHERE u.MELDEKORT_ID = m.MELDEKORT_ID
+                        )
+                        AND NOT EXISTS (
+                            SELECT 1
+                          	FROM  POSTERING p
+                          	WHERE p.MELDEKORT_ID = m.MELDEKORT_ID
+                        )
+                        AND NOT EXISTS (
+                            SELECT 1
+                            FROM  BEREGNINGSLOGG b
+                            WHERE b.OBJEKT_ID = m.MELDEKORT_ID
+                        )
+                        AND NOT EXISTS (
+                            SELECT 1
+                            FROM  ANMERKNING a
+                            WHERE a.OBJEKT_ID = m.MELDEKORT_ID
+                          	    AND a.VEDTAK_ID IS NOT NULL
+                        )
+                    """.trimIndent(),
+                paramMap = mapOf(
+                    "fnr" to fnr,
+                    "fraOgMedDato" to fraOgMedDato,
+                    "tilOgMedDato" to tilOgMedDato,
+                ),
+            ).map { row -> row.tilUtbetalingshistorikk() }
                 .asList,
         )
     }
@@ -97,6 +162,24 @@ class MeldekortDAO(
                 datoFra = localDate("DATO_FRA"),
                 datoTil = localDate("DATO_TIL"),
             ),
+        )
+    }
+
+    private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
+        val meldekortkode =
+            string("MELDEKORTKODE") // Har vært MK (Meldekort) siden 2006. Kunne bedt om tilgang til å få hentet det fra tabellen Meldekorttype
+        val transaksjonstypenavn = if (meldekortkode == "MK") "Meldekort" else meldekortkode
+
+        return ArenaUtbetalingshistorikkDTO(
+            meldekortId = string("MELDEKORT_ID"),
+            datoPostert = localDate("MOD_DATO"),
+            transaksjonstypenavn = transaksjonstypenavn,
+            sats = 0.0,
+            status = string("BEREGNINGSTATUSNAVN"),
+            vedtakId = null,
+            beløp = 0.0,
+            datoPeriodeFra = localDate("DATO_FRA"),
+            datoPeriodeTil = localDate("DATO_TIL"),
         )
     }
 }
