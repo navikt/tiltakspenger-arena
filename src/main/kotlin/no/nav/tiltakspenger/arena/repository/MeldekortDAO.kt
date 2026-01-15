@@ -42,8 +42,8 @@ class MeldekortDAO(
                             m.STATUS_ANNETFRAVAER     AS STATUS_ANNETFRAVAER,
                             m.REG_DATO                AS REG_DATO,
                             m.MOD_DATO                AS MOD_DATO,
-                            m.MKSKORTKODE             AS MKSKORTKODE,
-                            m.BEREGNINGSTATUSKODE     AS BEREGNINGSTATUSKODE,
+                            mt.MKSKORTTYPENAVN        AS MELDEKORTTYPE,
+                            be.BEREGNINGSTATUSNAVN    AS BEREGNINGSTATUS,
                             mp.AAR                    AS AAR,
                             mp.PERIODEKODE            AS PERIODEKODE,
                             mp.UKENR_UKE1             AS UKENR_UKE1,
@@ -53,6 +53,8 @@ class MeldekortDAO(
                         FROM MELDEKORT m
                             INNER JOIN PERSON p on m.PERSON_ID = p.PERSON_ID
                             INNER JOIN MELDEKORTPERIODE mp on m.AAR = mp.AAR AND m.PERIODEKODE = mp.PERIODEKODE
+                            INNER JOIN BEREGNINGSTATUS be on be.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE
+                            INNER JOIN MKSKORTTYPE mt ON m.MKSKORTKODE = mt.MKSKORTKODE
                         WHERE p.FODSELSNR = :fnr
                         AND (   
                             mp.DATO_FRA <= :tilOgMedDato 
@@ -149,8 +151,8 @@ class MeldekortDAO(
             statusAnnetFravaer = string("STATUS_ANNETFRAVAER"),
             regDato = localDateTime("REG_DATO"),
             modDato = localDateTime("MOD_DATO"),
-            mksKortKode = string("MKSKORTKODE").let { ArenaMeldekortDTO.MKSKortKode.valueOf(it) },
-            beregningstatusKode = string("BEREGNINGSTATUSKODE").let { ArenaMeldekortDTO.BeregningStatusKode.valueOf(it) },
+            meldekortType = string("MKSKORTTYPENAVN"),
+            beregningstatus = string("BEREGNINGSTATUS"),
             aar = aar,
             dager = dager,
             totaltArbeidetTimer = dager.sumOf { it.arbeidetTimer },
