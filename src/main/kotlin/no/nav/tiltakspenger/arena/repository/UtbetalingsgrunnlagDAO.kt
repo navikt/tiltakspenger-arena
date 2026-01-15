@@ -11,7 +11,7 @@ class UtbetalingsgrunnlagDAO(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    fun findByPersonId(
+    fun hentVedtakForUtbetalingshistorikk(
         fnr: String,
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
@@ -24,9 +24,9 @@ class UtbetalingsgrunnlagDAO(
                     """
                         SELECT 
                             u.MELDEKORT_ID              AS MELDEKORT_ID,
-                            u.MOD_DATO                  AS DATO_POSTERT,
+                            u.MOD_DATO                  AS MOD_DATO,
                             t.TRANSAKSJONSTYPENAVN      AS TRANSAKSJONSTYPENAVN,
-                            u.POSTERINGSATS             AS SATS,
+                            u.POSTERINGSATS             AS POSTERINGSATS,
                             u.VEDTAK_ID                 AS VEDTAK_ID,
                             u.BELOEP                    AS BELOEP,
                             u.DATO_PERIODE_FRA          AS DATO_PERIODE_FRA,
@@ -36,8 +36,8 @@ class UtbetalingsgrunnlagDAO(
                         INNER JOIN PERSON pe on pe.PERSON_ID = u.PERSON_ID
                         WHERE pe.FODSELSNR = :fnr
                         AND (
-                            u.DATO_PERIODE_FRA <= TO_DATE(:tilOgMedDato, 'YYYY-MM-DD') 
-                            AND u.DATO_PERIODE_TIL >= TO_DATE(:fraOgMedDato, 'YYYY-MM-DD')
+                            u.DATO_PERIODE_FRA <= :tilOgMedDato 
+                            AND u.DATO_PERIODE_TIL >= :fraOgMedDato
                         )
                     """.trimIndent(),
                 paramMap = mapOf(
@@ -53,14 +53,14 @@ class UtbetalingsgrunnlagDAO(
     private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
         return ArenaUtbetalingshistorikkDTO(
             meldekortId = string("MELDEKORT_ID"),
-            datoPostert = localDate("DATO_POSTERT"),
-            transaksjonstypenavn = string("TRANSAKSJONSTYPENAVN"),
-            sats = double("SATS"),
+            dato = localDate("MOD_DATO"),
+            transaksjonstype = string("TRANSAKSJONSTYPENAVN"),
+            sats = double("POSTERINGSATS"),
             status = "Ikke overført utbetaling",
             vedtakId = intOrNull("VEDTAK_ID"),
             beløp = double("BELOEP"),
-            datoPeriodeFra = localDate("DATO_PERIODE_FRA"),
-            datoPeriodeTil = localDate("DATO_PERIODE_TIL"),
+            fraDato = localDate("DATO_PERIODE_FRA"),
+            tilDato = localDate("DATO_PERIODE_TIL"),
         )
     }
 }

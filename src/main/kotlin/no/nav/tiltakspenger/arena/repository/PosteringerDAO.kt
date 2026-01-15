@@ -4,27 +4,17 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
-import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.LocalDate
 
-class PosteringerDAO(
-    private val personDao: PersonDAO,
-) {
+class PosteringerDAO {
     private val logger = KotlinLogging.logger {}
 
-    fun findByPersonId(
+    fun hentVedtakForUtbetalingshistorikk(
         fnr: String,
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
     ): List<ArenaUtbetalingshistorikkDTO> {
-        val person = personDao.findByFnr(fnr, txSession)
-        if (person == null) {
-            logger.info { "Fant ikke person" }
-            Sikkerlogg.info { "Fant ikke person med ident $fnr" }
-            return emptyList()
-        }
-
         return txSession.run(
             action = queryOf(
                 statement =
@@ -34,7 +24,7 @@ class PosteringerDAO(
                             p.MELDEKORT_ID          AS MELDEKORT_ID,
                             p.DATO_POSTERT          AS DATO_POSTERT,
                             t.TRANSAKSJONSTYPENAVN  AS TRANSAKSJONSTYPENAVN,
-                            p.POSTERINGSATS         AS SATS,
+                            p.POSTERINGSATS         AS POSTERINGSATS,
                             p.VEDTAK_ID             AS VEDTAK_ID,
                             p.BELOEP                AS BELOEP,
                             p.DATO_PERIODE_FRA      AS DATO_PERIODE_FRA,
@@ -61,14 +51,14 @@ class PosteringerDAO(
     private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
         return ArenaUtbetalingshistorikkDTO(
             meldekortId = string("MELDEKORT_ID"),
-            datoPostert = localDate("DATO_POSTERT"),
-            transaksjonstypenavn = string("TRANSAKSJONSTYPENAVN"),
-            sats = double("SATS"),
+            dato = localDate("DATO_POSTERT"),
+            transaksjonstype = string("TRANSAKSJONSTYPENAVN"),
+            sats = double("POSTERINGSATS"),
             status = "Overført utbetaling",
             vedtakId = intOrNull("VEDTAK_ID"),
             beløp = double("BELOEP"),
-            datoPeriodeFra = localDate("DATO_PERIODE_FRA"),
-            datoPeriodeTil = localDate("DATO_PERIODE_TIL"),
+            fraDato = localDate("DATO_PERIODE_FRA"),
+            tilDato = localDate("DATO_PERIODE_TIL"),
         )
     }
 }

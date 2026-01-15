@@ -29,51 +29,51 @@ class AnmerkningDAO(
                     //language=SQL
                     """
                         SELECT 
-                            a.object_id                 AS meldekort_id,
-                            a.reg_dato                  AS dato_postert,
-                            r.rettighetsnavn            AS transaksjonstypenavn,
-                            bs.beregningstatusnavn      AS status,
-                            a.vedtak_id                 AS vedtak_id,
-                            mk.dato_fra                 AS dato_periode_fra,
-                            mk.dato_til                 AS dato_periode_til
-                        FROM anmerkning a
-                        INNER JOIN vedtak v on a.vedtak_id = v.vedtak_id
-                        INNER JOIN rettighetstype r on r.rettighetkode = v.rettighetkode
-                        INNER JOIN meldekort m on m.meldekort_id = a.objekt_id
-                        INNER JOIN meldekortperiode mk on mk.aar = m.aar AND mk.periodekode = m.periodekode
-                        INNER JOIN beregningstatus bs on bs.beregningstatuskode = a.beregningstatuskode
-                        INNER JOIN person pe on pe.person_id = m.person_id
-                        WHERE pe.fodselsnr = :fnr 
-                        AND a.tabellnavnalias = 'MKORT'
+                            a.OBJECT_ID                 AS MELDEKORT_ID,
+                            a.REG_DATO                  AS REG_DATO,
+                            r.RETTIGHETSNAVN            AS TRANSAKSJONSTYPENAVN,
+                            bs.BEREGNINGSTATUSNAVN      AS BEREGNINGSTATUSNAVN,
+                            a.VEDTAK_ID                 AS VEDTAK_ID,
+                            mk.DATO_FRA                 AS DATO_FRA,
+                            mk.DATO_TIL                 AS DATO_TIL
+                        FROM ANMERKNING a
+                        INNER JOIN VEDTAK v on a.VEDTAK_ID = v.VEDTAK_ID
+                        INNER JOIN RETTIGHETSTYPE r on r.RETTIGHETKODE = v.RETTIGHETKODE
+                        INNER JOIN MELDEKORT m on m.MELDEKORT_ID = a.OBJEKT_ID
+                        INNER JOIN MELDEKORTPERIODE mk on mk.AAR = m.AAR AND mk.PERIODEKODE = m.PERIODEKODE
+                        INNER JOIN BEREGNINGSTATUS bs on bs.BEREGNINGSTATUSKODE = a.BEREGNINGSTATUSKODE
+                        INNER JOIN PERSON pe on pe.PERSON_ID = m.PERSON_ID
+                        WHERE pe.FODSELSNR = :fnr 
+                        AND a.TABELLNAVNALIAS = 'MKORT'
                         AND (
-                                mk.dato_fra <= :tilOgMedDato 
-                            AND mk.dato_til >= :fraOgMedDato
+                                mk.DATO_FRA <= :tilOgMedDato 
+                            AND mk.DATO_TIL >= :fraOgMedDato
                         )                        
                         AND NOT EXISTS (
                         -- Optimizer hint for å bruke index på anmerkning_id
                         -- https://docs.oracle.com/cd/B10500_01/server.920/a96533/hintsref.htm#5156
                             SELECT /*+ INDEX(a2 ANMERK_I) */ 1
-                            FROM  anmerkning a2
-                            WHERE a2.anmerkning_id  < a.anmerkning_id
-                            AND   a2.vedtak_id      = a.vedtak_id
-                            AND   a2.objekt_id      = a.objekt_id
+                            FROM  ANMERKNING a2
+                            WHERE a2.ANMERKNING_ID  < a.ANMERKNING_ID
+                            AND   a2.VEDTAK_ID      = a.VEDTAK_ID
+                            AND   a2.OBJEKT_ID      = a.OBJEKT_ID
                         )
                         AND NOT EXISTS (
                             SELECT 1
-                        	FROM  utbetalingsgrunnlag u
-                        	WHERE u.meldekort_id  = a.objekt_id
-                        	AND   u.vedtak_id     = a.vedtak_id
+                        	FROM  UTBETALINGSGRUNNLAG u
+                        	WHERE u.MELDEKORT_ID  = a.OBJEKT_ID
+                        	AND   u.VEDTAK_ID     = a.VEDTAK_ID
                         )
                         AND NOT EXISTS (
                             SELECT 1 
-                            FROM  postering p
-                        	WHERE p.meldekort_id  = a.objekt_id
-                        	AND   p.vedtak_id     = a.vedtak_id
+                            FROM  POSTERING p
+                        	WHERE p.MELDEKORT_ID  = a.OBJEKT_ID
+                        	AND   p.VEDTAK_ID     = a.VEDTAK_ID
                         )
                         AND NOT EXISTS (
                             SELECT 1
-                            FROM  beregningslogg b
-                            WHERE b.objekt_id = m.meldekort_id
+                            FROM  BEREGNINGSLOGG b
+                            WHERE b.OBJEKT_ID = m.MELDEKORT_ID
                         )
                     """.trimIndent(),
                 paramMap = mapOf(
@@ -128,15 +128,15 @@ class AnmerkningDAO(
 
     private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
         return ArenaUtbetalingshistorikkDTO(
-            meldekortId = string("meldekort_id"),
-            datoPostert = localDate("dato_postert"),
-            transaksjonstypenavn = string("transaksjonstypenavn"),
+            meldekortId = string("MELDEKORT_ID"),
+            dato = localDate("REG_DATO"),
+            transaksjonstype = string("TRANSAKSJONSTYPENAVN"),
             sats = 0.0,
-            status = string("status"),
-            vedtakId = intOrNull("vedtak_id"),
+            status = string("BEREGNINGSTATUSNAVN"),
+            vedtakId = intOrNull("VEDTAK_ID"),
             beløp = 0.0,
-            datoPeriodeFra = localDate("dato_periode_fra"),
-            datoPeriodeTil = localDate("dato_periode_til"),
+            fraDato = localDate("DATO_FRA"),
+            tilDato = localDate("DATO_TIL"),
         )
     }
 }

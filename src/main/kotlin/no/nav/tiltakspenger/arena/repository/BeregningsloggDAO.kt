@@ -23,34 +23,34 @@ class BeregningsloggDAO(
                     //language=SQL
                     """
                         SELECT 
-                            b.objekt_id                 AS meldekort_id,
-                            b.reg_dato                  AS dato_postert,
-                            t.transaksjonstypenavn      AS transaksjonstypenavn,
-                            bs.beregningstatusnavn      AS status,
-                            b.vedtak_id                 AS vedtak_id,
-                            b.dato_fra                  AS dato_periode_fra,
-                            b.dato_til                  AS dato_periode_til
-                        FROM beregningslogg b
-                        INNER JOIN person pe on pe.person_id = b.person_id
-                        INNER JOIN transaksjonstype t on t.transaksjonskode = b.transaksjonskode
-                        INNER JOIN beregningstatus bs on bs.beregningstatuskode = b.beregningstatuskode
-                        WHERE pe.fodselsnr = :fnr
+                            b.OBJEKT_ID                 AS MELDEKORT_ID,
+                            b.REG_DATO                  AS REG_DATO,
+                            t.TRANSAKSJONSTYPENAVN      AS TRANSAKSJONSTYPENAVN,
+                            bs.BEREGNINGSTATUSNAVN      AS BEREGNINGSTATUSNAVN,
+                            b.VEDTAK_ID                 AS VEDTAK_ID,
+                            b.DATO_FRA                  AS DATO_FRA,
+                            b.DATO_TIL                  AS DATO_TIL
+                        FROM BEREGNINGSLOGG b
+                        INNER JOIN PERSON pe on pe.PERSON_ID = b.PERSON_ID
+                        INNER JOIN TRANSAKSJONSTYPE t on t.TRANSAKSJONSKODE = b.TRANSAKSJONSKODE
+                        INNER JOIN BEREGNINGSTATUS bs on bs.BEREGNINGSTATUSKODE = b.BEREGNINGSTATUSKODE
+                        WHERE pe.FODSELSNR = :fnr
                         AND (
-                            b.dato_periode_fra <= TO_DATE(:tilOgMedDato, 'YYYY-MM-DD') 
-                            AND b.dato_periode_til >= TO_DATE(:fraOgMedDato, 'YYYY-MM-DD')
+                            b.DATO_PERIODE_FRA <= :tilOgMedDato 
+                            AND b.DATO_PERIODE_TIL >= :fraOgMedDato
                         )
-                        AND b.tabellnavnalias = 'MKORT'
+                        AND b.TABELLNAVNALIAS = 'MKORT'
                         AND NOT EXISTS (
                             SELECT 1
-                                FROM  utbetalingsgrunnlag u
-                                WHERE u.meldekort_id  = b.objekt_id
-                                AND   u.vedtak_id     = b.vedtak_id
+                                FROM  UTBETALINGSGRUNNLAG u
+                                WHERE u.MELDEKORT_ID  = b.OBJEKT_ID
+                                AND   u.VEDTAK_ID     = b.VEDTAK_ID
                         )
                         AND NOT EXISTS (
                             SELECT 1
-		                            FROM  postering p
-		                            WHERE p.meldekort_id  = b.objekt_id
-		                            AND   p.vedtak_id     = b.vedtak_id
+		                            FROM  POSTERING p
+		                            WHERE p.MELDEKORT_ID  = b.OBJEKT_ID
+		                            AND   p.VEDTAK_ID     = b.VEDTAK_ID
                         )
                     """.trimIndent(),
                 paramMap = mapOf(
@@ -65,15 +65,15 @@ class BeregningsloggDAO(
 
     private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
         return ArenaUtbetalingshistorikkDTO(
-            meldekortId = string("meldekort_id"),
-            datoPostert = localDate("dato_postert"),
-            transaksjonstypenavn = string("transaksjonstypenavn"),
+            meldekortId = string("MELDEKORT_ID"),
+            dato = localDate("REG_DATO"),
+            transaksjonstype = string("TRANSAKSJONSTYPENAVN"),
             sats = 0.0,
-            status = string("status"),
-            vedtakId = intOrNull("vedtak_id"),
+            status = string("BEREGNINGSTATUSNAVN"),
+            vedtakId = intOrNull("VEDTAK_ID"),
             beløp = 0.0,
-            datoPeriodeFra = localDate("dato_periode_fra"),
-            datoPeriodeTil = localDate("dato_periode_til"),
+            fraDato = localDate("DATO_FRA"),
+            tilDato = localDate("DATO_TIL"),
         )
     }
 }

@@ -4,12 +4,12 @@ import java.time.LocalDate
 
 class ArenaUtbetalingshistorikkDTO(
     meldekortId: String,
-    datoPostert: LocalDate,
-    transaksjonstypenavn: String,
+    dato: LocalDate,
+    transaksjonstype: String,
     sats: Double,
     status: String,
     vedtakId: Int?,
     beløp: Double,
-    datoPeriodeFra: LocalDate,
-    datoPeriodeTil: LocalDate,
+    fraDato: LocalDate,
+    tilDato: LocalDate,
 )

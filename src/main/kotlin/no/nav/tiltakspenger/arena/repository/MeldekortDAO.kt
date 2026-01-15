@@ -172,14 +172,14 @@ class MeldekortDAO(
 
         return ArenaUtbetalingshistorikkDTO(
             meldekortId = string("MELDEKORT_ID"),
-            datoPostert = localDate("MOD_DATO"),
-            transaksjonstypenavn = transaksjonstypenavn,
+            dato = localDate("MOD_DATO"),
+            transaksjonstype = transaksjonstypenavn,
             sats = 0.0,
             status = string("BEREGNINGSTATUSNAVN"),
             vedtakId = null,
             beløp = 0.0,
-            datoPeriodeFra = localDate("DATO_FRA"),
-            datoPeriodeTil = localDate("DATO_TIL"),
+            fraDato = localDate("DATO_FRA"),
+            tilDato = localDate("DATO_TIL"),
         )
     }
 }
