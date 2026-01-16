@@ -99,7 +99,7 @@ class AnmerkningDAO(
                         SELECT 
                             a.VEDTAK_ID     AS VEDTAK_ID,
                             a.REG_DATO      AS REG_DATO,
-                            at.BESKRIVELSE  AS BESKRIVELSE
+                            REPLACE(at.beskrivelse, chr(038)||chr(049), a.verdi) AS BESKRIVELSE -- Erstatter template variabel &1 med verdi
                         FROM ANMERKNING a
                         INNER JOIN ANMERKNINGTYPE at ON a.ANMERKNINGKODE = at.ANMERKNINGKODE                 
                         WHERE a.TABELLNAVNALIAS = 'MKORT' 
