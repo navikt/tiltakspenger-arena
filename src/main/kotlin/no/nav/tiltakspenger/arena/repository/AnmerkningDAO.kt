@@ -101,7 +101,7 @@ class AnmerkningDAO(
                             a.REG_DATO      AS REG_DATO,
                             at.BESKRIVELSE  AS BESKRIVELSE
                         FROM ANMERKNING a
-                        INNER JOIN ANMERKNINGTYPE at ON a.ANMERKNINGTYPE_ID = at.ANMERKNINGTYPE_ID                  
+                        INNER JOIN ANMERKNINGTYPE at ON a.ANMERKNINGKODE = at.ANMERKNINGKODE                 
                         WHERE a.TABELLNAVNALIAS = 'MKORT' 
                         AND a.OBJEKT_ID = :meldekortId
                         AND (a.VEDTAK_ID = :vedtakId OR a.VEDTAK_ID IS NULL)
