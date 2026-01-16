@@ -1,24 +1,19 @@
 package no.nav.tiltakspenger.arena.repository
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
 import no.nav.tiltakspenger.arena.routes.ArenaAnmerkningDTO
 import java.time.LocalDate
 
-class AnmerkningDAO(
-    private val personDao: PersonDAO,
-) {
-    private val logger = KotlinLogging.logger {}
-
+class AnmerkningDAO {
     /**
      * Finner vedtak ut fra anmerkning, hvor vedtaket ikke har en tilknyttet postering, utbetalingsgrunnlag eller
      * beregningslogg. Dette er da vedtak som er forsøkt beregenet, men som feilet og fikk laget en anmerkning på seg.
      * Henter kun vedtak knyttet til anmerkningen med den laveste iden for at vedtaket kun skal hentes en gang.
      */
     fun hentVedtakForUtbetalingshistorikk(
-        fnr: String,
+        personId: Long,
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
@@ -42,8 +37,7 @@ class AnmerkningDAO(
                         INNER JOIN MELDEKORT m ON m.MELDEKORT_ID = a.OBJEKT_ID
                         INNER JOIN MELDEKORTPERIODE mk ON mk.AAR = m.AAR AND mk.PERIODEKODE = m.PERIODEKODE
                         INNER JOIN BEREGNINGSTATUS bs ON bs.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE
-                        INNER JOIN PERSON pe ON pe.PERSON_ID = m.PERSON_ID
-                        WHERE pe.FODSELSNR = :fnr 
+                        WHERE m.PERSON_ID = :personId 
                         AND a.TABELLNAVNALIAS = 'MKORT'
                         AND (
                                 mk.DATO_FRA <= :tilOgMedDato 
@@ -77,7 +71,7 @@ class AnmerkningDAO(
                         )
                 """.trimIndent(),
                 paramMap = mapOf(
-                    "fnr" to fnr,
+                    "personId" to personId,
                     "fraOgMedDato" to fraOgMedDato,
                     "tilOgMedDato" to tilOgMedDato,
                 ),

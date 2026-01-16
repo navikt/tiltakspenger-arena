@@ -1,18 +1,13 @@
 package no.nav.tiltakspenger.arena.repository
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
 import java.time.LocalDate
 
-class BeregningsloggDAO(
-    private val personDao: PersonDAO,
-) {
-    private val logger = KotlinLogging.logger {}
-
-    fun hentForUtbetalingshistorikk(
-        fnr: String,
+class BeregningsloggDAO {
+    fun hentVedtakForUtbetalingshistorikk(
+        personId: Long,
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
@@ -31,12 +26,11 @@ class BeregningsloggDAO(
                             b.DATO_FRA                  AS DATO_FRA,
                             b.DATO_TIL                  AS DATO_TIL
                         FROM BEREGNINGSLOGG b
-                        INNER JOIN PERSON pe ON pe.PERSON_ID = b.PERSON_ID
                         INNER JOIN VEDTAK v ON b.vedtak_id = v.vedtak_id
                         INNER JOIN RETTIGHETTYPE r ON v.RETTIGHETKODE = r.RETTIGHETKODE
                         INNER JOIN MELDEKORT m ON m.MELDEKORT_ID = b.OBJEKT_ID
                         INNER JOIN BEREGNINGSTATUS bs ON bs.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE
-                        WHERE pe.FODSELSNR = :fnr
+                        WHERE b.PERSON_ID = :personId
                         AND (
                             b.DATO_FRA <= :tilOgMedDato 
                             AND b.DATO_TIL >= :fraOgMedDato
@@ -56,7 +50,7 @@ class BeregningsloggDAO(
                         )
                 """.trimIndent(),
                 paramMap = mapOf(
-                    "fnr" to fnr,
+                    "personId" to personId,
                     "fraOgMedDato" to fraOgMedDato,
                     "tilOgMedDato" to tilOgMedDato,
                 ),

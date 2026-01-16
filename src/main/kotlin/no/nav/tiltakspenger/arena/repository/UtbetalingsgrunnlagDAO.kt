@@ -1,18 +1,13 @@
 package no.nav.tiltakspenger.arena.repository
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
 import java.time.LocalDate
 
-class UtbetalingsgrunnlagDAO(
-    private val personDao: PersonDAO,
-) {
-    private val logger = KotlinLogging.logger {}
-
+class UtbetalingsgrunnlagDAO {
     fun hentVedtakForUtbetalingshistorikk(
-        fnr: String,
+        personId: Long,
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
@@ -33,15 +28,14 @@ class UtbetalingsgrunnlagDAO(
                             u.DATO_PERIODE_TIL          AS DATO_PERIODE_TIL
                         FROM UTBETALINGSGRUNNLAG u
                         INNER JOIN TRANSAKSJONTYPE t on t.TRANSAKSJONSKODE = u.TRANSAKSJONSKODE
-                        INNER JOIN PERSON pe on pe.PERSON_ID = u.PERSON_ID
-                        WHERE pe.FODSELSNR = :fnr
+                        WHERE u.PERSON_ID = :personId
                         AND (
                             u.DATO_PERIODE_FRA <= :tilOgMedDato 
                             AND u.DATO_PERIODE_TIL >= :fraOgMedDato
                         )
                 """.trimIndent(),
                 paramMap = mapOf(
-                    "fnr" to fnr,
+                    "personId" to personId,
                     "fraOgMedDato" to fraOgMedDato,
                     "tilOgMedDato" to tilOgMedDato,
                 ),

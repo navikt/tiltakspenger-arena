@@ -4,28 +4,19 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
-import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.LocalDate
 
 class MeldekortDAO(
-    private val personDao: PersonDAO,
-    private val meldekortdagDAO: MeldekortdagDAO,
+    private val meldekortdagDAO: MeldekortdagDAO = MeldekortdagDAO(),
 ) {
     private val logger = KotlinLogging.logger {}
 
-    fun findByFnr(
-        fnr: String,
+    fun findByPersonId(
+        personId: Long,
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
     ): List<ArenaMeldekortDTO> {
-        val person = personDao.findByFnr(fnr, txSession)
-        if (person == null) {
-            logger.info { "Fant ikke person" }
-            Sikkerlogg.info { "Fant ikke person med ident $fnr" }
-            return emptyList()
-        }
-
         return txSession.run(
             action = queryOf(
                 //language=SQL
@@ -50,18 +41,17 @@ class MeldekortDAO(
                             mp.DATO_FRA               AS DATO_FRA,
                             mp.DATO_TIL               AS DATO_TIL
                         FROM MELDEKORT m
-                            INNER JOIN PERSON p on m.PERSON_ID = p.PERSON_ID
                             INNER JOIN MELDEKORTPERIODE mp on m.AAR = mp.AAR AND m.PERIODEKODE = mp.PERIODEKODE
                             INNER JOIN BEREGNINGSTATUS be on be.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE
                             INNER JOIN MKSKORTTYPE mt ON m.MKSKORTKODE = mt.MKSKORTKODE
-                        WHERE p.FODSELSNR = :fnr
+                        WHERE m.PERSON_ID = :personId
                         AND (   
                             mp.DATO_FRA <= :tilOgMedDato 
                             AND mp.DATO_TIL >= :fraOgMedDato
                         )
                 """.trimIndent(),
                 paramMap = mapOf(
-                    "fnr" to fnr,
+                    "personId" to personId,
                     "fraOgMedDato" to fraOgMedDato,
                     "tilOgMedDato" to tilOgMedDato,
                 ),
@@ -76,7 +66,7 @@ class MeldekortDAO(
      * en anmerkning.
      */
     fun hentVedtakForUtbetalingshistorikk(
-        fnr: String,
+        personId: Long,
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
@@ -94,11 +84,10 @@ class MeldekortDAO(
                             mp.DATO_FRA               AS DATO_FRA,
                             mp.DATO_TIL               AS DATO_TIL
                         FROM MELDEKORT m
-                            INNER JOIN PERSON p ON m.PERSON_ID = p.PERSON_ID
                             INNER JOIN MELDEKORTPERIODE mp ON m.AAR = mp.AAR AND m.PERIODEKODE = mp.PERIODEKODE
                             INNER JOIN BEREGNINGSTATUS be ON be.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE 
                                 AND m.BEREGNINGSTATUSKODE IN ('FERDI','FEIL','VENTE','KLAR')
-                        WHERE p.FODSELSNR = :fnr
+                        WHERE m.PERSON_ID = :personId
                         AND (
                             mp.DATO_FRA <= :tilOgMedDato 
                             AND mp.DATO_TIL >= :fraOgMedDato
@@ -126,7 +115,7 @@ class MeldekortDAO(
                         )
                 """.trimIndent(),
                 paramMap = mapOf(
-                    "fnr" to fnr,
+                    "personId" to personId,
                     "fraOgMedDato" to fraOgMedDato,
                     "tilOgMedDato" to tilOgMedDato,
                 ),
