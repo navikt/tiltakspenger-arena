@@ -6,13 +6,14 @@ import kotliquery.queryOf
 
 class MeldekortdagDAO {
     fun findByMeldekortId(
-        meldekortId: String, txSession: TransactionalSession,
+        meldekortId: String,
+        txSession: TransactionalSession,
     ): List<ArenaMeldekortDagDTO> {
+        //language=SQL
         return txSession.run(
             action = queryOf(
                 statement =
-                    //language=SQL
-                    """
+                """
                         SELECT 
                             MELDEKORT_ID,
                             UKENR,
@@ -27,13 +28,12 @@ class MeldekortdagDAO {
                             TIMER_ARBEIDET
                         FROM MELDEKORTDAG
                         WHERE MELDEKORT_ID = :meldekortId
-                    """.trimIndent(),
+                """.trimIndent(),
                 paramMap = mapOf("meldekortId" to meldekortId),
             ).map { row -> row.toMeldekortdag() }
                 .asList,
         )
     }
-
 
     private fun Row.toMeldekortdag(): ArenaMeldekortDagDTO {
         return ArenaMeldekortDagDTO(

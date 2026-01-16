@@ -17,11 +17,11 @@ class BeregningsloggDAO(
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
     ): List<ArenaUtbetalingshistorikkDTO> {
+        //language=SQL
         return txSession.run(
             action = queryOf(
-                //language=SQL
                 statement =
-                    """
+                """
                         SELECT 
                             b.OBJEKT_ID                 AS MELDEKORT_ID,
                             b.REG_DATO                  AS REG_DATO,
@@ -50,11 +50,11 @@ class BeregningsloggDAO(
                         )
                         AND NOT EXISTS (
                             SELECT 1
-		                            FROM  POSTERING p
-		                            WHERE p.MELDEKORT_ID  = b.OBJEKT_ID
-		                            AND   p.VEDTAK_ID     = b.VEDTAK_ID
+                                    FROM  POSTERING p
+                                    WHERE p.MELDEKORT_ID  = b.OBJEKT_ID
+                                    AND   p.VEDTAK_ID     = b.VEDTAK_ID
                         )
-                    """.trimIndent(),
+                """.trimIndent(),
                 paramMap = mapOf(
                     "fnr" to fnr,
                     "fraOgMedDato" to fraOgMedDato,

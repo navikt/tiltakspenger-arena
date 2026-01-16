@@ -25,9 +25,9 @@ class AnmerkningDAO(
     ): List<ArenaUtbetalingshistorikkDTO> {
         return txSession.run(
             action = queryOf(
-            //language=SQL
+                //language=SQL
                 statement =
-                    """
+                """
                         SELECT 
                             a.OBJECT_ID                 AS MELDEKORT_ID,
                             a.REG_DATO                  AS REG_DATO,
@@ -75,7 +75,7 @@ class AnmerkningDAO(
                             FROM  BEREGNINGSLOGG b
                             WHERE b.OBJEKT_ID = m.MELDEKORT_ID
                         )
-                    """.trimIndent(),
+                """.trimIndent(),
                 paramMap = mapOf(
                     "fnr" to fnr,
                     "fraOgMedDato" to fraOgMedDato,
@@ -91,21 +91,22 @@ class AnmerkningDAO(
         meldekortId: Int,
         txSession: TransactionalSession,
     ): List<ArenaAnmerkningDTO> {
+        //language=SQL
         return txSession.run(
             action = queryOf(
                 statement =
-                    //language=SQL
-                    """
-                        SELECT 
-                            a.VEDTAK_ID     AS VEDTAK_ID,
-                            a.REG_DATO      AS REG_DATO,
-                            REPLACE(at.beskrivelse, chr(038)||chr(049), a.verdi) AS BESKRIVELSE -- Erstatter template variabel &1 med verdi
-                        FROM ANMERKNING a
-                        INNER JOIN ANMERKNINGTYPE at ON a.ANMERKNINGKODE = at.ANMERKNINGKODE                 
-                        WHERE a.TABELLNAVNALIAS = 'MKORT' 
-                        AND a.OBJEKT_ID = :meldekortId
-                        AND (a.VEDTAK_ID = :vedtakId OR a.VEDTAK_ID IS NULL)
-                    """.trimIndent(),
+                """
+                    SELECT 
+                        a.VEDTAK_ID     AS VEDTAK_ID,
+                        a.REG_DATO      AS REG_DATO,
+                        -- Erstatter template variabel &1 med verdi
+                        REPLACE(at.beskrivelse, chr(038)||chr(049), a.verdi) AS BESKRIVELSE
+                    FROM ANMERKNING a
+                    INNER JOIN ANMERKNINGTYPE at ON a.ANMERKNINGKODE = at.ANMERKNINGKODE                 
+                    WHERE a.TABELLNAVNALIAS = 'MKORT' 
+                    AND a.OBJEKT_ID = :meldekortId
+                    AND (a.VEDTAK_ID = :vedtakId OR a.VEDTAK_ID IS NULL)
+                """.trimIndent(),
                 paramMap = mapOf(
                     "vedtakId" to vedtakId,
                     "meldekortId" to meldekortId,
