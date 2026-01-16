@@ -13,7 +13,6 @@ class MeldekortDAO(
 ) {
     private val logger = KotlinLogging.logger {}
 
-
     fun findByFnr(
         fnr: String,
         fraOgMedDato: LocalDate,
@@ -31,7 +30,7 @@ class MeldekortDAO(
             action = queryOf(
                 //language=SQL
                 statement =
-                    """
+                """
                         SELECT 
                             m.MELDEKORT_ID            AS MELDEKORT_ID,
                             m.DATO_INNKOMMET          AS DATO_INNKOMMET,
@@ -60,7 +59,7 @@ class MeldekortDAO(
                             mp.DATO_FRA <= :tilOgMedDato 
                             AND mp.DATO_TIL >= :fraOgMedDato
                         )
-                    """.trimIndent(),
+                """.trimIndent(),
                 paramMap = mapOf(
                     "fnr" to fnr,
                     "fraOgMedDato" to fraOgMedDato,
@@ -86,7 +85,7 @@ class MeldekortDAO(
             action = queryOf(
                 //language=SQL
                 statement =
-                    """
+                """
                         SELECT 
                             m.MELDEKORT_ID            AS MELDEKORT_ID,
                             m.MOD_DATO                AS MOD_DATO,
@@ -125,7 +124,7 @@ class MeldekortDAO(
                             WHERE a.OBJEKT_ID = m.MELDEKORT_ID
                           	    AND a.VEDTAK_ID IS NOT NULL
                         )
-                    """.trimIndent(),
+                """.trimIndent(),
                 paramMap = mapOf(
                     "fnr" to fnr,
                     "fraOgMedDato" to fraOgMedDato,

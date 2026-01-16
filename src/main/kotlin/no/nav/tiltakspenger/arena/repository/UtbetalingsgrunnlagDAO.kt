@@ -21,7 +21,7 @@ class UtbetalingsgrunnlagDAO(
             action = queryOf(
                 //language=SQL
                 statement =
-                    """
+                """
                         SELECT 
                             u.MELDEKORT_ID              AS MELDEKORT_ID,
                             u.MOD_DATO                  AS MOD_DATO,
@@ -39,7 +39,7 @@ class UtbetalingsgrunnlagDAO(
                             u.DATO_PERIODE_FRA <= :tilOgMedDato 
                             AND u.DATO_PERIODE_TIL >= :fraOgMedDato
                         )
-                    """.trimIndent(),
+                """.trimIndent(),
                 paramMap = mapOf(
                     "fnr" to fnr,
                     "fraOgMedDato" to fraOgMedDato,

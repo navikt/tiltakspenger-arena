@@ -19,7 +19,7 @@ class PosteringerDAO {
             action = queryOf(
                 //language=SQL
                 statement =
-                    """
+                """
                         SELECT 
                             p.MELDEKORT_ID          AS MELDEKORT_ID,
                             p.DATO_POSTERT          AS DATO_POSTERT,
@@ -37,7 +37,7 @@ class PosteringerDAO {
                             p.DATO_PERIODE_FRA <= :tilOgMedDato 
                             AND p.DATO_PERIODE_TIL >= :fraOgMedDato
                         )
-                    """.trimIndent(),
+                """.trimIndent(),
                 paramMap = mapOf(
                     "fnr" to fnr,
                     "fraOgMedDato" to fraOgMedDato,
