@@ -34,6 +34,7 @@ class MeldekortDAO(
                             m.MOD_DATO                AS MOD_DATO,
                             mt.MKSKORTTYPENAVN        AS MELDEKORTTYPE,
                             be.BEREGNINGSTATUSNAVN    AS BEREGNINGSTATUS,
+                            ml.HENDELSEDATO           AS HENDELSEDATO,
                             mp.AAR                    AS AAR,
                             mp.PERIODEKODE            AS PERIODEKODE,
                             mp.UKENR_UKE1             AS UKENR_UKE1,
@@ -44,6 +45,14 @@ class MeldekortDAO(
                             INNER JOIN MELDEKORTPERIODE mp on m.AAR = mp.AAR AND m.PERIODEKODE = mp.PERIODEKODE
                             INNER JOIN BEREGNINGSTATUS be on be.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE
                             INNER JOIN MKSKORTTYPE mt ON m.MKSKORTKODE = mt.MKSKORTKODE
+                            LEFT JOIN MELDELOGG ml ON m.MELDEKORT_ID = ml.MELDEKORT_ID
+                                AND ml.HENDELSETYPEKODE = m.BEREGNINGSTATUSKODE
+                                AND ml.HENDELSEDATO = (
+                                    SELECT MAX(ml2.HENDELSEDATO)
+                                    FROM MELDELOGG ml2
+                                    WHERE ml2.MELDEKORT_ID = m.MELDEKORT_ID
+                                      AND ml2.HENDELSETYPEKODE = m.BEREGNINGSTATUSKODE
+                                )
                         WHERE m.PERSON_ID = :personId
                         AND (   
                             mp.DATO_FRA <= :tilOgMedDato 
@@ -140,7 +149,8 @@ class MeldekortDAO(
             regDato = localDateTime("REG_DATO"),
             modDato = localDateTime("MOD_DATO"),
             meldekortType = string("MKSKORTTYPENAVN"),
-            beregningstatus = string("BEREGNINGSTATUS"),
+            status = string("BEREGNINGSTATUS"),
+            statusDato = localDate("HENDELSEDATO"),
             aar = aar,
             dager = dager,
             totaltArbeidetTimer = dager.sumOf { it.arbeidetTimer },
@@ -167,9 +177,9 @@ class MeldekortDAO(
             sats = 0.0,
             status = string("BEREGNINGSTATUSNAVN"),
             vedtakId = null,
-            beløp = 0.0,
-            fraDato = localDate("DATO_FRA"),
-            tilDato = localDate("DATO_TIL"),
+            beloep = 0.0,
+            periodeFraOgMedDato = localDate("DATO_FRA"),
+            periodeTilOgMedDato = localDate("DATO_TIL"),
         )
     }
 }

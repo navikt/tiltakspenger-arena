@@ -17,7 +17,8 @@ class ArenaMeldekortDTO(
     val regDato: LocalDateTime, // opprettet
     val modDato: LocalDateTime, // sist endret
     val meldekortType: String,
-    val beregningstatus: String,
+    val status: String,
+    val statusDato: LocalDate,
     val aar: Int,
     val totaltArbeidetTimer: Int,
     val meldekortperiode: ArenaMeldekortperiodeDTO,

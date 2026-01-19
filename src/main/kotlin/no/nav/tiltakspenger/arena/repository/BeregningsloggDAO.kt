@@ -67,9 +67,9 @@ class BeregningsloggDAO {
             sats = 0.0,
             status = string("BEREGNINGSTATUSNAVN"),
             vedtakId = intOrNull("VEDTAK_ID"),
-            beløp = 0.0,
-            fraDato = localDate("DATO_FRA"),
-            tilDato = localDate("DATO_TIL"),
+            beloep = 0.0,
+            periodeFraOgMedDato = localDate("DATO_FRA"),
+            periodeTilOgMedDato = localDate("DATO_TIL"),
         )
     }
 }

@@ -52,9 +52,9 @@ class PosteringerDAO {
             sats = double("POSTERINGSATS"),
             status = "Overført utbetaling",
             vedtakId = intOrNull("VEDTAK_ID"),
-            beløp = double("BELOEP"),
-            fraDato = localDate("DATO_PERIODE_FRA"),
-            tilDato = localDate("DATO_PERIODE_TIL"),
+            beloep = double("BELOEP"),
+            periodeFraOgMedDato = localDate("DATO_PERIODE_FRA"),
+            periodeTilOgMedDato = localDate("DATO_PERIODE_TIL"),
         )
     }
 }

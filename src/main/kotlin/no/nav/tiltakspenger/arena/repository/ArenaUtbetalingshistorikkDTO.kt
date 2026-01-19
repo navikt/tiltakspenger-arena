@@ -9,7 +9,7 @@ data class ArenaUtbetalingshistorikkDTO(
     val sats: Double,
     val status: String,
     val vedtakId: Int?,
-    val beløp: Double,
-    val fraDato: LocalDate,
-    val tilDato: LocalDate,
+    val beloep: Double,
+    val periodeFraOgMedDato: LocalDate,
+    val periodeTilOgMedDato: LocalDate,
 )

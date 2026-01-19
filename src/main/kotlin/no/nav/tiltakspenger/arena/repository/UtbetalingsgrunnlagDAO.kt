@@ -52,9 +52,9 @@ class UtbetalingsgrunnlagDAO {
             sats = double("POSTERINGSATS"),
             status = "Ikke overført utbetaling",
             vedtakId = intOrNull("VEDTAK_ID"),
-            beløp = double("BELOP"),
-            fraDato = localDate("DATO_PERIODE_FRA"),
-            tilDato = localDate("DATO_PERIODE_TIL"),
+            beloep = double("BELOP"),
+            periodeFraOgMedDato = localDate("DATO_PERIODE_FRA"),
+            periodeTilOgMedDato = localDate("DATO_PERIODE_TIL"),
         )
     }
 }
