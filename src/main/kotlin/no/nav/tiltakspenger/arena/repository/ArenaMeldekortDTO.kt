@@ -19,6 +19,7 @@ class ArenaMeldekortDTO(
     val meldekortType: String,
     val status: String,
     val statusDato: LocalDate,
+    val meldegruppe: String,
     val aar: Int,
     val totaltArbeidetTimer: Int,
     val meldekortperiode: ArenaMeldekortperiodeDTO,
