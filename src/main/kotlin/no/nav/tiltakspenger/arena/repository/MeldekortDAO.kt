@@ -9,8 +9,6 @@ import java.time.LocalDate
 class MeldekortDAO(
     private val meldekortdagDAO: MeldekortdagDAO = MeldekortdagDAO(),
 ) {
-    private val logger = KotlinLogging.logger {}
-
     fun findByPersonId(
         personId: Long,
         fraOgMedDato: LocalDate,
@@ -46,7 +44,7 @@ class MeldekortDAO(
                             INNER JOIN MELDEKORTPERIODE mp on m.AAR = mp.AAR AND m.PERIODEKODE = mp.PERIODEKODE
                             INNER JOIN BEREGNINGSTATUS be on be.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE
                             INNER JOIN MKSKORTTYPE mt ON m.MKSKORTKODE = mt.MKSKORTKODE
-                            INNER JOIN MELDEGRUPPETYPE mg ON m.MELDEGRUPPEKODE = mg.MELDEGRUPPEKODE 
+                            INNER JOIN MELDEGRUPPETYPE mg ON m.MELDEGRUPPEKODE = mg.MELDEGRUPPEKODE
                             LEFT JOIN MELDELOGG ml ON m.MELDEKORT_ID = ml.MELDEKORT_ID
                                 AND ml.HENDELSETYPEKODE = m.BEREGNINGSTATUSKODE
                                 AND ml.HENDELSEDATO = (
