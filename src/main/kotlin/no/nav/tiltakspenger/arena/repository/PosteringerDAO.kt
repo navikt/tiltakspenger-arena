@@ -11,7 +11,7 @@ class PosteringerDAO {
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
-    ): List<ArenaUtbetalingshistorikkDTO> {
+    ): List<ArenaPosteringDTO> {
         return txSession.run(
             action = queryOf(
                 //language=SQL
@@ -44,17 +44,16 @@ class PosteringerDAO {
         )
     }
 
-    private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
-        return ArenaUtbetalingshistorikkDTO(
+    private fun Row.tilUtbetalingshistorikk(): ArenaPosteringDTO {
+        return ArenaPosteringDTO(
             meldekortId = string("MELDEKORT_ID"),
-            dato = localDate("DATO_POSTERT"),
-            transaksjonstype = string("TRANSAKSJONSTYPENAVN"),
-            sats = double("POSTERINGSATS"),
-            status = "Overført utbetaling",
+            datoPostert = localDate("DATO_POSTERT"),
+            transaksjonstypenavn = string("TRANSAKSJONSTYPENAVN"),
+            posteringsats = double("POSTERINGSATS"),
             vedtakId = intOrNull("VEDTAK_ID"),
-            beloep = double("BELOEP"),
-            periodeFraOgMedDato = localDate("DATO_PERIODE_FRA"),
-            periodeTilOgMedDato = localDate("DATO_PERIODE_TIL"),
+            belop = double("BELOP"),
+            datoPeriodeFra = localDate("DATO_PERIODE_FRA"),
+            datoPeriodeTil = localDate("DATO_PERIODE_TIL"),
         )
     }
 }

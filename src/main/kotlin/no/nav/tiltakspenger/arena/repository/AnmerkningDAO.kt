@@ -17,7 +17,7 @@ class AnmerkningDAO {
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
-    ): List<ArenaUtbetalingshistorikkDTO> {
+    ): List<ArenaAnmerkningMedPeriodeDTO> {
         return txSession.run(
             action = queryOf(
                 //language=SQL
@@ -75,7 +75,7 @@ class AnmerkningDAO {
                     "fraOgMedDato" to fraOgMedDato,
                     "tilOgMedDato" to tilOgMedDato,
                 ),
-            ).map { row -> row.tilUtbetalingshistorikk() }
+            ).map { row -> row.tilAnmerkningMedPeriode() }
                 .asList,
         )
     }
@@ -121,17 +121,15 @@ class AnmerkningDAO {
         )
     }
 
-    private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
-        return ArenaUtbetalingshistorikkDTO(
+    private fun Row.tilAnmerkningMedPeriode(): ArenaAnmerkningMedPeriodeDTO {
+        return ArenaAnmerkningMedPeriodeDTO(
             meldekortId = string("MELDEKORT_ID"),
-            dato = localDate("REG_DATO"),
-            transaksjonstype = string("RETTIGHETNAVN"),
-            sats = 0.0,
-            status = string("BEREGNINGSTATUSNAVN"),
+            regDato = localDate("REG_DATO"),
+            rettighetnavn = string("RETTIGHETNAVN"),
+            beregningstatusnavn = string("BEREGNINGSTATUSNAVN"),
             vedtakId = intOrNull("VEDTAK_ID"),
-            beloep = 0.0,
-            periodeFraOgMedDato = localDate("DATO_FRA"),
-            periodeTilOgMedDato = localDate("DATO_TIL"),
+            datoFra = localDate("DATO_FRA"),
+            datoTil = localDate("DATO_TIL"),
         )
     }
 }

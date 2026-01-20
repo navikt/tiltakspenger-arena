@@ -2,6 +2,9 @@ package no.nav.tiltakspenger.arena.db
 
 import com.zaxxer.hikari.HikariDataSource
 import io.github.oshai.kotlinlogging.KotlinLogging
+import kotliquery.Session
+import kotliquery.TransactionalSession
+import kotliquery.sessionOf
 import no.nav.tiltakspenger.arena.Configuration
 
 private val LOG = KotlinLogging.logger {}
@@ -25,5 +28,16 @@ object Datasource {
 
     val hikariDataSource: HikariDataSource by lazy {
         init()
+    }
+
+    inline fun <T> withTx(
+        existing: TransactionalSession?,
+        block: (TransactionalSession) -> T,
+    ): T {
+        if (existing != null) return block(existing)
+
+        return sessionOf(hikariDataSource).use { session: Session ->
+            session.transaction { createdTx -> block(createdTx) }
+        }
     }
 }

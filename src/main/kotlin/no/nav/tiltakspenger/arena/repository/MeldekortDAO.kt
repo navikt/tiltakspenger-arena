@@ -81,7 +81,7 @@ class MeldekortDAO(
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
         txSession: TransactionalSession,
-    ): List<ArenaUtbetalingshistorikkDTO> {
+    ): List<ArenaBeregnetMeldekortMedFeilDTO> {
         return txSession.run(
             action = queryOf(
                 //language=SQL
@@ -167,21 +167,17 @@ class MeldekortDAO(
         )
     }
 
-    private fun Row.tilUtbetalingshistorikk(): ArenaUtbetalingshistorikkDTO {
-        val meldekortkode =
-            string("MELDEKORTKODE") // Har vært MK (Meldekort) siden 2006. Kunne bedt om tilgang til å få hentet det fra tabellen Meldekorttype
-        val transaksjonstypenavn = if (meldekortkode == "MK") "Meldekort" else meldekortkode
+    private fun Row.tilUtbetalingshistorikk(): ArenaBeregnetMeldekortMedFeilDTO {
+        val meldekortkode = string("MELDEKORTKODE")
+        val meldekortkodenavn = if (meldekortkode == "MK") "Meldekort" else meldekortkode
 
-        return ArenaUtbetalingshistorikkDTO(
+        return ArenaBeregnetMeldekortMedFeilDTO(
             meldekortId = string("MELDEKORT_ID"),
-            dato = localDate("MOD_DATO"),
-            transaksjonstype = transaksjonstypenavn,
-            sats = 0.0,
-            status = string("BEREGNINGSTATUSNAVN"),
-            vedtakId = null,
-            beloep = 0.0,
-            periodeFraOgMedDato = localDate("DATO_FRA"),
-            periodeTilOgMedDato = localDate("DATO_TIL"),
+            modDato = localDate("MOD_DATO"),
+            meldekortkodenavn = meldekortkodenavn,
+            beregningstatusnavn = string("BEREGNINGSTATUSNAVN"),
+            datoFra = localDate("DATO_FRA"),
+            datoTil = localDate("DATO_TIL"),
         )
     }
 }
