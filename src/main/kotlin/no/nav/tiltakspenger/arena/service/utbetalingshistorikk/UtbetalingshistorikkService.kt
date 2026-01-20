@@ -12,7 +12,7 @@ import no.nav.tiltakspenger.arena.repository.UtbetalingsgrunnlagRepository
 import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.LocalDate
 
-data class UtbegalinghistroikkService(
+data class UtbetalingshistorikkService(
     val personDAO: PersonDAO = PersonDAO(),
     val posteringRepository: PosteringRepository = PosteringRepository(),
     val utbetalingsgrunnlagRepository: UtbetalingsgrunnlagRepository = UtbetalingsgrunnlagRepository(),
@@ -77,7 +77,6 @@ data class UtbegalinghistroikkService(
                         beregningslogg.map { it.tilUtbetalingshistorikk() } +
                         anmerkninger.map { it.tilUtbetalingshistorikk() } +
                         meldekortMedFeil.map { it.tilUtbetalingshistorikk() }
-
 
                 logger.info { "Antall innslag av utbetalingshistorikk er ${utbetalingshistorikk.size}" }
                 return utbetalingshistorikk
