@@ -24,8 +24,8 @@ data class UtbetalingshistorikkService(
 
     fun hentUtbetalingshistorikkForFnr(
         fnr: String,
-        fraOgMedDato: LocalDate = LocalDate.of(1900, 1, 1),
-        tilOgMedDato: LocalDate = LocalDate.of(2999, 12, 31),
+        fraOgMedDato: LocalDate,
+        tilOgMedDato: LocalDate,
     ): List<UtbetalingshistorikkDetaljer> {
         sessionOf(Datasource.hikariDataSource).use { session ->
             session.transaction { txSession ->

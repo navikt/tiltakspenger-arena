@@ -4,7 +4,7 @@ import no.nav.tiltakspenger.arena.repository.MeldekortRepository
 import java.time.LocalDate
 
 class MeldekortService(
-    private val meldekortRepository: MeldekortRepository,
+    private val meldekortRepository: MeldekortRepository = MeldekortRepository(),
 ) {
     fun hentMeldekortForFnr(
         fnr: String,

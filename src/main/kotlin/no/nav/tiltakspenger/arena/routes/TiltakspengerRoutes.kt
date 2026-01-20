@@ -11,6 +11,8 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerRettighetPeriodeMapper.toArenaTiltakspengerRettighetPeriode
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerVedtakPeriodeMapper.toArenaTiltakspengerVedtakPeriode
+import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
+import no.nav.tiltakspenger.arena.service.utbetalingshistorikk.UtbetalingshistorikkService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.Rettighet
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljer
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerService
@@ -26,6 +28,8 @@ private val logger = KotlinLogging.logger {}
 fun Route.tiltakspengerRoutes(
     vedtakDetaljerService: VedtakDetaljerService,
     rettighetDetaljerService: RettighetDetaljerService,
+    meldekortService: MeldekortService,
+    utbetalingshistorikkService: UtbetalingshistorikkService,
 ) {
     authenticate(IdentityProvider.AZUREAD.value) {
         route("/azure/tiltakspenger") {
@@ -87,6 +91,42 @@ fun Route.tiltakspengerRoutes(
                 } catch (e: Exception) {
                     Sikkerlogg.warn(e) { "Feilet å hente tiltakspenger ${e.message}" }
                     logger.warn { "Kunne ikke hente rettighetsperioder" }
+                    call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
+                }
+            }
+
+            post("/meldekort") {
+                try {
+                    val req = call.receive<VedtakRequest>()
+                    logger.info { "Saksbehandler henter meldekort" }
+                    val meldekort = meldekortService.hentMeldekortForFnr(
+                        fnr = req.ident,
+                        fraOgMedDato = req.fom ?: LocalDate.of(1900, 1, 1),
+                        tilOgMedDato = req.tom ?: LocalDate.of(2999, 12, 31),
+                    )
+                    logger.info { "Saksbehandler har hentet meldekort" }
+                    call.respond(meldekort)
+                } catch (e: Exception) {
+                    Sikkerlogg.warn(e) { "Feilet å hente meldekort for tiltakspenger ${e.message}" }
+                    logger.warn { "Kunne ikke hente meldekort" }
+                    call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
+                }
+            }
+
+            post("/utbetalingshistorikk") {
+                try {
+                    val req = call.receive<VedtakRequest>()
+                    logger.info { "Saksbehandler henter utbetalingshistorikk" }
+                    val utbetalingshistorikk = utbetalingshistorikkService.hentUtbetalingshistorikkForFnr(
+                        fnr = req.ident,
+                        fraOgMedDato = req.fom ?: LocalDate.of(1900, 1, 1),
+                        tilOgMedDato = req.tom ?: LocalDate.of(2999, 12, 31),
+                    )
+                    logger.info { "Saksbehandler har hentet utbetalingshistorikk" }
+                    call.respond(utbetalingshistorikk)
+                } catch (e: Exception) {
+                    Sikkerlogg.warn(e) { "Feilet å hente utbetalingshistorikk ${e.message}" }
+                    logger.warn { "Kunne ikke hente utbetalingshistorikk" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }

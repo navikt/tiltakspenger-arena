@@ -39,12 +39,12 @@ class PosteringerDAO {
                     "fraOgMedDato" to fraOgMedDato,
                     "tilOgMedDato" to tilOgMedDato,
                 ),
-            ).map { row -> row.tilUtbetalingshistorikk() }
+            ).map { row -> row.tilPostering() }
                 .asList,
         )
     }
 
-    private fun Row.tilUtbetalingshistorikk(): ArenaPosteringDTO {
+    private fun Row.tilPostering(): ArenaPosteringDTO {
         return ArenaPosteringDTO(
             meldekortId = string("MELDEKORT_ID"),
             datoPostert = localDate("DATO_POSTERT"),

@@ -18,8 +18,8 @@ class MeldekortRepository(
 
     fun hentMeldekortForFnr(
         fnr: String,
-        fraOgMedDato: LocalDate = LocalDate.of(1900, 1, 1),
-        tilOgMedDato: LocalDate = LocalDate.of(2999, 12, 31),
+        fraOgMedDato: LocalDate,
+        tilOgMedDato: LocalDate,
     ): List<ArenaMeldekortDTO> {
         sessionOf(Datasource.hikariDataSource).use {
             it.transaction { txSession ->
