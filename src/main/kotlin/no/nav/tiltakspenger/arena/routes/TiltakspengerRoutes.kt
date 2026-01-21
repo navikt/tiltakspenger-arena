@@ -141,7 +141,12 @@ fun Route.tiltakspengerRoutes(
                         meldekortId = req.meldekortId,
                     )
                     logger.info { "Saksbehandler har hentet detaljer om utbetalingshistorikk" }
-                    call.respond(utbetalingshistorikk)
+                    call.respond(
+                        UtbetalingshistorikkVedtaksfaktaOgAnmerkninger(
+                            anmerkninger = utbetalingshistorikk.first,
+                            vedtakfakta = utbetalingshistorikk.second,
+                        ),
+                    )
                 } catch (e: Exception) {
                     Sikkerlogg.warn(e) { "Feilet å hente detaljer om utbetalingshistorikk ${e.message}" }
                     logger.warn { "Kunne ikke hente detaljer om utbetalingshistorikk" }

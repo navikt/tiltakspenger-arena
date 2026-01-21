@@ -5,6 +5,7 @@ import kotliquery.sessionOf
 import no.nav.tiltakspenger.arena.db.Datasource
 import no.nav.tiltakspenger.arena.repository.AnmerkningDAO
 import no.nav.tiltakspenger.arena.repository.AnmerkningRepository
+import no.nav.tiltakspenger.arena.repository.ArenaAnmerkningDTO
 import no.nav.tiltakspenger.arena.repository.ArenaUtbetalingshistorikkVedtakfaktaDTO
 import no.nav.tiltakspenger.arena.repository.BeregningsloggRepository
 import no.nav.tiltakspenger.arena.repository.MeldekortRepository
@@ -12,7 +13,6 @@ import no.nav.tiltakspenger.arena.repository.PersonDAO
 import no.nav.tiltakspenger.arena.repository.PosteringRepository
 import no.nav.tiltakspenger.arena.repository.UtbetalingsgrunnlagRepository
 import no.nav.tiltakspenger.arena.repository.VedtakfaktaDAO
-import no.nav.tiltakspenger.arena.routes.ArenaAnmerkningDTO
 import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.LocalDate
 

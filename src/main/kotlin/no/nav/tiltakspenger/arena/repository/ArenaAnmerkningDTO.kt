@@ -1,4 +1,4 @@
-package no.nav.tiltakspenger.arena.routes
+package no.nav.tiltakspenger.arena.repository
 
 import java.time.LocalDate
 

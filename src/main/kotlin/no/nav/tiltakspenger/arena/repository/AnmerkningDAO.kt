@@ -3,7 +3,6 @@ package no.nav.tiltakspenger.arena.repository
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
-import no.nav.tiltakspenger.arena.routes.ArenaAnmerkningDTO
 import java.time.LocalDate
 
 class AnmerkningDAO {
