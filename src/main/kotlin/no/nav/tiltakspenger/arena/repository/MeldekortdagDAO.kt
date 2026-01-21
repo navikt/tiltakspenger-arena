@@ -41,7 +41,7 @@ class MeldekortdagDAO {
             ukeNr = int("UKENR"),
             dagNr = int("DAGNR"),
             statusArbeidsdag = string("STATUS_ARBEIDSDAG"),
-            statusFerie = string("STATUS_FERIE"),
+            statusFerie = stringOrNull("STATUS_FERIE"),
             statusKurs = string("STATUS_KURS"),
             statusSyk = string("STATUS_SYK"),
             statusAnnetfravaer = string("STATUS_ANNETFRAVAER"),

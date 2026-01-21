@@ -24,7 +24,7 @@ class AnmerkningDAO {
                 statement =
                 """
                         SELECT 
-                            a.OBJECT_ID                 AS MELDEKORT_ID,
+                            a.OBJEKT_ID                 AS MELDEKORT_ID,
                             a.REG_DATO                  AS REG_DATO,
                             r.RETTIGHETNAVN             AS RETTIGHETNAVN,
                             bs.BEREGNINGSTATUSNAVN      AS BEREGNINGSTATUSNAVN,
