@@ -81,8 +81,8 @@ class AnmerkningDAO {
     }
 
     fun findByVedtakAndMeldekort(
-        vedtakId: Int?,
-        meldekortId: Int,
+        vedtakId: Long?,
+        meldekortId: Long,
         txSession: TransactionalSession,
     ): List<ArenaAnmerkningDTO> {
         //language=SQL
@@ -123,11 +123,11 @@ class AnmerkningDAO {
 
     private fun Row.tilAnmerkningMedPeriode(): ArenaAnmerkningMedPeriodeDTO {
         return ArenaAnmerkningMedPeriodeDTO(
-            meldekortId = string("MELDEKORT_ID"),
+            meldekortId = longOrNull("MELDEKORT_ID"),
             regDato = localDate("REG_DATO"),
             rettighetnavn = string("RETTIGHETNAVN"),
             beregningstatusnavn = string("BEREGNINGSTATUSNAVN"),
-            vedtakId = intOrNull("VEDTAK_ID"),
+            vedtakId = longOrNull("VEDTAK_ID"),
             datoFra = localDate("DATO_FRA"),
             datoTil = localDate("DATO_TIL"),
         )

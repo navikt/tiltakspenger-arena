@@ -1,6 +1,5 @@
 package no.nav.tiltakspenger.arena.repository
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
@@ -170,7 +169,7 @@ class MeldekortDAO(
         val meldekortkodenavn = if (meldekortkode == "MK") "Meldekort" else meldekortkode
 
         return ArenaBeregnetMeldekortMedFeilDTO(
-            meldekortId = string("MELDEKORT_ID"),
+            meldekortId = long("MELDEKORT_ID"),
             modDato = localDate("MOD_DATO"),
             meldekortkodenavn = meldekortkodenavn,
             beregningstatusnavn = string("BEREGNINGSTATUSNAVN"),

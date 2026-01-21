@@ -3,7 +3,7 @@ package no.nav.tiltakspenger.arena.repository
 import java.time.LocalDate
 
 data class ArenaBeregnetMeldekortMedFeilDTO(
-    val meldekortId: String,
+    val meldekortId: Long,
     val modDato: LocalDate,
     val meldekortkodenavn: String,
     val beregningstatusnavn: String,

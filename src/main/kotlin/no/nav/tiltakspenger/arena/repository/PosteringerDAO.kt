@@ -46,11 +46,11 @@ class PosteringerDAO {
 
     private fun Row.tilPostering(): ArenaPosteringDTO {
         return ArenaPosteringDTO(
-            meldekortId = string("MELDEKORT_ID"),
+            meldekortId = longOrNull("MELDEKORT_ID"),
             datoPostert = localDate("DATO_POSTERT"),
             transaksjonstypenavn = string("TRANSAKSJONSTYPENAVN"),
             posteringsats = double("POSTERINGSATS"),
-            vedtakId = intOrNull("VEDTAK_ID"),
+            vedtakId = longOrNull("VEDTAK_ID"),
             belop = double("BELOP"),
             datoPeriodeFra = localDate("DATO_PERIODE_FRA"),
             datoPeriodeTil = localDate("DATO_PERIODE_TIL"),

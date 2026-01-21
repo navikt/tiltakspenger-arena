@@ -8,12 +8,12 @@ import no.nav.tiltakspenger.arena.repository.ArenaUtbetalingsgrunnlagDTO
 import java.time.LocalDate
 
 data class UtbetalingshistorikkDetaljer(
-    val meldekortId: String,
+    val meldekortId: Long?,
     val dato: LocalDate,
     val transaksjonstype: String,
     val sats: Double,
     val status: String,
-    val vedtakId: Int?,
+    val vedtakId: Long?,
     val belop: Double,
     val periodeFraOgMedDato: LocalDate,
     val periodeTilOgMedDato: LocalDate,

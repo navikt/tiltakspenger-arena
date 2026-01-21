@@ -46,11 +46,11 @@ class UtbetalingsgrunnlagDAO {
 
     private fun Row.tilUtbetalingsgrunnlag(): ArenaUtbetalingsgrunnlagDTO {
         return ArenaUtbetalingsgrunnlagDTO(
-            meldekortId = string("MELDEKORT_ID"),
+            meldekortId = longOrNull("MELDEKORT_ID"),
             modDato = localDate("MOD_DATO"),
             transaksjonstypenavn = string("TRANSAKSJONSTYPENAVN"),
             posteringsats = double("POSTERINGSATS"),
-            vedtakId = intOrNull("VEDTAK_ID"),
+            vedtakId = longOrNull("VEDTAK_ID"),
             belop = double("BELOP"),
             datoPeriodeFra = localDate("DATO_PERIODE_FRA"),
             datoPeriodeTil = localDate("DATO_PERIODE_TIL"),

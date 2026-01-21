@@ -37,8 +37,8 @@ class VedtakfaktaDAO {
     fun findBeregningVedtakfaktaByVedtakId(
         vedtakId: Long,
         txSession: TransactionalSession,
-    ): ArenaBeregningVedtakfaktaDTO {
-        return findVedtakFaktaByVedtakId(vedtakId, txSession).toArenaBeregningVedtakfaktaDTO()
+    ): ArenaUtbetalingshistorikkVedtakfaktaDTO {
+        return findVedtakFaktaByVedtakId(vedtakId, txSession).tilArenaUtbetalingshistorikkVedtakfaktaDTO()
     }
 
     private fun Row.toVedtakfakta(): ArenaVedtakfaktaDTO {

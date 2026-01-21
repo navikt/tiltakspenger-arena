@@ -52,6 +52,7 @@ og
 
 private val log = KotlinLogging.logger {}
 
+// TODO Nå som vi har tilgang til VEDTAKFAKTATYPE så kan vi gå bort fra denne enumen
 enum class ArenaVedtakFakta(val navn: String) {
     DAGS("DAGSATS"),
     SATSKODE("Valgt sats"),
@@ -70,6 +71,9 @@ enum class ArenaVedtakFakta(val navn: String) {
      */
     KODETILTAK("tiltakgjennomforing.tiltakgjennomforing_id"),
     BARNMSTON(" Antall barn med stønad"), // Bare aktuell for barnetillegg
+    ANTALL("Antall utbetalinger"),
+    BEL("Beløp per utbetaling"),
+    EKSTID("Alternativ betalingsmottaker"),
 }
 
 data class ArenaVedtakfaktaDTO(
@@ -105,10 +109,13 @@ data class ArenaBarnetilleggVedtakfaktaDTO(
     val maskineltVedtak: String?,
 )
 
-data class ArenaBeregningVedtakfaktaDTO(
+data class ArenaUtbetalingshistorikkVedtakfaktaDTO(
     val dagsats: Int?,
     val gjelderFra: LocalDate?,
     val gjelderTil: LocalDate?,
+    val antallUtbetalinger: Int?,
+    val belopPerUtbetalinger: Int?,
+    val alternativBetalingsmottaker: String?,
 )
 
 fun List<ArenaVedtakfaktaDTO>.toArenaBarnetilleggVedtakfaktaDTO() =
@@ -140,11 +147,14 @@ fun List<ArenaVedtakfaktaDTO>.toArenaTiltakspengerVedtakfaktaDTO() =
         maskineltVedtak = this.maskineltVedtak(),
     )
 
-fun List<ArenaVedtakfaktaDTO>.toArenaBeregningVedtakfaktaDTO() =
-    ArenaBeregningVedtakfaktaDTO(
+fun List<ArenaVedtakfaktaDTO>.tilArenaUtbetalingshistorikkVedtakfaktaDTO() =
+    ArenaUtbetalingshistorikkVedtakfaktaDTO(
         dagsats = this.dagsats(),
         gjelderFra = this.gjelderFra(),
         gjelderTil = this.gjelderTil(),
+        antallUtbetalinger = this.antallUtbetalinger(),
+        belopPerUtbetalinger = this.belopPerUtbetalinger(),
+        alternativBetalingsmottaker = this.alternativBetalingsmottaker(),
     )
 
 // Kan være null for tiltakspenger, selv om det kanskje er litt rart?
@@ -198,3 +208,17 @@ private fun List<ArenaVedtakfaktaDTO>.satsKode(): String? =
 private fun List<ArenaVedtakfaktaDTO>.maskineltVedtak(): String? =
     this.find { it.vedtakfaktaKode == ArenaVedtakFakta.MASKVEDTAK.name }?.vedtakfaktaVerdi
         .also { log.info { "${ArenaVedtakFakta.MASKVEDTAK.name}: $it" } }
+
+private fun List<ArenaVedtakfaktaDTO>.antallUtbetalinger(): Int? =
+    this.find { it.vedtakfaktaKode == ArenaVedtakFakta.ANTALL.name }?.vedtakfaktaVerdi
+        .also { log.info { "${ArenaVedtakFakta.ANTALL.name}: $it" } }
+        ?.toInt()
+
+private fun List<ArenaVedtakfaktaDTO>.belopPerUtbetalinger(): Int? =
+    this.find { it.vedtakfaktaKode == ArenaVedtakFakta.BEL.name }?.vedtakfaktaVerdi
+        .also { log.info { "${ArenaVedtakFakta.BEL.name}: $it" } }
+        ?.toInt()
+
+private fun List<ArenaVedtakfaktaDTO>.alternativBetalingsmottaker(): String? =
+    this.find { it.vedtakfaktaKode == ArenaVedtakFakta.EKSTID.name }?.vedtakfaktaVerdi
+        .also { log.info { "${ArenaVedtakFakta.EKSTID.name}: $it" } }

@@ -61,11 +61,11 @@ class BeregningsloggDAO {
 
     private fun Row.tilBeregningslogg(): ArenaBeregningsloggDTO {
         return ArenaBeregningsloggDTO(
-            meldekortId = string("MELDEKORT_ID"),
+            meldekortId = longOrNull("MELDEKORT_ID"),
             regDato = localDate("REG_DATO"),
             rettighetsnavn = string("RETTIGHETNAVN"),
             beregningstatusnavn = string("BEREGNINGSTATUSNAVN"),
-            vedtakId = intOrNull("VEDTAK_ID"),
+            vedtakId = longOrNull("VEDTAK_ID"),
             datoFra = localDate("DATO_FRA"),
             datoTil = localDate("DATO_TIL"),
         )
