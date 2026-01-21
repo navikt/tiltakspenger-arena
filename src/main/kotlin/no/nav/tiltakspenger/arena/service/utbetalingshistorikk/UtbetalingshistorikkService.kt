@@ -13,6 +13,8 @@ import no.nav.tiltakspenger.arena.repository.PersonDAO
 import no.nav.tiltakspenger.arena.repository.PosteringRepository
 import no.nav.tiltakspenger.arena.repository.UtbetalingsgrunnlagRepository
 import no.nav.tiltakspenger.arena.repository.VedtakfaktaDAO
+import no.nav.tiltakspenger.arena.service.anmerkning.AnmerkningDetaljer
+import no.nav.tiltakspenger.arena.service.anmerkning.tilAnmerkningDetaljer
 import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.LocalDate
 
@@ -93,14 +95,14 @@ data class UtbetalingshistorikkService(
     fun hentAnmerkningerOgVedtakfakta(
         vedtakId: Long,
         meldekortId: Long,
-    ): Pair<List<ArenaAnmerkningDTO>, ArenaUtbetalingshistorikkVedtakfaktaDTO> {
+    ): Pair<List<AnmerkningDetaljer>, ArenaUtbetalingshistorikkVedtakfaktaDTO> {
         sessionOf(Datasource.hikariDataSource).use { session ->
             session.transaction { txSession ->
                 val anmerkninger = anmerkningRepository.hentAnmerkningerForVedtakOgMeldekort(
                     vedtakId = vedtakId,
                     meldekortId = meldekortId,
                     txSession = txSession,
-                )
+                ).map { it.tilAnmerkningDetaljer() }
                 val vedtakfakta = vedtakfaktaDAO.findBeregningVedtakfaktaByVedtakId(
                     vedtakId = vedtakId,
                     txSession = txSession,
