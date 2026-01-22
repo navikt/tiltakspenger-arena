@@ -1,6 +1,6 @@
 package no.nav.tiltakspenger.arena.service.meldekort
 
-import no.nav.tiltakspenger.arena.repository.MeldekortRepository
+import no.nav.tiltakspenger.arena.repository.meldekort.MeldekortRepository
 import java.time.LocalDate
 
 class MeldekortService(

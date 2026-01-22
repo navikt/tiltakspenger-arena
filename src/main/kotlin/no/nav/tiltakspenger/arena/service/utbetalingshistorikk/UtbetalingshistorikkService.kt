@@ -3,14 +3,14 @@ package no.nav.tiltakspenger.arena.service.utbetalingshistorikk
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.sessionOf
 import no.nav.tiltakspenger.arena.db.Datasource
-import no.nav.tiltakspenger.arena.repository.AnmerkningDAO
-import no.nav.tiltakspenger.arena.repository.AnmerkningRepository
-import no.nav.tiltakspenger.arena.repository.BeregningsloggRepository
-import no.nav.tiltakspenger.arena.repository.MeldekortRepository
-import no.nav.tiltakspenger.arena.repository.PersonDAO
-import no.nav.tiltakspenger.arena.repository.PosteringRepository
-import no.nav.tiltakspenger.arena.repository.UtbetalingsgrunnlagRepository
-import no.nav.tiltakspenger.arena.repository.VedtakfaktaDAO
+import no.nav.tiltakspenger.arena.repository.anmerkning.AnmerkningDAO
+import no.nav.tiltakspenger.arena.repository.anmerkning.AnmerkningRepository
+import no.nav.tiltakspenger.arena.repository.beregningslogg.BeregningsloggRepository
+import no.nav.tiltakspenger.arena.repository.meldekort.MeldekortRepository
+import no.nav.tiltakspenger.arena.repository.person.PersonDAO
+import no.nav.tiltakspenger.arena.repository.postering.PosteringRepository
+import no.nav.tiltakspenger.arena.repository.utbetalingsgrunnlag.UtbetalingsgrunnlagRepository
+import no.nav.tiltakspenger.arena.repository.vedtakfakta.VedtakfaktaDAO
 import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.LocalDate
 

@@ -1,6 +1,6 @@
 package no.nav.tiltakspenger.arena.service.meldekort
 
-import no.nav.tiltakspenger.arena.repository.ArenaMeldekortperiodeDTO
+import no.nav.tiltakspenger.arena.repository.meldekort.ArenaMeldekortperiodeDTO
 import java.time.LocalDate
 
 class MeldekortperiodeDetaljer(
