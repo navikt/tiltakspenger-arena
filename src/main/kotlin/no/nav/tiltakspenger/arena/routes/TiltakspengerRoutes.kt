@@ -7,7 +7,6 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerRettighetPeriodeMapper.toArenaTiltakspengerRettighetPeriode
@@ -131,28 +130,6 @@ fun Route.tiltakspengerRoutes(
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
-
-            get("/utbetalingshistorikk/detaljer") {
-                try {
-                    val req = call.receive<AnmerkningOgVedtakRequest>()
-                    logger.info { "Saksbehandler henter detaljer om utbetalingshistorikk" }
-                    val utbetalingshistorikk = utbetalingshistorikkService.hentAnmerkningerOgVedtakfakta(
-                        vedtakId = req.vedtakId,
-                        meldekortId = req.meldekortId,
-                    )
-                    logger.info { "Saksbehandler har hentet detaljer om utbetalingshistorikk" }
-                    call.respond(
-                        UtbetalingshistorikkVedtaksfaktaOgAnmerkninger(
-                            anmerkninger = utbetalingshistorikk.first,
-                            vedtakfakta = utbetalingshistorikk.second,
-                        ),
-                    )
-                } catch (e: Exception) {
-                    Sikkerlogg.warn(e) { "Feilet å hente detaljer om utbetalingshistorikk ${e.message}" }
-                    logger.warn { "Kunne ikke hente detaljer om utbetalingshistorikk" }
-                    call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
-                }
-            }
         }
     }
 }
@@ -161,9 +138,4 @@ data class VedtakRequest(
     val ident: String,
     val fom: LocalDate?,
     val tom: LocalDate?,
-)
-
-data class AnmerkningOgVedtakRequest(
-    val vedtakId: Long,
-    val meldekortId: Long,
 )
