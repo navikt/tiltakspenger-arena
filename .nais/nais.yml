@@ -36,9 +36,6 @@ spec:
         - application: tiltakspenger-saksbehandling-api
           namespace: tpts
           cluster: {{ cluster }}
-        - application: azure-token-generator
-          namespace: nais
-          cluster: dev-gcp
   liveness:
     path: /isalive
     initialDelay: 15
