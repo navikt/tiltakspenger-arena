@@ -15,8 +15,8 @@ data class UtbetalingshistorikkDetaljer(
     val status: String,
     val vedtakId: Long?,
     val belop: Double,
-    val periodeFraOgMedDato: LocalDate,
-    val periodeTilOgMedDato: LocalDate,
+    val fraOgMedDato: LocalDate,
+    val tilOgMedDato: LocalDate,
 )
 
 fun ArenaPosteringDTO.tilUtbetalingshistorikk() = UtbetalingshistorikkDetaljer(
@@ -27,8 +27,8 @@ fun ArenaPosteringDTO.tilUtbetalingshistorikk() = UtbetalingshistorikkDetaljer(
     status = "Overført utbetaling",
     vedtakId = this.vedtakId,
     belop = this.belop,
-    periodeFraOgMedDato = this.datoPeriodeFra,
-    periodeTilOgMedDato = this.datoPeriodeTil,
+    fraOgMedDato = this.datoPeriodeFra,
+    tilOgMedDato = this.datoPeriodeTil,
 )
 
 fun ArenaUtbetalingsgrunnlagDTO.tilUtbetalingshistorikk() = UtbetalingshistorikkDetaljer(
@@ -39,8 +39,8 @@ fun ArenaUtbetalingsgrunnlagDTO.tilUtbetalingshistorikk() = Utbetalingshistorikk
     status = "Ikke overført utbetaling",
     vedtakId = this.vedtakId,
     belop = this.belop,
-    periodeFraOgMedDato = this.datoPeriodeFra,
-    periodeTilOgMedDato = this.datoPeriodeTil,
+    fraOgMedDato = this.datoPeriodeFra,
+    tilOgMedDato = this.datoPeriodeTil,
 )
 
 fun ArenaBeregningsloggDTO.tilUtbetalingshistorikk() = UtbetalingshistorikkDetaljer(
@@ -51,8 +51,8 @@ fun ArenaBeregningsloggDTO.tilUtbetalingshistorikk() = UtbetalingshistorikkDetal
     status = this.beregningstatusnavn,
     vedtakId = this.vedtakId,
     belop = 0.0,
-    periodeFraOgMedDato = this.datoFra,
-    periodeTilOgMedDato = this.datoTil,
+    fraOgMedDato = this.datoFra,
+    tilOgMedDato = this.datoTil,
 )
 
 fun ArenaAnmerkningMedPeriodeDTO.tilUtbetalingshistorikk() = UtbetalingshistorikkDetaljer(
@@ -63,8 +63,8 @@ fun ArenaAnmerkningMedPeriodeDTO.tilUtbetalingshistorikk() = Utbetalingshistorik
     status = this.beregningstatusnavn,
     vedtakId = this.vedtakId,
     belop = 0.0,
-    periodeFraOgMedDato = this.datoFra,
-    periodeTilOgMedDato = this.datoTil,
+    fraOgMedDato = this.datoFra,
+    tilOgMedDato = this.datoTil,
 )
 
 fun ArenaBeregnetMeldekortMedFeilDTO.tilUtbetalingshistorikk(): UtbetalingshistorikkDetaljer {
@@ -76,7 +76,7 @@ fun ArenaBeregnetMeldekortMedFeilDTO.tilUtbetalingshistorikk(): Utbetalingshisto
         status = this.beregningstatusnavn,
         vedtakId = null,
         belop = 0.0,
-        periodeFraOgMedDato = this.datoFra,
-        periodeTilOgMedDato = this.datoTil,
+        fraOgMedDato = this.datoFra,
+        tilOgMedDato = this.datoTil,
     )
 }
