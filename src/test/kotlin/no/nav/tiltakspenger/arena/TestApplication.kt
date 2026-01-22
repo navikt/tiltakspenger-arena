@@ -12,6 +12,8 @@ import io.mockk.mockk
 import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutes
+import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
+import no.nav.tiltakspenger.arena.service.utbetalingshistorikk.UtbetalingshistorikkService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
@@ -22,6 +24,8 @@ fun ApplicationTestBuilder.configureTestApplication(
     arenaOrdsClient: ArenaOrdsClient = mockk(),
     vedtakDetaljerService: VedtakDetaljerService = mockk(),
     rettighetDetaljerService: RettighetDetaljerService = mockk(),
+    meldekortService: MeldekortService = mockk(),
+    utbetalingshistorikkService: UtbetalingshistorikkService = mockk(),
 ) {
     application {
         install(ContentNegotiation) {
@@ -42,6 +46,8 @@ fun ApplicationTestBuilder.configureTestApplication(
             tiltakspengerRoutes(
                 vedtakDetaljerService = vedtakDetaljerService,
                 rettighetDetaljerService = rettighetDetaljerService,
+                meldekortService = meldekortService,
+                utbetalingshistorikkService = utbetalingshistorikkService,
             )
         }
     }

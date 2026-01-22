@@ -3,6 +3,8 @@ package no.nav.tiltakspenger.arena
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import no.nav.tiltakspenger.arena.repository.SakRepository
+import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
+import no.nav.tiltakspenger.arena.service.utbetalingshistorikk.UtbetalingshistorikkService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServiceImpl
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl
 import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClientImpl
@@ -28,6 +30,8 @@ internal fun start(
         arenaSakRepository = arenaSakRepository,
     )
     val rettighetDetaljerService = RettighetDetaljerServiceImpl(vedtakDetaljerService)
+    val meldekortService = MeldekortService()
+    val utbetalingshistorikkService = UtbetalingshistorikkService()
 
     val server = embeddedServer(
         factory = Netty,
@@ -37,6 +41,8 @@ internal fun start(
                 arenaOrdsClient = arenaOrdsClient,
                 vedtakDetaljerService = vedtakDetaljerService,
                 rettighetDetaljerService = rettighetDetaljerService,
+                meldekortService = meldekortService,
+                utbetalingshistorikkService = utbetalingshistorikkService,
                 texasClient = texasClient,
             )
         },
