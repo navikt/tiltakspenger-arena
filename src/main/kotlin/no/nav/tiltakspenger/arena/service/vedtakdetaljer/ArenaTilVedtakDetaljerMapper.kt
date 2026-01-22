@@ -1,9 +1,9 @@
 package no.nav.tiltakspenger.arena.service.vedtakdetaljer
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import no.nav.tiltakspenger.arena.repository.ArenaBarnetilleggVedtakDTO
-import no.nav.tiltakspenger.arena.repository.ArenaSakMedMinstEttVedtakDTO
-import no.nav.tiltakspenger.arena.repository.ArenaTiltakspengerVedtakDTO
+import no.nav.tiltakspenger.arena.repository.vedtak.ArenaBarnetilleggVedtakDTO
+import no.nav.tiltakspenger.arena.repository.vedtak.ArenaSakMedMinstEttVedtakDTO
+import no.nav.tiltakspenger.arena.repository.vedtak.ArenaTiltakspengerVedtakDTO
 import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import no.nav.tiltakspenger.libs.periodisering.Periode
 import no.nav.tiltakspenger.libs.periodisering.Periodisering

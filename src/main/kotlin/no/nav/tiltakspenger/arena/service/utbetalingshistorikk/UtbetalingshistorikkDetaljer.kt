@@ -1,10 +1,10 @@
 package no.nav.tiltakspenger.arena.service.utbetalingshistorikk
 
-import no.nav.tiltakspenger.arena.repository.ArenaAnmerkningMedPeriodeDTO
-import no.nav.tiltakspenger.arena.repository.ArenaBeregnetMeldekortMedFeilDTO
-import no.nav.tiltakspenger.arena.repository.ArenaBeregningsloggDTO
-import no.nav.tiltakspenger.arena.repository.ArenaPosteringDTO
-import no.nav.tiltakspenger.arena.repository.ArenaUtbetalingsgrunnlagDTO
+import no.nav.tiltakspenger.arena.repository.anmerkning.ArenaAnmerkningMedPeriodeDTO
+import no.nav.tiltakspenger.arena.repository.beregningslogg.ArenaBeregningsloggDTO
+import no.nav.tiltakspenger.arena.repository.meldekort.ArenaBeregnetMeldekortMedFeilDTO
+import no.nav.tiltakspenger.arena.repository.postering.ArenaPosteringDTO
+import no.nav.tiltakspenger.arena.repository.utbetalingsgrunnlag.ArenaUtbetalingsgrunnlagDTO
 import java.time.LocalDate
 
 data class UtbetalingshistorikkDetaljer(

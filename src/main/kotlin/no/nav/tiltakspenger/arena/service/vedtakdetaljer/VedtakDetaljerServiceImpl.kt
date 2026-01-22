@@ -1,6 +1,6 @@
 package no.nav.tiltakspenger.arena.service.vedtakdetaljer
 
-import no.nav.tiltakspenger.arena.repository.SakRepository
+import no.nav.tiltakspenger.arena.repository.sak.SakRepository
 import no.nav.tiltakspenger.libs.periodisering.Periodisering
 import java.time.LocalDate
 

@@ -1,6 +1,6 @@
 package no.nav.tiltakspenger.arena.service.meldekort
 
-import no.nav.tiltakspenger.arena.repository.ArenaMeldekortDTO
+import no.nav.tiltakspenger.arena.repository.meldekort.ArenaMeldekortDTO
 import java.time.LocalDate
 import java.time.LocalDateTime
 
