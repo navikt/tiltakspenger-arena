@@ -5,16 +5,12 @@ import kotliquery.sessionOf
 import no.nav.tiltakspenger.arena.db.Datasource
 import no.nav.tiltakspenger.arena.repository.AnmerkningDAO
 import no.nav.tiltakspenger.arena.repository.AnmerkningRepository
-import no.nav.tiltakspenger.arena.repository.ArenaAnmerkningDTO
-import no.nav.tiltakspenger.arena.repository.ArenaUtbetalingshistorikkVedtakfaktaDTO
 import no.nav.tiltakspenger.arena.repository.BeregningsloggRepository
 import no.nav.tiltakspenger.arena.repository.MeldekortRepository
 import no.nav.tiltakspenger.arena.repository.PersonDAO
 import no.nav.tiltakspenger.arena.repository.PosteringRepository
 import no.nav.tiltakspenger.arena.repository.UtbetalingsgrunnlagRepository
 import no.nav.tiltakspenger.arena.repository.VedtakfaktaDAO
-import no.nav.tiltakspenger.arena.service.anmerkning.AnmerkningDetaljer
-import no.nav.tiltakspenger.arena.service.anmerkning.tilAnmerkningDetaljer
 import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.LocalDate
 
@@ -88,26 +84,6 @@ data class UtbetalingshistorikkService(
 
                 logger.info { "Antall innslag av utbetalingshistorikk er ${utbetalingshistorikk.size}" }
                 return utbetalingshistorikk
-            }
-        }
-    }
-
-    fun hentAnmerkningerOgVedtakfakta(
-        vedtakId: Long,
-        meldekortId: Long,
-    ): Pair<List<AnmerkningDetaljer>, ArenaUtbetalingshistorikkVedtakfaktaDTO> {
-        sessionOf(Datasource.hikariDataSource).use { session ->
-            session.transaction { txSession ->
-                val anmerkninger = anmerkningRepository.hentAnmerkningerForVedtakOgMeldekort(
-                    vedtakId = vedtakId,
-                    meldekortId = meldekortId,
-                    txSession = txSession,
-                ).map { it.tilAnmerkningDetaljer() }
-                val vedtakfakta = vedtakfaktaDAO.findBeregningVedtakfaktaByVedtakId(
-                    vedtakId = vedtakId,
-                    txSession = txSession,
-                )
-                return anmerkninger to vedtakfakta
             }
         }
     }
