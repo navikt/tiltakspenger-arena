@@ -4,7 +4,6 @@ import no.nav.tiltakspenger.arena.repository.meldekort.ArenaMeldekortDagDTO
 import java.time.LocalDateTime
 
 class MeldekortDagDetaljer(
-    val meldekortId: String,
     val ukeNr: Int,
     val dagNr: Int,
     val arbeidsdag: Boolean,
@@ -19,7 +18,6 @@ class MeldekortDagDetaljer(
 
 fun ArenaMeldekortDagDTO.tilMeldekortDagDetaljer(): MeldekortDagDetaljer {
     return MeldekortDagDetaljer(
-        meldekortId = this.meldekortId,
         ukeNr = this.ukeNr,
         dagNr = this.dagNr,
         arbeidsdag = this.statusArbeidsdag.tilBooleanArena(),

@@ -20,25 +20,26 @@ class MeldekortDAO(
                 statement =
                 """
                         SELECT 
-                            m.MELDEKORT_ID            AS MELDEKORT_ID,
-                            m.DATO_INNKOMMET          AS DATO_INNKOMMET,
-                            m.STATUS_ARBEIDET         AS STATUS_ARBEIDET,
-                            m.STATUS_KURS             AS STATUS_KURS,
-                            m.STATUS_FERIE            AS STATUS_FERIE,
-                            m.STATUS_SYK              AS STATUS_SYK,
-                            m.STATUS_ANNETFRAVAER     AS STATUS_ANNETFRAVAER,
-                            m.REG_DATO                AS REG_DATO,
-                            m.MOD_DATO                AS MOD_DATO,
-                            mt.MKSKORTTYPENAVN        AS MKSKORTTYPENAVN,
-                            be.BEREGNINGSTATUSNAVN    AS BEREGNINGSTATUSNAVN,
-                            ml.HENDELSEDATO           AS HENDELSEDATO,
-                            mg.MELDEGRUPPENAVN        AS MELDEGRUPPENAVN,
-                            mp.AAR                    AS AAR,
-                            mp.PERIODEKODE            AS PERIODEKODE,
-                            mp.UKENR_UKE1             AS UKENR_UKE1,
-                            mp.UKENR_UKE2             AS UKENR_UKE2,
-                            mp.DATO_FRA               AS DATO_FRA,
-                            mp.DATO_TIL               AS DATO_TIL
+                            m.MELDEKORT_ID                  AS MELDEKORT_ID,
+                            m.DATO_INNKOMMET                AS DATO_INNKOMMET,
+                            m.STATUS_ARBEIDET               AS STATUS_ARBEIDET,
+                            m.STATUS_KURS                   AS STATUS_KURS,
+                            m.STATUS_FERIE                  AS STATUS_FERIE,
+                            m.STATUS_SYK                    AS STATUS_SYK,
+                            m.STATUS_ANNETFRAVAER           AS STATUS_ANNETFRAVAER,
+                            m.STATUS_FORTSATT_ARBEIDSOKER   AS STATUS_FORTSATT_ARBEIDSOKER,
+                            m.REG_DATO                      AS REG_DATO,
+                            m.MOD_DATO                      AS MOD_DATO,
+                            mt.MKSKORTTYPENAVN              AS MKSKORTTYPENAVN,
+                            be.BEREGNINGSTATUSNAVN          AS BEREGNINGSTATUSNAVN,
+                            ml.HENDELSEDATO                 AS HENDELSEDATO,
+                            mg.MELDEGRUPPENAVN              AS MELDEGRUPPENAVN,
+                            mp.AAR                          AS AAR,
+                            mp.PERIODEKODE                  AS PERIODEKODE,
+                            mp.UKENR_UKE1                   AS UKENR_UKE1,
+                            mp.UKENR_UKE2                   AS UKENR_UKE2,
+                            mp.DATO_FRA                     AS DATO_FRA,
+                            mp.DATO_TIL                     AS DATO_TIL
                         FROM MELDEKORT m
                             INNER JOIN MELDEKORTPERIODE mp on m.AAR = mp.AAR AND m.PERIODEKODE = mp.PERIODEKODE
                             INNER JOIN BEREGNINGSTATUS be on be.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE
@@ -145,6 +146,7 @@ class MeldekortDAO(
             statusFerie = string("STATUS_FERIE"),
             statusSyk = string("STATUS_SYK"),
             statusAnnetFravaer = string("STATUS_ANNETFRAVAER"),
+            statusFortsattArbeidsoker = string("STATUS_FORTSATT_ARBEIDSOKER"),
             regDato = localDateTime("REG_DATO"),
             modDato = localDateTime("MOD_DATO"),
             meldekortType = string("MKSKORTTYPENAVN"),
