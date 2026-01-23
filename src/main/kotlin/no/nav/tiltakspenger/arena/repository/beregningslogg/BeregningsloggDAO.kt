@@ -6,6 +6,10 @@ import kotliquery.queryOf
 import java.time.LocalDate
 
 class BeregningsloggDAO {
+    /**
+     * Finner vedtak fra beregningsloggen hvor vedtaket ikke er tilknyttet en postering eller utbetalingsgrunnlag.
+     * Dette er vedtak som er beregnet, men som ikke førte til noen utbetaling
+     */
     fun hentVedtakForUtbetalingshistorikk(
         personId: Long,
         fraOgMedDato: LocalDate,

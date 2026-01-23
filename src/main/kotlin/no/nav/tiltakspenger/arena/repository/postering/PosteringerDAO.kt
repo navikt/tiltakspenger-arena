@@ -7,6 +7,10 @@ import no.nav.tiltakspenger.arena.repository.postering.ArenaPosteringDTO
 import java.time.LocalDate
 
 class PosteringerDAO {
+    /**
+     * Finner postering for en gitt periode og person.
+     * Dette er utbetalinger fra meldekort og spesialutbetalinger som er overført økonomisystem.
+     */
     fun hentVedtakForUtbetalingshistorikk(
         personId: Long,
         fraOgMedDato: LocalDate,

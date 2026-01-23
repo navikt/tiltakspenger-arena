@@ -6,6 +6,11 @@ import kotliquery.queryOf
 import java.time.LocalDate
 
 class UtbetalingsgrunnlagDAO {
+    /**
+     * Finner utbetalingsgrunnlag for en gitt periode og person.
+     * Dette er utbetalinger fra meldekort og spesialutbetalinger som ikke er overført økonomisystem.
+     * Når utbetalingen er overført økonomisystem vil utbetalingsgrunnlaget flyttes til postering.
+     */
     fun hentVedtakForUtbetalingshistorikk(
         personId: Long,
         fraOgMedDato: LocalDate,
