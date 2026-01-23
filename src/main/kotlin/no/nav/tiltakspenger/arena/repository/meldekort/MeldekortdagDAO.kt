@@ -15,7 +15,6 @@ class MeldekortdagDAO {
                 statement =
                 """
                         SELECT 
-                            MELDEKORT_ID,
                             UKENR,
                             DAGNR,
                             STATUS_ARBEIDSDAG,
@@ -37,7 +36,6 @@ class MeldekortdagDAO {
 
     private fun Row.toMeldekortdag(): ArenaMeldekortDagDTO {
         return ArenaMeldekortDagDTO(
-            meldekortId = string("MELDEKORT_ID"),
             ukeNr = int("UKENR"),
             dagNr = int("DAGNR"),
             statusArbeidsdag = string("STATUS_ARBEIDSDAG"),

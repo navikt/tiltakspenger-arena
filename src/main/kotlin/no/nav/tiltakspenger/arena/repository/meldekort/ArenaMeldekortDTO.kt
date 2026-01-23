@@ -14,6 +14,7 @@ class ArenaMeldekortDTO(
     val statusFerie: String, // J/N
     val statusSyk: String, // J/N
     val statusAnnetFravaer: String, // J/N
+    val statusFortsattArbeidsoker: String, // J/N
     val regDato: LocalDateTime, // opprettet
     val modDato: LocalDateTime, // sist endret
     val meldekortType: String,

@@ -3,7 +3,6 @@ package no.nav.tiltakspenger.arena.repository.meldekort
 import java.time.LocalDateTime
 
 class ArenaMeldekortDagDTO(
-    val meldekortId: String,
     val ukeNr: Int,
     val dagNr: Int, // Hvilken dag i uka (1-7)
     val statusArbeidsdag: String, // J/N
