@@ -22,4 +22,18 @@ class AnmerkningRepository(
             )
         }
     }
+
+    fun hentAnmerkningerForVedtakOgMeldekort(
+        vedtakId: Long,
+        meldekortId: Long,
+        txSession: TransactionalSession,
+    ): List<ArenaAnmerkningDTO> {
+        withTx(txSession) { tx ->
+            return anmerkningDAO.findByVedtakAndMeldekort(
+                vedtakId = vedtakId,
+                meldekortId = meldekortId,
+                txSession = tx,
+            )
+        }
+    }
 }

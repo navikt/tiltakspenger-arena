@@ -90,4 +90,45 @@ class AnmerkningDAO {
             datoTil = localDate("DATO_TIL"),
         )
     }
+
+    fun findByVedtakAndMeldekort(
+        vedtakId: Long?,
+        meldekortId: Long,
+        txSession: TransactionalSession,
+    ): List<ArenaAnmerkningDTO> {
+        //language=SQL
+        return txSession.run(
+            action = queryOf(
+                statement =
+                """
+                    SELECT 
+                        a.VEDTAK_ID     AS VEDTAK_ID,
+                        a.REG_DATO      AS REG_DATO,
+                        -- Erstatter template variabel &1 med verdi
+                        REPLACE(at.beskrivelse, chr(038)||chr(049), a.verdi) AS BESKRIVELSE
+                    FROM ANMERKNING a
+                    INNER JOIN ANMERKNINGTYPE at ON a.ANMERKNINGKODE = at.ANMERKNINGKODE                 
+                    WHERE a.TABELLNAVNALIAS = 'MKORT' 
+                    AND a.OBJEKT_ID = :meldekortId
+                    AND (a.VEDTAK_ID = :vedtakId OR a.VEDTAK_ID IS NULL)
+                """.trimIndent(),
+                paramMap = mapOf(
+                    "vedtakId" to vedtakId,
+                    "meldekortId" to meldekortId,
+                ),
+            ).map { row -> row.toAnmerkning() }
+                .asList,
+        )
+    }
+
+    private fun Row.toAnmerkning(): ArenaAnmerkningDTO {
+        // Bruker samme logikk som i PLSQL som benyttes i arena-api for å bestemme kilde. Queryen henter bare anmerkninger relatert til meldekort og deres vedtak.
+        val kilde = if (stringOrNull("VEDTAK_ID") == null) "Meldekort" else "Vedtak"
+
+        return ArenaAnmerkningDTO(
+            kilde = kilde,
+            regDato = localDateOrNull("REG_DATO"),
+            beskrivelse = stringOrNull("BESKRIVELSE"),
+        )
+    }
 }

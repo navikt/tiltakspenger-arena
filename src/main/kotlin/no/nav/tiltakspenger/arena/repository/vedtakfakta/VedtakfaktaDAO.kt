@@ -34,6 +34,13 @@ class VedtakfaktaDAO {
         return findVedtakFaktaByVedtakId(vedtakId, txSession).toArenaBarnetilleggVedtakfaktaDTO()
     }
 
+    fun findBeregningVedtakfaktaByVedtakId(
+        vedtakId: Long,
+        txSession: TransactionalSession,
+    ): ArenaUtbetalingshistorikkVedtakfaktaDTO {
+        return findVedtakFaktaByVedtakId(vedtakId, txSession).tilArenaUtbetalingshistorikkVedtakfaktaDTO()
+    }
+
     private fun Row.toVedtakfakta(): ArenaVedtakfaktaDTO {
         return ArenaVedtakfaktaDTO(
             vedtakId = long("VEDTAK_ID"),
