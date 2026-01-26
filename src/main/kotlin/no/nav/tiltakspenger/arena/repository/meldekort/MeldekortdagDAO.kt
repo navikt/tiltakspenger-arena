@@ -42,7 +42,7 @@ class MeldekortdagDAO {
             statusFerie = stringOrNull("STATUS_FERIE"),
             statusKurs = string("STATUS_KURS"),
             statusSyk = string("STATUS_SYK"),
-            statusAnnetfravaer = string("STATUS_ANNETFRAVAER"),
+            statusAnnetFravaer = string("STATUS_ANNETFRAVAER"),
             regUser = string("REG_USER"),
             regDato = localDateTime("REG_DATO"),
             arbeidetTimer = int("TIMER_ARBEIDET"),
