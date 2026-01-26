@@ -81,6 +81,7 @@ data class UtbetalingshistorikkService(
                         beregningslogg.map { it.tilUtbetalingshistorikk() } +
                         anmerkninger.map { it.tilUtbetalingshistorikk() } +
                         meldekortMedFeil.map { it.tilUtbetalingshistorikk() }
+                            .sortedBy { it.dato }
 
                 logger.info { "Antall innslag av utbetalingshistorikk er ${utbetalingshistorikk.size}" }
                 return utbetalingshistorikk

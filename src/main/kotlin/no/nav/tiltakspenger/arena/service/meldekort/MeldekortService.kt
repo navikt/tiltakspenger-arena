@@ -16,6 +16,7 @@ class MeldekortService(
             fraOgMedDato = fraOgMedDato,
             tilOgMedDato = tilOgMedDato,
         ).map { it.tilMeldekortDetaljer() }
+            .sortedBy { it.periode.fraOgMed }
     }
 }
 
