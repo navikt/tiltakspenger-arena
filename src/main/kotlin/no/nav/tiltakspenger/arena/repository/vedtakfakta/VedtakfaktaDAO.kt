@@ -3,6 +3,7 @@ package no.nav.tiltakspenger.arena.repository.vedtakfakta
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
+import no.nav.tiltakspenger.arena.db.Datasource.withTx
 import org.intellij.lang.annotations.Language
 
 class VedtakfaktaDAO {
@@ -34,11 +35,13 @@ class VedtakfaktaDAO {
         return findVedtakFaktaByVedtakId(vedtakId, txSession).toArenaBarnetilleggVedtakfaktaDTO()
     }
 
-    fun findBeregningVedtakfaktaByVedtakId(
+    fun findUtbetalingshistorikkVedtakfakta(
         vedtakId: Long,
-        txSession: TransactionalSession,
+        txSession: TransactionalSession? = null,
     ): ArenaUtbetalingshistorikkVedtakfaktaDTO {
-        return findVedtakFaktaByVedtakId(vedtakId, txSession).tilArenaUtbetalingshistorikkVedtakfaktaDTO()
+        withTx(txSession) { tx ->
+            return findVedtakFaktaByVedtakId(vedtakId, tx).tilArenaUtbetalingshistorikkVedtakfaktaDTO()
+        }
     }
 
     private fun Row.toVedtakfakta(): ArenaVedtakfaktaDTO {

@@ -23,14 +23,12 @@ class AnmerkningRepository(
         }
     }
 
-    fun hentAnmerkningerForVedtakOgMeldekort(
-        vedtakId: Long,
+    fun hentAnmerkningerForMeldekort(
         meldekortId: Long,
-        txSession: TransactionalSession,
+        txSession: TransactionalSession? = null,
     ): List<ArenaAnmerkningDTO> {
         withTx(txSession) { tx ->
-            return anmerkningDAO.findByVedtakAndMeldekort(
-                vedtakId = vedtakId,
+            return anmerkningDAO.hentAnmerkningerForMeldekort(
                 meldekortId = meldekortId,
                 txSession = tx,
             )
