@@ -134,13 +134,24 @@ fun Route.tiltakspengerRoutes(
 
             get("/utbetalingshistorikk/detaljer") {
                 try {
-                    val req = call.receive<AnmerkningOgVedtakRequest>()
+                    val vedtakId = call.request.queryParameters["vedtakId"]?.toLongOrNull()
+                    val meldekortId = call.request.queryParameters["meldekortId"]?.toLongOrNull()
+
+                    if (vedtakId == null || meldekortId == null) {
+                        call.respondText(
+                            text = "MeldekortId eller VedtakId mangler eller er ugyldig",
+                            status = HttpStatusCode.BadRequest,
+                        )
+                        return@get
+                    }
+
                     logger.info { "Saksbehandler henter detaljer om utbetalingshistorikk" }
                     val utbetalingshistorikk = utbetalingshistorikkService.hentAnmerkningerOgVedtakfakta(
-                        vedtakId = req.vedtakId,
-                        meldekortId = req.meldekortId,
+                        vedtakId = vedtakId,
+                        meldekortId = meldekortId,
                     )
                     logger.info { "Saksbehandler har hentet detaljer om utbetalingshistorikk" }
+
                     call.respond(
                         UtbetalingshistorikkVedtaksfaktaOgAnmerkninger(
                             anmerkninger = utbetalingshistorikk.first,
