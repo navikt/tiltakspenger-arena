@@ -91,8 +91,12 @@ class AnmerkningDAO {
         )
     }
 
-    fun findByVedtakAndMeldekort(
-        vedtakId: Long?,
+    /**
+     * Henter anmerkninger knyttet til et meldekort. Viewet til arena gir oss bare anmerkninger knyttet til meldekort,
+     * men vi tar allikevel med en sjekk på TABELLNAVNALIAS = 'MKORT' for å være tydelige på hva vi henter.
+     * @link https://confluence.adeo.no/spaces/ARENA/pages/752103360/Arena+-+Funksjonalitet+-+Datadeling#ArenaFunksjonalitetDatadeling-Tiltakspenger
+     */
+    fun hentAnmerkningerForMeldekort(
         meldekortId: Long,
         txSession: TransactionalSession,
     ): List<ArenaAnmerkningDTO> {
@@ -110,10 +114,8 @@ class AnmerkningDAO {
                     INNER JOIN ANMERKNINGTYPE at ON a.ANMERKNINGKODE = at.ANMERKNINGKODE                 
                     WHERE a.TABELLNAVNALIAS = 'MKORT' 
                     AND a.OBJEKT_ID = :meldekortId
-                    AND (a.VEDTAK_ID = :vedtakId OR a.VEDTAK_ID IS NULL)
                 """.trimIndent(),
                 paramMap = mapOf(
-                    "vedtakId" to vedtakId,
                     "meldekortId" to meldekortId,
                 ),
             ).map { row -> row.toAnmerkning() }

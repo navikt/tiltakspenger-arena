@@ -137,25 +137,15 @@ fun Route.tiltakspengerRoutes(
                     val vedtakId = call.request.queryParameters["vedtakId"]?.toLongOrNull()
                     val meldekortId = call.request.queryParameters["meldekortId"]?.toLongOrNull()
 
-                    if (vedtakId == null || meldekortId == null) {
-                        call.respondText(
-                            text = "MeldekortId eller VedtakId mangler eller er ugyldig",
-                            status = HttpStatusCode.BadRequest,
-                        )
-                        return@get
-                    }
-
                     logger.info { "Saksbehandler henter detaljer om utbetalingshistorikk" }
-                    val utbetalingshistorikk = utbetalingshistorikkService.hentAnmerkningerOgVedtakfakta(
-                        vedtakId = vedtakId,
-                        meldekortId = meldekortId,
-                    )
+                    val anmerkninger = utbetalingshistorikkService.hentAnmerkningerForMeldekort(meldekortId)
+                    val vedtakfakta = utbetalingshistorikkService.hentVedtakfaktaForVedtak(vedtakId)
                     logger.info { "Saksbehandler har hentet detaljer om utbetalingshistorikk" }
 
                     call.respond(
                         UtbetalingshistorikkVedtaksfaktaOgAnmerkninger(
-                            anmerkninger = utbetalingshistorikk.first,
-                            vedtakfakta = utbetalingshistorikk.second,
+                            anmerkninger = anmerkninger,
+                            vedtakfakta = vedtakfakta,
                         ),
                     )
                 } catch (e: Exception) {
