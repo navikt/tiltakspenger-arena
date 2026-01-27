@@ -1,6 +1,6 @@
 package no.nav.tiltakspenger.arena.repository.anmerkning
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 /**
  * Bruker samme format som i arena-api
@@ -8,6 +8,6 @@ import java.time.LocalDate
  */
 class ArenaAnmerkningDTO(
     val kilde: String?,
-    val regDato: LocalDate?,
+    val regDato: LocalDateTime?,
     val beskrivelse: String?,
 )

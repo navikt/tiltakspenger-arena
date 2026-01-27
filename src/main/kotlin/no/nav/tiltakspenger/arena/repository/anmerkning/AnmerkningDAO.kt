@@ -127,7 +127,7 @@ class AnmerkningDAO {
 
         return ArenaAnmerkningDTO(
             kilde = kilde,
-            regDato = localDateOrNull("REG_DATO"),
+            regDato = localDateTimeOrNull("REG_DATO"),
             beskrivelse = stringOrNull("BESKRIVELSE"),
         )
     }
