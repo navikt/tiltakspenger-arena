@@ -34,10 +34,11 @@ i den folderen og kjør `docker-compose up -d --build`.
 
 # Kjøre queries mot arena-viewet
 For å kunne kjøre queries mot viewet må man kunne koble seg på arena sin database. Dette er tilgjengelig på flere mulige måter, men det enkelse er nok via en avd-vdi.
-1. Bestille RA-bruker på "Mine tilganger" https://nav.omada.cloud/requestaccess, hvor du må søke om "RA_UTEN_TILGANG"
-2. Be om tilganger til å installere programvare i avd-vdien i #avd-vdi på Slack.
-3. Gå til https://windows.cloud.microsoft og åpne VDIen "vdi-utvikler-tiltakspenger"
-
+1. Bestille RA-bruker på "Mine tilganger" https://nav.omada.cloud/requestaccess, hvor du må søke om "RA_UTEN_TILGANG". 
+2. Be om brukernavn og passord til Arena databasen i q2, spør i #arena på slack. Egentlig finnes verdien i [vault](https://vault.adeo.no/ui/vault/secrets/oracle/kv/dev%2Fconfig%2Farena_q2/details?version=3), men vi har tidligere heller bare fått den tilsendt på e-post.
+3. Be om tilganger til å installere programvare i avd-vdien i #avd-vdi på Slack.
+4. Gå til https://windows.cloud.microsoft og åpne VDIen "vdi-utvikler-tiltakspenger"
+5. Med RA brukeren skal du kunne installere et fornuftig utviklingsverktøy til å kunne gjøre spørringer mot databasen (f.eks IntelliJ eller SQL Developer)
 
 # Henvendelser
 

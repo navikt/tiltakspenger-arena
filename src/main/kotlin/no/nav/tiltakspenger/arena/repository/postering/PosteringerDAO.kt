@@ -10,6 +10,8 @@ class PosteringerDAO {
     /**
      * Finner postering for en gitt periode og person.
      * Dette er utbetalinger fra meldekort og spesialutbetalinger som er overført økonomisystem.
+     *
+     * Se det originale viewt i doc/utbetalingshistorikk/v_api.utbethist.vw og tilhørende spørring i doc/utbetalingshistorikk/v_api.utbethist_json_query.sql
      */
     fun hentVedtakForUtbetalingshistorikk(
         personId: Long,

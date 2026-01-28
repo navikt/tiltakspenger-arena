@@ -10,6 +10,8 @@ class AnmerkningDAO {
      * Finner vedtak ut fra anmerkning, hvor vedtaket ikke har en tilknyttet postering, utbetalingsgrunnlag eller
      * beregningslogg. Dette er da vedtak som er forsøkt beregenet, men som feilet og fikk laget en anmerkning på seg.
      * Henter kun vedtak knyttet til anmerkningen med den laveste iden for at vedtaket kun skal hentes en gang.
+     *
+     * Se det originale viewt i doc/utbetalingshistorikk/v_api.utbethist.vw og tilhørende spørring i doc/utbetalingshistorikk/v_api.utbethist_json_query.sql
      */
     fun hentVedtakForUtbetalingshistorikk(
         personId: Long,

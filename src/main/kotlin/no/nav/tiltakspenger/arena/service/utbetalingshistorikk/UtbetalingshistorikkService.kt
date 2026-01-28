@@ -18,6 +18,16 @@ import no.nav.tiltakspenger.arena.service.vedtakdetaljer.tilVedtakfaktaMeldekort
 import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.LocalDate
 
+/**
+ * Detaljer om utbetalingshistorikk. Tidligere ble denne dataen tilbydt fra https://github.com/navikt/arena-api,
+ * men det er nå teamene som skal tilby dataene som er relevante til sin ytelse. I mappen doc er det lagt ved viewet til
+ * arena v_api_utbethist.vw som viser hvordan dataene ble hentet tidligere.
+ * Videre ble dette viewet brukt med en spørring som bygget opp et JSON-objekt som ligner på
+ * [UtbetalingshistorikkDetaljer], denne spørringen kan du se i v_api.utbethist_json_query.sql. Da ikke alt viste seg å
+ * være relevant for oss så er antall felter redusert og hentingen av anmerkninger og vedtakfakta er dratt ut. Viewet
+ * ble delt opp slik at man henter vedtak fra posteringer, utbetalingsgrunnlag, beregningslogg, anmerkninger og
+ * meldekort hver for seg i sin DAOs.
+ */
 data class UtbetalingshistorikkService(
     val personDAO: PersonDAO = PersonDAO(),
     val posteringRepository: PosteringRepository = PosteringRepository(),

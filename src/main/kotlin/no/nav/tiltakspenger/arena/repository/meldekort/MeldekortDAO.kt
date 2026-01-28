@@ -73,6 +73,8 @@ class MeldekortDAO(
      * Finner meldekort som er beregnet, men som det ikke finnes posteringer, utbetalingsgrunnlag, beregningslogg eller
      * anmerkninger for. Dette er da meldekort som er forsøkt beregnet, men som har feilet uten at det har blitt laget
      * en anmerkning.
+     *
+     * Se det originale viewt i doc/utbetalingshistorikk/v_api.utbethist.vw og tilhørende spørring i doc/utbetalingshistorikk/v_api.utbethist_json_query.sql
      */
     fun hentVedtakForUtbetalingshistorikk(
         personId: Long,
