@@ -10,6 +10,8 @@ class UtbetalingsgrunnlagDAO {
      * Finner utbetalingsgrunnlag for en gitt periode og person.
      * Dette er utbetalinger fra meldekort og spesialutbetalinger som ikke er overført økonomisystem.
      * Når utbetalingen er overført økonomisystem vil utbetalingsgrunnlaget flyttes til postering.
+     *
+     * Se det originale viewt i doc/utbetalingshistorikk/v_api.utbethist.vw og tilhørende spørring i doc/utbetalingshistorikk/v_api.utbethist_json_query.sql
      */
     fun hentVedtakForUtbetalingshistorikk(
         personId: Long,
