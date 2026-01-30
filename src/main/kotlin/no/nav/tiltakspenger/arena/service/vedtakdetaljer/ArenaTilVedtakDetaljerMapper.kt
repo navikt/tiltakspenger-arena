@@ -5,7 +5,7 @@ import no.nav.tiltakspenger.arena.repository.vedtak.ArenaBarnetilleggVedtakDTO
 import no.nav.tiltakspenger.arena.repository.vedtak.ArenaSakMedMinstEttVedtakDTO
 import no.nav.tiltakspenger.arena.repository.vedtak.ArenaTiltakspengerVedtakDTO
 import no.nav.tiltakspenger.libs.logging.Sikkerlogg
-import no.nav.tiltakspenger.libs.periodisering.Periode
+import no.nav.tiltakspenger.libs.periode.Periode
 import no.nav.tiltakspenger.libs.periodisering.Periodisering
 import java.time.LocalDate
 

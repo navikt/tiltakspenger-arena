@@ -5,7 +5,7 @@ import no.nav.tiltakspenger.arena.repository.ArenaRettighet
 import no.nav.tiltakspenger.arena.repository.ArenaUtfall
 import no.nav.tiltakspenger.arena.repository.ArenaVedtakStatus
 import no.nav.tiltakspenger.arena.repository.ArenaVedtakType
-import no.nav.tiltakspenger.libs.periodisering.Periode
+import no.nav.tiltakspenger.libs.periode.Periode
 import java.time.LocalDate
 import java.time.LocalDateTime
 
