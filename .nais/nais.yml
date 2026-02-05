@@ -55,8 +55,6 @@ spec:
   kafka:
     pool: {{ kafka.pool }}
   webproxy: true
-  envFrom:
-    - secret: ords-arena
   vault:
     enabled: true
     paths:

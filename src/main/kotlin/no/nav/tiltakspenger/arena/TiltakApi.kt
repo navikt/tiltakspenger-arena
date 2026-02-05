@@ -10,20 +10,16 @@ import io.ktor.server.auth.authentication
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
 import no.nav.tiltakspenger.arena.routes.healthRoutes
-import no.nav.tiltakspenger.arena.routes.tiltakAzureRoutes
-import no.nav.tiltakspenger.arena.routes.tiltakRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutes
 import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
 import no.nav.tiltakspenger.arena.service.utbetalingshistorikk.UtbetalingshistorikkService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
-import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClient
 import no.nav.tiltakspenger.libs.texas.IdentityProvider
 import no.nav.tiltakspenger.libs.texas.TexasAuthenticationProvider
 import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
 
 fun Application.tiltakApi(
-    arenaOrdsClient: ArenaOrdsClient,
     vedtakDetaljerService: VedtakDetaljerService,
     rettighetDetaljerService: RettighetDetaljerService,
     meldekortService: MeldekortService,
@@ -41,12 +37,6 @@ fun Application.tiltakApi(
     setupAuthentication(texasClient)
 
     routing {
-        tiltakRoutes(
-            arenaOrdsClient = arenaOrdsClient,
-        )
-        tiltakAzureRoutes(
-            arenaOrdsClient = arenaOrdsClient,
-        )
         tiltakspengerRoutes(
             vedtakDetaljerService = vedtakDetaljerService,
             rettighetDetaljerService = rettighetDetaljerService,

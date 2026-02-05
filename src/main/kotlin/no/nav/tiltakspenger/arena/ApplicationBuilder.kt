@@ -7,8 +7,6 @@ import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
 import no.nav.tiltakspenger.arena.service.utbetalingshistorikk.UtbetalingshistorikkService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServiceImpl
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl
-import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsClientImpl
-import no.nav.tiltakspenger.arena.tiltakogaktivitet.ArenaOrdsTokenProviderClient
 import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
 
 internal fun start(
@@ -19,12 +17,7 @@ internal fun start(
         tokenUrl = Configuration.naisTokenEndpoint,
         tokenExchangeUrl = Configuration.tokenExchangeEndpoint,
     )
-    val tokenProviderClient = ArenaOrdsTokenProviderClient(Configuration.ArenaOrdsConfig())
     val arenaSakRepository = SakRepository()
-    val arenaOrdsClient = ArenaOrdsClientImpl(
-        arenaOrdsConfig = Configuration.ArenaOrdsConfig(),
-        arenaOrdsTokenProvider = tokenProviderClient,
-    )
 
     val vedtakDetaljerService = VedtakDetaljerServiceImpl(
         arenaSakRepository = arenaSakRepository,
@@ -38,7 +31,6 @@ internal fun start(
         port = port,
         module = {
             tiltakApi(
-                arenaOrdsClient = arenaOrdsClient,
                 vedtakDetaljerService = vedtakDetaljerService,
                 rettighetDetaljerService = rettighetDetaljerService,
                 meldekortService = meldekortService,

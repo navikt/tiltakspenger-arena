@@ -16,8 +16,6 @@ object Configuration {
     private val defaultProperties = ConfigurationMap(
         mapOf(
             "application.httpPort" to 8080.toString(),
-            "ARENA_ORDS_CLIENT_ID" to System.getenv("ARENA_ORDS_CLIENT_ID"),
-            "ARENA_ORDS_CLIENT_SECRET" to System.getenv("ARENA_ORDS_CLIENT_SECRET"),
             "NAIS_TOKEN_INTROSPECTION_ENDPOINT" to System.getenv("NAIS_TOKEN_INTROSPECTION_ENDPOINT"),
             "NAIS_TOKEN_ENDPOINT" to System.getenv("NAIS_TOKEN_ENDPOINT"),
             "NAIS_TOKEN_EXCHANGE_ENDPOINT" to System.getenv("NAIS_TOKEN_EXCHANGE_ENDPOINT"),
@@ -29,7 +27,6 @@ object Configuration {
     private val localProperties = ConfigurationMap(
         mapOf(
             "application.profile" to Profile.LOCAL.toString(),
-            "ARENA_ORDS_URL" to "",
             "NAIS_TOKEN_INTROSPECTION_ENDPOINT" to "",
             "NAIS_TOKEN_ENDPOINT" to "",
             "NAIS_TOKEN_EXCHANGE_ENDPOINT" to "",
@@ -38,13 +35,11 @@ object Configuration {
     private val devProperties = ConfigurationMap(
         mapOf(
             "application.profile" to Profile.DEV.toString(),
-            "ARENA_ORDS_URL" to "https://arena-ords-q2.nais.preprod.local",
         ),
     )
     private val prodProperties = ConfigurationMap(
         mapOf(
             "application.profile" to Profile.PROD.toString(),
-            "ARENA_ORDS_URL" to "https://arena-ords.nais.adeo.no",
         ),
     )
 
@@ -59,12 +54,6 @@ object Configuration {
             systemProperties() overriding EnvironmentVariables overriding localProperties overriding defaultProperties
         }
     }
-
-    data class ArenaOrdsConfig(
-        val arenaOrdsUrl: String = config()[Key("ARENA_ORDS_URL", stringType)],
-        val arenaOrdsClientId: String = config()[Key("ARENA_ORDS_CLIENT_ID", stringType)],
-        val arenaOrdsClientSecret: String = config()[Key("ARENA_ORDS_CLIENT_SECRET", stringType)],
-    )
 
     data class ArenaDbConfig(
         val arenaDbUrl: String = config()[Key("ARENADB_URL", stringType)],
