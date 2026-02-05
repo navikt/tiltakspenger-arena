@@ -7,7 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.HttpClient
-import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.apache.Apache
 import io.ktor.client.plugins.HttpRequestRetry
@@ -16,9 +15,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.http.ContentType
 import io.ktor.serialization.jackson.jackson
-import no.nav.tiltakspenger.arena.felles.JacksonXmlConverter
 import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.Duration
 
@@ -38,7 +35,6 @@ fun httpClientWithRetry(timeout: Long = SIXTY_SECONDS) =
             }
         }
     }
-fun httpClientXml() = HttpClient(Apache) { setupXmlClient() }
 
 private fun HttpClient.config(timeout: Long) =
     this.config {
@@ -72,19 +68,3 @@ private fun HttpClient.config(timeout: Long) =
         }
         expectSuccess = false
     }
-
-fun HttpClientConfig<*>.setupXmlClient() {
-    install(ContentNegotiation) {
-        register(ContentType.Text.Xml, JacksonXmlConverter())
-    }
-    install(Logging) {
-        logger = object : Logger {
-            override fun log(message: String) {
-                LOG.info { "XmlHttpClient detaljer logget til securelog" }
-                Sikkerlogg.info { message }
-            }
-        }
-        level = LogLevel.INFO
-    }
-    expectSuccess = false
-}
