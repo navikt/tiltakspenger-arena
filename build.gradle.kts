@@ -5,12 +5,12 @@ val javaVersion = JavaVersion.VERSION_21
 val jvmVersion = JvmTarget.JVM_21
 
 val ktorVersion = "3.4.0"
-val jacksonVersion = "2.21.0"
+val jacksonVersion = "3.0.4"
 val jacksonAnnotationsVersion = "2.21"
 val mockkVersion = "1.14.9"
 val kotlinxCoroutinesVersion = "1.10.2"
 val testContainersVersion = "2.0.3"
-val felleslibVersion = "0.0.673"
+val felleslibVersion = "0.0.685"
 val kotestVersion = "6.1.2"
 
 plugins {
@@ -38,6 +38,7 @@ dependencies {
     implementation("com.github.navikt.tiltakspenger-libs:periodisering:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:logging:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:texas:$felleslibVersion")
+    implementation("com.github.navikt.tiltakspenger-libs:json:${felleslibVersion}")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
@@ -49,21 +50,17 @@ dependencies {
 
     implementation("io.ktor:ktor-server:$ktorVersion")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
-    implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
-    implementation("io.ktor:ktor-client-content-negotiation-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-jackson-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
-    implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-jackson3:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
-    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+    implementation("tools.jackson.core:jackson-core:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonAnnotationsVersion")
-    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("tools.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("tools.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
     implementation("com.zaxxer:HikariCP:7.0.2")
     implementation("com.oracle.database.jdbc:ojdbc11:23.26.0.0.0")
