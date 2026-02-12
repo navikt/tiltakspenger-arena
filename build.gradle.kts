@@ -63,7 +63,7 @@ dependencies {
     implementation("tools.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
     implementation("com.zaxxer:HikariCP:7.0.2")
-    implementation("com.oracle.database.jdbc:ojdbc11:23.26.0.0.0")
+    implementation("com.oracle.database.jdbc:ojdbc11:23.26.1.0.0")
     implementation("com.github.seratch:kotliquery:1.9.1")
 
     implementation("org.slf4j:jul-to-slf4j:2.0.17")
