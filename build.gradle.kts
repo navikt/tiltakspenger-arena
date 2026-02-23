@@ -50,12 +50,8 @@ dependencies {
 
     implementation("io.ktor:ktor-server:$ktorVersion")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-apache:$ktorVersion")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson3:$ktorVersion")
-    implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
     implementation("tools.jackson.core:jackson-core:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonAnnotationsVersion")
@@ -76,7 +72,6 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
-    testImplementation("io.ktor:ktor-client-mock-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("org.xmlunit:xmlunit-matchers:2.11.0")
     testImplementation("org.hamcrest:hamcrest-core:3.0")
