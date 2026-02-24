@@ -10,7 +10,7 @@ val jacksonAnnotationsVersion = "2.21"
 val mockkVersion = "1.14.9"
 val kotlinxCoroutinesVersion = "1.10.2"
 val testContainersVersion = "2.0.3"
-val felleslibVersion = "0.0.693"
+val felleslibVersion = "0.0.697"
 val kotestVersion = "6.1.3"
 
 plugins {
@@ -46,7 +46,7 @@ dependencies {
     implementation("com.natpryce:konfig:1.6.10.0")
     implementation("net.logstash.logback:logstash-logback-encoder:9.0")
     implementation("ch.qos.logback:logback-classic:1.5.32")
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.14")
+    implementation("io.github.oshai:kotlin-logging-jvm:8.0.01")
 
     implementation("io.ktor:ktor-server:$ktorVersion")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
