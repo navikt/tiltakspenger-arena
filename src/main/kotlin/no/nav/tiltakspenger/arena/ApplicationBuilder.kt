@@ -8,14 +8,18 @@ import no.nav.tiltakspenger.arena.service.utbetalingshistorikk.Utbetalingshistor
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServiceImpl
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl
 import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
+import no.nav.tiltakspenger.libs.tid.zoneIdOslo
+import java.time.Clock
 
 internal fun start(
     port: Int = Configuration.httpPort(),
+    clock: Clock = Clock.system(zoneIdOslo),
 ) {
     val texasClient = TexasHttpClient(
         introspectionUrl = Configuration.naisTokenIntrospectionEndpoint,
         tokenUrl = Configuration.naisTokenEndpoint,
         tokenExchangeUrl = Configuration.tokenExchangeEndpoint,
+        clock = clock,
     )
     val arenaSakRepository = SakRepository()
 
