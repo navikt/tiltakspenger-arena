@@ -45,7 +45,7 @@ dependencies {
     implementation("com.natpryce:konfig:1.6.10.0")
     implementation("net.logstash.logback:logstash-logback-encoder:9.0")
     implementation("ch.qos.logback:logback-classic:1.5.33")
-    implementation("io.github.oshai:kotlin-logging-jvm:8.0.03")
+    implementation("io.github.oshai:kotlin-logging-jvm:8.0.4")
 
     implementation("io.ktor:ktor-server:$ktorVersion")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
