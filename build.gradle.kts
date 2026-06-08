@@ -72,7 +72,7 @@ dependencies {
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
-    testImplementation("org.xmlunit:xmlunit-matchers:2.11.0")
+    testImplementation("org.xmlunit:xmlunit-matchers:2.12.0")
     testImplementation("org.hamcrest:hamcrest-core:3.0")
     testImplementation("org.flywaydb:flyway-database-oracle:12.7.0")
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
