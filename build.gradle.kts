@@ -5,19 +5,19 @@ val javaVersion = JavaVersion.VERSION_25
 val jvmVersion = JvmTarget.JVM_25
 
 val ktorVersion = "3.4.3"
-val jacksonVersion = "3.1.4"
+val jacksonVersion = "3.2.0"
 val jacksonAnnotationsVersion = "2.22"
 val mockkVersion = "1.14.11"
 val kotlinxCoroutinesVersion = "1.11.0"
 val testContainersVersion = "2.0.5"
 val felleslibVersion = "0.0.827"
-val kotestVersion = "6.1.11"
+val kotestVersion = "6.2.1"
 
 plugins {
     application
     id("java")
     kotlin("jvm") version "2.4.0"
-    id("com.diffplug.spotless") version "8.6.0"
+    id("com.diffplug.spotless") version "8.7.0"
 }
 
 repositories {
@@ -44,7 +44,7 @@ dependencies {
     implementation("org.jetbrains:annotations:26.1.0")
     implementation("com.natpryce:konfig:1.6.10.0")
     implementation("net.logstash.logback:logstash-logback-encoder:9.0")
-    implementation("ch.qos.logback:logback-classic:1.5.33")
+    implementation("ch.qos.logback:logback-classic:1.5.34")
     implementation("io.github.oshai:kotlin-logging-jvm:8.0.4")
 
     implementation("io.ktor:ktor-server:$ktorVersion")
@@ -57,7 +57,7 @@ dependencies {
     implementation("tools.jackson.core:jackson-databind:$jacksonVersion")
     implementation("tools.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
-    implementation("com.zaxxer:HikariCP:7.0.2")
+    implementation("com.zaxxer:HikariCP:7.1.0")
     implementation("com.oracle.database.jdbc:ojdbc11:23.26.2.0.0")
     implementation("com.github.seratch:kotliquery:1.9.1")
 
@@ -74,7 +74,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("org.xmlunit:xmlunit-matchers:2.12.0")
     testImplementation("org.hamcrest:hamcrest-core:3.0")
-    testImplementation("org.flywaydb:flyway-database-oracle:12.7.0")
+    testImplementation("org.flywaydb:flyway-database-oracle:12.9.0")
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter:$testContainersVersion")
     testImplementation("org.testcontainers:testcontainers-oracle-free:$testContainersVersion")
@@ -85,7 +85,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
     testImplementation("io.kotest:kotest-extensions:$kotestVersion")
 
-    testImplementation("no.nav.security:mock-oauth2-server:3.0.1")
+    testImplementation("no.nav.security:mock-oauth2-server:4.0.1")
 }
 
 configurations.all {
