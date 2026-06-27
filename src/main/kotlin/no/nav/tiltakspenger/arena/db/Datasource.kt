@@ -18,7 +18,6 @@ object Datasource {
         LOG.info { "Kobler til Oracle '$url" }
 
         return HikariDataSource().apply {
-            driverClassName = "oracle.jdbc.driver.OracleDriver"
             jdbcUrl = url
             username = arenaDbConfig.arenaDbUsername
             password = arenaDbConfig.arenaDbPassword
