@@ -6,8 +6,8 @@ ENV LANG='nb_NO.UTF-8'
 
 WORKDIR /app
 
-COPY build/install/tiltakspenger-arena/lib/*.jar ./
+COPY --chmod=0755 build/install/tiltakspenger-arena/lib/*.jar /app/lib/
 
 USER nobody
 
-CMD ["tiltakspenger-arena.jar"]
+ENTRYPOINT ["java", "-cp", "/app/lib/*", "no.nav.tiltakspenger.arena.ApplicationKt"]

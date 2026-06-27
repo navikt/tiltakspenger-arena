@@ -135,13 +135,6 @@ tasks {
             exceptionFormat = TestExceptionFormat.FULL
         }
     }
-    jar {
-        manifest.attributes["Main-Class"] = "no.nav.tiltakspenger.arena.ApplicationKt"
-        manifest.attributes["Class-Path"] = configurations
-            .runtimeClasspath
-            .get()
-            .joinToString(separator = " ") { file -> file.name }
-    }
     register<Copy>("gitHooks") {
         from(file(".scripts/pre-commit"))
         into(file(".git/hooks"))
