@@ -29,6 +29,11 @@ repositories {
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
+
+    // Lås alle io.netty:* til samme versjon som forsikring mot fremtidig 4.1/4.2-drift.
+    // ktor-server-netty drar inn netty 4.2.x; en BOM hindrer at en transitiv avhengighet
+    // senere blander inn 4.1.x og legger duplikate baseklasser på classpath (jf. `-cp lib/*`).
+    implementation(platform("io.netty:netty-bom:4.2.12.Final"))
     implementation("com.github.navikt.tiltakspenger-libs:common:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:periodisering:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:logging:$felleslibVersion")
@@ -74,18 +79,13 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter:$testContainersVersion")
     testImplementation("org.testcontainers:testcontainers-oracle-free:$testContainersVersion")
-    // need quarkus-junit-4-mock because of https://github.com/testcontainers/testcontainers-java/issues/970
-    testImplementation("io.quarkus:quarkus-junit4-mock:3.30.8")
-
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
     testImplementation("io.kotest:kotest-extensions:$kotestVersion")
-
-    testImplementation("no.nav.security:mock-oauth2-server:4.0.1")
 }
 
 configurations.all {
-    // exclude JUnit 4
+    // ekskluder JUnit 4
     exclude(group = "junit", module = "junit")
 }
 
@@ -114,12 +114,12 @@ tasks {
         }
     }
     test {
-        // JUnit 5 support
+        // JUnit 5-støtte
         useJUnitPlatform()
         // https://phauer.com/2018/best-practices-unit-testing-kotlin/
         systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
         testLogging {
-            // We only want to log failed and skipped tests when running Gradle.
+            // Vi logger bare feilede og hoppede tester når Gradle kjører.
             events("skipped", "failed")
             exceptionFormat = TestExceptionFormat.FULL
         }

@@ -1,6 +1,5 @@
 package no.nav.tiltakspenger.arena.routes
 
-import com.nimbusds.jwt.SignedJWT
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -9,13 +8,11 @@ import io.ktor.server.testing.testApplication
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.mockk
-import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.tiltakspenger.arena.configureTestApplication
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
 import no.nav.tiltakspenger.libs.texas.IdentityProvider
 import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
 import no.nav.tiltakspenger.libs.texas.client.TexasIntrospectionResponse
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -23,34 +20,15 @@ import org.junit.jupiter.api.Test
 internal class TiltakspengerRoutesAuthTest {
     private val texasClient = mockk<TexasHttpClient>()
 
-    companion object {
-        private val mockOAuth2Server = MockOAuth2Server().also {
-            it.start(8080)
-        }
+    // Tokenstrengene er vilkårlige: autorisasjonen avgjøres utelukkende av det mockede
+    // texasClient.introspectToken-svaret, ikke av tokenets innhold/signatur.
+    private val gyldigAzureToken = "gyldig-token"
 
-        @AfterAll
-        @JvmStatic
-        fun teardown() = mockOAuth2Server.shutdown()
-    }
+    private val utgåttAzureToken = "utgaatt-token"
 
-    private fun token(
-        issuerId: String = "azure",
-        audience: String = "tiltakspenger-arena",
-        expiry: Long = 3600L,
-    ): SignedJWT = mockOAuth2Server
-        .issueToken(
-            issuerId = issuerId,
-            audience = audience,
-            expiry = expiry,
-        )
+    private val tokenMedFeilIssuer = "token-med-feil-issuer"
 
-    private val gyldigAzureToken: SignedJWT = token()
-
-    private val utgåttAzureToken: SignedJWT = token(expiry = -60L)
-
-    private val tokenMedFeilIssuer: SignedJWT = token(issuerId = "feilIssuer")
-
-    private val tokenMedFeilAudience: SignedJWT = token(audience = "feilAudience")
+    private val tokenMedFeilAudience = "token-med-feil-audience"
 
     private val vedtakRequestBody = """
         {
@@ -100,7 +78,7 @@ internal class TiltakspengerRoutesAuthTest {
                 vedtakDetaljerService = vedtakDetaljerServiceMock,
             )
             val response = client.post("/azure/tiltakspenger/vedtaksperioder") {
-                header("Authorization", "Bearer ${gyldigAzureToken.serialize()}")
+                header("Authorization", "Bearer $gyldigAzureToken")
                 header("Content-Type", "application/json")
                 setBody(vedtakRequestBody)
             }
@@ -119,7 +97,7 @@ internal class TiltakspengerRoutesAuthTest {
         testApplication {
             configureTestApplication(texasClient = texasClient)
             val response = client.post("/azure/tiltakspenger/vedtaksperioder") {
-                header("Authorization", "Bearer ${utgåttAzureToken.serialize()}")
+                header("Authorization", "Bearer $utgåttAzureToken")
                 header("Content-Type", "application/json")
                 setBody(vedtakRequestBody)
             }
@@ -138,7 +116,7 @@ internal class TiltakspengerRoutesAuthTest {
         testApplication {
             configureTestApplication(texasClient = texasClient)
             val response = client.post("/azure/tiltakspenger/vedtaksperioder") {
-                header("Authorization", "Bearer ${tokenMedFeilIssuer.serialize()}")
+                header("Authorization", "Bearer $tokenMedFeilIssuer")
                 header("Content-Type", "application/json")
                 setBody(vedtakRequestBody)
             }
@@ -157,7 +135,7 @@ internal class TiltakspengerRoutesAuthTest {
         testApplication {
             configureTestApplication(texasClient = texasClient)
             val response = client.post("/azure/tiltakspenger/vedtaksperioder") {
-                header("Authorization", "Bearer ${tokenMedFeilAudience.serialize()}")
+                header("Authorization", "Bearer $tokenMedFeilAudience")
                 header("Content-Type", "application/json")
                 setBody(vedtakRequestBody)
             }
