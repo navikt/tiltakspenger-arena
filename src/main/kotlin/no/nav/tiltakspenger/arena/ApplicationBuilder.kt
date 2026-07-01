@@ -7,13 +7,10 @@ import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
 import no.nav.tiltakspenger.arena.service.utbetalingshistorikk.UtbetalingshistorikkService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServiceImpl
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl
-import no.nav.tiltakspenger.libs.ktor.common.oppstart.Bakgrunnsprosessoppsett
 import no.nav.tiltakspenger.libs.ktor.common.oppstart.startApp
 import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
 import no.nav.tiltakspenger.libs.tid.zoneIdOslo
 import java.time.Clock
-
-private const val MDC_CALL_ID_KEY = "call-id"
 
 internal fun start(
     log: KLogger = KotlinLogging.logger {},
@@ -40,11 +37,6 @@ internal fun start(
         log = log,
         port = port,
         isNais = isNais,
-        oppsett = Bakgrunnsprosessoppsett(
-            mdcCallIdKey = MDC_CALL_ID_KEY,
-            electorPath = { error("electorPath brukes ikke - arena har ingen bakgrunnsprosesser") },
-            clock = clock,
-        ),
     ) { readiness ->
         tiltakApi(
             vedtakDetaljerService = vedtakDetaljerService,
