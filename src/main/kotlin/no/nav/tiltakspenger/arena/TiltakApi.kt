@@ -7,13 +7,14 @@ import io.ktor.server.application.install
 import io.ktor.server.auth.authentication
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
-import no.nav.tiltakspenger.arena.routes.healthRoutes
 import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutes
 import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
 import no.nav.tiltakspenger.arena.service.utbetalingshistorikk.UtbetalingshistorikkService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
 import no.nav.tiltakspenger.libs.json.objectMapper
+import no.nav.tiltakspenger.libs.ktor.common.oppstart.Readiness
+import no.nav.tiltakspenger.libs.ktor.common.oppstart.healthRoutes
 import no.nav.tiltakspenger.libs.texas.IdentityProvider
 import no.nav.tiltakspenger.libs.texas.TexasAuthenticationProvider
 import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
@@ -24,6 +25,7 @@ fun Application.tiltakApi(
     meldekortService: MeldekortService,
     utbetalingshistorikkService: UtbetalingshistorikkService,
     texasClient: TexasHttpClient,
+    readiness: Readiness,
 ) {
     install(ContentNegotiation) {
         register(ContentType.Application.Json, JacksonConverter(objectMapper))
@@ -38,7 +40,7 @@ fun Application.tiltakApi(
             meldekortService = meldekortService,
             utbetalingshistorikkService = utbetalingshistorikkService,
         )
-        healthRoutes()
+        healthRoutes(erKlar = readiness::erKlar)
     }
 }
 

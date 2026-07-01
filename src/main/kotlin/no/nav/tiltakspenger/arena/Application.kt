@@ -1,8 +1,6 @@
 package no.nav.tiltakspenger.arena
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ktor.server.application.Application
-import io.ktor.util.AttributeKey
 import org.slf4j.bridge.SLF4JBridgeHandler
 
 /**
@@ -20,9 +18,5 @@ fun main() {
         log.error(e) { e.message }
     }
 
-    start()
+    start(log)
 }
-
-val isReadyKey = AttributeKey<Boolean>("isReady")
-
-fun Application.isReady() = attributes.getOrNull(isReadyKey) == true

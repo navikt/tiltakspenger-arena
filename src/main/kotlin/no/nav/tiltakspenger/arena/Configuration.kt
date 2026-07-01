@@ -73,6 +73,8 @@ object Configuration {
 
     fun httpPort() = config()[Key("application.httpPort", intType)]
 
+    fun isNais() = applicationProfile() != Profile.LOCAL
+
     private fun fromFileOrSystemProperty(filename: String, property: String): String {
         if (applicationProfile() == Profile.LOCAL) {
             return System.getProperty(property)
