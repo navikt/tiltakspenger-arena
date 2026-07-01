@@ -1,5 +1,6 @@
 package no.nav.tiltakspenger.arena.routes
 
+import io.kotest.matchers.shouldBe
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -13,7 +14,6 @@ import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerService
 import no.nav.tiltakspenger.libs.texas.IdentityProvider
 import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
 import no.nav.tiltakspenger.libs.texas.client.TexasIntrospectionResponse
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -58,7 +58,7 @@ internal class TiltakspengerRoutesAuthTest {
                 header("Content-Type", "application/json")
                 setBody(vedtakRequestBody)
             }
-            assertEquals(HttpStatusCode.Unauthorized, response.status)
+            response.status shouldBe HttpStatusCode.Unauthorized
         }
     }
 
@@ -82,7 +82,7 @@ internal class TiltakspengerRoutesAuthTest {
                 header("Content-Type", "application/json")
                 setBody(vedtakRequestBody)
             }
-            assertEquals(HttpStatusCode.OK, response.status)
+            response.status shouldBe HttpStatusCode.OK
         }
     }
 
@@ -101,7 +101,7 @@ internal class TiltakspengerRoutesAuthTest {
                 header("Content-Type", "application/json")
                 setBody(vedtakRequestBody)
             }
-            assertEquals(HttpStatusCode.Unauthorized, response.status)
+            response.status shouldBe HttpStatusCode.Unauthorized
         }
     }
 
@@ -120,7 +120,7 @@ internal class TiltakspengerRoutesAuthTest {
                 header("Content-Type", "application/json")
                 setBody(vedtakRequestBody)
             }
-            assertEquals(HttpStatusCode.Unauthorized, response.status)
+            response.status shouldBe HttpStatusCode.Unauthorized
         }
     }
 
@@ -139,7 +139,7 @@ internal class TiltakspengerRoutesAuthTest {
                 header("Content-Type", "application/json")
                 setBody(vedtakRequestBody)
             }
-            assertEquals(HttpStatusCode.Unauthorized, response.status)
+            response.status shouldBe HttpStatusCode.Unauthorized
         }
     }
 }
