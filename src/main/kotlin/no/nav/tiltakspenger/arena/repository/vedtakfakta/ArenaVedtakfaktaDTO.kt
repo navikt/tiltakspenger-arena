@@ -1,6 +1,7 @@
 package no.nav.tiltakspenger.arena.repository.vedtakfakta
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -166,12 +167,12 @@ private fun List<ArenaVedtakfaktaDTO>.beslutningsdato(): LocalDate? =
 private fun List<ArenaVedtakfaktaDTO>.dagsats(): Int? =
     this.find { it.vedtakfaktaKode == ArenaVedtakFakta.DAGS.name }?.vedtakfaktaVerdi
         .also { log.info { "${ArenaVedtakFakta.DAGS.name}: $it" } }
-        ?.toInt()
+        ?.tilAvrundetHeltall(ArenaVedtakFakta.DAGS)
 
 private fun List<ArenaVedtakfaktaDTO>.antallBarn(): Int? =
     this.find { it.vedtakfaktaKode == ArenaVedtakFakta.BARNMSTON.name }?.vedtakfaktaVerdi
         .also { log.info { "${ArenaVedtakFakta.BARNMSTON.name}: $it" } }
-        ?.toInt()
+        ?.tilAvrundetHeltall(ArenaVedtakFakta.BARNMSTON)
 
 private fun List<ArenaVedtakfaktaDTO>.antallDager(): Double? =
     this.find { it.vedtakfaktaKode == ArenaVedtakFakta.DAGUTBTILT.name }?.vedtakfaktaVerdi
@@ -212,13 +213,24 @@ private fun List<ArenaVedtakfaktaDTO>.maskineltVedtak(): String? =
 private fun List<ArenaVedtakfaktaDTO>.antallUtbetalinger(): Int? =
     this.find { it.vedtakfaktaKode == ArenaVedtakFakta.ANTALL.name }?.vedtakfaktaVerdi
         .also { log.info { "${ArenaVedtakFakta.ANTALL.name}: $it" } }
-        ?.toInt()
+        ?.tilAvrundetHeltall(ArenaVedtakFakta.ANTALL)
 
 private fun List<ArenaVedtakfaktaDTO>.belopPerUtbetalinger(): Int? =
     this.find { it.vedtakfaktaKode == ArenaVedtakFakta.BEL.name }?.vedtakfaktaVerdi
         .also { log.info { "${ArenaVedtakFakta.BEL.name}: $it" } }
-        ?.toInt()
+        ?.tilAvrundetHeltall(ArenaVedtakFakta.BEL)
 
 private fun List<ArenaVedtakfaktaDTO>.alternativBetalingsmottaker(): String? =
     this.find { it.vedtakfaktaKode == ArenaVedtakFakta.EKSTID.name }?.vedtakfaktaVerdi
         .also { log.info { "${ArenaVedtakFakta.EKSTID.name}: $it" } }
+
+// Vedtakfakta lagres som tekst i Arena, og felter vi forventer er heltall kan inneholde
+// desimaltall (sett i prod: BARNMSTON=0.961538461538462). Runder av til nærmeste heltall.
+private fun String.tilAvrundetHeltall(vedtakfakta: ArenaVedtakFakta): Int {
+    val verdi = this.toBigDecimal()
+    return verdi.setScale(0, RoundingMode.HALF_UP).intValueExact().also {
+        if (verdi.stripTrailingZeros().scale() > 0) {
+            log.warn { "Vedtakfakta ${vedtakfakta.name} hadde desimalverdien $this, rundet av til $it" }
+        }
+    }
+}

@@ -52,8 +52,8 @@ fun Route.tiltakspengerRoutes(
                     }
                     call.respond(filtrertPeriode.toArenaTiltakspengerVedtakPeriode())
                 } catch (e: Exception) {
-                    Sikkerlogg.warn(e) { "Feilet å hente tiltakspenger ${e.message}" }
-                    logger.warn { "Kunne ikke hente vedtaksperioder" }
+                    logger.error(e) { "Kunne ikke hente vedtaksperioder" }
+                    Sikkerlogg.error(e) { "Kunne ikke hente vedtaksperioder" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
@@ -71,8 +71,8 @@ fun Route.tiltakspengerRoutes(
                     logger.info { "Saksbehandler har hentet vedtak fra arena" }
                     call.respond(periode.toArenaTiltakspengerVedtakPeriode())
                 } catch (e: Exception) {
-                    Sikkerlogg.warn(e) { "Feilet å hente vedtak fra arena ${e.message}" }
-                    logger.warn { "Kunne ikke hente vedtak fra arena" }
+                    logger.error(e) { "Kunne ikke hente vedtak fra arena" }
+                    Sikkerlogg.error(e) { "Kunne ikke hente vedtak fra arena" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
@@ -90,8 +90,8 @@ fun Route.tiltakspengerRoutes(
                     logger.info { "Saksbehandler har hentet rettighetsperioder" }
                     call.respond(periode.toArenaTiltakspengerRettighetPeriode())
                 } catch (e: Exception) {
-                    Sikkerlogg.warn(e) { "Feilet å hente tiltakspenger ${e.message}" }
-                    logger.warn { "Kunne ikke hente rettighetsperioder" }
+                    logger.error(e) { "Kunne ikke hente rettighetsperioder" }
+                    Sikkerlogg.error(e) { "Kunne ikke hente rettighetsperioder" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
@@ -108,8 +108,8 @@ fun Route.tiltakspengerRoutes(
                     logger.info { "Saksbehandler har hentet meldekort" }
                     call.respond(meldekort)
                 } catch (e: Exception) {
-                    Sikkerlogg.warn(e) { "Feilet å hente meldekort for tiltakspenger ${e.message}" }
-                    logger.warn { "Kunne ikke hente meldekort" }
+                    logger.error(e) { "Kunne ikke hente meldekort" }
+                    Sikkerlogg.error(e) { "Kunne ikke hente meldekort" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
@@ -126,8 +126,8 @@ fun Route.tiltakspengerRoutes(
                     logger.info { "Saksbehandler har hentet utbetalingshistorikk" }
                     call.respond(utbetalingshistorikk)
                 } catch (e: Exception) {
-                    Sikkerlogg.warn(e) { "Feilet å hente utbetalingshistorikk ${e.message}" }
-                    logger.warn { "Kunne ikke hente utbetalingshistorikk" }
+                    logger.error(e) { "Kunne ikke hente utbetalingshistorikk" }
+                    Sikkerlogg.error(e) { "Kunne ikke hente utbetalingshistorikk" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
@@ -149,8 +149,8 @@ fun Route.tiltakspengerRoutes(
                         ),
                     )
                 } catch (e: Exception) {
-                    Sikkerlogg.warn(e) { "Feilet å hente detaljer om utbetalingshistorikk ${e.message}" }
-                    logger.warn { "Kunne ikke hente detaljer om utbetalingshistorikk" }
+                    logger.error(e) { "Kunne ikke hente detaljer om utbetalingshistorikk" }
+                    Sikkerlogg.error(e) { "Kunne ikke hente detaljer om utbetalingshistorikk" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
