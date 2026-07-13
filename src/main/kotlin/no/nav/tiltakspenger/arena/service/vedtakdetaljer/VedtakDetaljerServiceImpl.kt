@@ -13,6 +13,6 @@ class VedtakDetaljerServiceImpl(
         tom: LocalDate,
     ): Periodisering<VedtakDetaljer>? {
         val sakerFraDb = arenaSakRepository.hentSakerForFnr(fnr = ident, fom = fom, tom = tom)
-        return ArenaTilVedtakDetaljerMapper.mapTiltakspengerFraArenaTilVedtaksperioder(sakerFraDb)
+        return ArenaTilVedtakDetaljerMapper.mapTiltakspengerFraArenaTilVedtaksperioder(sakerFraDb, fnr = ident)
     }
 }

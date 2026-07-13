@@ -23,24 +23,27 @@ class VedtakfaktaDAO {
 
     fun findTiltakspengerVedtakfaktaByVedtakId(
         vedtakId: Long,
+        kontekst: VedtakfaktaLoggkontekst,
         txSession: TransactionalSession,
     ): ArenaTiltakspengerVedtakfaktaDTO {
-        return findVedtakFaktaByVedtakId(vedtakId, txSession).toArenaTiltakspengerVedtakfaktaDTO()
+        return findVedtakFaktaByVedtakId(vedtakId, txSession).toArenaTiltakspengerVedtakfaktaDTO(kontekst)
     }
 
     fun findBarnetilleggVedtakfaktaByVedtakId(
         vedtakId: Long,
+        kontekst: VedtakfaktaLoggkontekst,
         txSession: TransactionalSession,
     ): ArenaBarnetilleggVedtakfaktaDTO {
-        return findVedtakFaktaByVedtakId(vedtakId, txSession).toArenaBarnetilleggVedtakfaktaDTO()
+        return findVedtakFaktaByVedtakId(vedtakId, txSession).toArenaBarnetilleggVedtakfaktaDTO(kontekst)
     }
 
     fun findUtbetalingshistorikkVedtakfakta(
         vedtakId: Long,
+        kontekst: VedtakfaktaLoggkontekst = VedtakfaktaLoggkontekst(),
         txSession: TransactionalSession? = null,
     ): ArenaUtbetalingshistorikkVedtakfaktaDTO {
         withTx(txSession) { tx ->
-            return findVedtakFaktaByVedtakId(vedtakId, tx).tilArenaUtbetalingshistorikkVedtakfaktaDTO()
+            return findVedtakFaktaByVedtakId(vedtakId, tx).tilArenaUtbetalingshistorikkVedtakfaktaDTO(kontekst)
         }
     }
 

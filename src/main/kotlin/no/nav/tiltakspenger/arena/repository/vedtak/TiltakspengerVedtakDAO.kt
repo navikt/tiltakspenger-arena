@@ -1,6 +1,5 @@
 package no.nav.tiltakspenger.arena.repository.vedtak
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.Row
 import kotliquery.TransactionalSession
 import kotliquery.queryOf
@@ -11,6 +10,7 @@ import no.nav.tiltakspenger.arena.repository.ArenaVedtakStatus
 import no.nav.tiltakspenger.arena.repository.ArenaVedtakType
 import no.nav.tiltakspenger.arena.repository.ArenaYtelse
 import no.nav.tiltakspenger.arena.repository.vedtakfakta.VedtakfaktaDAO
+import no.nav.tiltakspenger.arena.repository.vedtakfakta.VedtakfaktaLoggkontekst
 import org.intellij.lang.annotations.Language
 
 class TiltakspengerVedtakDAO(
@@ -18,8 +18,6 @@ class TiltakspengerVedtakDAO(
 ) {
 
     companion object {
-        private val LOG = KotlinLogging.logger {}
-
         private fun String.toVedtakType(): ArenaVedtakType =
             ArenaVedtakType.valueOf(this)
 
@@ -41,6 +39,7 @@ class TiltakspengerVedtakDAO(
 
     private fun findAlleTiltakspengerBySakId(
         sakId: Long,
+        kontekst: VedtakfaktaLoggkontekst,
         txSession: TransactionalSession,
     ): List<ArenaTiltakspengerVedtakDTO> {
         val paramMap = mapOf(
@@ -48,20 +47,21 @@ class TiltakspengerVedtakDAO(
         )
         return txSession.run(
             queryOf(sqlFindTiltakspengerVedtakOgFiltrerBortUønskede, paramMap)
-                .map { row -> row.toVedtak(txSession, sakId) }
+                .map { row -> row.toVedtak(txSession, sakId, kontekst) }
                 .asList,
         )
     }
 
     fun findTiltakspengerBySakId(
         sakId: Long,
+        kontekst: VedtakfaktaLoggkontekst,
         txSession: TransactionalSession,
-    ): List<ArenaTiltakspengerVedtakDTO> = findAlleTiltakspengerBySakId(sakId, txSession)
+    ): List<ArenaTiltakspengerVedtakDTO> = findAlleTiltakspengerBySakId(sakId, kontekst, txSession)
 
-    private fun Row.toVedtak(txSession: TransactionalSession, sakId: Long): ArenaTiltakspengerVedtakDTO {
+    private fun Row.toVedtak(txSession: TransactionalSession, sakId: Long, kontekst: VedtakfaktaLoggkontekst): ArenaTiltakspengerVedtakDTO {
         val vedtakId = long("VEDTAK_ID")
-        val vedtakFakta = vedtakfaktaDAO.findTiltakspengerVedtakfaktaByVedtakId(vedtakId, txSession)
-        val dto = ArenaTiltakspengerVedtakDTO(
+        val vedtakFakta = vedtakfaktaDAO.findTiltakspengerVedtakfaktaByVedtakId(vedtakId, kontekst, txSession)
+        return ArenaTiltakspengerVedtakDTO(
             vedtakId = vedtakId,
             tilhørendeSakId = sakId,
             beslutningsdato = vedtakFakta.beslutningsdato,
@@ -80,11 +80,6 @@ class TiltakspengerVedtakDAO(
             opprinneligTomVedtaksperiode = vedtakFakta.opprinneligTilDato,
             relatertTiltak = vedtakFakta.relatertTiltak,
         )
-
-        if (!(dto.status == ArenaVedtakStatus.GODKJ || dto.status == ArenaVedtakStatus.IVERK)) {
-            LOG.info { "VedtakStatusType er ${dto.status}" }
-        }
-        return dto
     }
 
     // Vi gjør filtreringen her i stedet for i Kotlin-koden, da de ulike where-clausene er ganske enkle å forstå,

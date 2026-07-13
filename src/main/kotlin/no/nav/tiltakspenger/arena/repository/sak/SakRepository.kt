@@ -1,11 +1,9 @@
 package no.nav.tiltakspenger.arena.repository.sak
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.sessionOf
 import no.nav.tiltakspenger.arena.db.Datasource
 import no.nav.tiltakspenger.arena.repository.person.PersonDAO
 import no.nav.tiltakspenger.arena.repository.vedtak.ArenaSakMedMinstEttVedtakDTO
-import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.LocalDate
 
 /*
@@ -30,21 +28,15 @@ class SakRepository(
     private val personDAO: PersonDAO = PersonDAO(),
     private val sakDAO: SakDAO = SakDAO(),
 ) {
-    companion object {
-        private val LOG = KotlinLogging.logger {}
-    }
-
     fun hentSakerForFnr(
         fnr: String,
         fom: LocalDate = LocalDate.of(1900, 1, 1),
         tom: LocalDate = LocalDate.of(2999, 12, 31),
     ): List<ArenaSakMedMinstEttVedtakDTO> {
-        val saker = hentAlleSakerForFnr(fnr)
+        return hentAlleSakerForFnr(fnr)
             .logVedtakMedUgyldigeVerdier()
             .kunSakerMedVedtakInnenforPeriode(fom, tom)
             .map { ArenaSakMedMinstEttVedtakDTO.Companion(it) }
-        LOG.info { "Antall filtrerte saker er ${saker.size}" }
-        return saker
     }
 
     private fun hentAlleSakerForFnr(
@@ -53,17 +45,12 @@ class SakRepository(
         sessionOf(Datasource.hikariDataSource).use {
             it.transaction { txSession ->
                 val person = personDAO.findByFnr(fnr, txSession)
-                if (person == null) {
-                    LOG.info { "Fant ikke person" }
-                    Sikkerlogg.info { "Fant ikke person med ident $fnr" }
-                    return emptyList()
-                }
-                val saker = sakDAO.findByPersonId(
+                    ?: return emptyList()
+                return sakDAO.findByPersonId(
                     personId = person.personId,
+                    fnr = fnr,
                     txSession = txSession,
                 )
-                LOG.info { "Antall saker er ${saker.size}" }
-                return saker
             }
         }
     }

@@ -10,6 +10,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
+import no.nav.tiltakspenger.arena.SE_SIKKERLOGG
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerRettighetPeriodeMapper.toArenaTiltakspengerRettighetPeriode
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerVedtakPeriodeMapper.toArenaTiltakspengerVedtakPeriode
 import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
@@ -37,22 +38,23 @@ fun Route.tiltakspengerRoutes(
             post("/vedtaksperioder") {
                 try {
                     val req = call.receive<VedtakRequest>()
-                    logger.info { "Saksbehandler henter vedtaksperioder" }
                     val periode: Periodisering<VedtakDetaljer>? =
                         vedtakDetaljerService.hentVedtakDetaljerPerioder(
                             ident = req.ident,
                             fom = req.fom ?: LocalDate.of(1900, 1, 1),
                             tom = req.tom ?: LocalDate.of(2999, 12, 31),
                         )
-                    logger.info { "Saksbehandler har hentet vedtaksperioder" }
                     val filtrertPeriode = periode?.filter {
                         it.verdi.rettighet == Rettighet.TILTAKSPENGER ||
                             it.verdi.rettighet == Rettighet.TILTAKSPENGER_OG_BARNETILLEGG ||
                             it.verdi.rettighet == Rettighet.BARNETILLEGG
                     }
-                    call.respond(filtrertPeriode.toArenaTiltakspengerVedtakPeriode())
+                    val respons = filtrertPeriode.toArenaTiltakspengerVedtakPeriode()
+                    logger.info { "Hentet vedtaksperioder (${respons.size} perioder). $SE_SIKKERLOGG" }
+                    Sikkerlogg.info { "Hentet vedtaksperioder (${respons.size} perioder). Ident: ${req.ident}" }
+                    call.respond(respons)
                 } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente vedtaksperioder" }
+                    logger.error(e) { "Kunne ikke hente vedtaksperioder. $SE_SIKKERLOGG" }
                     Sikkerlogg.error(e) { "Kunne ikke hente vedtaksperioder" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
@@ -61,17 +63,18 @@ fun Route.tiltakspengerRoutes(
             post("/vedtak") {
                 try {
                     val req = call.receive<VedtakRequest>()
-                    logger.info { "Saksbehandler henter vedtak fra arena" }
                     val periode: Periodisering<VedtakDetaljer>? =
                         vedtakDetaljerService.hentVedtakDetaljerPerioder(
                             ident = req.ident,
                             fom = req.fom ?: LocalDate.of(1900, 1, 1),
                             tom = req.tom ?: LocalDate.of(2999, 12, 31),
                         )
-                    logger.info { "Saksbehandler har hentet vedtak fra arena" }
-                    call.respond(periode.toArenaTiltakspengerVedtakPeriode())
+                    val respons = periode.toArenaTiltakspengerVedtakPeriode()
+                    logger.info { "Hentet vedtak fra arena (${respons.size} perioder). $SE_SIKKERLOGG" }
+                    Sikkerlogg.info { "Hentet vedtak fra arena (${respons.size} perioder). Ident: ${req.ident}" }
+                    call.respond(respons)
                 } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente vedtak fra arena" }
+                    logger.error(e) { "Kunne ikke hente vedtak fra arena. $SE_SIKKERLOGG" }
                     Sikkerlogg.error(e) { "Kunne ikke hente vedtak fra arena" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
@@ -80,17 +83,18 @@ fun Route.tiltakspengerRoutes(
             post("/rettighetsperioder") {
                 try {
                     val req = call.receive<VedtakRequest>()
-                    logger.info { "Saksbehandler henter rettighetsperioder" }
                     val periode: Periodisering<RettighetDetaljer>? =
                         rettighetDetaljerService.hentRettighetDetaljerPerioder(
                             ident = req.ident,
                             fom = req.fom ?: LocalDate.of(1900, 1, 1),
                             tom = req.tom ?: LocalDate.of(2999, 12, 31),
                         )
-                    logger.info { "Saksbehandler har hentet rettighetsperioder" }
-                    call.respond(periode.toArenaTiltakspengerRettighetPeriode())
+                    val respons = periode.toArenaTiltakspengerRettighetPeriode()
+                    logger.info { "Hentet rettighetsperioder (${respons.size} perioder). $SE_SIKKERLOGG" }
+                    Sikkerlogg.info { "Hentet rettighetsperioder (${respons.size} perioder). Ident: ${req.ident}" }
+                    call.respond(respons)
                 } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente rettighetsperioder" }
+                    logger.error(e) { "Kunne ikke hente rettighetsperioder. $SE_SIKKERLOGG" }
                     Sikkerlogg.error(e) { "Kunne ikke hente rettighetsperioder" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
@@ -99,16 +103,16 @@ fun Route.tiltakspengerRoutes(
             post("/meldekort") {
                 try {
                     val req = call.receive<VedtakRequest>()
-                    logger.info { "Saksbehandler henter meldekort" }
                     val meldekort = meldekortService.hentMeldekortForFnr(
                         fnr = req.ident,
                         fraOgMedDato = req.fom ?: LocalDate.of(1900, 1, 1),
                         tilOgMedDato = req.tom ?: LocalDate.of(2999, 12, 31),
                     )
-                    logger.info { "Saksbehandler har hentet meldekort" }
+                    logger.info { "Hentet meldekort (${meldekort.size} meldekort). $SE_SIKKERLOGG" }
+                    Sikkerlogg.info { "Hentet meldekort (${meldekort.size} meldekort). Ident: ${req.ident}" }
                     call.respond(meldekort)
                 } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente meldekort" }
+                    logger.error(e) { "Kunne ikke hente meldekort. $SE_SIKKERLOGG" }
                     Sikkerlogg.error(e) { "Kunne ikke hente meldekort" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
@@ -117,16 +121,16 @@ fun Route.tiltakspengerRoutes(
             post("/utbetalingshistorikk") {
                 try {
                     val req = call.receive<VedtakRequest>()
-                    logger.info { "Saksbehandler henter utbetalingshistorikk" }
                     val utbetalingshistorikk = utbetalingshistorikkService.hentUtbetalingshistorikkForFnr(
                         fnr = req.ident,
                         fraOgMedDato = req.fom ?: LocalDate.of(1900, 1, 1),
                         tilOgMedDato = req.tom ?: LocalDate.of(2999, 12, 31),
                     )
-                    logger.info { "Saksbehandler har hentet utbetalingshistorikk" }
+                    logger.info { "Hentet utbetalingshistorikk (${utbetalingshistorikk.size} innslag). $SE_SIKKERLOGG" }
+                    Sikkerlogg.info { "Hentet utbetalingshistorikk (${utbetalingshistorikk.size} innslag). Ident: ${req.ident}" }
                     call.respond(utbetalingshistorikk)
                 } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente utbetalingshistorikk" }
+                    logger.error(e) { "Kunne ikke hente utbetalingshistorikk. $SE_SIKKERLOGG" }
                     Sikkerlogg.error(e) { "Kunne ikke hente utbetalingshistorikk" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
@@ -137,10 +141,12 @@ fun Route.tiltakspengerRoutes(
                     val vedtakId = call.request.queryParameters["vedtakId"]?.toLongOrNull()
                     val meldekortId = call.request.queryParameters["meldekortId"]?.toLongOrNull()
 
-                    logger.info { "Saksbehandler henter detaljer om utbetalingshistorikk" }
                     val anmerkninger = utbetalingshistorikkService.hentAnmerkningerForMeldekort(meldekortId)
                     val vedtakfakta = utbetalingshistorikkService.hentVedtakfaktaForVedtak(vedtakId)
-                    logger.info { "Saksbehandler har hentet detaljer om utbetalingshistorikk" }
+                    logger.info {
+                        "Hentet detaljer om utbetalingshistorikk for vedtakId $vedtakId, meldekortId $meldekortId " +
+                            "(${anmerkninger.size} anmerkninger, vedtakfakta: ${vedtakfakta != null})"
+                    }
 
                     call.respond(
                         UtbetalingshistorikkVedtaksfaktaOgAnmerkninger(
@@ -149,7 +155,7 @@ fun Route.tiltakspengerRoutes(
                         ),
                     )
                 } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente detaljer om utbetalingshistorikk" }
+                    logger.error(e) { "Kunne ikke hente detaljer om utbetalingshistorikk. $SE_SIKKERLOGG" }
                     Sikkerlogg.error(e) { "Kunne ikke hente detaljer om utbetalingshistorikk" }
                     call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
@@ -162,7 +168,10 @@ data class VedtakRequest(
     val ident: String,
     val fom: LocalDate?,
     val tom: LocalDate?,
-)
+) {
+    /** [ident] er PII og skal ikke bli med om noen logger hele objektet. Samme maskering som [no.nav.tiltakspenger.libs.common.Fnr]. */
+    override fun toString() = "VedtakRequest(ident=***********, fom=$fom, tom=$tom)"
+}
 
 data class AnmerkningOgVedtakRequest(
     val vedtakId: Long,

@@ -1,6 +1,8 @@
 package no.nav.tiltakspenger.arena.service.vedtakdetaljer
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import no.nav.tiltakspenger.arena.Avvikstype
+import no.nav.tiltakspenger.arena.SE_SIKKERLOGG
 import no.nav.tiltakspenger.arena.repository.vedtak.ArenaBarnetilleggVedtakDTO
 import no.nav.tiltakspenger.arena.repository.vedtak.ArenaSakMedMinstEttVedtakDTO
 import no.nav.tiltakspenger.arena.repository.vedtak.ArenaTiltakspengerVedtakDTO
@@ -18,9 +20,11 @@ private const val DEFAULT_DAGSATS: Int = 0
 private const val DEFAULT_ANTALL_DAGER: Double = 0.0
 
 object ArenaTilVedtakDetaljerMapper {
-    fun mapTiltakspengerFraArenaTilVedtaksperioder(saker: List<ArenaSakMedMinstEttVedtakDTO>): Periodisering<VedtakDetaljer>? {
+    fun mapTiltakspengerFraArenaTilVedtaksperioder(
+        saker: List<ArenaSakMedMinstEttVedtakDTO>,
+        fnr: String,
+    ): Periodisering<VedtakDetaljer>? {
         if (saker.isEmpty()) {
-            LOG.info { "Returnerer null pga ingen saker" }
             return null
         }
         val totalePeriodeFra = saker.minOf { it.sakPeriode().fraOgMed }
@@ -32,12 +36,9 @@ object ArenaTilVedtakDetaljerMapper {
 
         val periodeMedTiltakspenger = fyllTiltakspengerPeriodenMedReelleVerdier(saker, periodeMedTiltakspengerInit)
         val periodeMedBarnetillegg =
-            fyllBarnetilleggPeriodenMedReelleVerdier(saker, periodeMedBarnetilleggInit, totalePeriode)
+            fyllBarnetilleggPeriodenMedReelleVerdier(saker, periodeMedBarnetilleggInit, totalePeriode, fnr)
 
-        Sikkerlogg.info { "Periode med tiltakspenger: $periodeMedTiltakspenger" }
-        Sikkerlogg.info { "Periode med barnetillegg: $periodeMedBarnetillegg" }
-
-        return kombinerTiltakspengerMedBarnetillegg(periodeMedTiltakspenger, periodeMedBarnetillegg)
+        return kombinerTiltakspengerMedBarnetillegg(periodeMedTiltakspenger, periodeMedBarnetillegg, fnr)
     }
 
     private fun periodeMedDefaultVerdierForTiltakspenger(totalePeriode: Periode) =
@@ -98,12 +99,12 @@ object ArenaTilVedtakDetaljerMapper {
         saker: List<ArenaSakMedMinstEttVedtakDTO>,
         periodeMedBarnetilleggInit: Periodisering<VedtakDetaljerBarnetillegg>,
         totalePeriode: Periode,
+        fnr: String,
     ) =
         saker
             .flatMap { it.barnetilleggVedtak }
             .fold(periodeMedBarnetilleggInit) { periodeMedVerdier: Periodisering<VedtakDetaljerBarnetillegg>, arenaBarnetilleggVedtakDTO: ArenaBarnetilleggVedtakDTO ->
                 if (totalePeriode.inneholderHele(arenaBarnetilleggVedtakDTO.vedtaksperiode())) {
-                    LOG.info { "Perioden for barnetillegg (${arenaBarnetilleggVedtakDTO.vedtaksperiode()}) er innenfor saksperioden ($totalePeriode) " }
                     // Legger til hele perioden
                     periodeMedVerdier.setVerdiForDelperiode(
                         VedtakDetaljerBarnetillegg(
@@ -116,7 +117,12 @@ object ArenaTilVedtakDetaljerMapper {
                         arenaBarnetilleggVedtakDTO.vedtaksperiode(),
                     )
                 } else if (totalePeriode.overlapperMed(arenaBarnetilleggVedtakDTO.vedtaksperiode())) {
-                    LOG.warn { "Perioden for barnetillegg (${arenaBarnetilleggVedtakDTO.vedtaksperiode()}) overlapper med saksperioden ($totalePeriode) " }
+                    loggAvvik(
+                        Avvikstype.BARNETILLEGG_PERIODE_OVERLAPP,
+                        "Perioden for barnetillegg (${arenaBarnetilleggVedtakDTO.vedtaksperiode()}) overlapper med saksperioden ($totalePeriode) " +
+                            "for vedtakId ${arenaBarnetilleggVedtakDTO.vedtakId}, sakId ${arenaBarnetilleggVedtakDTO.tilhørendeSakId}",
+                        fnr,
+                    )
                     periodeMedVerdier.setVerdiForDelperiode(
                         VedtakDetaljerBarnetillegg(
                             antallDager = arenaBarnetilleggVedtakDTO.antallDager ?: DEFAULT_ANTALL_DAGER,
@@ -128,7 +134,12 @@ object ArenaTilVedtakDetaljerMapper {
                         arenaBarnetilleggVedtakDTO.vedtaksperiode().overlappendePeriode(totalePeriode)!!,
                     )
                 } else {
-                    LOG.error { "Perioden for barnetillegg (${arenaBarnetilleggVedtakDTO.vedtaksperiode()}) er utenfor saksperioden ($totalePeriode) " }
+                    loggAlvorligAvvik(
+                        Avvikstype.BARNETILLEGG_PERIODE_UTENFOR,
+                        "Perioden for barnetillegg (${arenaBarnetilleggVedtakDTO.vedtaksperiode()}) er utenfor saksperioden ($totalePeriode) " +
+                            "for vedtakId ${arenaBarnetilleggVedtakDTO.vedtakId}, sakId ${arenaBarnetilleggVedtakDTO.tilhørendeSakId}",
+                        fnr,
+                    )
                     // Legger ikke til noe
                     periodeMedVerdier
                 }
@@ -137,13 +148,24 @@ object ArenaTilVedtakDetaljerMapper {
     private fun kombinerTiltakspengerMedBarnetillegg(
         periodeMedTiltakspenger: Periodisering<VedtakDetaljerKunTiltakspenger>,
         periodeMedBarnetillegg: Periodisering<VedtakDetaljerBarnetillegg>,
+        fnr: String,
     ) =
         periodeMedTiltakspenger.kombiner(periodeMedBarnetillegg) { vt, vb ->
             if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG && vt.antallDager != vb.antallDager) {
-                LOG.info { "Vedtaket om tiltakspenger (${vt.antallDager}) og vedtaket om barnetillegg (${vb.antallDager}) har ikke samme antall dager" }
+                loggAvvik(
+                    Avvikstype.ULIKT_ANTALL_DAGER,
+                    "Vedtaket om tiltakspenger (${vt.antallDager}) og vedtaket om barnetillegg (${vb.antallDager}) har ikke samme antall dager " +
+                        "for ${vt.loggKontekst()}",
+                    fnr,
+                )
             }
             if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG && vt.tiltakGjennomføringsId != vb.relaterteTiltak) {
-                LOG.info { "Vedtaket om tiltakspenger (${vt.tiltakGjennomføringsId}) og vedtaket om barnetillegg (${vb.relaterteTiltak}) har ikke samme relaterte tiltak" }
+                loggAvvik(
+                    Avvikstype.ULIKT_RELATERT_TILTAK,
+                    "Vedtaket om tiltakspenger (${vt.tiltakGjennomføringsId}) og vedtaket om barnetillegg (${vb.relaterteTiltak}) har ikke samme relaterte tiltak " +
+                        "for ${vt.loggKontekst()}",
+                    fnr,
+                )
             }
             VedtakDetaljer(
                 antallDager = vt.antallDager,
@@ -151,7 +173,7 @@ object ArenaTilVedtakDetaljerMapper {
                 dagsatsBarnetillegg = vb.dagsats,
                 antallBarn = vb.antallBarn,
                 tiltakGjennomføringsId = vt.tiltakGjennomføringsId,
-                rettighet = kombinerRettighet(vt, vb),
+                rettighet = kombinerRettighet(vt, vb, fnr),
                 vedtakId = vt.vedtakId,
                 sakId = vt.sakId,
                 beslutningsdato = vt.beslutningsdato,
@@ -163,15 +185,36 @@ object ArenaTilVedtakDetaljerMapper {
             )
         }
 
-    private fun kombinerRettighet(vt: VedtakDetaljerKunTiltakspenger, vb: VedtakDetaljerBarnetillegg) =
+    private fun kombinerRettighet(vt: VedtakDetaljerKunTiltakspenger, vb: VedtakDetaljerBarnetillegg, fnr: String) =
         if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.BARNETILLEGG) {
             Rettighet.TILTAKSPENGER_OG_BARNETILLEGG
         } else if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.INGENTING) {
             Rettighet.TILTAKSPENGER
         } else if (vt.rettighet == Rettighet.INGENTING && vb.rettighet == Rettighet.BARNETILLEGG) {
-            LOG.warn { "Her har vi en periode med barnetillegg men ikke tiltakspenger - det skal ikke egentlig kunne skje!" }
+            // Her finnes det ikke noe tiltakspengervedtak å knytte til, så relatert tiltak fra
+            // barnetillegget er nærmeste spor i vanlig logg - identen ligger i sikkerlogg.
+            loggAvvik(
+                Avvikstype.BARNETILLEGG_UTEN_TILTAKSPENGER,
+                "Her har vi en periode med barnetillegg men ikke tiltakspenger - det skal ikke egentlig kunne skje! " +
+                    "Barnetillegget har relatert tiltak ${vb.relaterteTiltak}",
+                fnr,
+            )
             Rettighet.BARNETILLEGG
         } else {
             Rettighet.INGENTING
         }
+
+    private fun VedtakDetaljerKunTiltakspenger.loggKontekst(): String =
+        "vedtakId $vedtakId, sakId $sakId, saksnummer $saksnummer"
+
+    /** Delt linje til vanlig logg og sikkerlogg - identen er PII og legges kun på sikkerlogg-linjen. */
+    private fun loggAvvik(type: Avvikstype, melding: String, fnr: String) {
+        LOG.warn { "$type: $melding. $SE_SIKKERLOGG" }
+        Sikkerlogg.warn { "$type: $melding. Ident: $fnr" }
+    }
+
+    private fun loggAlvorligAvvik(type: Avvikstype, melding: String, fnr: String) {
+        LOG.error { "$type: $melding. $SE_SIKKERLOGG" }
+        Sikkerlogg.error { "$type: $melding. Ident: $fnr" }
+    }
 }

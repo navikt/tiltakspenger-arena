@@ -1,3 +1,5 @@
+import kotlinx.kover.gradle.plugin.dsl.AggregationType
+import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 val ktorVersion = "3.4.3"
@@ -14,6 +16,7 @@ plugins {
     id("java")
     kotlin("jvm") version "2.4.0"
     id("com.diffplug.spotless") version "8.7.0"
+    id("org.jetbrains.kotlinx.kover") version "0.9.8"
 }
 
 repositories {
@@ -132,5 +135,48 @@ tasks {
         from(file(".gitHooks"))
         into(file(".git/hooks"))
         filePermissions { unix("rwxr-xr-x") }
+    }
+}
+
+kover {
+    reports {
+        total {
+            filters {
+                includes {
+                    // Klasser som skal ha full linjedekning (jf. tilsvarende oppsett i
+                    // tiltakspenger-saksbehandling-api). Utvid lista etter hvert som flere
+                    // klasser får full dekning.
+                    classes(
+                        "no.nav.tiltakspenger.arena.repository.vedtakfakta.Arena*",
+                        "no.nav.tiltakspenger.arena.repository.vedtakfakta.VedtakfaktaLoggkontekst",
+                    )
+                }
+            }
+            html {
+                onCheck = true
+            }
+            xml {
+                onCheck = true
+            }
+            verify {
+                onCheck = true
+                rule("vedtakfakta-mapping har full linjedekning") {
+                    bound {
+                        minValue = 100
+                        coverageUnits = CoverageUnit.LINE
+                        aggregationForGroup = AggregationType.COVERED_PERCENTAGE
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.named("koverXmlReport") {
+    val xmlReport = layout.buildDirectory.file("reports/kover/report.xml")
+    doLast {
+        val xml = xmlReport.get().asFile
+        val classCount = xml.readText().split("<class ").size - 1
+        if (classCount == 0) throw GradleException("Kover report contains no classes — include filters likely stale")
     }
 }

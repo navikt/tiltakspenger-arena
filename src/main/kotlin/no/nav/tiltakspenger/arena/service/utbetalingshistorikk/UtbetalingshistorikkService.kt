@@ -1,6 +1,5 @@
 package no.nav.tiltakspenger.arena.service.utbetalingshistorikk
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.sessionOf
 import no.nav.tiltakspenger.arena.db.Datasource
 import no.nav.tiltakspenger.arena.repository.anmerkning.AnmerkningDAO
@@ -15,7 +14,6 @@ import no.nav.tiltakspenger.arena.service.anmerkning.AnmerkningDetaljer
 import no.nav.tiltakspenger.arena.service.anmerkning.tilAnmerkningDetaljer
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakfaktaMeldekortDetaljer
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.tilVedtakfaktaMeldekortDetaljer
-import no.nav.tiltakspenger.libs.logging.Sikkerlogg
 import java.time.LocalDate
 
 /**
@@ -38,8 +36,6 @@ data class UtbetalingshistorikkService(
     val anmerkningDAO: AnmerkningDAO = AnmerkningDAO(),
     val vedtakfaktaDAO: VedtakfaktaDAO = VedtakfaktaDAO(),
 ) {
-    private val logger = KotlinLogging.logger {}
-
     fun hentUtbetalingshistorikkForFnr(
         fnr: String,
         fraOgMedDato: LocalDate,
@@ -48,11 +44,7 @@ data class UtbetalingshistorikkService(
         sessionOf(Datasource.hikariDataSource).use { session ->
             session.transaction { txSession ->
                 val person = personDAO.findByFnr(fnr, txSession)
-                if (person == null) {
-                    logger.info { "Fant ikke person" }
-                    Sikkerlogg.info { "Fant ikke person med ident $fnr" }
-                    return emptyList()
-                }
+                    ?: return emptyList()
 
                 val posteringer = posteringRepository.hentVedtakForUtbetalingshistorikk(
                     personId = person.personId,
@@ -89,16 +81,12 @@ data class UtbetalingshistorikkService(
                     tilOgMedDato = tilOgMedDato,
                 )
 
-                val utbetalingshistorikk =
-                    posteringer.map { it.tilUtbetalingshistorikk() } +
-                        utbetalingsgrunnlag.map { it.tilUtbetalingshistorikk() } +
-                        beregningslogg.map { it.tilUtbetalingshistorikk() } +
-                        anmerkninger.map { it.tilUtbetalingshistorikk() } +
-                        meldekortMedFeil.map { it.tilUtbetalingshistorikk() }
-                            .sortedBy { it.dato }
-
-                logger.info { "Antall innslag av utbetalingshistorikk er ${utbetalingshistorikk.size}" }
-                return utbetalingshistorikk
+                return posteringer.map { it.tilUtbetalingshistorikk() } +
+                    utbetalingsgrunnlag.map { it.tilUtbetalingshistorikk() } +
+                    beregningslogg.map { it.tilUtbetalingshistorikk() } +
+                    anmerkninger.map { it.tilUtbetalingshistorikk() } +
+                    meldekortMedFeil.map { it.tilUtbetalingshistorikk() }
+                        .sortedBy { it.dato }
             }
         }
     }
