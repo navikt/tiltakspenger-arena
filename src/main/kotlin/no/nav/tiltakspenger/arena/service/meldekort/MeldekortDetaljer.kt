@@ -17,6 +17,7 @@ class MeldekortDetaljer(
     val sistEndret: LocalDateTime,
     val type: String,
     val status: String,
+    // TODO: Skal bli nullbar sammen med hendelsedato i ArenaMeldekortDTO - se TODO der.
     val statusDato: LocalDate,
     val meldegruppe: String,
     val aar: Int,
