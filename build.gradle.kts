@@ -36,7 +36,7 @@ dependencies {
     // Lås alle io.netty:* til samme versjon som forsikring mot fremtidig 4.1/4.2-drift.
     // ktor-server-netty drar inn netty 4.2.x; en BOM hindrer at en transitiv avhengighet
     // senere blander inn 4.1.x og legger duplikate baseklasser på classpath (jf. `-cp lib/*`).
-    implementation(platform("io.netty:netty-bom:4.2.15.Final"))
+    implementation(platform("io.netty:netty-bom:4.2.16.Final"))
     implementation("com.github.navikt.tiltakspenger-libs:common:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:periodisering:$felleslibVersion")
     implementation("com.github.navikt.tiltakspenger-libs:logging:$felleslibVersion")
