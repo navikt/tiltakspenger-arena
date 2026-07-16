@@ -16,17 +16,12 @@ class ArenaMeldekortDTO(
     val statusAnnetFravaer: String, // J/N
     val statusFortsattArbeidsoker: String, // J/N
     val regDato: LocalDateTime, // opprettet
-    // TODO: MOD_DATO er nullbar i Arena, men mappes som non-null her - gjør feltet nullbart
-    //  gjennom hele kjeden (jf. TODO-en på hendelsedato).
+    // MOD_DATO er nullbar i basen, men 0 forekomster i Q2 og ingen observerte feil → non-null.
     val modDato: LocalDateTime, // sist endret
     val meldekortType: String,
     val beregningstatusnavn: String,
-    // TODO: HENDELSEDATO kommer fra en LEFT JOIN mot MELDELOGG og kan mangle - da feiler
-    //  mappingen med NPE (dokumentert i MeldekortRepositoryTest). arena-api, som dette API-et
-    //  er modellert etter, har statusDato som valgfritt felt. Planen er å gjøre både denne og
-    //  modDato nullbare gjennom hele kjeden (MeldekortDetaljer -> datadeling-klienten ->
-    //  ArenaMeldekortResponse) og endre kontrakten mot NKS (statusDato ut av required i
-    //  datadelings ArenaMeldekort.yaml) rett før.
+    // HENDELSEDATO hentes via LEFT JOIN mot MELDELOGG. 0 miss i Q2 → mappes non-null. Skulle et
+    // meldekort mangle logg-treff, feiler mappingen med NPE (bevisst valg, se nullability-doc-en).
     val hendelsedato: LocalDate,
     val meldegruppenavn: String,
     val aar: Int,

@@ -74,12 +74,11 @@ class MeldekortRepositoryTest {
     }
 
     @Test
-    fun `meldekort uten meldelogg feiler - hendelsedato mappes som ikke-nullbar fra en left join`() {
-        // Dokumenterer dagens oppførsel: MELDELOGG er LEFT JOIN-et i MeldekortDAO, men
-        // HENDELSEDATO mappes med localDate() som ikke tåler null.
-        // TODO: hendelsedato (og modDato) skal gjøres nullbare gjennom hele kjeden, og
-        //  kontrakten mot NKS endres rett før - se TODO i ArenaMeldekortDTO. Da snus denne
-        //  testen til å forvente meldekort med statusDato = null.
+    fun `meldekort uten meldelogg feiler - hendelsedato mappes non-null`() {
+        // Dokumenterer den kjente skarpe kanten: HENDELSEDATO hentes via LEFT JOIN mot MELDELOGG,
+        // men mappes non-null. 0 slike meldekort i Q2 (se doc/arena-ddl/nullability_arena_tilgang_ind.md),
+        // så vi håndterer bevisst ikke null-tilfellet. Denne testen pinner oppførselen: skulle et
+        // meldekort mangle logg-treff, feiler det med NPE - da må feltene gjøres nullbare.
         ArenaTestdata.leggTilPerson(personId = 203, fnr = "203")
         ArenaTestdata.leggTilMeldekortperiode(
             aar = 2023,
@@ -87,6 +86,7 @@ class MeldekortRepositoryTest {
             datoFra = LocalDate.of(2023, 1, 30),
             datoTil = LocalDate.of(2023, 2, 12),
         )
+        // Ingen meldelogg lagt til
         ArenaTestdata.leggTilMeldekort(meldekortId = 2031, personId = 203, aar = 2023, periodekode = "53")
 
         shouldThrow<NullPointerException> {

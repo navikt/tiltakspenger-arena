@@ -44,6 +44,12 @@ class MeldekortDAO(
                             INNER JOIN MELDEKORTPERIODE mp on m.AAR = mp.AAR AND m.PERIODEKODE = mp.PERIODEKODE
                             INNER JOIN BEREGNINGSTATUS be on be.BEREGNINGSTATUSKODE = m.BEREGNINGSTATUSKODE
                             INNER JOIN MKSKORTTYPE mt ON m.MKSKORTKODE = mt.MKSKORTKODE
+                            -- NB: Denne INNER JOIN-en filtrerer bort meldekort med null MELDEGRUPPEKODE,
+                            -- og de er (nesten) de samme radene som har null STATUS_*-flagg. Derfor kan
+                            -- STATUS_ARBEIDET/KURS/SYK/ANNETFRAVAER/FORTSATT_ARBEIDSOKER trygt mappes som
+                            -- non-null nedenfor. Gjør du denne joinen om til LEFT JOIN (eller fjerner den),
+                            -- må status-flaggene gjøres nullbare gjennom hele kjeden. Se
+                            -- doc/arena-ddl/nullability_arena_tilgang_ind.md.
                             INNER JOIN MELDEGRUPPETYPE mg ON m.MELDEGRUPPEKODE = mg.MELDEGRUPPEKODE
                             LEFT JOIN MELDELOGG ml ON m.MELDEKORT_ID = ml.MELDEKORT_ID
                                 AND ml.HENDELSETYPEKODE = m.BEREGNINGSTATUSKODE

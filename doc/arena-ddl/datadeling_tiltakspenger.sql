@@ -1,5 +1,5 @@
 --- DDLer bestilt fra Arena for å kunne lage en lokal "kopi" av viewet vårt til Arena-databasen, slik at vi kan skrive
---- tester litt enklere. Det er allerede noe datastruktur i test/resources/local-migrations/V1000__sak.sql som kan utbroderes
+--- tester litt enklere. Det er allerede noe datastruktur i test/resources/local-migrations/V1000_arena_skjema.sql som kan utbroderes
 --- med informasjon fra denne filen.
 -- https://trello.com/c/WR3F14RH/1883-skrive-tester-i-tiltakspenger-arena-for-nye-apier
 --------------------------------------------------------

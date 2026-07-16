@@ -12,5 +12,6 @@ Dette repoet følger monorepo-konvensjonene i [`../AGENTS.md`](../AGENTS.md) og 
     - Kolonnetyper for `SIAMO`-tabellene: AAP sin Oracle-DDL-eksport i [navikt/aap-arenaoppslag](https://github.com/navikt/aap-arenaoppslag/blob/main/app/src/test/resources/arena_aap_oracle_ddl_export.sql).
     - Referanse-testoppsett mot Oracle-container med testdata: [dp-proxy `ArenaInnsendtemeldekortTest`](https://github.com/navikt/dp-proxy/blob/main/proxy/src/test/kotlin/no/nav/dagpenger/proxy/feature/ArenaInnsendtemeldekortTest.kt).
     - Tabelldokumentasjon: [tilleggsstonader-docs/arena-database.md](https://github.com/navikt/tilleggsstonader-docs/blob/main/docs/Arena/arena-database.md).
-- Stil for test-DDL: kolonnene spørringene bruker (ikke full Arena-bredde), `NOT NULL` kun på nøkkelkolonner, `PRIMARY KEY` på naturlige nøkler — se `V1000__sak.sql` og `V1001__meldekort_og_utbetalingshistorikk.sql`.
+- Stil for test-DDL: kolonnene spørringene bruker (ikke full Arena-bredde), `NOT NULL` kun på nøkkelkolonner, `PRIMARY KEY` på naturlige nøkler — se `src/test/resources/local-migrations/V1000__arena_skjema.sql`.
+- Nullability-fasit for viewene (hvilke kolonner som er nullbare i Arena, og hvilke som faktisk er null for tiltakspenger-data i Q2) ligger i [`doc/arena-ddl/nullability_arena_tilgang_ind.md`](doc/arena-ddl/nullability_arena_tilgang_ind.md). Bruk den, ikke `datadeling_tiltakspenger.sql` (den har strippet constraints). Trenger du å verifisere noe nytt mot den faktiske databasen: se «Kjøre queries mot arena-viewet» i [README.md](README.md) — kun nåbar via VDI.
 

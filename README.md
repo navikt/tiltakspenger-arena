@@ -57,10 +57,26 @@ Kilder for tabell- og view-definisjoner når testoppsettet skal utvides:
   H2-basert variant og god dokumentasjon av tabellene; tipser bl.a. om at Q2-brukeren ser
   tabellstrukturen under viewene, så DDL-er kan genereres derfra (se avsnittet under om databasetilgang).
 
+## Utvide test-skjemaet med en ny tabell
+
+1. Finn kolonnene den nye spørringen bruker (ikke hele Arena-tabellen).
+2. Hent kolonnetypene fra AAP sin DDL-eksport (lenke over). Mangler tabellen der, generer DDL fra
+   Q2 via VDI (se «Kjøre queries mot arena-viewet» under) eller sjekk view-definisjonen i
+   `arena-db-datadeling`.
+3. Legg tabellen i `src/test/resources/local-migrations/V1000__arena_skjema.sql`, i samme stil:
+   `NOT NULL`/`PRIMARY KEY` kun på nøkler, `DATE` framfor `to_date(...)` for å unngå
+   locale-forskjeller mellom maskiner.
+4. Er tabellen kodeverk (statiske rader spørringene joiner mot), seed radene i
+   `ArenaTestdata.seedKodeverk()`; ellers lag en `leggTil…`-hjelper der.
+
 # Kjøre queries mot arena-viewet
+
+Arena-databasen er **ikke** nåbar fra utviklermaskin, heller ikke med naisdevice (det finnes ingen naisdevice-gateway for Oracle — kun for postgres).
+Bruk avd-vdi.
+
 For å kunne kjøre queries mot viewet må man kunne koble seg på arena sin database. Dette er tilgjengelig på flere mulige måter, men det enkelse er nok via en avd-vdi.
 1. Bestille RA-bruker på "Mine tilganger" https://nav.omada.cloud/requestaccess, hvor du må søke om "RA_UTEN_TILGANG". 
-2. Be om brukernavn og passord til Arena databasen i q2, spør i #arena på slack. Egentlig finnes verdien i [vault](https://vault.adeo.no/ui/vault/secrets/oracle/kv/dev%2Fconfig%2Farena_q2/details?version=3), men vi har tidligere heller bare fått den tilsendt på e-post.
+2. Be om brukernavn og passord til Arena databasen i q2, spør i #arena på slack; eventuelt bruk: https://vault.adeo.no/ui/vault/secrets/oracle/kv/dev%2Fcreds%2Farena_q2-tiltakspenger/details?version=1. Egentlig finnes verdien i [vault](https://vault.adeo.no/ui/vault/secrets/oracle/kv/dev%2Fconfig%2Farena_q2/details?version=3), men vi har tidligere heller bare fått den tilsendt på e-post.
 3. Be om tilganger til å installere programvare i avd-vdien i #avd-vdi på Slack.
 4. Gå til https://windows.cloud.microsoft og åpne VDIen "vdi-utvikler-tiltakspenger"
 5. Med RA brukeren skal du kunne installere et fornuftig utviklingsverktøy til å kunne gjøre spørringer mot databasen (f.eks IntelliJ eller SQL Developer)

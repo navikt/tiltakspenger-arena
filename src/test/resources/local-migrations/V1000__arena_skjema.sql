@@ -1,0 +1,253 @@
+-- Test-skjema for Arena-tabellene repository-testene leser fra. Kjøres mot Oracle-testcontainer
+-- (se SakRepositoryTest / OracleTestbase). I prod leser appen fra views (arena_tilgang_ind.*), men
+-- de er SELECT tabell.* med rettighetsfilter, så kolonnene er identiske med de underliggende
+-- SIAMO-tabellene - i test lager vi tabellene direkte.
+--
+-- Kun kolonnene spørringene faktisk bruker er med (ikke full Arena-bredde). Kolonnetyper og
+-- nullability er hentet fra:
+--   - AAP sin Oracle-DDL-eksport: https://github.com/navikt/aap-arenaoppslag/blob/main/app/src/test/resources/arena_aap_oracle_ddl_export.sql
+--   - Faktisk nullability i Q2: doc/arena-ddl/nullability_arena_tilgang_ind.md
+-- UTBETALINGSGRUNNLAG og kodeverkstabellene mangler i AAP-eksporten; de er utledet fra spørringene
+-- våre og dp-proxy sitt testoppsett (se nullability-doc-en / issue #874).
+
+CREATE TABLE PERSON
+(
+    PERSON_ID NUMBER NOT NULL,
+    FODSELSNR VARCHAR2(11) NOT NULL,
+    PRIMARY KEY (PERSON_ID)
+);
+
+CREATE TABLE SAK
+(
+    SAK_ID               NUMBER       NOT NULL,
+    SAKSKODE             VARCHAR2(10) NOT NULL,
+    REG_DATO             DATE,
+    REG_USER             VARCHAR2(8),
+    MOD_DATO             DATE,
+    MOD_USER             VARCHAR2(8),
+    TABELLNAVNALIAS      VARCHAR2(10) NOT NULL,
+    OBJEKT_ID            NUMBER,
+    AAR                  NUMBER(4)    NOT NULL,
+    LOPENRSAK            NUMBER(7)    NOT NULL,
+    DATO_AVSLUTTET       DATE,
+    SAKSTATUSKODE        VARCHAR2(5)  NOT NULL,
+    ARKIVNOKKEL          VARCHAR2(7),
+    AETATENHET_ARKIV     VARCHAR2(8),
+    ARKIVHENVISNING      VARCHAR2(255),
+    BRUKERID_ANSVARLIG   VARCHAR2(8),
+    AETATENHET_ANSVARLIG VARCHAR2(8),
+    OBJEKT_KODE          VARCHAR2(10),
+    STATUS_ENDRET        DATE,
+    PARTISJON            NUMBER(8),
+    ER_UTLAND            VARCHAR2(1)  NOT NULL,
+    PRIMARY KEY (SAK_ID)
+);
+
+CREATE TABLE VEDTAK
+(
+    VEDTAK_ID              NUMBER       NOT NULL,
+    SAK_ID                 NUMBER       NOT NULL,
+    VEDTAKSTATUSKODE       VARCHAR2(5)  NOT NULL,
+    VEDTAKTYPEKODE         VARCHAR2(10) NOT NULL,
+    REG_DATO               DATE,
+    REG_USER               VARCHAR2(8),
+    MOD_DATO               DATE,
+    MOD_USER               VARCHAR2(8),
+    UTFALLKODE             VARCHAR2(10),
+    BEGRUNNELSE            VARCHAR2(4000),
+    BRUKERID_ANSVARLIG     VARCHAR2(8),
+    AETATENHET_BEHANDLER   VARCHAR2(8)  NOT NULL,
+    AAR                    NUMBER(4)    NOT NULL,
+    LOPENRSAK              NUMBER(7)    NOT NULL,
+    LOPENRVEDTAK           NUMBER(3)    NOT NULL,
+    RETTIGHETKODE          VARCHAR2(10) NOT NULL,
+    AKTFASEKODE            VARCHAR2(10) NOT NULL,
+    BREV_ID                NUMBER,
+    TOTALBELOP             NUMBER(8, 2),
+    DATO_MOTTATT           DATE         NOT NULL,
+    VEDTAK_ID_RELATERT     NUMBER,
+    AVSNITTLISTEKODE_VALGT VARCHAR2(20),
+    PERSON_ID              NUMBER,
+    BRUKERID_BESLUTTER     VARCHAR2(8),
+    STATUS_SENSITIV        VARCHAR2(1),
+    VEDLEGG_BETPLAN        VARCHAR2(1),
+    PARTISJON              NUMBER(8),
+    OPPSUMMERING_SB2       VARCHAR2(4000),
+    DATO_UTFORT_DEL1       DATE,
+    DATO_UTFORT_DEL2       DATE,
+    OVERFORT_NAVI          VARCHAR2(1),
+    FRA_DATO               DATE,
+    TIL_DATO               DATE,
+    SF_OPPFOLGING_ID       NUMBER,
+    STATUS_SOSIALDATA      VARCHAR2(1)  NOT NULL,
+    KONTOR_SOSIALDATA      VARCHAR2(8),
+    TEKSTVARIANTKODE       VARCHAR2(20),
+    VALGT_BESLUTTER        VARCHAR2(8),
+    TEKNISK_VEDTAK         VARCHAR2(1),
+    DATO_INNSTILT          DATE,
+    ER_UTLAND              VARCHAR2(1)  NOT NULL,
+    PRIMARY KEY (VEDTAK_ID)
+);
+
+CREATE TABLE VEDTAKFAKTA
+(
+    VEDTAK_ID       NUMBER       NOT NULL,
+    VEDTAKFAKTAKODE VARCHAR2(10) NOT NULL,
+    VEDTAKVERDI     VARCHAR2(2000),
+    REG_DATO        DATE,
+    REG_USER        VARCHAR2(8),
+    MOD_DATO        DATE,
+    MOD_USER        VARCHAR2(8),
+    PERSON_ID       NUMBER,
+    PARTISJON       NUMBER(8),
+    PRIMARY KEY (VEDTAK_ID, VEDTAKFAKTAKODE)
+);
+
+-- Tabellene bak /meldekort og /utbetalingshistorikk.
+
+CREATE TABLE MELDEKORT
+(
+    MELDEKORT_ID                NUMBER      NOT NULL,
+    PERSON_ID                   NUMBER      NOT NULL,
+    AAR                         NUMBER(4)   NOT NULL,
+    PERIODEKODE                 VARCHAR2(2) NOT NULL,
+    BEREGNINGSTATUSKODE         VARCHAR2(5) NOT NULL,
+    MKSKORTKODE                 VARCHAR2(2) NOT NULL,
+    MELDEGRUPPEKODE             VARCHAR2(5),
+    MELDEKORTKODE               VARCHAR2(5),
+    DATO_INNKOMMET              DATE,
+    STATUS_ARBEIDET             VARCHAR2(1),
+    STATUS_KURS                 VARCHAR2(1),
+    STATUS_FERIE                VARCHAR2(1),
+    STATUS_SYK                  VARCHAR2(1),
+    STATUS_ANNETFRAVAER         VARCHAR2(1),
+    STATUS_FORTSATT_ARBEIDSOKER VARCHAR2(1),
+    REG_DATO                    DATE,
+    MOD_DATO                    DATE,
+    PRIMARY KEY (MELDEKORT_ID)
+);
+
+CREATE TABLE MELDEKORTPERIODE
+(
+    AAR         NUMBER(4)   NOT NULL,
+    PERIODEKODE VARCHAR2(2) NOT NULL,
+    UKENR_UKE1  NUMBER(2)   NOT NULL,
+    UKENR_UKE2  NUMBER(2)   NOT NULL,
+    DATO_FRA    DATE        NOT NULL,
+    DATO_TIL    DATE        NOT NULL,
+    PRIMARY KEY (AAR, PERIODEKODE)
+);
+
+CREATE TABLE MELDEKORTDAG
+(
+    MELDEKORT_ID        NUMBER    NOT NULL,
+    UKENR               NUMBER(2) NOT NULL,
+    DAGNR               NUMBER(1) NOT NULL,
+    STATUS_ARBEIDSDAG   VARCHAR2(1),
+    STATUS_FERIE        VARCHAR2(1),
+    STATUS_KURS         VARCHAR2(1),
+    STATUS_SYK          VARCHAR2(1),
+    STATUS_ANNETFRAVAER VARCHAR2(1),
+    TIMER_ARBEIDET      NUMBER(3, 1),
+    REG_USER            VARCHAR2(8),
+    REG_DATO            DATE,
+    PRIMARY KEY (MELDEKORT_ID, UKENR, DAGNR)
+);
+
+CREATE TABLE MELDELOGG
+(
+    MELDEKORT_ID     NUMBER NOT NULL,
+    HENDELSETYPEKODE VARCHAR2(5),
+    HENDELSEDATO     DATE
+);
+
+CREATE TABLE POSTERING
+(
+    MELDEKORT_ID     NUMBER,
+    PERSON_ID        NUMBER      NOT NULL,
+    VEDTAK_ID        NUMBER      NOT NULL,
+    TRANSAKSJONSKODE VARCHAR2(5) NOT NULL,
+    DATO_POSTERT     DATE,
+    POSTERINGSATS    NUMBER(8, 2),
+    BELOP            NUMBER(12, 2),
+    DATO_PERIODE_FRA DATE,
+    DATO_PERIODE_TIL DATE
+);
+
+CREATE TABLE UTBETALINGSGRUNNLAG
+(
+    MELDEKORT_ID     NUMBER,
+    PERSON_ID        NUMBER      NOT NULL,
+    VEDTAK_ID        NUMBER      NOT NULL,
+    TRANSAKSJONSKODE VARCHAR2(5) NOT NULL,
+    MOD_DATO         DATE,
+    POSTERINGSATS    NUMBER(8, 2),
+    BELOP            NUMBER(12, 2),
+    DATO_PERIODE_FRA DATE,
+    DATO_PERIODE_TIL DATE
+);
+
+CREATE TABLE BEREGNINGSLOGG
+(
+    OBJEKT_ID       NUMBER(10)   NOT NULL,
+    PERSON_ID       NUMBER       NOT NULL,
+    VEDTAK_ID       NUMBER       NOT NULL,
+    TABELLNAVNALIAS VARCHAR2(10) NOT NULL,
+    DATO_FRA        DATE,
+    DATO_TIL        DATE,
+    REG_DATO        DATE
+);
+
+CREATE TABLE ANMERKNING
+(
+    ANMERKNING_ID   NUMBER       NOT NULL,
+    OBJEKT_ID       NUMBER       NOT NULL,
+    VEDTAK_ID       NUMBER,
+    TABELLNAVNALIAS VARCHAR2(10) NOT NULL,
+    ANMERKNINGKODE  VARCHAR2(5)  NOT NULL,
+    VERDI           NUMBER(5),
+    REG_DATO        DATE,
+    PRIMARY KEY (ANMERKNING_ID)
+);
+
+CREATE TABLE ANMERKNINGTYPE
+(
+    ANMERKNINGKODE VARCHAR2(5) NOT NULL,
+    BESKRIVELSE    VARCHAR2(255),
+    PRIMARY KEY (ANMERKNINGKODE)
+);
+
+CREATE TABLE RETTIGHETTYPE
+(
+    RETTIGHETKODE VARCHAR2(10) NOT NULL,
+    RETTIGHETNAVN VARCHAR2(60),
+    PRIMARY KEY (RETTIGHETKODE)
+);
+
+CREATE TABLE BEREGNINGSTATUS
+(
+    BEREGNINGSTATUSKODE VARCHAR2(5) NOT NULL,
+    BEREGNINGSTATUSNAVN VARCHAR2(50),
+    PRIMARY KEY (BEREGNINGSTATUSKODE)
+);
+
+CREATE TABLE MKSKORTTYPE
+(
+    MKSKORTKODE     VARCHAR2(2) NOT NULL,
+    MKSKORTTYPENAVN VARCHAR2(50),
+    PRIMARY KEY (MKSKORTKODE)
+);
+
+CREATE TABLE MELDEGRUPPETYPE
+(
+    MELDEGRUPPEKODE VARCHAR2(5) NOT NULL,
+    MELDEGRUPPENAVN VARCHAR2(50),
+    PRIMARY KEY (MELDEGRUPPEKODE)
+);
+
+CREATE TABLE TRANSAKSJONTYPE
+(
+    TRANSAKSJONSKODE     VARCHAR2(5) NOT NULL,
+    TRANSAKSJONSTYPENAVN VARCHAR2(50),
+    PRIMARY KEY (TRANSAKSJONSKODE)
+);
