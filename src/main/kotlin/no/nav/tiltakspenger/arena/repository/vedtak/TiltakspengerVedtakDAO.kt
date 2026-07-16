@@ -8,7 +8,6 @@ import no.nav.tiltakspenger.arena.repository.ArenaRettighet
 import no.nav.tiltakspenger.arena.repository.ArenaUtfall
 import no.nav.tiltakspenger.arena.repository.ArenaVedtakStatus
 import no.nav.tiltakspenger.arena.repository.ArenaVedtakType
-import no.nav.tiltakspenger.arena.repository.ArenaYtelse
 import no.nav.tiltakspenger.arena.repository.vedtakfakta.VedtakfaktaDAO
 import no.nav.tiltakspenger.arena.repository.vedtakfakta.VedtakfaktaLoggkontekst
 import org.intellij.lang.annotations.Language
@@ -26,9 +25,6 @@ class TiltakspengerVedtakDAO(
 
         private fun String.toRettighetType(): ArenaRettighet =
             ArenaRettighet.valueOf(this)
-
-        private fun String.toYtelseType(): ArenaYtelse =
-            ArenaYtelse.valueOf(this)
 
         private fun String.toAktivitetFase(): ArenaAktivitetFase =
             ArenaAktivitetFase.valueOf(this)

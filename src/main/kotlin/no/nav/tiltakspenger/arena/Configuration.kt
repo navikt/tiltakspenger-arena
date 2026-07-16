@@ -13,17 +13,22 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 object Configuration {
-    private val defaultProperties = ConfigurationMap(
-        mapOf(
-            "application.httpPort" to 8080.toString(),
-            "NAIS_TOKEN_INTROSPECTION_ENDPOINT" to System.getenv("NAIS_TOKEN_INTROSPECTION_ENDPOINT"),
-            "NAIS_TOKEN_ENDPOINT" to System.getenv("NAIS_TOKEN_ENDPOINT"),
-            "NAIS_TOKEN_EXCHANGE_ENDPOINT" to System.getenv("NAIS_TOKEN_EXCHANGE_ENDPOINT"),
-            "ARENADB_URL" to fromFileOrSystemProperty("/secrets/dbconfig/jdbc_url", "ARENADB_URL"),
-            "ARENADB_USERNAME" to fromFileOrSystemProperty("/secrets/dbcreds/username", "ARENADB_USERNAME"),
-            "ARENADB_PASSWORD" to fromFileOrSystemProperty("/secrets/dbcreds/password", "ARENADB_PASSWORD"),
-        ),
-    )
+    // Lazy: leser DB-secrets fra fil/system-property. Uten lazy ville enhver bruk av Configuration
+    // (f.eks. applicationProfile() via SE_SIKKERLOGG) tvunget fram DB-secret-lesing i <clinit>, og
+    // NPE-et der secrets ikke er montert (typisk i tester som ikke bruker databasen).
+    private val defaultProperties by lazy {
+        ConfigurationMap(
+            mapOf(
+                "application.httpPort" to 8080.toString(),
+                "NAIS_TOKEN_INTROSPECTION_ENDPOINT" to System.getenv("NAIS_TOKEN_INTROSPECTION_ENDPOINT"),
+                "NAIS_TOKEN_ENDPOINT" to System.getenv("NAIS_TOKEN_ENDPOINT"),
+                "NAIS_TOKEN_EXCHANGE_ENDPOINT" to System.getenv("NAIS_TOKEN_EXCHANGE_ENDPOINT"),
+                "ARENADB_URL" to fromFileOrSystemProperty("/secrets/dbconfig/jdbc_url", "ARENADB_URL"),
+                "ARENADB_USERNAME" to fromFileOrSystemProperty("/secrets/dbcreds/username", "ARENADB_USERNAME"),
+                "ARENADB_PASSWORD" to fromFileOrSystemProperty("/secrets/dbcreds/password", "ARENADB_PASSWORD"),
+            ),
+        )
+    }
     private val localProperties = ConfigurationMap(
         mapOf(
             "application.profile" to Profile.LOCAL.toString(),
@@ -61,9 +66,10 @@ object Configuration {
         val arenaDbPassword: String = config()[Key("ARENADB_PASSWORD", stringType)],
     )
 
-    val naisTokenIntrospectionEndpoint: String = config()[Key("NAIS_TOKEN_INTROSPECTION_ENDPOINT", stringType)]
-    val naisTokenEndpoint: String = config()[Key("NAIS_TOKEN_ENDPOINT", stringType)]
-    val tokenExchangeEndpoint: String = config()[Key("NAIS_TOKEN_EXCHANGE_ENDPOINT", stringType)]
+    // Lazy: konsumeres kun av oppstartskoden (TexasHttpClient i ApplicationBuilder), aldri i test.
+    val naisTokenIntrospectionEndpoint: String by lazy { config()[Key("NAIS_TOKEN_INTROSPECTION_ENDPOINT", stringType)] }
+    val naisTokenEndpoint: String by lazy { config()[Key("NAIS_TOKEN_ENDPOINT", stringType)] }
+    val tokenExchangeEndpoint: String by lazy { config()[Key("NAIS_TOKEN_EXCHANGE_ENDPOINT", stringType)] }
 
     fun applicationProfile() = when (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")) {
         "dev-fss" -> Profile.DEV

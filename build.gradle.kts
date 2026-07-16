@@ -149,6 +149,25 @@ kover {
                     classes(
                         "no.nav.tiltakspenger.arena.repository.vedtakfakta.Arena*",
                         "no.nav.tiltakspenger.arena.repository.vedtakfakta.VedtakfaktaLoggkontekst",
+                        // /vedtaksperioder-vertikalen (route → service → repo). Kun klasser som er
+                        // 100 %-dekket av testene i dag. Utelatt inntil videre (trenger edge-case-
+                        // /flere-endepunkt-tester): ArenaTilVedtakDetaljerMapper (kombiner-/overlapp-
+                        // grener), ArenaTiltakspengerVedtakDTO/ArenaBarnetilleggVedtakDTO/
+                        // ArenaSakMedMinstEttVedtakDTO (delvis dekket) og TiltakspengerRoutesKt
+                        // (de fem andre endepunktene). Tverrgående infra (Configuration/Datasource/
+                        // SeSikkerlogg/TiltakApi) pinnes ikke per route.
+                        "no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerVedtakPeriode",
+                        "no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerVedtakPeriodeMapper",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljer",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerKunTiltakspenger",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerBarnetillegg",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.Rettighet",
+                        "no.nav.tiltakspenger.arena.repository.sak.SakRepository",
+                        "no.nav.tiltakspenger.arena.repository.sak.SakDAO",
+                        "no.nav.tiltakspenger.arena.repository.vedtak.TiltakspengerVedtakDAO",
+                        "no.nav.tiltakspenger.arena.repository.vedtak.BarnetilleggVedtakDAO",
+                        "no.nav.tiltakspenger.arena.repository.person.PersonDAO",
                     )
                 }
             }

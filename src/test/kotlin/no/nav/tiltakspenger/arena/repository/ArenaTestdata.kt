@@ -13,6 +13,56 @@ import java.time.LocalDateTime
  */
 object ArenaTestdata {
 
+    /**
+     * Fluent inngang: seeder en person og lar deg kjede på sak/vedtak uten å gjenta id-ene.
+     * ```
+     * ArenaTestdata.person(personId = 900, fnr = "90000000000")
+     *     .medSak(sakId = 9001)
+     *     .medTiltakspengevedtak(vedtakId = 90011)
+     *     .medBarnetilleggvedtak(vedtakId = 90012, antallBarn = "0.96...")
+     * ```
+     * De flate `leggTil...`-funksjonene finnes fortsatt for enkelttilfeller.
+     */
+    fun person(personId: Long, fnr: String): PersonBuilder {
+        leggTilPerson(personId = personId, fnr = fnr)
+        return PersonBuilder(personId)
+    }
+
+    class PersonBuilder(private val personId: Long) {
+        fun medSak(
+            sakId: Long,
+            aar: Int = 2023,
+            lopenrSak: Long = sakId % 1_000_000,
+            sakstatuskode: String = "AKTIV",
+            regDato: LocalDate = LocalDate.of(2023, 1, 1),
+        ): SakBuilder {
+            ArenaTestdata.leggTilSak(sakId, personId, aar, lopenrSak, sakstatuskode, regDato)
+            return SakBuilder(personId, sakId)
+        }
+    }
+
+    class SakBuilder(private val personId: Long, private val sakId: Long) {
+        /** Standard tiltakspengevedtak med de vanlige vedtakfaktaene (DAGS/DAGUTBTILT/KODETILTAK). */
+        fun medTiltakspengevedtak(
+            vedtakId: Long,
+            tilDato: LocalDate? = LocalDate.of(2023, 3, 31),
+            dags: String = "285",
+            dagutbtilt: String = "10",
+            kodetiltak: String = "133924438",
+        ): SakBuilder {
+            ArenaTestdata.leggTilTiltakspengevedtakMedFakta(vedtakId, sakId, personId, tilDato, dags, dagutbtilt, kodetiltak)
+            return this
+        }
+
+        /** Barnetilleggvedtak (BTIL) med antall barn og dagsats. */
+        fun medBarnetilleggvedtak(vedtakId: Long, antallBarn: String, dagsats: String = "53"): SakBuilder {
+            ArenaTestdata.leggTilVedtak(vedtakId = vedtakId, sakId = sakId, personId = personId, rettighetkode = "BTIL")
+            ArenaTestdata.leggTilVedtakfakta(vedtakId = vedtakId, kode = "BARNMSTON", verdi = antallBarn)
+            ArenaTestdata.leggTilVedtakfakta(vedtakId = vedtakId, kode = "DAGS", verdi = dagsats)
+            return this
+        }
+    }
+
     /** Kodeverk-rader spørringene joiner mot. Kjøres én gang fra [no.nav.tiltakspenger.arena.db.OracleTestbase]. */
     fun seedKodeverk() {
         exec("INSERT INTO BEREGNINGSTATUS (BEREGNINGSTATUSKODE, BEREGNINGSTATUSNAVN) VALUES ('FERDI', 'Ferdig beregnet')")
@@ -74,6 +124,9 @@ object ArenaTestdata {
         regDato: LocalDate = LocalDate.of(2022, 12, 1),
         lopenrVedtak: Long = 1,
     ) {
+        // Oracle godtar ikke en utypet null-binding (ORA-17004), så åpen sluttdato settes som
+        // NULL-literal i SQL-en i stedet for et bind-param.
+        val tilDatoBind = if (tilDato == null) "NULL" else ":tilDato"
         exec(
             """
             INSERT INTO VEDTAK (VEDTAK_ID, SAK_ID, VEDTAKSTATUSKODE, VEDTAKTYPEKODE, REG_DATO, UTFALLKODE,
@@ -81,7 +134,7 @@ object ArenaTestdata {
                                 DATO_MOTTATT, PERSON_ID, FRA_DATO, TIL_DATO, STATUS_SOSIALDATA, ER_UTLAND)
             VALUES (:vedtakId, :sakId, :vedtakstatuskode, :vedtaktypekode, :regDato, :utfallkode,
                     '0219', 2023, :sakId, :lopenrVedtak, :rettighetkode, 'UGJEN',
-                    :datoMottatt, :personId, :fraDato, :tilDato, 'N', 'N')
+                    :datoMottatt, :personId, :fraDato, $tilDatoBind, 'N', 'N')
             """.trimIndent(),
             mapOf(
                 "vedtakId" to vedtakId,
@@ -105,6 +158,26 @@ object ArenaTestdata {
             "INSERT INTO VEDTAKFAKTA (VEDTAK_ID, VEDTAKFAKTAKODE, VEDTAKVERDI) VALUES (:vedtakId, :kode, :verdi)",
             mapOf("vedtakId" to vedtakId, "kode" to kode, "verdi" to verdi),
         )
+    }
+
+    /**
+     * Standard tiltakspengevedtak (BASI, [leggTilVedtak]s defaults) med de vanlige vedtakfaktaene.
+     * Gir dagsats 285, 10 dager og relatert tiltak 133924438 - samsvarer med defaultene i
+     * `routes/forventetVedtaksperiodeJson(...)`.
+     */
+    fun leggTilTiltakspengevedtakMedFakta(
+        vedtakId: Long,
+        sakId: Long,
+        personId: Long,
+        tilDato: LocalDate? = LocalDate.of(2023, 3, 31),
+        dags: String = "285",
+        dagutbtilt: String = "10",
+        kodetiltak: String = "133924438",
+    ) {
+        leggTilVedtak(vedtakId = vedtakId, sakId = sakId, personId = personId, tilDato = tilDato)
+        leggTilVedtakfakta(vedtakId = vedtakId, kode = "DAGS", verdi = dags)
+        leggTilVedtakfakta(vedtakId = vedtakId, kode = "DAGUTBTILT", verdi = dagutbtilt)
+        leggTilVedtakfakta(vedtakId = vedtakId, kode = "KODETILTAK", verdi = kodetiltak)
     }
 
     fun leggTilMeldekortperiode(
