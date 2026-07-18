@@ -15,9 +15,11 @@ Dette repoet følger monorepo-konvensjonene i [`../AGENTS.md`](../AGENTS.md) og 
 - Stil for test-DDL: kolonnene spørringene bruker (ikke full Arena-bredde), `NOT NULL` kun på nøkkelkolonner, `PRIMARY KEY` på naturlige nøkler — se `src/test/resources/local-migrations/V1000__arena_skjema.sql`.
 - Nullability-fasit for viewene (hvilke kolonner som er nullbare i Arena, og hvilke som faktisk er null for tiltakspenger-data i Q2) ligger i [`doc/arena-ddl/nullability_arena_tilgang_ind.md`](doc/arena-ddl/nullability_arena_tilgang_ind.md). Bruk den, ikke `datadeling_tiltakspenger.sql` (den har strippet constraints). Trenger du å verifisere noe nytt mot den faktiske databasen: se «Kjøre queries mot arena-viewet» i [README.md](README.md) — kun nåbar via VDI.
 
-## Route-tester (målbilde)
+## Testing av lese-vertikalen (målbilde)
 
-Route-testene (`src/test/kotlin/.../routes/*RouteTest.kt`) er kontrakten mot konsumentene våre. Målbildet under skal holde dem konsistente over tid — hold nye tester og hjelpere i samme stil.
+Lese-vertikalen testes på to nivåer med en klar arbeidsdeling: **route-testene eier happy-path og JSON-kontrakten**, mens **repository-/service-testene kun eier det som ikke er observerbart gjennom ett endepunkt**. Hold nye tester og hjelpere i samme stil.
+
+**Route-tester** (`src/test/kotlin/.../routes/*RouteTest.kt`) er kontrakten mot konsumentene våre:
 
 - **Full-vertikal:** HTTP inn → prod ktor-pipeline (`tiltakApi(...)`) → ekte Oracle-testcontainer → JSON ut. Ingen mocking av tjeneste-/repo-laget.
 - **Assert på rå JSON, aldri via respons-DTO:** bruk `skalHaOkMedJson(...)` (sjekker `200 OK` + `shouldEqualJson`). Da brekker testen når DTO-en refaktoreres — poenget, siden JSON-en er kontrakten. Håndhevet av `RouteTestKontraktKonsistTest` (ingen `deserialize*`/`body()` i route-tester).
@@ -27,6 +29,15 @@ Route-testene (`src/test/kotlin/.../routes/*RouteTest.kt`) er kontrakten mot kon
 - **Bygg testdata fluent:** `ArenaTestdata.person(...).medSak(...).medTiltakspengevedtak(...)` / `.medMeldekort(...).medDag(...)`. Flate `leggTil*`-hjelpere finnes for kant-tilfeller.
 - **Auth-avvisning (401) dekkes ett sted** (`TiltakspengerRoutesAuthTest`), ikke i hver route-test.
 - **Unike id-serier per test-fil:** `MELDEKORTPERIODE` har nøkkel `(aar, periodekode)` som deles på tvers av *alle* tester (repository, service og route), så `periodekode` må være globalt unik per år (ellers PK-kollisjon mellom klasser).
+
+**Repository-/service-tester** beholdes kun for det som *ikke* kan uttrykkes som et vanlig route-kall med JSON-assert:
+
+- **Ekskluderende filtre / join-grener:** data som seedes for å bevise at det blir *utelatt* (HIST-sak, NEI-utfall, utenfor periode) — via route ville dette bare gitt `[]`.
+- **Sammensetning fra flere kilder:** grener som krever isolert oppsett per kilde (f.eks. `UtbetalingshistorikkService` sin NOT EXISTS-prioritering — route dekker kun én kilde).
+- **Feil-/kant-stier i mappingen** som kastes før serialisering (f.eks. NPE når `HENDELSEDATO` mangler), og rene mapper-/parse-kanter (dato-format, HALF_UP-avrunding opp/ned, PII-maskering, null-default).
+- **Kardinalitet/aggregering** som er en ren spørringsegenskap (flere saker → flere rader, ingen dedup).
+
+Havner en test på repo-/service-nivå, skal en kommentar si *hvorfor* den ikke kan være en route-test. Rene enhetstester (in-memory) bygges med `ArenaDtoBuilders`; DB-tester seedes med `ArenaTestdata`.
 
 Id-/periodekode-kart (år 2023 der ikke annet er nevnt):
 

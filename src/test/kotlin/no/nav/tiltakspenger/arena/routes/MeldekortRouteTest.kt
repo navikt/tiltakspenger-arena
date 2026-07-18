@@ -30,6 +30,7 @@ class MeldekortRouteTest {
             .medMeldekort(meldekortId = 93001, periodekode = "71", datoFra = LocalDate.of(2023, 1, 2), datoTil = LocalDate.of(2023, 1, 15))
             .medDag(ukenr = 1, dagnr = 1)
             .medDag(ukenr = 1, dagnr = 2, statusArbeidsdag = "J", timerArbeidet = 7.5)
+            .medDag(ukenr = 1, dagnr = 3, statusKurs = "N", statusFerie = "J", statusSyk = "J", statusAnnetFravaer = "J")
 
         medArenaRouteTest {
             postAutentisert(uri, vedtakRequestBody("93000000000")).skalHaOkMedJson(
@@ -43,6 +44,7 @@ class MeldekortRouteTest {
                         dager = listOf(
                             forventetMeldekortdagJson(ukeNr = 1, dagNr = 1),
                             forventetMeldekortdagJson(ukeNr = 1, dagNr = 2, arbeidsdag = true, arbeidetTimer = 7),
+                            forventetMeldekortdagJson(ukeNr = 1, dagNr = 3, kurs = false, ferie = true, syk = true, annetFravaer = true),
                         ),
                     ),
                 ),
