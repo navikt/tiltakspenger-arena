@@ -5,6 +5,11 @@ import io.kotest.matchers.string.shouldNotContain
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
+/**
+ * Ren enhetstest av vedtakfakta-mapperne (ingen DB).
+ * Dekker parse-/utledningskanter route-testene med gyldige data ikke treffer: dato-format (dd-MM-yyyy), HALF_UP-avrunding opp og ned, PII-maskering i loggkontekst og null-default når fakta mangler.
+ * Pakka er dessuten kover-100%-pinnet, så disse testene er også dekningskravet for mapperne.
+ */
 class ArenaVedtakfaktaDTOTest {
 
     private val kontekst = VedtakfaktaLoggkontekst(
@@ -20,6 +25,7 @@ class ArenaVedtakfaktaDTOTest {
             vedtakfaktaVerdi = verdi,
         )
 
+    // Full mapping av tiltakspenger-fakta inkl. felter route-JSON ikke eksponerer (satsKode, maskineltVedtak, ...) og dd-MM-yyyy-parsing.
     @Test
     fun `mapper alle tiltakspenger-vedtakfakta`() {
         val dto = listOf(
@@ -49,6 +55,7 @@ class ArenaVedtakfaktaDTOTest {
         )
     }
 
+    // Egen mapper for barnetillegg (annet felt-sett, bl.a. antallBarn) — egen kodesti enn tiltakspenger-mapperen.
     @Test
     fun `mapper alle barnetillegg-vedtakfakta`() {
         val dto = listOf(
@@ -80,6 +87,7 @@ class ArenaVedtakfaktaDTOTest {
         )
     }
 
+    // Egen mapper for utbetalingshistorikk-detaljene (dagsats/antall/beløp/betalingsmottaker).
     @Test
     fun `mapper alle utbetalingshistorikk-vedtakfakta`() {
         val dto = listOf(
@@ -101,6 +109,7 @@ class ArenaVedtakfaktaDTOTest {
         )
     }
 
+    // HALF_UP-avrunding oppover på flere heltallsfelter (DAGS 284.5→285); route dekker kun antallBarn-casen.
     @Test
     fun `heltallsfelter med desimalverdi rundes av til nærmeste heltall`() {
         val dto = listOf(
@@ -112,6 +121,7 @@ class ArenaVedtakfaktaDTOTest {
         dto.antallBarn shouldBe 1
     }
 
+    // Avrunding nedover (0.4→0) — motsatt gren av avrundingen, ikke seedet gjennom noen route.
     @Test
     fun `desimalverdi under en halv rundes ned`() {
         val dto = listOf(
@@ -121,12 +131,14 @@ class ArenaVedtakfaktaDTOTest {
         dto.antallBarn shouldBe 0
     }
 
+    // Sikkerhetskritisk: fnr maskeres i toString() — gjelder logging, ikke observerbart via noen route-respons.
     @Test
     fun `toString på loggkonteksten maskerer fnr`() {
         kontekst.toString() shouldBe "VedtakfaktaLoggkontekst(fnr=***********, sakId=13297369, saksnummer=202229331)"
         kontekst.toString() shouldNotContain "01234567891"
     }
 
+    // Null-default når fakta mangler helt (tom liste) for alle tre mapperne — kanten route med gyldige data ikke treffer.
     @Test
     fun `manglende vedtakfakta gir null for alle felter`() {
         val tomKontekst = VedtakfaktaLoggkontekst()

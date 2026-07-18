@@ -1,20 +1,12 @@
 package no.nav.tiltakspenger.arena.routes
 
 /**
- * Forventet JSON for endepunktenes responser, skrevet ut som **tekst** (ikke via DTO-ene). Dette er
- * kontrakten mot konsumentene (tiltakspenger-datadeling → NKS m.fl.). Endre kun her ved en bevisst
- * kontraktsendring — da oppdateres alle testene som bruker byggerne. Fordi feltnavn/struktur står
- * eksplisitt som tekst, brekker en DTO-refaktorering (omdøpt/fjernet/lagt-til felt) testene.
- */
-
-private fun jsonTekstEllerNull(verdi: String?): String = verdi?.let { "\"$it\"" } ?: "null"
-
-/**
- * Én `ArenaTiltakspengerVedtakPeriode` fra POST /azure/tiltakspenger/vedtaksperioder (og /vedtak).
+ * Forventet JSON for én `ArenaTiltakspengerVedtakPeriode` fra POST /azure/tiltakspenger/vedtaksperioder (og /vedtak).
  *
- * Defaultene beskriver et standard tiltakspengevedtak (samsvarer med [ArenaTestdata]s defaults +
- * [no.nav.tiltakspenger.arena.repository.ArenaTestdata.leggTilTiltakspengevedtakMedFakta]). Identiteten
- * ([vedtakId]/[sakId]/[saksnummer]) er påkrevd; hver test overstyrer i tillegg kun det den tester.
+ * Kontrakten skrives ut som tekst (ikke via DTO-en), slik at en DTO-refaktorering brekker testene.
+ * Endre kun her ved en bevisst kontraktsendring.
+ * Defaultene beskriver et standard tiltakspengevedtak (samsvarer med [no.nav.tiltakspenger.arena.repository.ArenaTestdata] sine defaults).
+ * Identiteten ([vedtakId]/[sakId]/[saksnummer]) er påkrevd; hver test overstyrer i tillegg kun det den tester.
  */
 fun forventetVedtaksperiodeJson(
     vedtakId: Long,
@@ -52,6 +44,3 @@ fun forventetVedtaksperiodeJson(
       }
     }
     """.trimIndent()
-
-/** JSON-array av perioder (rekkefølgen betyr ikke noe for [io.kotest.assertions.json.shouldEqualJson]). */
-fun forventetPerioderJson(vararg perioder: String): String = "[${perioder.joinToString(",")}]"

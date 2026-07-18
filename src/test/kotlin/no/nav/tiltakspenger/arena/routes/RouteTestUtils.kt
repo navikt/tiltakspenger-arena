@@ -2,6 +2,7 @@ package no.nav.tiltakspenger.arena.routes
 
 import io.kotest.assertions.json.shouldEqualJson
 import io.kotest.matchers.shouldBe
+import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -36,9 +37,9 @@ fun texasClientSomGodkjenner(): TexasHttpClient = mockk<TexasHttpClient>().also 
 }
 
 /**
- * Kjører en full-vertikal route-test: HTTP → prod [no.nav.tiltakspenger.arena.tiltakApi] → ekte
- * service → ekte repo → Oracle-testcontainer. Krever at [OracleTestbase.start] er kalt (typisk i
- * `@BeforeAll`); den kalles også her for å være trygg. Texas godkjenner alle AZUREAD-tokens.
+ * Kjører en full-vertikal route-test: HTTP → prod [no.nav.tiltakspenger.arena.tiltakApi] → ekte service → ekte repo → Oracle-testcontainer.
+ * Krever at [OracleTestbase.start] er kalt (typisk i `@BeforeAll`); den kalles også her for å være trygg.
+ * Texas godkjenner alle AZUREAD-tokens.
  */
 fun medArenaRouteTest(test: suspend ApplicationTestBuilder.() -> Unit) {
     OracleTestbase.start()
@@ -66,15 +67,22 @@ suspend fun ApplicationTestBuilder.postAutentisert(
     setBody(body)
 }
 
+/** GET med gyldig AZUREAD-token. */
+suspend fun ApplicationTestBuilder.getAutentisert(
+    uri: String,
+    token: String = "gyldig-token",
+): HttpResponse = client.get(uri) {
+    header(HttpHeaders.Authorization, "Bearer $token")
+}
+
 /** Bygger en `VedtakRequest`-body som ren tekst (ikke via DTO). */
 fun vedtakRequestBody(ident: String, fom: String = "2000-01-01", tom: String = "2099-12-31"): String =
     """{ "ident": "$ident", "fom": "$fom", "tom": "$tom" }"""
 
 /**
- * Asserter at responsen er 200 med nøyaktig [forventetJson]. [shouldEqualJson] sammenligner hele
- * JSON-strukturen (rekkefølge-uavhengig, men streng på nøkler): omdøpte, fjernede eller nye felt i
- * respons-DTO-ene brekker testen. Vi går bevisst utenom DTO-deserialisering, slik at en
- * DTO-refaktorering fanges som en kontraktsendring.
+ * Asserter at responsen er 200 med nøyaktig [forventetJson].
+ * [shouldEqualJson] sammenligner hele JSON-strukturen (rekkefølge-uavhengig, men streng på nøkler): omdøpte, fjernede eller nye felt i respons-DTO-ene brekker testen.
+ * Vi går bevisst utenom DTO-deserialisering, slik at en DTO-refaktorering fanges som en kontraktsendring.
  */
 suspend fun HttpResponse.skalHaOkMedJson(forventetJson: String) {
     status shouldBe HttpStatusCode.OK

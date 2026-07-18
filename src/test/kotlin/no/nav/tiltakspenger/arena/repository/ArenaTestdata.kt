@@ -7,9 +7,9 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 /**
- * Insert-hjelpere for testene mot Oracle-testcontaineren. Kun kolonnene spørringene bruker har
- * parametre; øvrige NOT NULL-kolonner fylles med faste defaults. Testene eier sine egne data -
- * bruk unike id-er/fnr per test siden databasen deles.
+ * Insert-hjelpere for testene mot Oracle-testcontaineren.
+ * Kun kolonnene spørringene bruker har parametre; øvrige NOT NULL-kolonner fylles med faste defaults.
+ * Testene eier sine egne data - bruk unike id-er/fnr per test siden databasen deles.
  */
 object ArenaTestdata {
 
@@ -31,13 +31,46 @@ object ArenaTestdata {
     class PersonBuilder(private val personId: Long) {
         fun medSak(
             sakId: Long,
-            aar: Int = 2023,
+            år: Int = 2023,
             lopenrSak: Long = sakId % 1_000_000,
             sakstatuskode: String = "AKTIV",
             regDato: LocalDate = LocalDate.of(2023, 1, 1),
         ): SakBuilder {
-            ArenaTestdata.leggTilSak(sakId, personId, aar, lopenrSak, sakstatuskode, regDato)
+            ArenaTestdata.leggTilSak(sakId, personId, år, lopenrSak, sakstatuskode, regDato)
             return SakBuilder(personId, sakId)
+        }
+
+        /** Standard meldekort for personen; kjed på [MeldekortBuilder.medDag] for dager. */
+        fun medMeldekort(
+            meldekortId: Long,
+            periodekode: String,
+            datoFra: LocalDate,
+            datoTil: LocalDate,
+            år: Int = 2023,
+        ): MeldekortBuilder {
+            ArenaTestdata.leggTilStandardMeldekort(meldekortId, personId, periodekode, datoFra, datoTil, år)
+            return MeldekortBuilder(meldekortId)
+        }
+    }
+
+    class MeldekortBuilder(private val meldekortId: Long) {
+        fun medDag(
+            ukenr: Int,
+            dagnr: Int,
+            statusArbeidsdag: String = "N",
+            statusFerie: String? = "N",
+            statusKurs: String = "J",
+            statusSyk: String = "N",
+            statusAnnetFravaer: String = "N",
+            timerArbeidet: Double = 0.0,
+            regUser: String = "GRENSESN",
+            regDato: LocalDate = LocalDate.of(2023, 1, 16),
+        ): MeldekortBuilder {
+            ArenaTestdata.leggTilMeldekortdag(
+                meldekortId, ukenr, dagnr, statusArbeidsdag, statusFerie, statusKurs,
+                statusSyk, statusAnnetFravaer, timerArbeidet, regUser, regDato,
+            )
+            return this
         }
     }
 
@@ -89,7 +122,7 @@ object ArenaTestdata {
     fun leggTilSak(
         sakId: Long,
         personId: Long,
-        aar: Int = 2023,
+        år: Int = 2023,
         lopenrSak: Long = sakId % 1_000_000,
         sakstatuskode: String = "AKTIV",
         regDato: LocalDate = LocalDate.of(2023, 1, 1),
@@ -103,7 +136,7 @@ object ArenaTestdata {
                 "sakId" to sakId,
                 "regDato" to regDato,
                 "personId" to personId,
-                "aar" to aar,
+                "aar" to år,
                 "lopenrSak" to lopenrSak,
                 "sakstatuskode" to sakstatuskode,
             ),
@@ -124,8 +157,7 @@ object ArenaTestdata {
         regDato: LocalDate = LocalDate.of(2022, 12, 1),
         lopenrVedtak: Long = 1,
     ) {
-        // Oracle godtar ikke en utypet null-binding (ORA-17004), så åpen sluttdato settes som
-        // NULL-literal i SQL-en i stedet for et bind-param.
+        // Oracle godtar ikke en utypet null-binding (ORA-17004), så åpen sluttdato settes som NULL-literal i SQL-en i stedet for et bind-param.
         val tilDatoBind = if (tilDato == null) "NULL" else ":tilDato"
         exec(
             """
@@ -162,8 +194,7 @@ object ArenaTestdata {
 
     /**
      * Standard tiltakspengevedtak (BASI, [leggTilVedtak]s defaults) med de vanlige vedtakfaktaene.
-     * Gir dagsats 285, 10 dager og relatert tiltak 133924438 - samsvarer med defaultene i
-     * `routes/forventetVedtaksperiodeJson(...)`.
+     * Gir dagsats 285, 10 dager og relatert tiltak 133924438 - samsvarer med defaultene i `routes/forventetVedtaksperiodeJson(...)`.
      */
     fun leggTilTiltakspengevedtakMedFakta(
         vedtakId: Long,
@@ -181,7 +212,7 @@ object ArenaTestdata {
     }
 
     fun leggTilMeldekortperiode(
-        aar: Int,
+        år: Int,
         periodekode: String,
         datoFra: LocalDate,
         datoTil: LocalDate,
@@ -194,7 +225,7 @@ object ArenaTestdata {
             VALUES (:aar, :periodekode, :ukenrUke1, :ukenrUke2, :datoFra, :datoTil)
             """.trimIndent(),
             mapOf(
-                "aar" to aar,
+                "aar" to år,
                 "periodekode" to periodekode,
                 "ukenrUke1" to ukenrUke1,
                 "ukenrUke2" to ukenrUke2,
@@ -207,7 +238,7 @@ object ArenaTestdata {
     fun leggTilMeldekort(
         meldekortId: Long,
         personId: Long,
-        aar: Int,
+        år: Int,
         periodekode: String,
         beregningstatuskode: String = "FERDI",
         mkskortkode: String = "05",
@@ -237,7 +268,7 @@ object ArenaTestdata {
             mapOf(
                 "meldekortId" to meldekortId,
                 "personId" to personId,
-                "aar" to aar,
+                "aar" to år,
                 "periodekode" to periodekode,
                 "beregningstatuskode" to beregningstatuskode,
                 "mkskortkode" to mkskortkode,
@@ -254,6 +285,23 @@ object ArenaTestdata {
                 "modDato" to modDato,
             ),
         )
+    }
+
+    /**
+     * Standard meldekort med tilhørende periode og meldelogg-treff (så statusDato blir satt).
+     * Dager legges til separat.
+     */
+    fun leggTilStandardMeldekort(
+        meldekortId: Long,
+        personId: Long,
+        periodekode: String,
+        datoFra: LocalDate,
+        datoTil: LocalDate,
+        år: Int = 2023,
+    ) {
+        leggTilMeldekortperiode(år = år, periodekode = periodekode, datoFra = datoFra, datoTil = datoTil)
+        leggTilMeldekort(meldekortId = meldekortId, personId = personId, år = år, periodekode = periodekode)
+        leggTilMeldelogg(meldekortId = meldekortId)
     }
 
     fun leggTilMeldelogg(meldekortId: Long, hendelsetypekode: String = "FERDI", hendelsedato: LocalDate = LocalDate.of(2023, 1, 17)) {

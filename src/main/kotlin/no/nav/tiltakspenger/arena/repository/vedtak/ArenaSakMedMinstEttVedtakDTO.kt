@@ -47,9 +47,6 @@ class ArenaSakMedMinstEttVedtakDTO(
     val fagsystemSakId: String
         get() = aar.toString() + lopenrSak
 
-    fun harTiltakspengerVedtakMedÅpenPeriode(): Boolean =
-        this.tiltakspengerVedtak.any { it.isVedtaksperiodeÅpen() }
-
     fun sakPeriode(): Periode {
         val fraDato: LocalDate = tiltakspengerVedtak.minOf { it.fomVedtaksperiode }
         val tilDato: LocalDate = if (tiltakspengerVedtak.map { it.tomVedtaksperiode }.contains(null)) {

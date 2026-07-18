@@ -143,31 +143,51 @@ kover {
         total {
             filters {
                 includes {
-                    // Klasser som skal ha full linjedekning (jf. tilsvarende oppsett i
-                    // tiltakspenger-saksbehandling-api). Utvid lista etter hvert som flere
-                    // klasser får full dekning.
+                    // Lese-vertikalen for alle /azure/tiltakspenger-endepunktene (route → service → repo → DTO).
+                    // Kun klasser som er 100 %-dekket av route-testene.
+                    // Fullt dekkede pakker tas via wildcard; blandede pakker listes eksplisitt.
+                    //
+                    // Bevisst utelatt (trenger flere tester før de kan pinnes):
+                    //  - ArenaTilVedtakDetaljerMapper (kombiner-/overlapp-/utenfor-grener)
+                    //  - ArenaSakDTO / ArenaSakMedMinstEttVedtakDTO / ArenaTiltakspengerVedtakDTO /
+                    //    ArenaBarnetilleggVedtakDTO (delvis dekkede logg-/hjelpefunksjoner)
+                    //  - ArenaTiltakspengerRettighetPeriodeMapper (toNullIfMax null-gren)
+                    //  - TiltakspengerRoutes-handlernes catch-blokker (500-stien er ikke route-testet)
+                    //  - VedtakRequest / AnmerkningOgVedtakRequest (maskert toString), UtbetalingsgrunnlagRepository (1 linje)
+                    //  - Tverrgående infra/oppstart (Configuration/ApplicationBuilder/Application)
                     classes(
-                        "no.nav.tiltakspenger.arena.repository.vedtakfakta.Arena*",
-                        "no.nav.tiltakspenger.arena.repository.vedtakfakta.VedtakfaktaLoggkontekst",
-                        // /vedtaksperioder-vertikalen (route → service → repo). Kun klasser som er
-                        // 100 %-dekket av testene i dag. Utelatt inntil videre (trenger edge-case-
-                        // /flere-endepunkt-tester): ArenaTilVedtakDetaljerMapper (kombiner-/overlapp-
-                        // grener), ArenaTiltakspengerVedtakDTO/ArenaBarnetilleggVedtakDTO/
-                        // ArenaSakMedMinstEttVedtakDTO (delvis dekket) og TiltakspengerRoutesKt
-                        // (de fem andre endepunktene). Tverrgående infra (Configuration/Datasource/
-                        // SeSikkerlogg/TiltakApi) pinnes ikke per route.
+                        // Fullt dekkede pakker
+                        "no.nav.tiltakspenger.arena.repository.vedtakfakta.*",
+                        "no.nav.tiltakspenger.arena.repository.anmerkning.*",
+                        "no.nav.tiltakspenger.arena.repository.beregningslogg.*",
+                        "no.nav.tiltakspenger.arena.repository.meldekort.*",
+                        "no.nav.tiltakspenger.arena.repository.person.*",
+                        "no.nav.tiltakspenger.arena.repository.postering.*",
+                        "no.nav.tiltakspenger.arena.service.anmerkning.*",
+                        "no.nav.tiltakspenger.arena.service.meldekort.*",
+                        "no.nav.tiltakspenger.arena.service.utbetalingshistorikk.*",
+                        // Blandede pakker — kun 100 %-klassene
+                        "no.nav.tiltakspenger.arena.repository.sak.SakDAO",
+                        "no.nav.tiltakspenger.arena.repository.sak.SakRepository",
+                        "no.nav.tiltakspenger.arena.repository.sak.ArenaSakDTOKt",
+                        "no.nav.tiltakspenger.arena.repository.utbetalingsgrunnlag.ArenaUtbetalingsgrunnlagDTO",
+                        "no.nav.tiltakspenger.arena.repository.utbetalingsgrunnlag.UtbetalingsgrunnlagDAO",
+                        "no.nav.tiltakspenger.arena.repository.vedtak.TiltakspengerVedtakDAO",
+                        "no.nav.tiltakspenger.arena.repository.vedtak.BarnetilleggVedtakDAO",
                         "no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerVedtakPeriode",
                         "no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerVedtakPeriodeMapper",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl",
+                        "no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerRettighetPeriode",
+                        "no.nav.tiltakspenger.arena.routes.UtbetalingshistorikkVedtaksfaktaOgAnmerkninger",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.ArenaTilVedtakDetaljerMapperKt",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.Rettighet",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljer",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServiceImpl",
                         "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljer",
                         "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerKunTiltakspenger",
                         "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerBarnetillegg",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.Rettighet",
-                        "no.nav.tiltakspenger.arena.repository.sak.SakRepository",
-                        "no.nav.tiltakspenger.arena.repository.sak.SakDAO",
-                        "no.nav.tiltakspenger.arena.repository.vedtak.TiltakspengerVedtakDAO",
-                        "no.nav.tiltakspenger.arena.repository.vedtak.BarnetilleggVedtakDAO",
-                        "no.nav.tiltakspenger.arena.repository.person.PersonDAO",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakfaktaMeldekortDetaljer",
+                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakfaktaMeldekortDetaljerKt",
                     )
                 }
             }

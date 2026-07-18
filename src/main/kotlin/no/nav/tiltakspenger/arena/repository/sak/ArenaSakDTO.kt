@@ -34,9 +34,6 @@ data class ArenaSakDTO(
 
     fun harTiltakspengerVedtak(): Boolean = this.tiltakspengerVedtak.isNotEmpty()
 
-    fun harTiltakspengerVedtakMedÅpenPeriode(): Boolean =
-        this.tiltakspengerVedtak.any { it.isVedtaksperiodeÅpen() }
-
     fun sakPeriode(): Periode? {
         val fraDato = tiltakspengerVedtak.minOfOrNull { it.fomVedtaksperiode }
         val tilDato = when {

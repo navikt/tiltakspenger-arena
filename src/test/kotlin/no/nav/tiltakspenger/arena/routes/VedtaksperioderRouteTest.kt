@@ -1,7 +1,5 @@
 package no.nav.tiltakspenger.arena.routes
 
-import io.kotest.assertions.json.shouldEqualJson
-import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.test.runTest
 import no.nav.tiltakspenger.arena.db.OracleTestbase
 import no.nav.tiltakspenger.arena.repository.ArenaTestdata
@@ -9,12 +7,10 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 /**
- * Full-vertikal route-test for POST /azure/tiltakspenger/vedtaksperioder: HTTP → prod ktor-pipeline
- * → VedtakDetaljerService → SakRepository → Oracle-testcontainer → JSON. Asserter på JSON-teksten
- * (ikke via DTO), slik at en DTO-refaktorering brekker testene.
+ * Full-vertikal route-test for POST /azure/tiltakspenger/vedtaksperioder: HTTP → prod ktor-pipeline → VedtakDetaljerService → SakRepository → Oracle-testcontainer → JSON.
+ * Asserter på JSON-teksten (ikke via DTO), slik at en DTO-refaktorering brekker testene.
  *
- * Testene deler mest mulig testdata (standard tiltakspengevedtak via [ArenaTestdata]s defaults) og
- * overstyrer kun identiteten (fnr/sak/vedtak-id) og det den enkelte testen faktisk verifiserer.
+ * Testene deler mest mulig testdata (standard tiltakspengevedtak via [ArenaTestdata]s defaults) og overstyrer kun identiteten (fnr/sak/vedtak-id) og det den enkelte testen faktisk verifiserer.
  * Auth-avvisning (401) er dekket av [TiltakspengerRoutesAuthTest].
  */
 class VedtaksperioderRouteTest {
@@ -37,7 +33,7 @@ class VedtaksperioderRouteTest {
 
         medArenaRouteTest {
             postAutentisert(uri, vedtakRequestBody("90000000000")).skalHaOkMedJson(
-                forventetPerioderJson(
+                jsonArray(
                     forventetVedtaksperiodeJson(vedtakId = 90011, sakId = 9001, saksnummer = "20239001"),
                 ),
             )
@@ -55,7 +51,7 @@ class VedtaksperioderRouteTest {
 
         medArenaRouteTest {
             postAutentisert(uri, vedtakRequestBody("90000000001")).skalHaOkMedJson(
-                forventetPerioderJson(
+                jsonArray(
                     forventetVedtaksperiodeJson(
                         vedtakId = 90111,
                         sakId = 9011,
@@ -77,7 +73,7 @@ class VedtaksperioderRouteTest {
 
         medArenaRouteTest {
             postAutentisert(uri, vedtakRequestBody("90000000002")).skalHaOkMedJson(
-                forventetPerioderJson(
+                jsonArray(
                     forventetVedtaksperiodeJson(vedtakId = 90211, sakId = 9021, saksnummer = "20239021", tilOgMed = null),
                 ),
             )
@@ -87,7 +83,7 @@ class VedtaksperioderRouteTest {
     @Test
     fun `person uten vedtak gir tom liste`() = runTest {
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("90000009999")).bodyAsText() shouldEqualJson "[]"
+            postAutentisert(uri, vedtakRequestBody("90000009999")).skalHaOkMedJson("[]")
         }
     }
 }
