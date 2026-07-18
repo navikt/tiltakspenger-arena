@@ -31,34 +31,44 @@ on:
       - 'LICENSE'
       - 'lint_and_build.sh'
 
+# Minste privilegium: toppnivået nullstiller alle token-rettigheter, hver jobb deklarerer eksplisitt det den trenger.
+permissions: {}
+
+# Delte workflows i metarepoet, se https://github.com/navikt/tiltakspenger/blob/main/.github/workflows/README.md
 jobs:
   build:
-    name: Test, build and push
-    uses: ./.github/workflows/.test-and-build.yml
+    name: Test and build
+    uses: navikt/tiltakspenger/.github/workflows/test-og-bygg-gradle.yml@main
     permissions:
       contents: read
       id-token: write
+    with:
+      java-version: '25'
     secrets:
       SLACK_VARSEL_WEBHOOK_URL: ${{ secrets.SLACK_VARSEL_WEBHOOK_URL }}
 
   deploy-dev:
-    name: Deploy to NAIS dev
+    name: Deploy to NAIS (dev)
     needs: build
-    uses: ./.github/workflows/.deploy-to-nais.yml
+    uses: navikt/tiltakspenger/.github/workflows/deploy-nais.yml@main
     permissions:
       contents: read
       id-token: write
     with:
       NAIS_ENV: dev
+      # Arena kjører on-prem.
+      cluster-suffiks: fss
       IMAGE: ${{ needs.build.outputs.IMAGE }}
 
   deploy-prod:
-    name: Deploy to NAIS prod
+    name: Deploy to NAIS (prod)
     needs: build
-    uses: ./.github/workflows/.deploy-to-nais.yml
+    uses: navikt/tiltakspenger/.github/workflows/deploy-nais.yml@main
     permissions:
       contents: read
       id-token: write
     with:
       NAIS_ENV: prod
+      # Arena kjører on-prem.
+      cluster-suffiks: fss
       IMAGE: ${{ needs.build.outputs.IMAGE }}
