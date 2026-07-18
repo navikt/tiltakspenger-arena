@@ -20,8 +20,7 @@ import org.junit.jupiter.api.Test
 internal class TiltakspengerRoutesAuthTest {
     private val texasClient = mockk<TexasHttpClient>()
 
-    // Tokenstrengene er vilkårlige: autorisasjonen avgjøres utelukkende av det mockede
-    // texasClient.introspectToken-svaret, ikke av tokenets innhold/signatur.
+    // Tokenstrengene er vilkårlige: autorisasjonen avgjøres utelukkende av det mockede texasClient.introspectToken-svaret, ikke av tokenets innhold/signatur.
     private val gyldigAzureToken = "gyldig-token"
 
     private val utgåttAzureToken = "utgaatt-token"

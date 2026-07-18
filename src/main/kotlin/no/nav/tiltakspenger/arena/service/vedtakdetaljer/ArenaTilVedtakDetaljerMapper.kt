@@ -13,7 +13,8 @@ import java.time.LocalDate
 
 private val LOG = KotlinLogging.logger {}
 
-// TODO post-mvp jah: Dette føles ikke riktig. Hvorfor kan vi ikke behandle den som null istedet?
+// TODO post-mvp jah: Dette føles ikke riktig.
+//  Hvorfor kan vi ikke behandle den som null istedet?
 private const val DEFAULT_TILTAK_GJENNOMFØRINGS_ID: String = ""
 private const val DEFAULT_ANTALL_BARN: Int = 0
 private const val DEFAULT_DAGSATS: Int = 0
@@ -191,8 +192,7 @@ object ArenaTilVedtakDetaljerMapper {
         } else if (vt.rettighet == Rettighet.TILTAKSPENGER && vb.rettighet == Rettighet.INGENTING) {
             Rettighet.TILTAKSPENGER
         } else if (vt.rettighet == Rettighet.INGENTING && vb.rettighet == Rettighet.BARNETILLEGG) {
-            // Her finnes det ikke noe tiltakspengervedtak å knytte til, så relatert tiltak fra
-            // barnetillegget er nærmeste spor i vanlig logg - identen ligger i sikkerlogg.
+            // Her finnes det ikke noe tiltakspengervedtak å knytte til, så relatert tiltak fra barnetillegget er nærmeste spor i vanlig logg - identen ligger i sikkerlogg.
             loggAvvik(
                 Avvikstype.BARNETILLEGG_UTEN_TILTAKSPENGER,
                 "Her har vi en periode med barnetillegg men ikke tiltakspenger - det skal ikke egentlig kunne skje! " +

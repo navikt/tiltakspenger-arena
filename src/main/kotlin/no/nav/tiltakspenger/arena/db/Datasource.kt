@@ -13,8 +13,7 @@ object Datasource {
     private const val MAX_POOLS = 3
 
     private fun init(): HikariDataSource {
-        // Leses her (ikke som eager objekt-felt) så DB-secrets først slås opp når datakilden
-        // faktisk bygges - da har testene satt propsene via OracleTestbase.
+        // Leses her (ikke som eager objekt-felt) så DB-secrets først slås opp når datakilden faktisk bygges - da har testene satt propsene via OracleTestbase.
         val arenaDbConfig = Configuration.ArenaDbConfig()
         val url = arenaDbConfig.arenaDbUrl
         LOG.info { "Kobler til Oracle '$url" }

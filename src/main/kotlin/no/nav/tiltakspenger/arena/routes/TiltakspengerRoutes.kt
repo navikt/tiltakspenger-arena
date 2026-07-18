@@ -169,7 +169,10 @@ data class VedtakRequest(
     val fom: LocalDate?,
     val tom: LocalDate?,
 ) {
-    /** [ident] er PII og skal ikke bli med om noen logger hele objektet. Samme maskering som [no.nav.tiltakspenger.libs.common.Fnr]. */
+    /**
+     * [ident] er PII og skal ikke bli med om noen logger hele objektet.
+     * Samme maskering som [no.nav.tiltakspenger.libs.common.Fnr].
+     */
     override fun toString() = "VedtakRequest(ident=***********, fom=$fom, tom=$tom)"
 }
 

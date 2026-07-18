@@ -10,10 +10,8 @@ import no.nav.tiltakspenger.libs.ktor.common.oppstart.Readiness
 import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
 
 /**
- * Spinner opp appen i `testApplication` via prod-modulen [tiltakApi], slik at testene treffer den
- * faktiske ktor-pipelinen (content negotiation, auth, routing, health) og ikke en duplisert kopi.
- * Servicene defaulter til mockk; send inn ekte instanser for full-vertikale route-tester (se
- * `routes/RouteTestUtils.kt`).
+ * Spinner opp appen i `testApplication` via prod-modulen [tiltakApi], slik at testene treffer den faktiske ktor-pipelinen (content negotiation, auth, routing, health) og ikke en duplisert kopi.
+ * Servicene defaulter til mockk; send inn ekte instanser for full-vertikale route-tester (se `routes/RouteTestUtils.kt`).
  */
 fun ApplicationTestBuilder.configureTestApplication(
     texasClient: TexasHttpClient = mockk(),

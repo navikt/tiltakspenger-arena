@@ -96,7 +96,10 @@ object ArenaTestdata {
         }
     }
 
-    /** Kodeverk-rader spørringene joiner mot. Kjøres én gang fra [no.nav.tiltakspenger.arena.db.OracleTestbase]. */
+    /**
+     * Kodeverk-rader spørringene joiner mot.
+     * Kjøres én gang fra [no.nav.tiltakspenger.arena.db.OracleTestbase].
+     */
     fun seedKodeverk() {
         exec("INSERT INTO BEREGNINGSTATUS (BEREGNINGSTATUSKODE, BEREGNINGSTATUSNAVN) VALUES ('FERDI', 'Ferdig beregnet')")
         exec("INSERT INTO BEREGNINGSTATUS (BEREGNINGSTATUSKODE, BEREGNINGSTATUSNAVN) VALUES ('KLAR', 'Klar til beregning')")

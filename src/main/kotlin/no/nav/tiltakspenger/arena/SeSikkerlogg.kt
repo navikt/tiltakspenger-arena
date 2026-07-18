@@ -1,9 +1,8 @@
 package no.nav.tiltakspenger.arena
 
 /**
- * Ferdig setning som legges på slutten av vanlige logglinjer som har en tilhørende
- * sikkerlogg-linje. Lenken går til appens logger i Google Cloud Console for riktig miljø,
- * der sikkerloggen (team-logs) kan leses.
+ * Ferdig setning som legges på slutten av vanlige logglinjer som har en tilhørende sikkerlogg-linje.
+ * Lenken går til appens logger i Google Cloud Console for riktig miljø, der sikkerloggen (team-logs) kan leses.
  */
 val SE_SIKKERLOGG: String by lazy {
     val prosjekt = when (Configuration.applicationProfile()) {

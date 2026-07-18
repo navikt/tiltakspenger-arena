@@ -13,9 +13,8 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 object Configuration {
-    // Lazy: leser DB-secrets fra fil/system-property. Uten lazy ville enhver bruk av Configuration
-    // (f.eks. applicationProfile() via SE_SIKKERLOGG) tvunget fram DB-secret-lesing i <clinit>, og
-    // NPE-et der secrets ikke er montert (typisk i tester som ikke bruker databasen).
+    // Lazy: leser DB-secrets fra fil/system-property.
+    // Uten lazy ville enhver bruk av Configuration (f.eks. applicationProfile() via SE_SIKKERLOGG) tvunget fram DB-secret-lesing i <clinit>, og NPE-et der secrets ikke er montert (typisk i tester som ikke bruker databasen).
     private val defaultProperties by lazy {
         ConfigurationMap(
             mapOf(

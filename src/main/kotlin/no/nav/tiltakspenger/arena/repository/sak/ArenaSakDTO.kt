@@ -59,8 +59,7 @@ data class ArenaSakDTO(
     }
 }
 
-// Jeg plasserer denne her og ikke der den brukes da det føles mer naturlig å både lese og teste denne i sammenheng med
-// funksjonene som er inni klassen.
+// Jeg plasserer denne her og ikke der den brukes da det føles mer naturlig å både lese og teste denne i sammenheng med funksjonene som er inni klassen.
 fun List<ArenaSakDTO>.kunSakerMedVedtakInnenforPeriode(fom: LocalDate, tom: LocalDate): List<ArenaSakDTO> =
     this.filter { sak -> sak.harTiltakspengerVedtak() }
         .filter { sak -> sak.sakPeriode()?.overlapperMed(Periode(fom, tom)) ?: false }

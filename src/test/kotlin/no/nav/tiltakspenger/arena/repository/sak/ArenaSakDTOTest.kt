@@ -8,8 +8,7 @@ import java.time.LocalDate
 
 class ArenaSakDTOTest {
 
-    // Repo-test fordi: kunSakerMedVedtakInnenforPeriode er en ren overlapp-predikat over en liste saker,
-    // og grensetilfellene (tom akkurat før/på/etter periodestart) testes uttømmende i én test.
+    // Repo-test fordi: kunSakerMedVedtakInnenforPeriode er en ren overlapp-predikat over en liste saker, og grensetilfellene (tom akkurat før/på/etter periodestart) testes uttømmende i én test.
     // Å reprodusere den samme grensematrisen gjennom route ville krevd et eget flersaks-oppsett + kall per rad.
     @Test
     fun `filtrering på liste av saker skal fungere`() {

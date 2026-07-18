@@ -78,8 +78,7 @@ class TiltakspengerVedtakDAO(
         )
     }
 
-    // Vi gjør filtreringen her i stedet for i Kotlin-koden, da de ulike where-clausene er ganske enkle å forstå,
-    // og det er kjappere å filtrere i db.
+    // Vi gjør filtreringen her i stedet for i Kotlin-koden, da de ulike where-clausene er ganske enkle å forstå, og det er kjappere å filtrere i db.
     @Language("SQL")
     private val sqlFindTiltakspengerVedtakOgFiltrerBortUønskede =
         """

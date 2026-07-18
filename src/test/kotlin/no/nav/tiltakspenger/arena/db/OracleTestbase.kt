@@ -4,12 +4,11 @@ import no.nav.tiltakspenger.arena.repository.ArenaTestdata
 import org.testcontainers.oracle.OracleContainer
 
 /**
- * Felles Oracle-testcontainer for repository-testene. Startes én gang per JVM og deles av alle
- * testklassene ([Datasource] er en singleton som leser tilkoblingen fra system-properties ved
- * første bruk). Containeren ryddes opp av testcontainers (Ryuk) når JVM-en avsluttes.
+ * Felles Oracle-testcontainer for repository-testene.
+ * Startes én gang per JVM og deles av alle testklassene ([Datasource] er en singleton som leser tilkoblingen fra system-properties ved første bruk).
+ * Containeren ryddes opp av testcontainers (Ryuk) når JVM-en avsluttes.
  *
- * Testdata legges inn per test via [ArenaTestdata] - bruk unike id-er/fnr per test, siden
- * databasen deles på tvers av tester og testklasser.
+ * Testdata legges inn per test via [ArenaTestdata] - bruk unike id-er/fnr per test, siden databasen deles på tvers av tester og testklasser.
  */
 object OracleTestbase {
     private val container: OracleContainer by lazy {
@@ -26,7 +25,10 @@ object OracleTestbase {
             }
     }
 
-    /** Sørger for at containeren er startet, migrert og kodeverk-seedet. Idempotent. */
+    /**
+     * Sørger for at containeren er startet, migrert og kodeverk-seedet.
+     * Idempotent.
+     */
     fun start() {
         container
     }

@@ -15,7 +15,7 @@ import java.time.Clock
 internal fun start(
     log: KLogger = KotlinLogging.logger {},
     port: Int = Configuration.httpPort(),
-    clock: Clock = Clock.system(zoneIdOslo),
+    clock: Clock,
     isNais: Boolean = Configuration.isNais(),
 ) {
     val texasClient = TexasHttpClient(

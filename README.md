@@ -24,8 +24,8 @@ For å bygge artifaktene:
 
 ## Kjøre opp appen lokalt
 
-For lokal kjøring ligger det et docker-compose oppsett i `./docker-compose` som mocker ut Kafka og auth-server. Gå inn
-i den folderen og kjør `docker-compose up -d --build`.
+For lokal kjøring ligger det et docker-compose oppsett i `./docker-compose` som mocker ut Kafka og auth-server.
+Gå inn i den folderen og kjør `docker-compose up -d --build`.
 
 **Nødvendig ved førstegangsoppsett --** Legg inn følgende innslag i /etc/hosts:
 

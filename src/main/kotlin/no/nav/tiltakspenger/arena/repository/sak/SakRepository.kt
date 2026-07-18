@@ -15,13 +15,14 @@ Vi har også endret så vi bruker mer enums, og så utfall inkluderes vedtakene.
 
 Saker som returneres i liste:
 
-Ytelsen må inneholde vedtak med fra_dato <= tom-dato i input. Dersom tom-dato er blank vil 31.12.2299 benyttes.
-Ytelsen må inneholde vedtak med til_dato >= fom-dato i input. Dersom fom-dato er blank vil 01.01.1900 benyttes.
+Ytelsen må inneholde vedtak med fra_dato <= tom-dato i input.
+Dersom tom-dato er blank vil 31.12.2299 benyttes.
+Ytelsen må inneholde vedtak med til_dato >= fom-dato i input.
+Dersom fom-dato er blank vil 01.01.1900 benyttes.
 Ytelsen må inneholde vedtak hvor:
 - typen må være Ny rettighet (O), Endring (E) eller Gjenopptak (G)
 - utfallskode må ikke være Avbrutt (AVBRUTT) eller Nei (NEI)
-Ytelsen må ha minst ett vedtak som oppfyller kravene for å returneres,
-og bare vedtakene som oppfyller kravene inkluderes
+Ytelsen må ha minst ett vedtak som oppfyller kravene for å returneres, og bare vedtakene som oppfyller kravene inkluderes
 Ytelsen returneres ikke dersom sakstatus er Historisert (HIST).
  */
 class SakRepository(

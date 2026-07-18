@@ -1,7 +1,9 @@
 package no.nav.tiltakspenger.arena
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import no.nav.tiltakspenger.libs.tid.zoneIdOslo
 import org.slf4j.bridge.SLF4JBridgeHandler
+import java.time.Clock
 
 /**
  * Kjør opp lokalt via LokalMain.kt
@@ -18,5 +20,5 @@ fun main() {
         log.error(e) { e.message }
     }
 
-    start(log)
+    start(log, clock = Clock.system(zoneIdOslo))
 }

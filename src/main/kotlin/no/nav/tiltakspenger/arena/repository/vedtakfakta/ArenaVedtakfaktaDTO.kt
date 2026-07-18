@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter
 /*
 For tiltakspenger finnes de følgende vedtakfakta:
 
+```
 DAGS	    DAGSATS     	                DAGSATS	                                                                    NUMBER
 SATSKODE	Valgt sats	                    Valgt sats
 TILTAKNAVN	Knyttet til tiltak	            Knyttet til tiltak	                                                        VARCHAR2
@@ -21,8 +22,10 @@ DAGUTBTILT	Antall dager med utbetaling	    Antall dager i løpet av en meldekort
 FDATO	    Gjelder fra	                    Gjelder fra. VF_4_VEDTAK_116,VF_3_VEDTAK_TIL_BREV	                        DATE
 INNVF	    VEDTAKSDATO	                    VEDTAKSDATO	                                                                DATE
 KODETILTAK  Relatert tiltak	                Kode for knytting av tiltak til vedtaket	                                VARCHAR2
+```
 
 For Barnetillegg finnes de følgende:
+```
 DAGS	        DAGSATS	                    DAGSATS	                                                                                                    NUMBER
 SATSKODE	    Valgt sats	                Valgt sats
 TILTAKNAVN	    Knyttet til tiltak	        Knyttet til tiltak	                                                                                        VARCHAR2
@@ -34,8 +37,10 @@ DAGUTBTILT	    Antall dager med utbetaling Antall dager i løpet av en meldekort
 FDATO	        Gjelder fra	Gjelder fra.    VF_4_VEDTAK_116,VF_3_VEDTAK_TIL_BREV	                                                                    DATE
 INNVF	        VEDTAKSDATO	                VEDTAKSDATO	                                                                                                DATE
 KODETILTAK	    Relatert tiltak 	        Kode for knytting av tiltak til vedtaket	                                                                VARCHAR2
+```
 
 Hentet ut med SQLene
+```
     select distinct(vf.vedtakfaktakode), vft.vedtakfaktanavn
     from vedtakfaktatype vft, vedtakfakta vf, vedtak v, sak s
     where vft.vedtakfaktakode = vf.vedtakfaktakode
@@ -43,7 +48,9 @@ Hentet ut med SQLene
     and v.rettighetkode = 'BASI'
     and v.sak_id = s.sak_id
     AND s.sakskode = 'INDIV';
+```
 og
+```
     select distinct(vf.vedtakfaktakode), vft.vedtakfaktanavn
     from vedtakfaktatype vft, vedtakfakta vf, vedtak v, sak s
     where vft.vedtakfaktakode = vf.vedtakfaktakode
@@ -51,6 +58,7 @@ og
     and v.rettighetkode = 'BTIL'
     and v.sak_id = s.sak_id
     AND s.sakskode = 'INDIV';
+```
 
  */
 
@@ -59,15 +67,12 @@ private val log = KotlinLogging.logger {}
 private val ARENA_DATOFORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
 /**
- * Vedtakfaktakodene vi bruker fra Arena-tabellen VEDTAKFAKTA. Kdoc-en på hvert felt er
- * vedtakfaktanavnet fra tabellen VEDTAKFAKTATYPE (jf. SQL-ene øverst i fila).
+ * Vedtakfaktakodene vi bruker fra Arena-tabellen VEDTAKFAKTA.
+ * Kdoc-en på hvert felt er vedtakfaktanavnet fra tabellen VEDTAKFAKTATYPE (jf. SQL-ene øverst i fila).
  */
-// TODO: Vurder å gå bort fra denne enumen nå som vi har lesetilgang til tabellen VEDTAKFAKTATYPE
-//  (vedtakfaktakode -> vedtakfaktanavn). Da kan gyldige koder og navn slås opp fra Arena i stedet
-//  for å vedlikeholdes manuelt her, og vi unngår at koder som endres eller legges til i Arena
-//  stille faller utenfor. Enumen gir på sin side kompileringssikkerhet for kodene vi faktisk
-//  mapper på, så en mellomvei er å beholde enumen og heller validere den mot VEDTAKFAKTATYPE
-//  i en test mot testcontainer-basen.
+// TODO: Vurder å gå bort fra denne enumen nå som vi har lesetilgang til tabellen VEDTAKFAKTATYPE (vedtakfaktakode -> vedtakfaktanavn).
+//  Da kan gyldige koder og navn slås opp fra Arena i stedet for å vedlikeholdes manuelt her, og vi unngår at koder som endres eller legges til i Arena stille faller utenfor.
+//  Enumen gir på sin side kompileringssikkerhet for kodene vi faktisk mapper på, så en mellomvei er å beholde enumen og heller validere den mot VEDTAKFAKTATYPE i en test mot testcontainer-basen.
 enum class ArenaVedtakFakta {
     /** DAGSATS */
     DAGS,
@@ -105,7 +110,10 @@ enum class ArenaVedtakFakta {
      */
     KODETILTAK,
 
-    /** Antall barn med stønad. Bare aktuell for barnetillegg */
+    /**
+     * Antall barn med stønad.
+     * Bare aktuell for barnetillegg
+     */
     BARNMSTON,
 
     /** Antall utbetalinger */
@@ -125,15 +133,18 @@ data class ArenaVedtakfaktaDTO(
 )
 
 /**
- * Kontekst for logglinjene som skrives når vedtakfakta mappes. [fnr] er PII og logges kun til
- * sikkerlogg; [sakId] og [saksnummer] logges også til vanlig logg (sammen med vedtakId fra radene).
+ * Kontekst for logglinjene som skrives når vedtakfakta mappes.
+ * [fnr] er PII og logges kun til sikkerlogg; [sakId] og [saksnummer] logges også til vanlig logg (sammen med vedtakId fra radene).
  */
 data class VedtakfaktaLoggkontekst(
     val fnr: String? = null,
     val sakId: Long? = null,
     val saksnummer: String? = null,
 ) {
-    /** [fnr] er PII og skal ikke bli med om noen logger hele objektet. Samme maskering som [no.nav.tiltakspenger.libs.common.Fnr]. */
+    /**
+     * [fnr] er PII og skal ikke bli med om noen logger hele objektet.
+     * Samme maskering som [no.nav.tiltakspenger.libs.common.Fnr].
+     */
     override fun toString() = "VedtakfaktaLoggkontekst(fnr=***********, sakId=$sakId, saksnummer=$saksnummer)"
 }
 
@@ -219,9 +230,8 @@ fun List<ArenaVedtakfaktaDTO>.tilArenaUtbetalingshistorikkVedtakfaktaDTO(konteks
 }
 
 /**
- * Logger kun når det finnes avvik: én warn-linje med resultatet og avvikene bakt inn, og samme
- * linje + ident til sikkerlogg. Når alt gikk bra logges ingenting her — request-linjen i ruta
- * dekker suksess.
+ * Logger kun når det finnes avvik: én warn-linje med resultatet og avvikene bakt inn, og samme linje + ident til sikkerlogg.
+ * Når alt gikk bra logges ingenting her — request-linjen i ruta dekker suksess.
  */
 private fun List<ArenaVedtakfaktaDTO>.loggMapping(
     type: String,
@@ -251,9 +261,8 @@ private fun List<ArenaVedtakfaktaDTO>.dato(fakta: ArenaVedtakFakta): LocalDate? 
 private fun List<ArenaVedtakfaktaDTO>.desimaltall(fakta: ArenaVedtakFakta): Double? =
     tekst(fakta)?.toDouble()
 
-// Vedtakfakta lagres som tekst i Arena, og felter vi forventer er heltall kan inneholde
-// desimaltall (sett i prod: BARNMSTON=0.961538461538462). Runder av til nærmeste heltall
-// og registrerer et avvik som tas med i den ene logglinjen for mappingen.
+// Vedtakfakta lagres som tekst i Arena, og felter vi forventer er heltall kan inneholde desimaltall (sett i prod: BARNMSTON=0.961538461538462).
+// Runder av til nærmeste heltall og registrerer et avvik som tas med i den ene logglinjen for mappingen.
 private fun List<ArenaVedtakfaktaDTO>.heltall(fakta: ArenaVedtakFakta, avvik: MutableList<String>): Int? =
     tekst(fakta)?.let { verdi ->
         val tall = verdi.toBigDecimal()

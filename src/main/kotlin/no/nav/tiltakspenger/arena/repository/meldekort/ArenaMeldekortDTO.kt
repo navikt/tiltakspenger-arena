@@ -20,8 +20,9 @@ class ArenaMeldekortDTO(
     val modDato: LocalDateTime, // sist endret
     val meldekortType: String,
     val beregningstatusnavn: String,
-    // HENDELSEDATO hentes via LEFT JOIN mot MELDELOGG. 0 miss i Q2 → mappes non-null. Skulle et
-    // meldekort mangle logg-treff, feiler mappingen med NPE (bevisst valg, se nullability-doc-en).
+    // HENDELSEDATO hentes via LEFT JOIN mot MELDELOGG.
+    // 0 miss i Q2 → mappes non-null.
+    // Skulle et meldekort mangle logg-treff, feiler mappingen med NPE (bevisst valg, se nullability-doc-en).
     val hendelsedato: LocalDate,
     val meldegruppenavn: String,
     val aar: Int,

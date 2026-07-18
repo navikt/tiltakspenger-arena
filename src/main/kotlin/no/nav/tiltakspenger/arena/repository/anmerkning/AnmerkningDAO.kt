@@ -7,8 +7,8 @@ import java.time.LocalDate
 
 class AnmerkningDAO {
     /**
-     * Finner vedtak ut fra anmerkning, hvor vedtaket ikke har en tilknyttet postering, utbetalingsgrunnlag eller
-     * beregningslogg. Dette er da vedtak som er forsøkt beregenet, men som feilet og fikk laget en anmerkning på seg.
+     * Finner vedtak ut fra anmerkning, hvor vedtaket ikke har en tilknyttet postering, utbetalingsgrunnlag eller beregningslogg.
+     * Dette er da vedtak som er forsøkt beregenet, men som feilet og fikk laget en anmerkning på seg.
      * Henter kun vedtak knyttet til anmerkningen med den laveste iden for at vedtaket kun skal hentes en gang.
      *
      * Se det originale viewt i doc/utbetalingshistorikk/v_api.utbethist.vw og tilhørende spørring i doc/utbetalingshistorikk/v_api.utbethist_json_query.sql
@@ -94,8 +94,8 @@ class AnmerkningDAO {
     }
 
     /**
-     * Henter anmerkninger knyttet til et meldekort. Viewet til arena gir oss bare anmerkninger knyttet til meldekort,
-     * men vi tar allikevel med en sjekk på TABELLNAVNALIAS = 'MKORT' for å være tydelige på hva vi henter.
+     * Henter anmerkninger knyttet til et meldekort.
+     * Viewet til arena gir oss bare anmerkninger knyttet til meldekort, men vi tar allikevel med en sjekk på TABELLNAVNALIAS = 'MKORT' for å være tydelige på hva vi henter.
      * @link https://confluence.adeo.no/spaces/ARENA/pages/752103360/Arena+-+Funksjonalitet+-+Datadeling#ArenaFunksjonalitetDatadeling-Tiltakspenger
      */
     fun hentAnmerkningerForMeldekort(
@@ -126,7 +126,8 @@ class AnmerkningDAO {
     }
 
     private fun Row.toAnmerkning(): ArenaAnmerkningDTO {
-        // Bruker samme logikk som i PLSQL som benyttes i arena-api for å bestemme kilde. Queryen henter bare anmerkninger relatert til meldekort og deres vedtak.
+        // Bruker samme logikk som i PLSQL som benyttes i arena-api for å bestemme kilde.
+        // Queryen henter bare anmerkninger relatert til meldekort og deres vedtak.
         val kilde = if (stringOrNull("VEDTAK_ID") == null) "Meldekort" else "Vedtak"
 
         return ArenaAnmerkningDTO(
