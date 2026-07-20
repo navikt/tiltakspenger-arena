@@ -143,51 +143,16 @@ kover {
         total {
             filters {
                 includes {
-                    // Lese-vertikalen for alle /azure/tiltakspenger-endepunktene (route → service → repo → DTO).
-                    // Kun klasser som er 100 %-dekket av route-testene.
-                    // Fullt dekkede pakker tas via wildcard; blandede pakker listes eksplisitt.
-                    //
-                    // Bevisst utelatt (trenger flere tester før de kan pinnes):
-                    //  - ArenaTilVedtakDetaljerMapper (kombiner-/overlapp-/utenfor-grener)
-                    //  - ArenaSakDTO / ArenaSakMedMinstEttVedtakDTO / ArenaTiltakspengerVedtakDTO /
-                    //    ArenaBarnetilleggVedtakDTO (delvis dekkede logg-/hjelpefunksjoner)
-                    //  - ArenaTiltakspengerRettighetPeriodeMapper (toNullIfMax null-gren)
-                    //  - TiltakspengerRoutes-handlernes catch-blokker (500-stien er ikke route-testet)
-                    //  - VedtakRequest / AnmerkningOgVedtakRequest (maskert toString), UtbetalingsgrunnlagRepository (1 linje)
-                    //  - Tverrgående infra/oppstart (Configuration/ApplicationBuilder/Application)
+                    classes("no.nav.tiltakspenger.arena.*")
+                }
+                excludes {
+                    // Ren oppstartskode som bare kan kjøres mot et ekte miljø - alt annet krever 100 % linjedekning:
+                    //  - Application/ApplicationBuilder: main + serveroppstart (Texas-klient og Hikari-pool mot Nais).
+                    //  - Configuration: leser NAIS_CLUSTER_NAME og secrets-filer montert av Nais (/secrets/...).
                     classes(
-                        // Fullt dekkede pakker
-                        "no.nav.tiltakspenger.arena.repository.vedtakfakta.*",
-                        "no.nav.tiltakspenger.arena.repository.anmerkning.*",
-                        "no.nav.tiltakspenger.arena.repository.beregningslogg.*",
-                        "no.nav.tiltakspenger.arena.repository.meldekort.*",
-                        "no.nav.tiltakspenger.arena.repository.person.*",
-                        "no.nav.tiltakspenger.arena.repository.postering.*",
-                        "no.nav.tiltakspenger.arena.service.anmerkning.*",
-                        "no.nav.tiltakspenger.arena.service.meldekort.*",
-                        "no.nav.tiltakspenger.arena.service.utbetalingshistorikk.*",
-                        // Blandede pakker — kun 100 %-klassene
-                        "no.nav.tiltakspenger.arena.repository.sak.SakDAO",
-                        "no.nav.tiltakspenger.arena.repository.sak.SakRepository",
-                        "no.nav.tiltakspenger.arena.repository.sak.ArenaSakDTOKt",
-                        "no.nav.tiltakspenger.arena.repository.utbetalingsgrunnlag.ArenaUtbetalingsgrunnlagDTO",
-                        "no.nav.tiltakspenger.arena.repository.utbetalingsgrunnlag.UtbetalingsgrunnlagDAO",
-                        "no.nav.tiltakspenger.arena.repository.vedtak.TiltakspengerVedtakDAO",
-                        "no.nav.tiltakspenger.arena.repository.vedtak.BarnetilleggVedtakDAO",
-                        "no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerVedtakPeriode",
-                        "no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerVedtakPeriodeMapper",
-                        "no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerRettighetPeriode",
-                        "no.nav.tiltakspenger.arena.routes.UtbetalingshistorikkVedtaksfaktaOgAnmerkninger",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.ArenaTilVedtakDetaljerMapperKt",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.Rettighet",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljer",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServiceImpl",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljer",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerKunTiltakspenger",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerBarnetillegg",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakfaktaMeldekortDetaljer",
-                        "no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakfaktaMeldekortDetaljerKt",
+                        "no.nav.tiltakspenger.arena.ApplicationKt",
+                        "no.nav.tiltakspenger.arena.ApplicationBuilderKt",
+                        "no.nav.tiltakspenger.arena.Configuration",
                     )
                 }
             }
@@ -199,7 +164,7 @@ kover {
             }
             verify {
                 onCheck = true
-                rule("vedtakfakta-mapping har full linjedekning") {
+                rule("all kode utenom oppstartskoden har full linjedekning") {
                     bound {
                         minValue = 100
                         coverageUnits = CoverageUnit.LINE

@@ -21,10 +21,14 @@ Les disse først.
   Bruk den, ikke `datadeling_tiltakspenger.sql` (den har strippet constraints).
   Trenger du å verifisere noe nytt mot den faktiske databasen: se «Kjøre queries mot arena-viewet» i [README.md](README.md) — kun nåbar via VDI.
 
-## Testing av lese-vertikalen (målbilde)
+## Testing av lese-vertikalen
 
 Lese-vertikalen testes på to nivåer med en klar arbeidsdeling: **route-testene eier happy-path og JSON-kontrakten**, mens **repository-/service-testene kun eier det som ikke er observerbart gjennom ett endepunkt**.
 Hold nye tester og hjelpere i samme stil.
+
+**Dekningskrav:** kover håndhever 100 % linjedekning for all kode i `no.nav.tiltakspenger.arena.*` (`koverVerify`, kjøres av `check`), med unntak av en kort, begrunnet oppstarts-ekskludering (`Application`/`ApplicationBuilder`/`Configuration`) i `build.gradle.kts`.
+Nye klasser omfattes automatisk — skriv testen (helst route- eller enhetstest) sammen med koden.
+Kode som ikke kan nås fra tester er som regel død kode; slett den i stedet for å ekskludere.
 
 **Route-tester** (`src/test/kotlin/.../routes/*RouteTest.kt`) er kontrakten mot konsumentene våre:
 
@@ -41,6 +45,7 @@ Hold nye tester og hjelpere i samme stil.
 - **Bygg testdata fluent:** `ArenaTestdata.person(...).medSak(...).medTiltakspengevedtak(...)` / `.medMeldekort(...).medDag(...)`.
   Flate `leggTil*`-hjelpere finnes for kant-tilfeller.
 - **Auth-avvisning (401) dekkes ett sted** (`TiltakspengerRoutesAuthTest`), ikke i hver route-test.
+  Tilsvarende dekkes **500-stien ett sted** (`TiltakspengerRoutesFeilTest`) — feilhåndteringen er felles (`medFeilhåndtering` i `TiltakspengerRoutes`).
 - **Unike id-serier per test-fil:** `MELDEKORTPERIODE` har nøkkel `(aar, periodekode)` som deles på tvers av *alle* tester (repository, service og route), så `periodekode` må være globalt unik per år (ellers PK-kollisjon mellom klasser).
 
 **Repository-/service-tester** beholdes kun for det som *ikke* kan uttrykkes som et vanlig route-kall med JSON-assert:

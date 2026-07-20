@@ -7,7 +7,6 @@ import no.nav.tiltakspenger.arena.repository.ArenaVedtakStatus
 import no.nav.tiltakspenger.arena.repository.ArenaVedtakType
 import no.nav.tiltakspenger.libs.periode.Periode
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 // Har ikke lagt til alle vedtaksfakta her ennå
 //
@@ -45,8 +44,5 @@ data class ArenaTiltakspengerVedtakDTO(
     val opprinneligTomVedtaksperiode: LocalDate?,
     val relatertTiltak: String?,
 ) {
-    fun fomGyldighetstidspunkt(): LocalDateTime = fomVedtaksperiode.atStartOfDay()
-    fun tomGyldighetstidspunkt(): LocalDateTime? = tomVedtaksperiode?.atStartOfDay()
-
     fun vedtaksperiode(): Periode = Periode(fomVedtaksperiode, tomVedtaksperiode ?: LocalDate.MAX)
 }

@@ -7,6 +7,7 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
@@ -36,13 +37,13 @@ fun Route.tiltakspengerRoutes(
     authenticate(IdentityProvider.AZUREAD.value) {
         route("/azure/tiltakspenger") {
             post("/vedtaksperioder") {
-                try {
+                medFeilhåndtering("hente vedtaksperioder") {
                     val req = call.receive<VedtakRequest>()
                     val periode: Periodisering<VedtakDetaljer>? =
                         vedtakDetaljerService.hentVedtakDetaljerPerioder(
                             ident = req.ident,
-                            fom = req.fom ?: LocalDate.of(1900, 1, 1),
-                            tom = req.tom ?: LocalDate.of(2999, 12, 31),
+                            fom = req.fomEllerMin,
+                            tom = req.tomEllerMaks,
                         )
                     val filtrertPeriode = periode?.filter {
                         it.verdi.rettighet == Rettighet.TILTAKSPENGER ||
@@ -53,91 +54,71 @@ fun Route.tiltakspengerRoutes(
                     logger.info { "Hentet vedtaksperioder (${respons.size} perioder). $SE_SIKKERLOGG" }
                     Sikkerlogg.info { "Hentet vedtaksperioder (${respons.size} perioder). Ident: ${req.ident}" }
                     call.respond(respons)
-                } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente vedtaksperioder. $SE_SIKKERLOGG" }
-                    Sikkerlogg.error(e) { "Kunne ikke hente vedtaksperioder" }
-                    call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
 
             post("/vedtak") {
-                try {
+                medFeilhåndtering("hente vedtak fra arena") {
                     val req = call.receive<VedtakRequest>()
                     val periode: Periodisering<VedtakDetaljer>? =
                         vedtakDetaljerService.hentVedtakDetaljerPerioder(
                             ident = req.ident,
-                            fom = req.fom ?: LocalDate.of(1900, 1, 1),
-                            tom = req.tom ?: LocalDate.of(2999, 12, 31),
+                            fom = req.fomEllerMin,
+                            tom = req.tomEllerMaks,
                         )
                     val respons = periode.toArenaTiltakspengerVedtakPeriode()
                     logger.info { "Hentet vedtak fra arena (${respons.size} perioder). $SE_SIKKERLOGG" }
                     Sikkerlogg.info { "Hentet vedtak fra arena (${respons.size} perioder). Ident: ${req.ident}" }
                     call.respond(respons)
-                } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente vedtak fra arena. $SE_SIKKERLOGG" }
-                    Sikkerlogg.error(e) { "Kunne ikke hente vedtak fra arena" }
-                    call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
 
             post("/rettighetsperioder") {
-                try {
+                medFeilhåndtering("hente rettighetsperioder") {
                     val req = call.receive<VedtakRequest>()
                     val periode: Periodisering<RettighetDetaljer>? =
                         rettighetDetaljerService.hentRettighetDetaljerPerioder(
                             ident = req.ident,
-                            fom = req.fom ?: LocalDate.of(1900, 1, 1),
-                            tom = req.tom ?: LocalDate.of(2999, 12, 31),
+                            fom = req.fomEllerMin,
+                            tom = req.tomEllerMaks,
                         )
                     val respons = periode.toArenaTiltakspengerRettighetPeriode()
                     logger.info { "Hentet rettighetsperioder (${respons.size} perioder). $SE_SIKKERLOGG" }
                     Sikkerlogg.info { "Hentet rettighetsperioder (${respons.size} perioder). Ident: ${req.ident}" }
                     call.respond(respons)
-                } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente rettighetsperioder. $SE_SIKKERLOGG" }
-                    Sikkerlogg.error(e) { "Kunne ikke hente rettighetsperioder" }
-                    call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
 
             post("/meldekort") {
-                try {
+                medFeilhåndtering("hente meldekort") {
                     val req = call.receive<VedtakRequest>()
                     val meldekort = meldekortService.hentMeldekortForFnr(
                         fnr = req.ident,
-                        fraOgMedDato = req.fom ?: LocalDate.of(1900, 1, 1),
-                        tilOgMedDato = req.tom ?: LocalDate.of(2999, 12, 31),
+                        fraOgMedDato = req.fomEllerMin,
+                        tilOgMedDato = req.tomEllerMaks,
                     )
                     logger.info { "Hentet meldekort (${meldekort.size} meldekort). $SE_SIKKERLOGG" }
                     Sikkerlogg.info { "Hentet meldekort (${meldekort.size} meldekort). Ident: ${req.ident}" }
                     call.respond(meldekort)
-                } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente meldekort. $SE_SIKKERLOGG" }
-                    Sikkerlogg.error(e) { "Kunne ikke hente meldekort" }
-                    call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
 
             post("/utbetalingshistorikk") {
-                try {
+                medFeilhåndtering("hente utbetalingshistorikk") {
                     val req = call.receive<VedtakRequest>()
                     val utbetalingshistorikk = utbetalingshistorikkService.hentUtbetalingshistorikkForFnr(
                         fnr = req.ident,
-                        fraOgMedDato = req.fom ?: LocalDate.of(1900, 1, 1),
-                        tilOgMedDato = req.tom ?: LocalDate.of(2999, 12, 31),
+                        fraOgMedDato = req.fomEllerMin,
+                        tilOgMedDato = req.tomEllerMaks,
                     )
                     logger.info { "Hentet utbetalingshistorikk (${utbetalingshistorikk.size} innslag). $SE_SIKKERLOGG" }
                     Sikkerlogg.info { "Hentet utbetalingshistorikk (${utbetalingshistorikk.size} innslag). Ident: ${req.ident}" }
                     call.respond(utbetalingshistorikk)
-                } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente utbetalingshistorikk. $SE_SIKKERLOGG" }
-                    Sikkerlogg.error(e) { "Kunne ikke hente utbetalingshistorikk" }
-                    call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
 
             get("/utbetalingshistorikk/detaljer") {
-                try {
+                medFeilhåndtering("hente detaljer om utbetalingshistorikk") {
                     val vedtakId = call.request.queryParameters["vedtakId"]?.toLongOrNull()
                     val meldekortId = call.request.queryParameters["meldekortId"]?.toLongOrNull()
 
@@ -154,13 +135,27 @@ fun Route.tiltakspengerRoutes(
                             vedtakfakta = vedtakfakta,
                         ),
                     )
-                } catch (e: Exception) {
-                    logger.error(e) { "Kunne ikke hente detaljer om utbetalingshistorikk. $SE_SIKKERLOGG" }
-                    Sikkerlogg.error(e) { "Kunne ikke hente detaljer om utbetalingshistorikk" }
-                    call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
                 }
             }
         }
+    }
+}
+
+/**
+ * Felles feilhåndtering for handlerne: uventede feil (typisk mot Arena-databasen) logges ett sted og gir 500 med feilmeldingen som tekst.
+ * [beskrivelse] skiller endepunktene i loggen ("hente meldekort" osv.).
+ */
+private suspend fun RoutingContext.medFeilhåndtering(
+    beskrivelse: String,
+    block: suspend RoutingContext.() -> Unit,
+) {
+    // TODO jah: Bytt til Either.catch {...}
+    try {
+        block()
+    } catch (e: Exception) {
+        logger.error(e) { "Kunne ikke $beskrivelse. $SE_SIKKERLOGG" }
+        Sikkerlogg.error(e) { "Kunne ikke $beskrivelse" }
+        call.respondText(text = e.message ?: e.toString(), status = HttpStatusCode.InternalServerError)
     }
 }
 
@@ -169,14 +164,13 @@ data class VedtakRequest(
     val fom: LocalDate?,
     val tom: LocalDate?,
 ) {
+    /** Utelatt fom/tom tolkes som ubegrenset periode. */
+    val fomEllerMin: LocalDate get() = fom ?: LocalDate.of(1900, 1, 1)
+    val tomEllerMaks: LocalDate get() = tom ?: LocalDate.of(2999, 12, 31)
+
     /**
      * [ident] er PII og skal ikke bli med om noen logger hele objektet.
      * Samme maskering som [no.nav.tiltakspenger.libs.common.Fnr].
      */
     override fun toString() = "VedtakRequest(ident=***********, fom=$fom, tom=$tom)"
 }
-
-data class AnmerkningOgVedtakRequest(
-    val vedtakId: Long,
-    val meldekortId: Long,
-)

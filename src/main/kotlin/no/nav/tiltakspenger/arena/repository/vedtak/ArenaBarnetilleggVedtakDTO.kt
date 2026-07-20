@@ -7,7 +7,6 @@ import no.nav.tiltakspenger.arena.repository.ArenaVedtakStatus
 import no.nav.tiltakspenger.arena.repository.ArenaVedtakType
 import no.nav.tiltakspenger.libs.periode.Periode
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 // Slik tolkes et gjeldende barnetillegg-vedtak fra Arena-kodene (se ArenaKodeverk):
 // - rettighet BTIL = barnetillegg (til et tiltakspenger-vedtak).
@@ -44,8 +43,5 @@ data class ArenaBarnetilleggVedtakDTO(
     val tiltakGjennomføringsId: String?,
     val antallBarn: Int?,
 ) {
-    fun fomGyldighetstidspunkt(): LocalDateTime = fomVedtaksperiode.atStartOfDay()
-    fun tomGyldighetstidspunkt(): LocalDateTime? = tomVedtaksperiode?.atStartOfDay()
-
     fun vedtaksperiode(): Periode = Periode(fomVedtaksperiode, tomVedtaksperiode ?: LocalDate.MAX)
 }

@@ -2,13 +2,11 @@ package no.nav.tiltakspenger.arena.repository.sak
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import no.nav.tiltakspenger.arena.repository.ArenaSakStatus
-import no.nav.tiltakspenger.arena.repository.ArenaVedtakType
 import no.nav.tiltakspenger.arena.repository.ArenaYtelse
 import no.nav.tiltakspenger.arena.repository.vedtak.ArenaBarnetilleggVedtakDTO
 import no.nav.tiltakspenger.arena.repository.vedtak.ArenaTiltakspengerVedtakDTO
 import no.nav.tiltakspenger.libs.periode.Periode
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 private val LOG = KotlinLogging.logger {}
 
@@ -22,15 +20,6 @@ data class ArenaSakDTO(
     val tiltakspengerVedtak: List<ArenaTiltakspengerVedtakDTO>,
     val barnetilleggVedtak: List<ArenaBarnetilleggVedtakDTO>,
 ) {
-
-    val fomGyldighetsperiode: LocalDateTime?
-        get() = tiltakspengerVedtak.minOfOrNull { it.fomGyldighetstidspunkt() }
-    val tomGyldighetsperiode: LocalDateTime?
-        get() = tiltakspengerVedtak.mapNotNull { it.tomGyldighetstidspunkt() }.maxOrNull()
-    val datoKravMottatt: LocalDate
-        get() = tiltakspengerVedtak.first { it.vedtakType == ArenaVedtakType.O }.mottattDato
-    val fagsystemSakId: String
-        get() = aar.toString() + lopenrSak
 
     fun harTiltakspengerVedtak(): Boolean = this.tiltakspengerVedtak.isNotEmpty()
 

@@ -78,18 +78,25 @@ object ArenaTestdata {
         /** Standard tiltakspengevedtak med de vanlige vedtakfaktaene (DAGS/DAGUTBTILT/KODETILTAK). */
         fun medTiltakspengevedtak(
             vedtakId: Long,
+            fraDato: LocalDate = LocalDate.of(2023, 1, 1),
             tilDato: LocalDate? = LocalDate.of(2023, 3, 31),
             dags: String = "285",
             dagutbtilt: String = "10",
             kodetiltak: String = "133924438",
         ): SakBuilder {
-            ArenaTestdata.leggTilTiltakspengevedtakMedFakta(vedtakId, sakId, personId, tilDato, dags, dagutbtilt, kodetiltak)
+            ArenaTestdata.leggTilTiltakspengevedtakMedFakta(vedtakId, sakId, personId, fraDato, tilDato, dags, dagutbtilt, kodetiltak)
             return this
         }
 
         /** Barnetilleggvedtak (BTIL) med antall barn og dagsats. */
-        fun medBarnetilleggvedtak(vedtakId: Long, antallBarn: String, dagsats: String = "53"): SakBuilder {
-            ArenaTestdata.leggTilVedtak(vedtakId = vedtakId, sakId = sakId, personId = personId, rettighetkode = "BTIL")
+        fun medBarnetilleggvedtak(
+            vedtakId: Long,
+            antallBarn: String,
+            dagsats: String = "53",
+            fraDato: LocalDate = LocalDate.of(2023, 1, 1),
+            tilDato: LocalDate? = LocalDate.of(2023, 3, 31),
+        ): SakBuilder {
+            ArenaTestdata.leggTilVedtak(vedtakId = vedtakId, sakId = sakId, personId = personId, rettighetkode = "BTIL", fraDato = fraDato, tilDato = tilDato)
             ArenaTestdata.leggTilVedtakfakta(vedtakId = vedtakId, kode = "BARNMSTON", verdi = antallBarn)
             ArenaTestdata.leggTilVedtakfakta(vedtakId = vedtakId, kode = "DAGS", verdi = dagsats)
             return this
@@ -203,12 +210,13 @@ object ArenaTestdata {
         vedtakId: Long,
         sakId: Long,
         personId: Long,
+        fraDato: LocalDate = LocalDate.of(2023, 1, 1),
         tilDato: LocalDate? = LocalDate.of(2023, 3, 31),
         dags: String = "285",
         dagutbtilt: String = "10",
         kodetiltak: String = "133924438",
     ) {
-        leggTilVedtak(vedtakId = vedtakId, sakId = sakId, personId = personId, tilDato = tilDato)
+        leggTilVedtak(vedtakId = vedtakId, sakId = sakId, personId = personId, fraDato = fraDato, tilDato = tilDato)
         leggTilVedtakfakta(vedtakId = vedtakId, kode = "DAGS", verdi = dags)
         leggTilVedtakfakta(vedtakId = vedtakId, kode = "DAGUTBTILT", verdi = dagutbtilt)
         leggTilVedtakfakta(vedtakId = vedtakId, kode = "KODETILTAK", verdi = kodetiltak)

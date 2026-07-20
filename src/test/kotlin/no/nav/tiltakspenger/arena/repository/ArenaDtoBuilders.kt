@@ -1,6 +1,7 @@
 package no.nav.tiltakspenger.arena.repository
 
 import no.nav.tiltakspenger.arena.repository.sak.ArenaSakDTO
+import no.nav.tiltakspenger.arena.repository.vedtak.ArenaBarnetilleggVedtakDTO
 import no.nav.tiltakspenger.arena.repository.vedtak.ArenaTiltakspengerVedtakDTO
 import java.time.LocalDate
 
@@ -40,6 +41,36 @@ fun arenaTiltakspengerVedtakDTO(
         relatertTiltak = "Tiltak",
     )
 
+fun arenaBarnetilleggVedtakDTO(
+    vedtakId: Long,
+    tilhørendeSakId: Long = 0L,
+    fom: LocalDate = LocalDate.of(2023, 11, 14),
+    tom: LocalDate? = LocalDate.of(2023, 11, 15),
+    dagsats: Int? = 53,
+    antallDager: Double? = 5.0,
+    antallBarn: Int? = 1,
+): ArenaBarnetilleggVedtakDTO =
+    ArenaBarnetilleggVedtakDTO(
+        vedtakId = vedtakId,
+        tilhørendeSakId = tilhørendeSakId,
+        vedtakType = ArenaVedtakType.O,
+        uttaksgrad = 100,
+        fomVedtaksperiode = fom,
+        tomVedtaksperiode = tom,
+        status = ArenaVedtakStatus.IVERK,
+        rettighettype = ArenaRettighet.BTIL,
+        aktivitetsfase = ArenaAktivitetFase.UGJEN,
+        dagsats = dagsats,
+        beslutningsdato = LocalDate.of(2023, 11, 10),
+        mottattDato = LocalDate.of(2023, 11, 7),
+        registrertDato = LocalDate.of(2023, 11, 7),
+        utfall = ArenaUtfall.JA,
+        antallDager = antallDager,
+        opprinneligTomVedtaksperiode = LocalDate.of(2023, 11, 11),
+        tiltakGjennomføringsId = "Tiltak",
+        antallBarn = antallBarn,
+    )
+
 fun arenaSakDTO(
     sakId: Long,
     aar: Int = 2022,
@@ -48,6 +79,7 @@ fun arenaSakDTO(
     ytelsestype: ArenaYtelse = ArenaYtelse.INDIV,
     opprettetDato: LocalDate = LocalDate.of(2022, 1, 8),
     tiltakspengerVedtak: List<ArenaTiltakspengerVedtakDTO> = emptyList(),
+    barnetilleggVedtak: List<ArenaBarnetilleggVedtakDTO> = emptyList(),
 ): ArenaSakDTO =
     ArenaSakDTO(
         sakId = sakId,
@@ -57,5 +89,5 @@ fun arenaSakDTO(
         ytelsestype = ytelsestype,
         opprettetDato = opprettetDato,
         tiltakspengerVedtak = tiltakspengerVedtak,
-        barnetilleggVedtak = emptyList(),
+        barnetilleggVedtak = barnetilleggVedtak,
     )

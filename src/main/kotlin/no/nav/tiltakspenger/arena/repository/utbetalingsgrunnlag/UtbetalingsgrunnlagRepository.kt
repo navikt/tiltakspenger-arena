@@ -11,9 +11,9 @@ class UtbetalingsgrunnlagRepository(
         personId: Long,
         fraOgMedDato: LocalDate,
         tilOgMedDato: LocalDate,
-        txSession: TransactionalSession? = null,
-    ): List<ArenaUtbetalingsgrunnlagDTO> =
-        withTx(txSession) { tx ->
+        txSession: TransactionalSession,
+    ): List<ArenaUtbetalingsgrunnlagDTO> {
+        return withTx(txSession) { tx ->
             utbetalingsgrunnlagDAO.hentVedtakForUtbetalingshistorikk(
                 personId = personId,
                 txSession = tx,
@@ -21,4 +21,5 @@ class UtbetalingsgrunnlagRepository(
                 tilOgMedDato = tilOgMedDato,
             )
         }
+    }
 }

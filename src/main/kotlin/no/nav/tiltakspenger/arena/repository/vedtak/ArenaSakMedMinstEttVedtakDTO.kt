@@ -1,12 +1,10 @@
 package no.nav.tiltakspenger.arena.repository.vedtak
 
 import no.nav.tiltakspenger.arena.repository.ArenaSakStatus
-import no.nav.tiltakspenger.arena.repository.ArenaVedtakType
 import no.nav.tiltakspenger.arena.repository.ArenaYtelse
 import no.nav.tiltakspenger.arena.repository.sak.ArenaSakDTO
 import no.nav.tiltakspenger.libs.periode.Periode
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 class ArenaSakMedMinstEttVedtakDTO(
     val sakId: Long,
@@ -37,13 +35,6 @@ class ArenaSakMedMinstEttVedtakDTO(
         }
     }
 
-    val fomGyldighetsperiode: LocalDateTime
-        get() = tiltakspengerVedtak.minOf { it.fomGyldighetstidspunkt() }
-    val tomGyldighetsperiode: LocalDateTime?
-        get() = tiltakspengerVedtak.mapNotNull { it.tomGyldighetstidspunkt() }.maxOrNull()
-
-    val datoKravMottatt: LocalDate
-        get() = tiltakspengerVedtak.first { it.vedtakType == ArenaVedtakType.O }.mottattDato
     val fagsystemSakId: String
         get() = aar.toString() + lopenrSak
 
