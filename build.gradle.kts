@@ -3,7 +3,7 @@ import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 val ktorVersion = "3.4.3"
-val jacksonVersion = "3.2.0"
+val jacksonVersion = "3.2.1"
 val jacksonAnnotationsVersion = "2.22"
 val mockkVersion = "1.14.11"
 val kotlinxCoroutinesVersion = "1.11.0"
