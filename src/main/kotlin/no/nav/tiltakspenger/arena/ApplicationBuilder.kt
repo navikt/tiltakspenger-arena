@@ -9,12 +9,12 @@ import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServic
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.VedtakDetaljerServiceImpl
 import no.nav.tiltakspenger.libs.ktor.common.oppstart.startApp
 import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
-import no.nav.tiltakspenger.libs.tid.zoneIdOslo
 import java.time.Clock
 
 internal fun start(
     log: KLogger = KotlinLogging.logger {},
     port: Int = Configuration.httpPort(),
+    host: String = "0.0.0.0",
     clock: Clock,
     isNais: Boolean = Configuration.isNais(),
 ) {
@@ -36,6 +36,7 @@ internal fun start(
     startApp(
         log = log,
         port = port,
+        host = host,
         isNais = isNais,
     ) { readiness ->
         tiltakApi(

@@ -22,5 +22,5 @@ fun main() {
     // TODO jah: Må legge til oracle-db i docker-compose.yml.
     //  Gjetter på man kan fjerne zookeeper+kafka, men må synkronisere mock-oauth2-server med docker-compose.yml i tiltakspenger root.
     flywayMigrate()
-    start(clock = Clock.system(zoneIdOslo))
+    start(host = "127.0.0.1", clock = Clock.system(zoneIdOslo))
 }
