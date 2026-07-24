@@ -16,7 +16,7 @@ plugins {
     id("java")
     kotlin("jvm") version "2.4.10"
     id("com.diffplug.spotless") version "8.8.0"
-    id("org.jetbrains.kotlinx.kover") version "0.9.8"
+    id("org.jetbrains.kotlinx.kover") version "0.9.9"
 }
 
 repositories {
