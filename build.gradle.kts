@@ -139,6 +139,11 @@ tasks {
 }
 
 kover {
+    currentProject {
+        instrumentation {
+            includedClasses.add("no.nav.tiltakspenger.arena.*")
+        }
+    }
     reports {
         total {
             filters {
@@ -155,12 +160,6 @@ kover {
                         "no.nav.tiltakspenger.arena.Configuration",
                     )
                 }
-            }
-            html {
-                onCheck = true
-            }
-            xml {
-                onCheck = true
             }
             verify {
                 onCheck = true
