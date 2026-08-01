@@ -17,7 +17,7 @@ import no.nav.tiltakspenger.libs.texas.client.TexasIntrospectionResponse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class TiltakspengerRoutesAuthTest {
+class TiltakspengerRoutesAuthTest {
     private val texasClient = mockk<TexasHttpClient>()
 
     // Tokenstrengene er vilkårlige: autorisasjonen avgjøres utelukkende av det mockede texasClient.introspectToken-svaret, ikke av tokenets innhold/signatur.

@@ -11,7 +11,7 @@ import no.nav.tiltakspenger.libs.ktor.common.oppstart.startApp
 import no.nav.tiltakspenger.libs.texas.client.TexasHttpClient
 import java.time.Clock
 
-internal fun start(
+fun start(
     log: KLogger = KotlinLogging.logger {},
     port: Int = Configuration.httpPort(),
     host: String = "0.0.0.0",

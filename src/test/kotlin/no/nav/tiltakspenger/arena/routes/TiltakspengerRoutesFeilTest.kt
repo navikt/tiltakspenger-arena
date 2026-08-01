@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
  * Feilhåndteringen er felles for alle handlerne, så den dekkes ett sted (som auth-avvisning i [TiltakspengerRoutesAuthTest]) gjennom ett endepunkt.
  * Trenger ikke Oracle: den ene feilen oppstår før servicen (ugyldig body), den andre i en mocket service.
  */
-internal class TiltakspengerRoutesFeilTest {
+class TiltakspengerRoutesFeilTest {
 
     private val uri = "/azure/tiltakspenger/vedtaksperioder"
 
