@@ -37,7 +37,7 @@ class ArenaTilVedtakDetaljerMapperTest {
             ),
         )
 
-        val resultat = ArenaTilVedtakDetaljerMapper.mapTiltakspengerFraArenaTilVedtaksperioder(listOf(sak), fnr = "12345678910")!!
+        val resultat = ArenaTilVedtakDetaljerMapper.mapTiltakspengerFraArenaTilVedtaksperioder(listOf(sak), fnr = "12845678910")!!
 
         resultat.perioderMedVerdi.map { it.periode } shouldBe listOf(Periode(LocalDate.of(2023, 11, 7), LocalDate.of(2023, 11, 15)))
         resultat.verdier.single() shouldBe VedtakDetaljer(

@@ -16,7 +16,7 @@ object ArenaTestdata {
     /**
      * Fluent inngang: seeder en person og lar deg kjede på sak/vedtak uten å gjenta id-ene.
      * ```
-     * ArenaTestdata.person(personId = 900, fnr = "90000000000")
+     * ArenaTestdata.person(personId = 900, fnr = "90800000000")
      *     .medSak(sakId = 9001)
      *     .medTiltakspengevedtak(vedtakId = 90011)
      *     .medBarnetilleggvedtak(vedtakId = 90012, antallBarn = "0.96...")

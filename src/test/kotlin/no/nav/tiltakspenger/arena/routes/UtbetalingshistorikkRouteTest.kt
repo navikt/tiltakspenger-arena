@@ -25,11 +25,11 @@ class UtbetalingshistorikkRouteTest {
 
     @Test
     fun `henter utbetalingshistorikk fra postering`() = runTest {
-        ArenaTestdata.leggTilPerson(personId = 9400, fnr = "94000000000")
+        ArenaTestdata.leggTilPerson(personId = 9400, fnr = "94800000000")
         ArenaTestdata.leggTilPostering(personId = 9400, vedtakId = 940011, meldekortId = 94001)
 
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("94000000000")).skalHaOkMedJson(
+            postAutentisert(uri, vedtakRequestBody("94800000000")).skalHaOkMedJson(
                 jsonArray(forventetUtbetalingshistorikkJson(meldekortId = 94001, vedtakId = 940011)),
             )
         }
@@ -38,7 +38,7 @@ class UtbetalingshistorikkRouteTest {
     @Test
     fun `person uten utbetalingshistorikk gir tom liste`() = runTest {
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("94000009999")).skalHaOkMedJson("[]")
+            postAutentisert(uri, vedtakRequestBody("94800009999")).skalHaOkMedJson("[]")
         }
     }
 }

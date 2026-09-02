@@ -26,14 +26,14 @@ class MeldekortRouteTest {
 
     @Test
     fun `henter meldekort med dager`() = runTest {
-        ArenaTestdata.person(personId = 9300, fnr = "93000000000")
+        ArenaTestdata.person(personId = 9300, fnr = "93800000000")
             .medMeldekort(meldekortId = 93001, periodekode = "71", datoFra = LocalDate.of(2023, 1, 2), datoTil = LocalDate.of(2023, 1, 15))
             .medDag(ukenr = 1, dagnr = 1)
             .medDag(ukenr = 1, dagnr = 2, statusArbeidsdag = "J", timerArbeidet = 7.5)
             .medDag(ukenr = 1, dagnr = 3, statusKurs = "N", statusFerie = "J", statusSyk = "J", statusAnnetFravaer = "J")
 
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("93000000000")).skalHaOkMedJson(
+            postAutentisert(uri, vedtakRequestBody("93800000000")).skalHaOkMedJson(
                 jsonArray(
                     forventetMeldekortJson(
                         meldekortId = "93001",
@@ -55,7 +55,7 @@ class MeldekortRouteTest {
     @Test
     fun `person uten meldekort gir tom liste`() = runTest {
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("93000009999")).skalHaOkMedJson("[]")
+            postAutentisert(uri, vedtakRequestBody("93800009999")).skalHaOkMedJson("[]")
         }
     }
 }

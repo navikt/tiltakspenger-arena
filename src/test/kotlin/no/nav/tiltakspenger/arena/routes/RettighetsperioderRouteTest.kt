@@ -25,12 +25,12 @@ class RettighetsperioderRouteTest {
 
     @Test
     fun `henter rettighetsperiode for person med tiltakspengevedtak`() = runTest {
-        ArenaTestdata.person(personId = 9200, fnr = "92000000000")
+        ArenaTestdata.person(personId = 9200, fnr = "92800000000")
             .medSak(sakId = 92001)
             .medTiltakspengevedtak(vedtakId = 920011)
 
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("92000000000")).skalHaOkMedJson(
+            postAutentisert(uri, vedtakRequestBody("92800000000")).skalHaOkMedJson(
                 jsonArray(forventetRettighetsperiodeJson()),
             )
         }
@@ -38,12 +38,12 @@ class RettighetsperioderRouteTest {
 
     @Test
     fun `vedtak med aapen sluttdato gir tilOgMed null`() = runTest {
-        ArenaTestdata.person(personId = 9201, fnr = "92000000001")
+        ArenaTestdata.person(personId = 9201, fnr = "92800000001")
             .medSak(sakId = 92011)
             .medTiltakspengevedtak(vedtakId = 920111, tilDato = null)
 
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("92000000001")).skalHaOkMedJson(
+            postAutentisert(uri, vedtakRequestBody("92800000001")).skalHaOkMedJson(
                 jsonArray(forventetRettighetsperiodeJson(tilOgMed = null)),
             )
         }
@@ -52,7 +52,7 @@ class RettighetsperioderRouteTest {
     @Test
     fun `person uten vedtak gir tom liste`() = runTest {
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("92000009999")).skalHaOkMedJson("[]")
+            postAutentisert(uri, vedtakRequestBody("92800009999")).skalHaOkMedJson("[]")
         }
     }
 }

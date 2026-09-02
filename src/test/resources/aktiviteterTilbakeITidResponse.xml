@@ -1,33 +1,33 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <v1:hentTiltakOgAktiviteterForBrukerResponse xmlns:v1="http://nav.no/tjeneste/virksomhet/tiltakOgAktivitet/v1/">
     <response>
         <tiltaksaktivitetListe>
             <tiltaksnavn>Arbeidstrening</tiltaksnavn>
             <aktivitetId>TA66</aktivitetId>
             <tiltakLokaltNavn>Arbeidstrening</tiltakLokaltNavn>
-            <arrangoer>GRÅTASS BARNEHAGE AS</arrangoer>
+            <arrangoer>GRÃ…TASS BARNEHAGE AS</arrangoer>
             <bedriftsnummer>424242</bedriftsnummer>
             <deltakelsePeriode>
                 <fom>2022-05-06</fom>
                 <tom>2022-07-08</tom>
             </deltakelsePeriode>
             <deltakelseProsent>100</deltakelseProsent>
-            <deltakerStatus termnavn="Gjennomføres">GJENN</deltakerStatus>
+            <deltakerStatus termnavn="GjennomfÃ¸res">GJENN</deltakerStatus>
             <statusSistEndret>2022-06-01</statusSistEndret>
             <begrunnelseInnsoeking>Trenger tiltaksplass</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
-            <tiltaksnavn>Enkeltplass Fag- og yrkesopplæring VGS og høyere yrkesfaglig utdanning</tiltaksnavn>
+            <tiltaksnavn>Enkeltplass Fag- og yrkesopplÃ¦ring VGS og hÃ¸yere yrkesfaglig utdanning</tiltaksnavn>
             <aktivitetId>TA0</aktivitetId>
             <tiltakLokaltNavn>Menn i helse</tiltakLokaltNavn>
-            <arrangoer>Atlantis videregående skole</arrangoer>
+            <arrangoer>Atlantis videregÃ¥ende skole</arrangoer>
             <bedriftsnummer>1</bedriftsnummer>
             <deltakelsePeriode>
                 <fom>2022-08-15</fom>
                 <tom>2023-06-16</tom>
             </deltakelsePeriode>
             <deltakelseProsent>100</deltakelseProsent>
-            <deltakerStatus termnavn="Gjennomføres">GJENN</deltakerStatus>
+            <deltakerStatus termnavn="GjennomfÃ¸res">GJENN</deltakerStatus>
             <statusSistEndret>2022-09-02</statusSistEndret>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
@@ -41,13 +41,13 @@
                 <tom>2022-06-24</tom>
             </deltakelsePeriode>
             <deltakelseProsent>100</deltakelseProsent>
-            <deltakerStatus termnavn="Fullført">FULLF</deltakerStatus>
+            <deltakerStatus termnavn="FullfÃ¸rt">FULLF</deltakerStatus>
             <statusSistEndret>2022-06-25</statusSistEndret>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
-            <tiltaksnavn>Midlertidig lønnstilskudd</tiltaksnavn>
+            <tiltaksnavn>Midlertidig lÃ¸nnstilskudd</tiltaksnavn>
             <aktivitetId>TA2</aktivitetId>
-            <tiltakLokaltNavn>Midlertidig lønnstilskudd</tiltakLokaltNavn>
+            <tiltakLokaltNavn>Midlertidig lÃ¸nnstilskudd</tiltakLokaltNavn>
             <arrangoer>TAKSYSTEMER AS</arrangoer>
             <bedriftsnummer>3</bedriftsnummer>
             <deltakelsePeriode>
@@ -56,14 +56,14 @@
             </deltakelsePeriode>
             <deltakelseProsent>100</deltakelseProsent>
             <antallDagerPerUke>5</antallDagerPerUke>
-            <deltakerStatus termnavn="Gjennomføring avbrutt">GJENN_AVB</deltakerStatus>
+            <deltakerStatus termnavn="GjennomfÃ¸ring avbrutt">GJENN_AVB</deltakerStatus>
             <statusSistEndret>2020-08-26</statusSistEndret>
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
-            <tiltaksnavn>Oppfølging</tiltaksnavn>
+            <tiltaksnavn>OppfÃ¸lging</tiltaksnavn>
             <aktivitetId>TA3</aktivitetId>
-            <tiltakLokaltNavn>Oppfølging - spesielt tilpasset innsats (Atlantis)</tiltakLokaltNavn>
+            <tiltakLokaltNavn>OppfÃ¸lging - spesielt tilpasset innsats (Atlantis)</tiltakLokaltNavn>
             <arrangoer>IFRONT KARRIERE OSLO N</arrangoer>
             <bedriftsnummer>4</bedriftsnummer>
             <deltakelsePeriode>
@@ -72,14 +72,14 @@
             </deltakelsePeriode>
             <deltakelseProsent>100</deltakelseProsent>
             <antallDagerPerUke>5</antallDagerPerUke>
-            <deltakerStatus termnavn="Fullført">FULLF</deltakerStatus>
+            <deltakerStatus termnavn="FullfÃ¸rt">FULLF</deltakerStatus>
             <statusSistEndret>2016-08-18</statusSistEndret>
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
-            <tiltaksnavn>Oppfølging</tiltaksnavn>
+            <tiltaksnavn>OppfÃ¸lging</tiltaksnavn>
             <aktivitetId>TA4</aktivitetId>
-            <tiltakLokaltNavn>Oppfølging - Atlantis(alle innsatsbehov)</tiltakLokaltNavn>
+            <tiltakLokaltNavn>OppfÃ¸lging - Atlantis(alle innsatsbehov)</tiltakLokaltNavn>
             <arrangoer>IFRONT KARRIERE OSLO N</arrangoer>
             <bedriftsnummer>5</bedriftsnummer>
             <deltakelsePeriode>
@@ -94,22 +94,22 @@
         <tiltaksaktivitetListe>
             <tiltaksnavn>Avklaring i skjermet virksomhet</tiltaksnavn>
             <aktivitetId>TA5</aktivitetId>
-            <tiltakLokaltNavn>Avklaring i skjermet virksomhet - Elverhøyløkken</tiltakLokaltNavn>
-            <arrangoer>MjøsAnker AS</arrangoer>
+            <tiltakLokaltNavn>Avklaring i skjermet virksomhet - ElverhÃ¸ylÃ¸kken</tiltakLokaltNavn>
+            <arrangoer>MjÃ¸sAnker AS</arrangoer>
             <bedriftsnummer>6</bedriftsnummer>
             <deltakelsePeriode>
                 <fom>2015-05-18</fom>
                 <tom>2015-06-12</tom>
             </deltakelsePeriode>
             <deltakelseProsent>100</deltakelseProsent>
-            <deltakerStatus termnavn="Fullført">FULLF</deltakerStatus>
+            <deltakerStatus termnavn="FullfÃ¸rt">FULLF</deltakerStatus>
             <statusSistEndret>2015-06-13</statusSistEndret>
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
             <tiltaksnavn>Avklaring i skjermet virksomhet</tiltaksnavn>
             <aktivitetId>TA6</aktivitetId>
-            <tiltakLokaltNavn>Avklaring i skjermet virksomhet - Elverhøyløkken</tiltakLokaltNavn>
+            <tiltakLokaltNavn>Avklaring i skjermet virksomhet - ElverhÃ¸ylÃ¸kken</tiltakLokaltNavn>
             <arrangoer>Anker AS</arrangoer>
             <bedriftsnummer>7</bedriftsnummer>
             <deltakelsePeriode>
@@ -117,7 +117,7 @@
                 <tom>2015-05-17</tom>
             </deltakelsePeriode>
             <deltakelseProsent>100</deltakelseProsent>
-            <deltakerStatus termnavn="Fullført">FULLF</deltakerStatus>
+            <deltakerStatus termnavn="FullfÃ¸rt">FULLF</deltakerStatus>
             <statusSistEndret>2015-05-18</statusSistEndret>
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
@@ -132,7 +132,7 @@
                 <tom>2012-09-01</tom>
             </deltakelsePeriode>
             <deltakelseProsent>100</deltakelseProsent>
-            <deltakerStatus termnavn="Fullført">FULLF</deltakerStatus>
+            <deltakerStatus termnavn="FullfÃ¸rt">FULLF</deltakerStatus>
             <statusSistEndret>2012-09-02</statusSistEndret>
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
@@ -147,12 +147,12 @@
                 <tom>2011-04-01</tom>
             </deltakelsePeriode>
             <deltakelseProsent>100</deltakelseProsent>
-            <deltakerStatus termnavn="Ikke møtt">IKKEM</deltakerStatus>
+            <deltakerStatus termnavn="Ikke mÃ¸tt">IKKEM</deltakerStatus>
             <statusSistEndret>2011-05-11</statusSistEndret>
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
-            <tiltaksnavn>Arbeidsmarkedsopplæring (AMO)</tiltaksnavn>
+            <tiltaksnavn>ArbeidsmarkedsopplÃ¦ring (AMO)</tiltaksnavn>
             <aktivitetId>TA9</aktivitetId>
             <tiltakLokaltNavn>Gjennom barrierer til jobb</tiltakLokaltNavn>
             <arrangoer>Hei Kompetanse AS</arrangoer>
@@ -167,7 +167,7 @@
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
-            <tiltaksnavn>Arbeidsmarkedsopplæring (AMO)</tiltaksnavn>
+            <tiltaksnavn>ArbeidsmarkedsopplÃ¦ring (AMO)</tiltaksnavn>
             <aktivitetId>TA10</aktivitetId>
             <tiltakLokaltNavn>Arbeidspraksis m/motivasjon</tiltakLokaltNavn>
             <arrangoer>ARENA EIENDOM AS</arrangoer>
@@ -182,9 +182,9 @@
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
-            <tiltaksnavn>Arbeidsmarkedsopplæring (AMO)</tiltaksnavn>
+            <tiltaksnavn>ArbeidsmarkedsopplÃ¦ring (AMO)</tiltaksnavn>
             <aktivitetId>TA11</aktivitetId>
-            <tiltakLokaltNavn>Maskinførerkurs</tiltakLokaltNavn>
+            <tiltakLokaltNavn>MaskinfÃ¸rerkurs</tiltakLokaltNavn>
             <arrangoer>Min Trafikkskole AS</arrangoer>
             <bedriftsnummer>12</bedriftsnummer>
             <deltakelsePeriode>
@@ -192,14 +192,14 @@
                 <tom>2005-04-29</tom>
             </deltakelsePeriode>
             <deltakelseProsent>100</deltakelseProsent>
-            <deltakerStatus termnavn="Fått avslag">AVSLAG</deltakerStatus>
+            <deltakerStatus termnavn="FÃ¥tt avslag">AVSLAG</deltakerStatus>
             <statusSistEndret>2005-03-14</statusSistEndret>
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
-            <tiltaksnavn>Arbeidsmarkedsopplæring (AMO)</tiltaksnavn>
+            <tiltaksnavn>ArbeidsmarkedsopplÃ¦ring (AMO)</tiltaksnavn>
             <aktivitetId>TA12</aktivitetId>
-            <tiltakLokaltNavn>Opplæring - Førerkort kl. CEDE</tiltakLokaltNavn>
+            <tiltakLokaltNavn>OpplÃ¦ring - FÃ¸rerkort kl. CEDE</tiltakLokaltNavn>
             <arrangoer>Din Trafikkskole AS</arrangoer>
             <bedriftsnummer>13</bedriftsnummer>
             <deltakelsePeriode>
@@ -212,7 +212,7 @@
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
-            <tiltaksnavn>Lønnstilskudd</tiltaksnavn>
+            <tiltaksnavn>LÃ¸nnstilskudd</tiltaksnavn>
             <aktivitetId>TA13</aktivitetId>
             <arrangoer>FOO ENGROS AS</arrangoer>
             <bedriftsnummer>14</bedriftsnummer>
@@ -221,7 +221,7 @@
                 <tom>2001-03-31</tom>
             </deltakelsePeriode>
             <deltakelseProsent>100</deltakelseProsent>
-            <deltakerStatus termnavn="Fullført">FULLF</deltakerStatus>
+            <deltakerStatus termnavn="FullfÃ¸rt">FULLF</deltakerStatus>
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
         <tiltaksaktivitetListe>
@@ -239,7 +239,7 @@
             <begrunnelseInnsoeking>Lorem ipsum</begrunnelseInnsoeking>
         </tiltaksaktivitetListe>
         <gruppeaktivitetListe>
-            <aktivitetstype>informasjonsmøte ved NAV lokalt</aktivitetstype>
+            <aktivitetstype>informasjonsmÃ¸te ved NAV lokalt</aktivitetstype>
             <aktivitetId>GA1</aktivitetId>
             <beskrivelse>INNKALLING TIL DIGILAB - ARBEIDSVERKSTED OM DIGITAL AKTIVITETSPLAN</beskrivelse>
             <moeteplanListe>
@@ -247,9 +247,9 @@
                 <startKlokkeslett>09:00:00</startKlokkeslett>
                 <sluttDato>2020-03-12</sluttDato>
                 <sluttKlokkeslett>11:00:00</sluttKlokkeslett>
-                <sted>NAV Atlantis, inngang fra gågata</sted>
+                <sted>NAV Atlantis, inngang fra gÃ¥gata</sted>
             </moeteplanListe>
-            <status termnavn="Fullført">FULLF</status>
+            <status termnavn="FullfÃ¸rt">FULLF</status>
         </gruppeaktivitetListe>
     </response>
 </v1:hentTiltakOgAktiviteterForBrukerResponse>

@@ -13,7 +13,7 @@ import java.time.LocalDate
 class ArenaVedtakfaktaDTOTest {
 
     private val kontekst = VedtakfaktaLoggkontekst(
-        fnr = "01234567891",
+        fnr = "01834567891",
         sakId = 13297369L,
         saksnummer = "202229331",
     )
@@ -135,7 +135,7 @@ class ArenaVedtakfaktaDTOTest {
     @Test
     fun `toString på loggkonteksten maskerer fnr`() {
         kontekst.toString() shouldBe "VedtakfaktaLoggkontekst(fnr=***********, sakId=13297369, saksnummer=202229331)"
-        kontekst.toString() shouldNotContain "01234567891"
+        kontekst.toString() shouldNotContain "01834567891"
     }
 
     // Null-default når fakta mangler helt (tom liste) for alle tre mapperne — kanten route med gyldige data ikke treffer.

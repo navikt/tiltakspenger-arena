@@ -39,7 +39,7 @@ class TiltakspengerRoutesFeilTest {
                 texasClient = texasClientSomGodkjenner(),
                 vedtakDetaljerService = vedtakDetaljerService,
             )
-            val response = postAutentisert(uri, vedtakRequestBody("10000000000"))
+            val response = postAutentisert(uri, vedtakRequestBody("10800000000"))
             response.status shouldBe HttpStatusCode.InternalServerError
             // e.message er null, så responsen faller tilbake til e.toString().
             response.bodyAsText() shouldBe "java.lang.Exception"

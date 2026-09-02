@@ -52,8 +52,8 @@ services:
                             "requestParam": "grant_type",
                             "match": "*",
                             "claims": {
-                                "sub": "12345678901",
-                                "pid": "12345678901",
+                                "sub": "12845678901",
+                                "pid": "12845678901",
                                 "aud": ["localhost:tpts:tiltakspenger-arena"],
                                 "acr": "Level4"
                             }

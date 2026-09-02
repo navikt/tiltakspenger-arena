@@ -28,12 +28,12 @@ class VedtaksperioderRouteTest {
 
     @Test
     fun `henter standard tiltakspengevedtak`() = runTest {
-        ArenaTestdata.person(personId = 900, fnr = "90000000000")
+        ArenaTestdata.person(personId = 900, fnr = "90800000000")
             .medSak(sakId = 9001)
             .medTiltakspengevedtak(vedtakId = 90011)
 
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("90000000000")).skalHaOkMedJson(
+            postAutentisert(uri, vedtakRequestBody("90800000000")).skalHaOkMedJson(
                 jsonArray(
                     forventetVedtaksperiodeJson(vedtakId = 90011, sakId = 9001, saksnummer = "20239001"),
                 ),
@@ -45,13 +45,13 @@ class VedtaksperioderRouteTest {
     fun `desimalt antall barn rundes av hele veien ut til responsen`() = runTest {
         // Prod-casen som startet dette arbeidet: BARNMSTON = 0.961538461538462 skal bli antallBarn = 1.
         // Alt annet er et standard tiltakspengevedtak; kun barnetillegget er unikt her.
-        ArenaTestdata.person(personId = 901, fnr = "90000000001")
+        ArenaTestdata.person(personId = 901, fnr = "90800000001")
             .medSak(sakId = 9011)
             .medTiltakspengevedtak(vedtakId = 90111)
             .medBarnetilleggvedtak(vedtakId = 90112, antallBarn = "0.961538461538462")
 
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("90000000001")).skalHaOkMedJson(
+            postAutentisert(uri, vedtakRequestBody("90800000001")).skalHaOkMedJson(
                 jsonArray(
                     forventetVedtaksperiodeJson(
                         vedtakId = 90111,
@@ -68,12 +68,12 @@ class VedtaksperioderRouteTest {
 
     @Test
     fun `vedtak med aapen sluttdato gir tilOgMed null`() = runTest {
-        ArenaTestdata.person(personId = 902, fnr = "90000000002")
+        ArenaTestdata.person(personId = 902, fnr = "90800000002")
             .medSak(sakId = 9021)
             .medTiltakspengevedtak(vedtakId = 90211, tilDato = null)
 
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("90000000002")).skalHaOkMedJson(
+            postAutentisert(uri, vedtakRequestBody("90800000002")).skalHaOkMedJson(
                 jsonArray(
                     forventetVedtaksperiodeJson(vedtakId = 90211, sakId = 9021, saksnummer = "20239021", tilOgMed = null),
                 ),
@@ -84,13 +84,13 @@ class VedtaksperioderRouteTest {
     @Test
     fun `barnetillegg utover vedtaksperioden klippes til overlappet`() = runTest {
         // Barnetillegget (mars-mai) stikker utenfor saksperioden (jan-mars); kun overlappet (mars) skal få barnetillegg.
-        ArenaTestdata.person(personId = 903, fnr = "90000000003")
+        ArenaTestdata.person(personId = 903, fnr = "90800000003")
             .medSak(sakId = 9031)
             .medTiltakspengevedtak(vedtakId = 90311)
             .medBarnetilleggvedtak(vedtakId = 90312, antallBarn = "1", fraDato = LocalDate.of(2023, 3, 1), tilDato = LocalDate.of(2023, 5, 31))
 
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("90000000003")).skalHaOkMedJson(
+            postAutentisert(uri, vedtakRequestBody("90800000003")).skalHaOkMedJson(
                 jsonArray(
                     forventetVedtaksperiodeJson(
                         vedtakId = 90311,
@@ -115,14 +115,14 @@ class VedtaksperioderRouteTest {
     @Test
     fun `barnetillegg i gap mellom tiltakspengevedtak gir rettighet BARNETILLEGG`() = runTest {
         // To tiltakspengevedtak (jan og mars) med barnetillegg for hele jan-mars: gapet (februar) har bare barnetillegg, og responsen viser MVP-defaultene (vedtakId/sakId 0, tom sak) for gapet.
-        ArenaTestdata.person(personId = 904, fnr = "90000000004")
+        ArenaTestdata.person(personId = 904, fnr = "90800000004")
             .medSak(sakId = 9041)
             .medTiltakspengevedtak(vedtakId = 90411, tilDato = LocalDate.of(2023, 1, 31))
             .medTiltakspengevedtak(vedtakId = 90412, fraDato = LocalDate.of(2023, 3, 1))
             .medBarnetilleggvedtak(vedtakId = 90413, antallBarn = "1")
 
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("90000000004")).skalHaOkMedJson(
+            postAutentisert(uri, vedtakRequestBody("90800000004")).skalHaOkMedJson(
                 jsonArray(
                     forventetVedtaksperiodeJson(
                         vedtakId = 90411,
@@ -165,7 +165,7 @@ class VedtaksperioderRouteTest {
     @Test
     fun `person uten vedtak gir tom liste`() = runTest {
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("90000009999")).skalHaOkMedJson("[]")
+            postAutentisert(uri, vedtakRequestBody("90800009999")).skalHaOkMedJson("[]")
         }
     }
 }

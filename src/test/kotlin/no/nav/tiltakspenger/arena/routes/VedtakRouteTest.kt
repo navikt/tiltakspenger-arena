@@ -27,12 +27,12 @@ class VedtakRouteTest {
 
     @Test
     fun `henter vedtak for person med tiltakspengevedtak`() = runTest {
-        ArenaTestdata.person(personId = 9100, fnr = "91000000000")
+        ArenaTestdata.person(personId = 9100, fnr = "91800000000")
             .medSak(sakId = 91001)
             .medTiltakspengevedtak(vedtakId = 910011)
 
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("91000000000")).skalHaOkMedJson(
+            postAutentisert(uri, vedtakRequestBody("91800000000")).skalHaOkMedJson(
                 jsonArray(
                     forventetVedtaksperiodeJson(vedtakId = 910011, sakId = 91001, saksnummer = "202391001"),
                 ),
@@ -44,13 +44,13 @@ class VedtakRouteTest {
     fun `gap mellom to tiltakspengevedtak gir INGENTING-periode`() = runTest {
         // /vedtak er ufiltrert, så gapet (februar) mellom vedtakene kommer med som INGENTING med MVP-defaultene (vedtakId/sakId 0, tom sak).
         // /vedtaksperioder filtrerer bort slike.
-        ArenaTestdata.person(personId = 9101, fnr = "91000000001")
+        ArenaTestdata.person(personId = 9101, fnr = "91800000001")
             .medSak(sakId = 91011)
             .medTiltakspengevedtak(vedtakId = 910111, tilDato = LocalDate.of(2023, 1, 31))
             .medTiltakspengevedtak(vedtakId = 910112, fraDato = LocalDate.of(2023, 3, 1))
 
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("91000000001")).skalHaOkMedJson(
+            postAutentisert(uri, vedtakRequestBody("91800000001")).skalHaOkMedJson(
                 jsonArray(
                     forventetVedtaksperiodeJson(
                         vedtakId = 910111,
@@ -85,7 +85,7 @@ class VedtakRouteTest {
     @Test
     fun `person uten vedtak gir tom liste`() = runTest {
         medArenaRouteTest {
-            postAutentisert(uri, vedtakRequestBody("91000009999")).skalHaOkMedJson("[]")
+            postAutentisert(uri, vedtakRequestBody("91800009999")).skalHaOkMedJson("[]")
         }
     }
 }
