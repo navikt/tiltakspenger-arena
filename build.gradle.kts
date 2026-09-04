@@ -8,14 +8,14 @@ val jacksonAnnotationsVersion = "2.22"
 val mockkVersion = "1.14.11"
 val kotlinxCoroutinesVersion = "1.11.0"
 val testContainersVersion = "2.0.5"
-val felleslibVersion = "0.0.20260902171610"
+val felleslibVersion = "0.0.20260904123939"
 val kotestVersion = "6.2.4"
 
 plugins {
     application
     id("java")
     kotlin("jvm") version "2.4.10"
-    id("com.diffplug.spotless") version "8.8.0"
+    id("com.diffplug.spotless") version "8.10.1"
     id("org.jetbrains.kotlinx.kover") version "0.9.9"
 }
 
@@ -46,7 +46,7 @@ dependencies {
     implementation("org.jetbrains:annotations:26.1.0")
     implementation("com.natpryce:konfig:1.6.10.0")
     implementation("net.logstash.logback:logstash-logback-encoder:9.0")
-    implementation("ch.qos.logback:logback-classic:1.5.38")
+    implementation("ch.qos.logback:logback-classic:1.6.3")
     implementation("io.github.oshai:kotlin-logging-jvm:8.0.4")
 
     implementation("io.ktor:ktor-server:$ktorVersion")
@@ -76,9 +76,9 @@ dependencies {
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
-    testImplementation("org.xmlunit:xmlunit-matchers:2.12.0")
+    testImplementation("org.xmlunit:xmlunit-matchers:2.13.0")
     testImplementation("org.hamcrest:hamcrest-core:3.0")
-    testImplementation("org.flywaydb:flyway-database-oracle:12.10.0")
+    testImplementation("org.flywaydb:flyway-database-oracle:13.4.0")
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter:$testContainersVersion")
     testImplementation("org.testcontainers:testcontainers-oracle-free:$testContainersVersion")
