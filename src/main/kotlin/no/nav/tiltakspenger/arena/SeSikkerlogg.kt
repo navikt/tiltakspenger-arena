@@ -5,7 +5,7 @@ package no.nav.tiltakspenger.arena
  * Lenken går til appens logger i Google Cloud Console for riktig miljø, der sikkerloggen (team-logs) kan leses.
  */
 val SE_SIKKERLOGG: String by lazy {
-    val prosjekt = when (Configuration.applicationProfile()) {
+    val prosjekt = when (Configuration.profile) {
         Profile.PROD -> "tpts-prod-b5ff"
         else -> "tpts-dev-6211"
     }

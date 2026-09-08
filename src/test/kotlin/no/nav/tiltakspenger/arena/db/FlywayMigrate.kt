@@ -22,7 +22,7 @@ private fun localFlyway() = Flyway
     .load()
 
 fun flywayMigrate() {
-    when (Configuration.applicationProfile()) {
+    when (Configuration.profile) {
         Profile.LOCAL -> localFlyway().migrate()
         else -> LOG.info { "Skipping flyway when not local" }
     }

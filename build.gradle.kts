@@ -44,7 +44,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains:annotations:26.1.0")
-    implementation("com.natpryce:konfig:1.6.10.0")
     implementation("net.logstash.logback:logstash-logback-encoder:9.0")
     implementation("ch.qos.logback:logback-classic:1.6.3")
     implementation("io.github.oshai:kotlin-logging-jvm:8.0.4")
@@ -154,11 +153,15 @@ kover {
                 excludes {
                     // Ren oppstartskode som bare kan kjøres mot et ekte miljø - alt annet krever 100 % linjedekning:
                     //  - Application/ApplicationBuilder: main + serveroppstart (Texas-klient og Hikari-pool mot Nais).
-                    //  - Configuration: leser NAIS_CLUSTER_NAME og secrets-filer montert av Nais (/secrets/...).
+                    //  - Configuration/EnvironmentConfig og miljøkonfig-objektene: leser NAIS_CLUSTER_NAME, Nais-env og secrets-filer montert av Nais (/secrets/...).
                     classes(
                         "no.nav.tiltakspenger.arena.ApplicationKt",
                         "no.nav.tiltakspenger.arena.ApplicationBuilderKt",
-                        "no.nav.tiltakspenger.arena.Configuration",
+                        "no.nav.tiltakspenger.arena.Configuration*",
+                        "no.nav.tiltakspenger.arena.EnvironmentConfig*",
+                        "no.nav.tiltakspenger.arena.LocalConfig*",
+                        "no.nav.tiltakspenger.arena.DevConfig*",
+                        "no.nav.tiltakspenger.arena.ProdConfig*",
                     )
                 }
             }

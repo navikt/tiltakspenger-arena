@@ -13,14 +13,14 @@ import java.time.Clock
 
 fun start(
     log: KLogger = KotlinLogging.logger {},
-    port: Int = Configuration.httpPort(),
+    port: Int = Configuration.httpPort,
     host: String = "0.0.0.0",
     clock: Clock,
     isNais: Boolean = Configuration.isNais(),
 ) {
     val texasClient = TexasHttpClient(
-        introspectionUrl = Configuration.naisTokenIntrospectionEndpoint,
-        tokenUrl = Configuration.naisTokenEndpoint,
+        introspectionUrl = Configuration.tokenIntrospectionEndpoint,
+        tokenUrl = Configuration.tokenEndpoint,
         tokenExchangeUrl = Configuration.tokenExchangeEndpoint,
         clock = clock,
     )

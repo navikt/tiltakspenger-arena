@@ -26,7 +26,7 @@ Les disse først.
 Lese-vertikalen testes på to nivåer med en klar arbeidsdeling: **route-testene eier happy-path og JSON-kontrakten**, mens **repository-/service-testene kun eier det som ikke er observerbart gjennom ett endepunkt**.
 Hold nye tester og hjelpere i samme stil.
 
-**Dekningskrav:** kover håndhever 100 % linjedekning for all kode i `no.nav.tiltakspenger.arena.*` (`koverVerify`, kjøres av `check`), med unntak av en kort, begrunnet oppstarts-ekskludering (`Application`/`ApplicationBuilder`/`Configuration`) i `build.gradle.kts`.
+**Dekningskrav:** kover håndhever 100 % linjedekning for all kode i `no.nav.tiltakspenger.arena.*` (`koverVerify`, kjøres av `check`), med unntak av en kort, begrunnet oppstarts-ekskludering (`Application`/`ApplicationBuilder`/`Configuration`/`EnvironmentConfig` + miljøkonfig-objektene) i `build.gradle.kts`.
 Nye klasser omfattes automatisk — skriv testen (helst route- eller enhetstest) sammen med koden.
 Kode som ikke kan nås fra tester er som regel død kode; slett den i stedet for å ekskludere.
 

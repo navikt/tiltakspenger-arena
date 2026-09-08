@@ -13,15 +13,14 @@ object Datasource {
     private const val MAX_POOLS = 3
 
     private fun init(): HikariDataSource {
-        // Leses her (ikke som eager objekt-felt) så DB-secrets først slås opp når datakilden faktisk bygges - da har testene satt propsene via OracleTestbase.
-        val arenaDbConfig = Configuration.ArenaDbConfig()
-        val url = arenaDbConfig.arenaDbUrl
+        // Leses her (ikke som eager objekt-felt) så DB-tilkoblingen først slås opp når datakilden faktisk bygges - da har testene satt propsene via OracleTestbase.
+        val url = Configuration.arenaDbUrl
         LOG.info { "Kobler til Oracle '$url" }
 
         return HikariDataSource().apply {
             jdbcUrl = url
-            username = arenaDbConfig.arenaDbUsername
-            password = arenaDbConfig.arenaDbPassword
+            username = Configuration.arenaDbUsername
+            password = Configuration.arenaDbPassword
             maximumPoolSize = MAX_POOLS
         }
     }

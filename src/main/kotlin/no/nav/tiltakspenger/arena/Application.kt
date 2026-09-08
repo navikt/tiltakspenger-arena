@@ -9,7 +9,7 @@ import java.time.Clock
  * Kjør opp lokalt via LokalMain.kt
  */
 fun main() {
-    System.setProperty("logback.configurationFile", "logback.xml")
+    System.setProperty("logback.configurationFile", Configuration.logbackConfigurationFile)
     System.setProperty("oracle.jdbc.fanEnabled", "false")
     SLF4JBridgeHandler.removeHandlersForRootLogger()
     SLF4JBridgeHandler.install()
