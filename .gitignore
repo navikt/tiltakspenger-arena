@@ -101,3 +101,8 @@ build
 /.env
 !.idea/codeStyles/codeStyleConfig.xml
 !.idea/codeStyles/Project.xml
+
+# Arbeidstrær (git worktree add) uansett navn og nivå
+.worktrees/
+.worktree/
+worktrees/
