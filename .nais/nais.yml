@@ -27,9 +27,6 @@ spec:
           namespace: nais-system
     inbound:
       rules:
-        - application: tiltakspenger-tiltak
-          namespace: tpts
-          cluster: {{ cluster }}
         - application: tiltakspenger-datadeling
           namespace: tpts
           cluster: {{ cluster }}
