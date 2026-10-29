@@ -2,13 +2,13 @@ import kotlinx.kover.gradle.plugin.dsl.AggregationType
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
-val ktorVersion = "3.5.2"
-val jacksonVersion = "3.2.2"
+val ktorVersion = "3.6.0"
+val jacksonVersion = "3.2.4"
 val jacksonAnnotationsVersion = "2.22"
 val mockkVersion = "1.14.11"
 val kotlinxCoroutinesVersion = "1.11.0"
 val testContainersVersion = "2.0.5"
-val felleslibVersion = "0.0.20260925103121"
+val felleslibVersion = "0.0.20261029085422"
 val kotestVersion = "6.2.5"
 
 fun isNonStable(version: String): Boolean {
@@ -36,11 +36,6 @@ repositories {
 }
 
 dependencies {
-    constraints {
-        // Konsist 0.17.3 setter opp kompilatormiljøet sitt mot kotlin-compiler-embeddable 2.0.21 og krasjer med 2.4.20
-        // («Extensions storage is not registered»), som kotlin-bom ellers løfter den til. Låst til Konsists egen versjon, som i libs.
-        testImplementation("org.jetbrains.kotlin:kotlin-compiler-embeddable") { version { strictly("2.0.21") } }
-    }
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
 

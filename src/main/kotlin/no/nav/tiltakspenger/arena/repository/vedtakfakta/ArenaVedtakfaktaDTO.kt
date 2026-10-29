@@ -143,7 +143,7 @@ data class VedtakfaktaLoggkontekst(
 ) {
     /**
      * [fnr] er PII og skal ikke bli med om noen logger hele objektet.
-     * Samme maskering som [no.nav.tiltakspenger.libs.common.Fnr].
+     * Samme maskering som [no.nav.tiltakspenger.libs.common.personopplysning.Fnr].
      */
     override fun toString() = "VedtakfaktaLoggkontekst(fnr=***********, sakId=$sakId, saksnummer=$saksnummer)"
 }
