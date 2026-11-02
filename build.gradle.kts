@@ -18,6 +18,18 @@ fun isNonStable(version: String): Boolean {
     return isStable.not()
 }
 
+// Låser sårbare avhengigheter som pluginene drar inn på buildscript-classpathen.
+// Ingenting av det havner i imaget.
+buildscript {
+    dependencies {
+        constraints {
+            // Kover drar inn freemarker 2.3.32 med path traversal (CVE-2026-84939); fikset i 2.3.35.
+            // Låsen fjernes når Kover drar freemarker 2.3.35 eller nyere.
+            add("classpath", "org.freemarker:freemarker:2.3.35")
+        }
+    }
+}
+
 plugins {
     application
     id("java")
