@@ -8,7 +8,7 @@ val jacksonAnnotationsVersion = "2.22"
 val mockkVersion = "1.14.11"
 val kotlinxCoroutinesVersion = "1.11.0"
 val testContainersVersion = "2.0.5"
-val felleslibVersion = "0.0.20261029085422"
+val felleslibVersion = "0.0.20261102103142"
 val kotestVersion = "6.2.5"
 
 fun isNonStable(version: String): Boolean {
