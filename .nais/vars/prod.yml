@@ -6,3 +6,5 @@ ingress:
 cluster: prod-gcp
 vault_db_config_path: /oracle/data/prod/config/arena
 vault_db_creds_path: /oracle/data/prod/creds/arena-arena_tilgang_ind
+# Token-generatorene i nais finnes bare i dev; regelen skal aldri slås på i prod.
+tokengeneratorer: false
