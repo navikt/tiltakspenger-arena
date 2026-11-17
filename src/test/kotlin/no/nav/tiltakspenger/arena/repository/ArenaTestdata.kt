@@ -1,5 +1,6 @@
 package no.nav.tiltakspenger.arena.repository
 
+import kotliquery.param
 import kotliquery.queryOf
 import kotliquery.sessionOf
 import no.nav.tiltakspenger.arena.db.Datasource
@@ -363,7 +364,7 @@ object ArenaTestdata {
         vedtakId: Long,
         meldekortId: Long?,
         belop: Double = 2850.0,
-        posteringsats: Double = 285.0,
+        posteringsats: Double? = 285.0,
         datoPostert: LocalDate = LocalDate.of(2023, 1, 20),
         datoPeriodeFra: LocalDate = LocalDate.of(2023, 1, 2),
         datoPeriodeTil: LocalDate = LocalDate.of(2023, 1, 15),
@@ -380,7 +381,7 @@ object ArenaTestdata {
                 "personId" to personId,
                 "vedtakId" to vedtakId,
                 "datoPostert" to datoPostert,
-                "posteringsats" to posteringsats,
+                "posteringsats" to posteringsats?.toBigDecimal().param(),
                 "belop" to belop,
                 "datoPeriodeFra" to datoPeriodeFra,
                 "datoPeriodeTil" to datoPeriodeTil,
@@ -393,7 +394,7 @@ object ArenaTestdata {
         vedtakId: Long,
         meldekortId: Long?,
         belop: Double = 1425.0,
-        posteringsats: Double = 285.0,
+        posteringsats: Double? = 285.0,
         modDato: LocalDate = LocalDate.of(2023, 1, 18),
         datoPeriodeFra: LocalDate = LocalDate.of(2023, 1, 2),
         datoPeriodeTil: LocalDate = LocalDate.of(2023, 1, 15),
@@ -410,7 +411,7 @@ object ArenaTestdata {
                 "personId" to personId,
                 "vedtakId" to vedtakId,
                 "modDato" to modDato,
-                "posteringsats" to posteringsats,
+                "posteringsats" to posteringsats?.toBigDecimal().param(),
                 "belop" to belop,
                 "datoPeriodeFra" to datoPeriodeFra,
                 "datoPeriodeTil" to datoPeriodeTil,

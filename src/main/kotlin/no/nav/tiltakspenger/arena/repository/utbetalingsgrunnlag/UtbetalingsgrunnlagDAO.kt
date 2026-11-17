@@ -56,7 +56,7 @@ class UtbetalingsgrunnlagDAO {
             meldekortId = longOrNull("MELDEKORT_ID"),
             modDato = localDate("MOD_DATO"),
             transaksjonstypenavn = string("TRANSAKSJONSTYPENAVN"),
-            posteringsats = double("POSTERINGSATS"),
+            posteringsats = doubleOrNull("POSTERINGSATS") ?: 0.0, // ponytail: NULL blir 0 for å holde kontrakten mot datadeling; Arena-viewet sendte NULL videre, så gjør sats nullbar hele veien hvis 0 villeder konsumentene.
             vedtakId = longOrNull("VEDTAK_ID"),
             belop = double("BELOP"),
             datoPeriodeFra = localDate("DATO_PERIODE_FRA"),

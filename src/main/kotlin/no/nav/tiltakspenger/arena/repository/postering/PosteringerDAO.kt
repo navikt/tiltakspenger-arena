@@ -56,7 +56,8 @@ class PosteringerDAO {
             meldekortId = longOrNull("MELDEKORT_ID"),
             datoPostert = localDate("DATO_POSTERT"),
             transaksjonstypenavn = string("TRANSAKSJONSTYPENAVN"),
-            posteringsats = double("POSTERINGSATS"),
+            // TODO jah: NULL blir 0 for å holde kontrakten mot datadeling; Arena-viewet sendte NULL videre, så gjør sats nullbar hele veien hvis 0 villeder konsumentene.
+            posteringsats = doubleOrNull("POSTERINGSATS") ?: 0.0,
             vedtakId = longOrNull("VEDTAK_ID"),
             belop = double("BELOP"),
             datoPeriodeFra = localDate("DATO_PERIODE_FRA"),

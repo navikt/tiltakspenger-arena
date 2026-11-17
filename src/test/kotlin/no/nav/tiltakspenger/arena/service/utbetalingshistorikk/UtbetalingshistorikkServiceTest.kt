@@ -50,6 +50,16 @@ class UtbetalingshistorikkServiceTest {
         innslag.meldekortId shouldBe 3021
     }
 
+    // Arena har posteringer og utbetalingsgrunnlag uten sats; de ga NullPointerException i prod.
+    @Test
+    fun `postering og utbetalingsgrunnlag uten sats gir sats 0`() {
+        ArenaTestdata.leggTilPerson(personId = 308, fnr = "308")
+        ArenaTestdata.leggTilPostering(personId = 308, vedtakId = 30811, meldekortId = 3081, posteringsats = null)
+        ArenaTestdata.leggTilUtbetalingsgrunnlag(personId = 308, vedtakId = 30811, meldekortId = 3082, posteringsats = null)
+
+        service.hentUtbetalingshistorikkForFnr("308", fraOgMed, tilOgMed).map { it.sats } shouldBe listOf(0.0, 0.0)
+    }
+
     // Kilde 3 (beregningslogg som fallback når meldekortet mangler utbetaling).
     @Test
     fun `beregningslogg er fallback for meldekort uten utbetaling`() {
