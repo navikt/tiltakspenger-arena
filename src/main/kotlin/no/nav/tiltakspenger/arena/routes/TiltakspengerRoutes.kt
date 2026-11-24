@@ -12,6 +12,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import no.nav.tiltakspenger.arena.SE_SIKKERLOGG
+import no.nav.tiltakspenger.arena.repository.statistikk.StatistikkRepository
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerRettighetPeriodeMapper.toArenaTiltakspengerRettighetPeriode
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerVedtakPeriodeMapper.toArenaTiltakspengerVedtakPeriode
 import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
@@ -33,6 +34,7 @@ fun Route.tiltakspengerRoutes(
     rettighetDetaljerService: RettighetDetaljerService,
     meldekortService: MeldekortService,
     utbetalingshistorikkService: UtbetalingshistorikkService,
+    statistikkRepository: StatistikkRepository = StatistikkRepository(),
 ) {
     authenticate(IdentityProvider.AZUREAD.value) {
         route("/azure/tiltakspenger") {
@@ -135,6 +137,14 @@ fun Route.tiltakspengerRoutes(
                             vedtakfakta = vedtakfakta,
                         ),
                     )
+                }
+            }
+
+            get("/statistikk/per-maned") {
+                medFeilhåndtering("hente statistikk per måned") {
+                    val år = call.request.queryParameters["aar"]?.toIntOrNull()
+                        ?: return@medFeilhåndtering call.respondText("Mangler gyldig aar", status = HttpStatusCode.BadRequest)
+                    call.respond(statistikkRepository.hentStatistikkPerMåned(år))
                 }
             }
         }
