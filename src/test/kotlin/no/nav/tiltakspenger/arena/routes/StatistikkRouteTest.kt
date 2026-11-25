@@ -5,13 +5,14 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.test.runTest
 import no.nav.tiltakspenger.arena.db.OracleTestbase
 import no.nav.tiltakspenger.arena.repository.ArenaTestdata
+import no.nav.tiltakspenger.arena.repository.statistikk.StatistikkRepository
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 /**
- * Full-vertikal route-test for GET /azure/tiltakspenger/statistikk/per-maned.
- * Testen bruker 2010, som ingen andre tester har vedtak i, siden databasen deles på tvers av testene.
+ * Full-vertikal route-test for GET /azure/tiltakspenger/statistikk/per-maned og /saker-med-rett-etter.
+ * Testen av per-maned bruker 2010 og testen av saker-med-rett-etter bruker 2012, som ingen andre tester har vedtak i, siden databasen deles på tvers av testene.
  */
 class StatistikkRouteTest {
 
@@ -77,6 +78,55 @@ class StatistikkRouteTest {
     fun `manglende år gir 400`() = runTest {
         medArenaRouteTest {
             getAutentisert("/azure/tiltakspenger/statistikk/per-maned").status shouldBe HttpStatusCode.BadRequest
+        }
+    }
+
+    @Test
+    fun `gir saker og personer med rett etter datoen`() = runTest {
+        val dato = LocalDate.of(2012, 6, 30)
+        // Andre tester har vedtak uten sluttdato, som gir rett etter alle datoer, så testen teller bare det den selv legger til.
+        val før = StatistikkRepository().hentSakerMedRettEtter(dato)
+
+        val personMedToSaker = ArenaTestdata.person(personId = 9620, fnr = "96800000020")
+        // Sak 9621: rett hele året.
+        personMedToSaker.medSak(sakId = 9621)
+        vedtak(96211, 9621, 9620, "O", 1, LocalDate.of(2012, 1, 1), LocalDate.of(2012, 12, 31), regDato = LocalDate.of(2012, 1, 1))
+        // Sak 9622: samme person, rett fra september uten sluttdato.
+        personMedToSaker.medSak(sakId = 9622)
+        vedtak(96221, 9622, 9620, "O", 1, LocalDate.of(2012, 9, 1), null, regDato = LocalDate.of(2012, 8, 1))
+
+        // Sak 9631: stans fra mai fjerner retten resten av året.
+        ArenaTestdata.person(personId = 9630, fnr = "96800000030").medSak(sakId = 9631)
+        vedtak(96311, 9631, 9630, "O", 1, LocalDate.of(2012, 1, 1), LocalDate.of(2012, 12, 31), regDato = LocalDate.of(2012, 1, 1))
+        vedtak(96312, 9631, 9630, "S", 2, LocalDate.of(2012, 5, 1), null, regDato = LocalDate.of(2012, 4, 20))
+
+        // Sak 9641: retten slutter på datoen.
+        ArenaTestdata.person(personId = 9640, fnr = "96800000040").medSak(sakId = 9641)
+        vedtak(96411, 9641, 9640, "O", 1, LocalDate.of(2012, 1, 1), LocalDate.of(2012, 6, 30), regDato = LocalDate.of(2012, 1, 1))
+
+        // Sak 9651: gjenopptak i august etter en stans.
+        ArenaTestdata.person(personId = 9650, fnr = "96800000050").medSak(sakId = 9651)
+        vedtak(96511, 9651, 9650, "S", 1, LocalDate.of(2012, 3, 1), null, regDato = LocalDate.of(2012, 2, 20))
+        vedtak(96512, 9651, 9650, "G", 2, LocalDate.of(2012, 8, 1), LocalDate.of(2012, 8, 31), regDato = LocalDate.of(2012, 7, 20))
+
+        medArenaRouteTest {
+            getAutentisert("/azure/tiltakspenger/statistikk/saker-med-rett-etter?dato=2012-06-30").skalHaOkMedJson(
+                """
+                {
+                    "dato": "2012-06-30",
+                    "sakerMedRett": ${før.sakerMedRett + 3},
+                    "personerMedRett": ${før.personerMedRett + 2}
+                }
+                """.trimIndent(),
+            )
+        }
+    }
+
+    @Test
+    fun `manglende eller ugyldig dato gir 400`() = runTest {
+        medArenaRouteTest {
+            getAutentisert("/azure/tiltakspenger/statistikk/saker-med-rett-etter").status shouldBe HttpStatusCode.BadRequest
+            getAutentisert("/azure/tiltakspenger/statistikk/saker-med-rett-etter?dato=30.06.2012").status shouldBe HttpStatusCode.BadRequest
         }
     }
 

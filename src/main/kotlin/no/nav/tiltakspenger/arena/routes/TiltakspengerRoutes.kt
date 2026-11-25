@@ -147,6 +147,14 @@ fun Route.tiltakspengerRoutes(
                     call.respond(statistikkRepository.hentStatistikkPerMåned(år))
                 }
             }
+
+            get("/statistikk/saker-med-rett-etter") {
+                medFeilhåndtering("hente saker med rett etter dato") {
+                    val dato = call.request.queryParameters["dato"]?.let { runCatching { LocalDate.parse(it) }.getOrNull() }
+                        ?: return@medFeilhåndtering call.respondText("Mangler gyldig dato", status = HttpStatusCode.BadRequest)
+                    call.respond(statistikkRepository.hentSakerMedRettEtter(dato))
+                }
+            }
         }
     }
 }

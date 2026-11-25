@@ -21,13 +21,45 @@ data class StatistikkForMåned(
     val stans: Int,
 )
 
+data class SakerMedRettEtter(
+    val dato: LocalDate,
+    val sakerMedRett: Int,
+    val personerMedRett: Int,
+)
+
+private interface Rettighetsvedtak {
+    val vedtaktype: String
+    val fraDato: LocalDate
+    val tilDato: LocalDate?
+}
+
 private data class Vedtaksrad(
     val sakId: Long,
-    val vedtaktype: String,
-    val fraDato: LocalDate,
-    val tilDato: LocalDate?,
+    override val vedtaktype: String,
+    override val fraDato: LocalDate,
+    override val tilDato: LocalDate?,
     val vedtaksdato: LocalDate,
-)
+) : Rettighetsvedtak
+
+private data class VedtaksradEtterDato(
+    val sakId: Long,
+    val personId: Long?,
+    override val vedtaktype: String,
+    override val fraDato: LocalDate,
+    override val tilDato: LocalDate?,
+) : Rettighetsvedtak
+
+/**
+ * Folder vedtakene for én sak i sakens rekkefølge og gir retten innenfor [periode].
+ * Ny rettighet, gjenopptak og endring gir rett i vedtaksperioden, mens stans fjerner den fra stansdatoen.
+ */
+private fun List<Rettighetsvedtak>.rettIPeriode(periode: Periode): Periodisering<Boolean> {
+    return fold(Periodisering(false, periode)) { rett, v ->
+        val fra = maxOf(v.fraDato, periode.fraOgMed)
+        val til = minOf(v.tilDato ?: periode.tilOgMed, periode.tilOgMed)
+        if (fra > til) rett else rett.setVerdiForDelperiode(v.vedtaktype != "S", Periode(fra, til))
+    }
+}
 
 class StatistikkRepository {
     /**
@@ -59,13 +91,7 @@ class StatistikkRepository {
                 }.asList,
             )
         }
-        val rettPerSak = vedtak.groupBy { it.sakId }.values.map { vedtakForSak ->
-            vedtakForSak.fold(Periodisering(false, årsperiode)) { rett, v ->
-                val fra = maxOf(v.fraDato, årsperiode.fraOgMed)
-                val til = minOf(v.tilDato ?: årsperiode.tilOgMed, årsperiode.tilOgMed)
-                if (fra > til) rett else rett.setVerdiForDelperiode(v.vedtaktype != "S", Periode(fra, til))
-            }
-        }
+        val rettPerSak = vedtak.groupBy { it.sakId }.values.map { vedtakForSak -> vedtakForSak.rettIPeriode(årsperiode) }
         return (1..12).map { YearMonth.of(år, it) }.map { måned ->
             val månedsperiode = Periode(måned.atDay(1), måned.atEndOfMonth())
             val fattet = vedtak.filter { YearMonth.from(it.vedtaksdato) == måned }.groupingBy { it.vedtaktype }.eachCount()
@@ -78,6 +104,36 @@ class StatistikkRepository {
                 stans = fattet["S"] ?: 0,
             )
         }
+    }
+
+    /**
+     * Teller tiltakspengesaker og unike personer med rett minst én dag etter [dato].
+     * Vedtak som slutter på eller før [dato] hentes ikke fordi de ikke kan påvirke retten etter datoen.
+     */
+    fun hentSakerMedRettEtter(dato: LocalDate): SakerMedRettEtter {
+        val vedtak = sessionOf(Datasource.hikariDataSource).use { session ->
+            session.run(
+                queryOf(sqlEtterDato, mapOf("dato" to dato)).map { rad ->
+                    VedtaksradEtterDato(
+                        sakId = rad.long("sak_id"),
+                        personId = rad.longOrNull("person_id"),
+                        vedtaktype = rad.string("vedtaktypekode"),
+                        fraDato = rad.localDate("fra_dato"),
+                        tilDato = rad.localDateOrNull("til_dato"),
+                    )
+                }.asList,
+            )
+        }
+        val sakerMedRett = vedtak.groupBy { it.sakId }.values.filter { vedtakForSak ->
+            // Horisonten tar med vedtak med åpen sluttdato og vedtak som starter lenge etter datoen.
+            val horisont = maxOf(dato.plusDays(1), vedtakForSak.maxOf { it.tilDato ?: it.fraDato })
+            vedtakForSak.rettIPeriode(Periode(dato.plusDays(1), horisont)).perioderMedVerdi.any { it.verdi }
+        }
+        return SakerMedRettEtter(
+            dato = dato,
+            sakerMedRett = sakerMedRett.size,
+            personerMedRett = sakerMedRett.mapNotNull { it.first().personId }.distinct().size,
+        )
     }
 
     // Samme utvalg av vedtak som TiltakspengerVedtakDAO, men med stans, og med vedtak som overlapper året eller er registrert rundt det.
@@ -97,6 +153,22 @@ class StatistikkRepository {
             (v.fra_dato <= :tom AND (v.til_dato IS NULL OR v.til_dato >= :fom))
             OR v.reg_dato BETWEEN :regFom AND :tom
         )
+        ORDER BY v.sak_id, v.lopenrvedtak, v.vedtak_id
+        """.trimIndent()
+
+    // Samme utvalg av vedtak som sql, men bare vedtak som slutter etter datoen eller ikke har sluttdato.
+    @Language("SQL")
+    private val sqlEtterDato =
+        """
+        SELECT v.sak_id, v.person_id, v.vedtaktypekode, v.fra_dato, v.til_dato
+        FROM vedtak v
+        WHERE v.rettighetkode = 'BASI'
+        AND v.vedtaktypekode IN ('O', 'E', 'G', 'S')
+        AND v.utfallkode NOT IN ('AVBRUTT', 'NEI')
+        AND v.vedtakstatuskode IN ('IVERK', 'AVSLU')
+        AND v.fra_dato IS NOT NULL
+        AND v.fra_dato <= NVL(v.til_dato, v.fra_dato)
+        AND (v.til_dato IS NULL OR v.til_dato > :dato)
         ORDER BY v.sak_id, v.lopenrvedtak, v.vedtak_id
         """.trimIndent()
 }

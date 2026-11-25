@@ -5,6 +5,9 @@ metadata:
   namespace: tpts
   labels:
     team: tpts
+  annotations:
+    # Kallene til statistikkendepunktene fra sb-api tar rundt ett minutt, og standard 60 sekunder i ingressen kutter dem.
+    haproxy.org/timeout-server: "300s"
 spec:
   image: {{ image }}
   port: 8080
