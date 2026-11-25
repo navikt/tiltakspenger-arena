@@ -5,15 +5,15 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.test.runTest
 import no.nav.tiltakspenger.arena.db.OracleTestbase
 import no.nav.tiltakspenger.arena.repository.ArenaTestdata
+import no.nav.tiltakspenger.arena.repository.statistikk.SisteDagMedRettEtter
 import no.nav.tiltakspenger.arena.repository.statistikk.StatistikkRepository
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
-import java.time.YearMonth
 
 /**
- * Full-vertikal route-test for GET /azure/tiltakspenger/statistikk/per-maned, /saker-med-rett-etter og /utbetalinger-per-maned.
- * Testen av per-maned bruker 2010, testen av saker-med-rett-etter bruker 2012 og testen av utbetalinger bruker 2014, som ingen andre tester har vedtak eller posteringer i, siden databasen deles på tvers av testene.
+ * Full-vertikal route-test for GET /azure/tiltakspenger/statistikk/per-maned, /siste-dag-med-rett og /utbetalinger-per-maned.
+ * Testen av per-maned bruker 2010, testen av siste-dag-med-rett bruker 2012 og testen av utbetalinger bruker 2014, som ingen andre tester har vedtak eller posteringer i, siden databasen deles på tvers av testene.
  */
 class StatistikkRouteTest {
 
@@ -83,13 +83,13 @@ class StatistikkRouteTest {
     }
 
     @Test
-    fun `gir saker og personer med rett etter datoen`() = runTest {
-        val dato = LocalDate.of(2012, 6, 30)
+    fun `fordeler saker og personer med rett etter datoen på siste dag med rett`() = runTest {
+        val etter = LocalDate.of(2012, 6, 30)
         // Andre tester har vedtak uten sluttdato, som gir rett etter alle datoer, så testen teller bare det den selv legger til.
-        val før = StatistikkRepository().hentSakerMedRettEtter(dato)
+        val før = StatistikkRepository().hentSisteDagMedRettEtter(etter)
 
         val personMedToSaker = ArenaTestdata.person(personId = 9620, fnr = "96800000020")
-        // Sak 9621: rett hele året.
+        // Sak 9621: rett hele året, men personen har også en sak uten sluttdato.
         personMedToSaker.medSak(sakId = 9621)
         vedtak(96211, 9621, 9620, "O", 1, LocalDate.of(2012, 1, 1), LocalDate.of(2012, 12, 31), regDato = LocalDate.of(2012, 1, 1))
         // Sak 9622: samme person, rett fra september uten sluttdato.
@@ -114,30 +114,75 @@ class StatistikkRouteTest {
         ArenaTestdata.person(personId = 9660, fnr = "96800000060").medSak(sakId = 9661)
         vedtak(96611, 9661, 9660, "O", 1, LocalDate.of(2012, 6, 1), LocalDate.of(2013, 1, 31), regDato = LocalDate.of(2012, 5, 20))
 
-        val sakerPerSluttmåned = før.sakerPerSluttmåned.associate { it.sluttmåned to it.saker }.toMutableMap()
-        listOf("2012-12", null, "2012-08", "2013-01").forEach { sakerPerSluttmåned.merge(it, 1, Int::plus) }
-        val sortert = sakerPerSluttmåned.entries.sortedWith(compareBy(nullsLast()) { it.key?.let(YearMonth::parse) })
-        sortert.sumOf { it.value } shouldBe før.sakerMedRett + 4
+        // Sak 9671: stans midt i rettigheten gir siste dag med rett dagen før stansen.
+        ArenaTestdata.person(personId = 9670, fnr = "96800000070").medSak(sakId = 9671)
+        vedtak(96711, 9671, 9670, "O", 1, LocalDate.of(2012, 1, 1), LocalDate.of(2012, 12, 31), regDato = LocalDate.of(2012, 1, 1))
+        vedtak(96712, 9671, 9670, "S", 2, LocalDate.of(2012, 10, 15), null, regDato = LocalDate.of(2012, 10, 1))
+
+        // Sak 9681: retten slutter dagen etter datoen.
+        ArenaTestdata.person(personId = 9680, fnr = "96800000080").medSak(sakId = 9681)
+        vedtak(96811, 9681, 9680, "O", 1, LocalDate.of(2012, 6, 1), LocalDate.of(2012, 7, 1), regDato = LocalDate.of(2012, 5, 20))
+
+        // Sak 9691: det første vedtaket mangler person, så personen hentes fra endringen.
+        ArenaTestdata.person(personId = 9690, fnr = "96800000090").medSak(sakId = 9691)
+        vedtak(96911, 9691, null, "O", 1, LocalDate.of(2012, 7, 1), LocalDate.of(2012, 9, 30), regDato = LocalDate.of(2012, 6, 20))
+        vedtak(96912, 9691, 9690, "E", 2, LocalDate.of(2012, 9, 1), LocalDate.of(2012, 11, 30), regDato = LocalDate.of(2012, 8, 20))
+
+        // Sak 9692: ingen av vedtakene har person, så saken telles uten person.
+        ArenaTestdata.person(personId = 9695, fnr = "96800000095").medSak(sakId = 9692)
+        vedtak(96921, 9692, null, "O", 1, LocalDate.of(2012, 7, 1), LocalDate.of(2012, 9, 30), regDato = LocalDate.of(2012, 6, 20))
+
+        val lagtTil: Map<LocalDate?, Pair<Int, Int>> = mapOf(
+            LocalDate.of(2012, 7, 1) to (1 to 1),
+            LocalDate.of(2012, 8, 31) to (1 to 1),
+            LocalDate.of(2012, 9, 30) to (1 to 0),
+            LocalDate.of(2012, 10, 14) to (1 to 1),
+            LocalDate.of(2012, 11, 30) to (1 to 1),
+            LocalDate.of(2012, 12, 31) to (1 to 0),
+            LocalDate.of(2013, 1, 31) to (1 to 1),
+            null to (1 to 1),
+        )
+        val forventet = før.perSisteDagMedRett.associate { it.sisteDagMedRett to (it.saker to it.personer) }.toMutableMap()
+        lagtTil.forEach { (dag, antall) -> forventet.merge(dag, antall) { a, b -> (a.first + b.first) to (a.second + b.second) } }
 
         medArenaRouteTest {
-            getAutentisert("/azure/tiltakspenger/statistikk/saker-med-rett-etter?dato=2012-06-30").skalHaOkMedJson(
+            getAutentisert("/azure/tiltakspenger/statistikk/siste-dag-med-rett?etter=2012-06-30").skalHaOkMedJson(
                 """
                 {
-                    "dato": "2012-06-30",
-                    "sakerMedRett": ${før.sakerMedRett + 4},
-                    "personerMedRett": ${før.personerMedRett + 3},
-                    "sakerPerSluttmåned": ${jsonArray(*sortert.map { """{ "sluttmåned": ${jsonTekstEllerNull(it.key)}, "saker": ${it.value} }""" }.toTypedArray())}
+                    "etter": "2012-06-30",
+                    "perSisteDagMedRett": ${
+                    jsonArray(
+                        *forventet.entries.sortedWith(compareBy(nullsLast()) { it.key }).map { (dag, antall) ->
+                            """{ "sisteDagMedRett": ${jsonTekstEllerNull(dag?.toString())}, "saker": ${antall.first}, "personer": ${antall.second} }"""
+                        }.toTypedArray(),
+                    )
+                }
                 }
                 """.trimIndent(),
             )
         }
+
+        val etterpå = StatistikkRepository().hentSisteDagMedRettEtter(etter)
+        etterpå.perSisteDagMedRett.map { it.sisteDagMedRett } shouldBe etterpå.perSisteDagMedRett.map { it.sisteDagMedRett }.sortedWith(nullsLast())
+        // Summen over siste dag med rett etter X, pluss åpen rett, gir saker og personer med rett etter X.
+        fun medRettEtter(fordeling: SisteDagMedRettEtter, x: LocalDate) = fordeling.perSisteDagMedRett
+            .filter { it.sisteDagMedRett == null || it.sisteDagMedRett > x }
+            .let { rader -> rader.sumOf { it.saker } to rader.sumOf { it.personer } }
+        fun lagtTilEtter(x: LocalDate) = medRettEtter(etterpå, x).let { (saker, personer) ->
+            val (sakerFør, personerFør) = medRettEtter(før, x)
+            (saker - sakerFør) to (personer - personerFør)
+        }
+        lagtTilEtter(LocalDate.of(2012, 6, 30)) shouldBe (8 to 6)
+        lagtTilEtter(LocalDate.of(2012, 8, 15)) shouldBe (7 to 5)
+        lagtTilEtter(LocalDate.of(2012, 12, 31)) shouldBe (2 to 2)
+        lagtTilEtter(LocalDate.of(2013, 1, 31)) shouldBe (1 to 1)
     }
 
     @Test
-    fun `manglende eller ugyldig dato gir 400`() = runTest {
+    fun `manglende eller ugyldig etter gir 400`() = runTest {
         medArenaRouteTest {
-            getAutentisert("/azure/tiltakspenger/statistikk/saker-med-rett-etter").status shouldBe HttpStatusCode.BadRequest
-            getAutentisert("/azure/tiltakspenger/statistikk/saker-med-rett-etter?dato=30.06.2012").status shouldBe HttpStatusCode.BadRequest
+            getAutentisert("/azure/tiltakspenger/statistikk/siste-dag-med-rett").status shouldBe HttpStatusCode.BadRequest
+            getAutentisert("/azure/tiltakspenger/statistikk/siste-dag-med-rett?etter=30.06.2012").status shouldBe HttpStatusCode.BadRequest
         }
     }
 
@@ -278,7 +323,7 @@ class StatistikkRouteTest {
     private fun vedtak(
         vedtakId: Long,
         sakId: Long,
-        personId: Long,
+        personId: Long?,
         vedtaktype: String,
         lopenrVedtak: Long,
         fraDato: LocalDate,

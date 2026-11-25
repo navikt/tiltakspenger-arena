@@ -27,20 +27,20 @@ data class StatistikkForMåned(
     val stans: Int,
 )
 
-data class SakerMedRettEtter(
-    val dato: LocalDate,
-    val sakerMedRett: Int,
-    val personerMedRett: Int,
-    /**
-     * Sakene med rett fordelt på måneden for siste dag med rett.
-     * `null` betyr at retten ikke har sluttdato.
-     */
-    val sakerPerSluttmåned: List<SakerForSluttmåned>,
+data class SisteDagMedRettEtter(
+    val etter: LocalDate,
+    val perSisteDagMedRett: List<StatistikkForSisteDagMedRett>,
 )
 
-data class SakerForSluttmåned(
-    val sluttmåned: String?,
+/**
+ * @param sisteDagMedRett `null` betyr at retten ikke har sluttdato.
+ * @param saker Saker der dette er siste dag med rett.
+ * @param personer Personer der dette er seneste siste dag med rett på tvers av sakene.
+ */
+data class StatistikkForSisteDagMedRett(
+    val sisteDagMedRett: LocalDate?,
     val saker: Int,
+    val personer: Int,
 )
 
 private interface Rettighetsvedtak {
@@ -134,20 +134,21 @@ class StatistikkRepository {
     }
 
     /**
-     * Teller tiltakspengesaker og unike personer med rett minst én dag etter [dato].
-     * Vedtak som slutter på eller før [dato] hentes ikke fordi de ikke kan påvirke retten etter datoen.
+     * Fordeler tiltakspengesaker og unike personer med rett minst én dag etter [etter] på siste dag med rett.
+     * Summen over `sisteDagMedRett` etter en dato X, pluss `null`, gir saker og personer med rett etter X for alle X fra og med [etter].
+     * Vedtak som slutter på eller før [etter] hentes ikke fordi de ikke kan påvirke retten etter datoen.
      */
-    fun hentSakerMedRettEtter(dato: LocalDate): SakerMedRettEtter {
-        val (vedtak, spørretid) = measureTimedValue { hentVedtakEtterDato(dato) }
-        val (statistikk, foldetid) = measureTimedValue { foldEtterDato(dato, vedtak) }
-        logger.info { "Hentet saker med rett etter $dato: ${vedtak.size} vedtak, spørring $spørretid, folding $foldetid" }
+    fun hentSisteDagMedRettEtter(etter: LocalDate): SisteDagMedRettEtter {
+        val (vedtak, spørretid) = measureTimedValue { hentVedtakEtterDato(etter) }
+        val (statistikk, foldetid) = measureTimedValue { foldSisteDagMedRett(etter, vedtak) }
+        logger.info { "Hentet siste dag med rett etter $etter: ${vedtak.size} vedtak, spørring $spørretid, folding $foldetid" }
         return statistikk
     }
 
-    private fun hentVedtakEtterDato(dato: LocalDate): List<VedtaksradEtterDato> {
+    private fun hentVedtakEtterDato(etter: LocalDate): List<VedtaksradEtterDato> {
         return Datasource.statistikkSession().use { session ->
             session.run(
-                queryOf(sqlEtterDato, mapOf("dato" to dato)).map { rad ->
+                queryOf(sqlEtterDato, mapOf("etter" to etter)).map { rad ->
                     VedtaksradEtterDato(
                         sakId = rad.long("sak_id"),
                         personId = rad.longOrNull("person_id"),
@@ -160,25 +161,33 @@ class StatistikkRepository {
         }
     }
 
-    private fun foldEtterDato(dato: LocalDate, vedtak: List<VedtaksradEtterDato>): SakerMedRettEtter {
+    private fun foldSisteDagMedRett(etter: LocalDate, vedtak: List<VedtaksradEtterDato>): SisteDagMedRettEtter {
         // Perioden går til ÅPEN_SLUTTDATO, så vedtak uten sluttdato gir rett til og med den datoen.
-        val periode = Periode(dato.plusDays(1), ÅPEN_SLUTTDATO)
+        val periode = Periode(etter.plusDays(1), ÅPEN_SLUTTDATO)
         val sisteDagMedRettPerSak = vedtak.groupBy { it.sakId }.values.mapNotNull { vedtakForSak ->
             vedtakForSak.rettIPeriode(periode).perioderMedVerdi
                 .filter { it.verdi }
                 .maxOfOrNull { it.periode.tilOgMed }
-                ?.let { sisteDagMedRett -> vedtakForSak.first() to sisteDagMedRett }
+                ?.let { sisteDagMedRett -> vedtakForSak.firstNotNullOfOrNull { it.personId } to sisteDagMedRett }
         }
-        return SakerMedRettEtter(
-            dato = dato,
-            sakerMedRett = sisteDagMedRettPerSak.size,
-            personerMedRett = sisteDagMedRettPerSak.mapNotNull { (sak, _) -> sak.personId }.distinct().size,
-            sakerPerSluttmåned = sisteDagMedRettPerSak
-                .groupingBy { (_, sisteDagMedRett) -> if (sisteDagMedRett == ÅPEN_SLUTTDATO) null else YearMonth.from(sisteDagMedRett) }
-                .eachCount()
-                .entries
-                .sortedWith(compareBy(nullsLast()) { it.key })
-                .map { (sluttmåned, saker) -> SakerForSluttmåned(sluttmåned = sluttmåned?.toString(), saker = saker) },
+        val sakerPerDag = sisteDagMedRettPerSak.groupingBy { (_, sisteDagMedRett) -> sisteDagMedRett }.eachCount()
+        val personerPerDag = sisteDagMedRettPerSak
+            .mapNotNull { (personId, sisteDagMedRett) -> personId?.let { it to sisteDagMedRett } }
+            .groupBy({ it.first }, { it.second })
+            .values
+            .groupingBy { it.max() }
+            .eachCount()
+        return SisteDagMedRettEtter(
+            etter = etter,
+            perSisteDagMedRett = (sakerPerDag.keys + personerPerDag.keys)
+                .sorted()
+                .map { dag ->
+                    StatistikkForSisteDagMedRett(
+                        sisteDagMedRett = dag.takeIf { it != ÅPEN_SLUTTDATO },
+                        saker = sakerPerDag[dag] ?: 0,
+                        personer = personerPerDag[dag] ?: 0,
+                    )
+                },
         )
     }
 
@@ -214,7 +223,7 @@ class StatistikkRepository {
         AND v.vedtakstatuskode IN ('IVERK', 'AVSLU')
         AND v.fra_dato IS NOT NULL
         AND v.fra_dato <= NVL(v.til_dato, v.fra_dato)
-        AND (v.til_dato IS NULL OR v.til_dato > :dato)
+        AND (v.til_dato IS NULL OR v.til_dato > :etter)
         ORDER BY v.sak_id, v.lopenrvedtak, v.vedtak_id
         """.trimIndent()
 }

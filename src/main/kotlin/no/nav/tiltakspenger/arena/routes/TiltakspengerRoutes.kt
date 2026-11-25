@@ -150,11 +150,11 @@ fun Route.tiltakspengerRoutes(
                 }
             }
 
-            get("/statistikk/saker-med-rett-etter") {
-                medFeilhåndtering("hente saker med rett etter dato") {
-                    val dato = call.request.queryParameters["dato"]?.let { runCatching { LocalDate.parse(it) }.getOrNull() }
-                        ?: return@medFeilhåndtering call.respondText("Mangler gyldig dato", status = HttpStatusCode.BadRequest)
-                    call.respond(statistikkRepository.hentSakerMedRettEtter(dato))
+            get("/statistikk/siste-dag-med-rett") {
+                medFeilhåndtering("hente siste dag med rett") {
+                    val etter = call.request.queryParameters["etter"]?.let { runCatching { LocalDate.parse(it) }.getOrNull() }
+                        ?: return@medFeilhåndtering call.respondText("Mangler gyldig etter", status = HttpStatusCode.BadRequest)
+                    call.respond(statistikkRepository.hentSisteDagMedRettEtter(etter))
                 }
             }
 

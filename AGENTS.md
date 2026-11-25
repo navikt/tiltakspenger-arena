@@ -71,6 +71,6 @@ Id-/periodekode-kart (år 2023 der ikke annet er nevnt):
 | `93xx` | `MeldekortRouteTest` | `71` |
 | `94xx` | `UtbetalingshistorikkRouteTest` | – |
 | `95xx` | `UtbetalingshistorikkDetaljerRouteTest` | – |
-| `96xx` | `StatistikkRouteTest` (per måned i 2010, saker med rett etter dato i 2012) | – |
+| `96xx` | `StatistikkRouteTest` (per måned i 2010, siste dag med rett etter dato i 2012) | – |
 | `97xx` | `StatistikkRouteTest` (utbetalinger per måned i 2014) | – |
 

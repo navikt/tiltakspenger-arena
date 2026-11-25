@@ -157,7 +157,7 @@ object ArenaTestdata {
     fun leggTilVedtak(
         vedtakId: Long,
         sakId: Long,
-        personId: Long,
+        personId: Long?,
         rettighetkode: String = "BASI",
         vedtaktypekode: String = "O",
         vedtakstatuskode: String = "IVERK",
@@ -190,7 +190,7 @@ object ArenaTestdata {
                 "lopenrVedtak" to lopenrVedtak,
                 "rettighetkode" to rettighetkode,
                 "datoMottatt" to datoMottatt,
-                "personId" to personId,
+                "personId" to personId?.toBigDecimal().param(),
                 "fraDato" to fraDato,
                 "tilDato" to tilDato,
                 "vedtakIdRelatert" to vedtakIdRelatert?.toBigDecimal().param(),
