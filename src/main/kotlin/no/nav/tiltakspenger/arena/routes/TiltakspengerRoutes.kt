@@ -13,6 +13,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import no.nav.tiltakspenger.arena.SE_SIKKERLOGG
 import no.nav.tiltakspenger.arena.repository.statistikk.StatistikkRepository
+import no.nav.tiltakspenger.arena.repository.statistikk.UtbetalingsstatistikkRepository
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerRettighetPeriodeMapper.toArenaTiltakspengerRettighetPeriode
 import no.nav.tiltakspenger.arena.routes.ArenaTiltakspengerVedtakPeriodeMapper.toArenaTiltakspengerVedtakPeriode
 import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
@@ -35,6 +36,7 @@ fun Route.tiltakspengerRoutes(
     meldekortService: MeldekortService,
     utbetalingshistorikkService: UtbetalingshistorikkService,
     statistikkRepository: StatistikkRepository = StatistikkRepository(),
+    utbetalingsstatistikkRepository: UtbetalingsstatistikkRepository,
 ) {
     authenticate(IdentityProvider.AZUREAD.value) {
         route("/azure/tiltakspenger") {
@@ -153,6 +155,14 @@ fun Route.tiltakspengerRoutes(
                     val dato = call.request.queryParameters["dato"]?.let { runCatching { LocalDate.parse(it) }.getOrNull() }
                         ?: return@medFeilhåndtering call.respondText("Mangler gyldig dato", status = HttpStatusCode.BadRequest)
                     call.respond(statistikkRepository.hentSakerMedRettEtter(dato))
+                }
+            }
+
+            get("/statistikk/utbetalinger-per-maned") {
+                medFeilhåndtering("hente utbetalinger per måned") {
+                    val år = call.request.queryParameters["aar"]?.toIntOrNull()
+                        ?: return@medFeilhåndtering call.respondText("Mangler gyldig aar", status = HttpStatusCode.BadRequest)
+                    call.respond(utbetalingsstatistikkRepository.hentUtbetalingerPerMåned(år))
                 }
             }
         }

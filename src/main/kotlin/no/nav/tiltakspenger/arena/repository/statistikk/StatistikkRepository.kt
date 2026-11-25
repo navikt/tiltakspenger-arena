@@ -1,7 +1,7 @@
 package no.nav.tiltakspenger.arena.repository.statistikk
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotliquery.queryOf
-import kotliquery.sessionOf
 import no.nav.tiltakspenger.arena.db.Datasource
 import no.nav.tiltakspenger.libs.periode.Periode
 import no.nav.tiltakspenger.libs.periodisering.Periodisering
@@ -9,6 +9,12 @@ import org.intellij.lang.annotations.Language
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import kotlin.time.measureTimedValue
+
+private val logger = KotlinLogging.logger {}
+
+/** Fast sluttdato for vedtak uten sluttdato, slik at disse kan skilles fra saker som slutter på en vanlig dato. */
+val ÅPEN_SLUTTDATO: LocalDate = LocalDate.of(9999, 12, 31)
 
 private val ARENA_DATOFORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
@@ -25,6 +31,16 @@ data class SakerMedRettEtter(
     val dato: LocalDate,
     val sakerMedRett: Int,
     val personerMedRett: Int,
+    /**
+     * Sakene med rett fordelt på måneden for siste dag med rett.
+     * `null` betyr at retten ikke har sluttdato.
+     */
+    val sakerPerSluttmåned: List<SakerForSluttmåned>,
+)
+
+data class SakerForSluttmåned(
+    val sluttmåned: String?,
+    val saker: Int,
 )
 
 private interface Rettighetsvedtak {
@@ -69,7 +85,14 @@ class StatistikkRepository {
      */
     fun hentStatistikkPerMåned(år: Int): List<StatistikkForMåned> {
         val årsperiode = Periode(LocalDate.of(år, 1, 1), LocalDate.of(år, 12, 31))
-        val vedtak = sessionOf(Datasource.hikariDataSource).use { session ->
+        val (vedtak, spørretid) = measureTimedValue { hentVedtak(årsperiode) }
+        val (statistikk, foldetid) = measureTimedValue { foldPerMåned(årsperiode, vedtak) }
+        logger.info { "Hentet statistikk per måned for $år: ${vedtak.size} vedtak, spørring $spørretid, folding $foldetid" }
+        return statistikk
+    }
+
+    private fun hentVedtak(årsperiode: Periode): List<Vedtaksrad> {
+        return Datasource.statistikkSession().use { session ->
             session.run(
                 queryOf(
                     sql,
@@ -91,6 +114,10 @@ class StatistikkRepository {
                 }.asList,
             )
         }
+    }
+
+    private fun foldPerMåned(årsperiode: Periode, vedtak: List<Vedtaksrad>): List<StatistikkForMåned> {
+        val år = årsperiode.fraOgMed.year
         val rettPerSak = vedtak.groupBy { it.sakId }.values.map { vedtakForSak -> vedtakForSak.rettIPeriode(årsperiode) }
         return (1..12).map { YearMonth.of(år, it) }.map { måned ->
             val månedsperiode = Periode(måned.atDay(1), måned.atEndOfMonth())
@@ -111,7 +138,14 @@ class StatistikkRepository {
      * Vedtak som slutter på eller før [dato] hentes ikke fordi de ikke kan påvirke retten etter datoen.
      */
     fun hentSakerMedRettEtter(dato: LocalDate): SakerMedRettEtter {
-        val vedtak = sessionOf(Datasource.hikariDataSource).use { session ->
+        val (vedtak, spørretid) = measureTimedValue { hentVedtakEtterDato(dato) }
+        val (statistikk, foldetid) = measureTimedValue { foldEtterDato(dato, vedtak) }
+        logger.info { "Hentet saker med rett etter $dato: ${vedtak.size} vedtak, spørring $spørretid, folding $foldetid" }
+        return statistikk
+    }
+
+    private fun hentVedtakEtterDato(dato: LocalDate): List<VedtaksradEtterDato> {
+        return Datasource.statistikkSession().use { session ->
             session.run(
                 queryOf(sqlEtterDato, mapOf("dato" to dato)).map { rad ->
                     VedtaksradEtterDato(
@@ -124,15 +158,27 @@ class StatistikkRepository {
                 }.asList,
             )
         }
-        val sakerMedRett = vedtak.groupBy { it.sakId }.values.filter { vedtakForSak ->
-            // Horisonten tar med vedtak med åpen sluttdato og vedtak som starter lenge etter datoen.
-            val horisont = maxOf(dato.plusDays(1), vedtakForSak.maxOf { it.tilDato ?: it.fraDato })
-            vedtakForSak.rettIPeriode(Periode(dato.plusDays(1), horisont)).perioderMedVerdi.any { it.verdi }
+    }
+
+    private fun foldEtterDato(dato: LocalDate, vedtak: List<VedtaksradEtterDato>): SakerMedRettEtter {
+        // Perioden går til ÅPEN_SLUTTDATO, så vedtak uten sluttdato gir rett til og med den datoen.
+        val periode = Periode(dato.plusDays(1), ÅPEN_SLUTTDATO)
+        val sisteDagMedRettPerSak = vedtak.groupBy { it.sakId }.values.mapNotNull { vedtakForSak ->
+            vedtakForSak.rettIPeriode(periode).perioderMedVerdi
+                .filter { it.verdi }
+                .maxOfOrNull { it.periode.tilOgMed }
+                ?.let { sisteDagMedRett -> vedtakForSak.first() to sisteDagMedRett }
         }
         return SakerMedRettEtter(
             dato = dato,
-            sakerMedRett = sakerMedRett.size,
-            personerMedRett = sakerMedRett.mapNotNull { it.first().personId }.distinct().size,
+            sakerMedRett = sisteDagMedRettPerSak.size,
+            personerMedRett = sisteDagMedRettPerSak.mapNotNull { (sak, _) -> sak.personId }.distinct().size,
+            sakerPerSluttmåned = sisteDagMedRettPerSak
+                .groupingBy { (_, sisteDagMedRett) -> if (sisteDagMedRett == ÅPEN_SLUTTDATO) null else YearMonth.from(sisteDagMedRett) }
+                .eachCount()
+                .entries
+                .sortedWith(compareBy(nullsLast()) { it.key })
+                .map { (sluttmåned, saker) -> SakerForSluttmåned(sluttmåned = sluttmåned?.toString(), saker = saker) },
         )
     }
 

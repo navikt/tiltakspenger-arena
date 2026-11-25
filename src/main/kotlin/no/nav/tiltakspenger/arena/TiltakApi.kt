@@ -7,6 +7,7 @@ import io.ktor.server.application.install
 import io.ktor.server.auth.authentication
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
+import no.nav.tiltakspenger.arena.repository.statistikk.UtbetalingsstatistikkRepository
 import no.nav.tiltakspenger.arena.routes.tiltakspengerRoutes
 import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
 import no.nav.tiltakspenger.arena.service.utbetalingshistorikk.UtbetalingshistorikkService
@@ -24,6 +25,7 @@ fun Application.tiltakApi(
     rettighetDetaljerService: RettighetDetaljerService,
     meldekortService: MeldekortService,
     utbetalingshistorikkService: UtbetalingshistorikkService,
+    utbetalingsstatistikkRepository: UtbetalingsstatistikkRepository,
     texasClient: TexasHttpClient,
     readiness: Readiness,
 ) {
@@ -39,6 +41,7 @@ fun Application.tiltakApi(
             rettighetDetaljerService = rettighetDetaljerService,
             meldekortService = meldekortService,
             utbetalingshistorikkService = utbetalingshistorikkService,
+            utbetalingsstatistikkRepository = utbetalingsstatistikkRepository,
         )
         healthRoutes(erKlar = readiness::erKlar)
     }

@@ -3,6 +3,7 @@ package no.nav.tiltakspenger.arena
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import no.nav.tiltakspenger.arena.repository.sak.SakRepository
+import no.nav.tiltakspenger.arena.repository.statistikk.UtbetalingsstatistikkRepository
 import no.nav.tiltakspenger.arena.service.meldekort.MeldekortService
 import no.nav.tiltakspenger.arena.service.utbetalingshistorikk.UtbetalingshistorikkService
 import no.nav.tiltakspenger.arena.service.vedtakdetaljer.RettighetDetaljerServiceImpl
@@ -32,6 +33,7 @@ fun start(
     val rettighetDetaljerService = RettighetDetaljerServiceImpl(vedtakDetaljerService)
     val meldekortService = MeldekortService()
     val utbetalingshistorikkService = UtbetalingshistorikkService()
+    val utbetalingsstatistikkRepository = UtbetalingsstatistikkRepository(clock)
 
     startApp(
         log = log,
@@ -44,6 +46,7 @@ fun start(
             rettighetDetaljerService = rettighetDetaljerService,
             meldekortService = meldekortService,
             utbetalingshistorikkService = utbetalingshistorikkService,
+            utbetalingsstatistikkRepository = utbetalingsstatistikkRepository,
             texasClient = texasClient,
             readiness = readiness,
         )

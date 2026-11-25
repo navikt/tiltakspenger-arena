@@ -167,6 +167,7 @@ object ArenaTestdata {
         datoMottatt: LocalDate = LocalDate.of(2022, 12, 1),
         regDato: LocalDate = LocalDate.of(2022, 12, 1),
         lopenrVedtak: Long = 1,
+        vedtakIdRelatert: Long? = null,
     ) {
         // Oracle godtar ikke en utypet null-binding (ORA-17004), så åpen sluttdato settes som NULL-literal i SQL-en i stedet for et bind-param.
         val tilDatoBind = if (tilDato == null) "NULL" else ":tilDato"
@@ -174,10 +175,10 @@ object ArenaTestdata {
             """
             INSERT INTO VEDTAK (VEDTAK_ID, SAK_ID, VEDTAKSTATUSKODE, VEDTAKTYPEKODE, REG_DATO, UTFALLKODE,
                                 AETATENHET_BEHANDLER, AAR, LOPENRSAK, LOPENRVEDTAK, RETTIGHETKODE, AKTFASEKODE,
-                                DATO_MOTTATT, PERSON_ID, FRA_DATO, TIL_DATO, STATUS_SOSIALDATA, ER_UTLAND)
+                                DATO_MOTTATT, PERSON_ID, FRA_DATO, TIL_DATO, STATUS_SOSIALDATA, ER_UTLAND, VEDTAK_ID_RELATERT)
             VALUES (:vedtakId, :sakId, :vedtakstatuskode, :vedtaktypekode, :regDato, :utfallkode,
                     '0219', 2023, :sakId, :lopenrVedtak, :rettighetkode, 'UGJEN',
-                    :datoMottatt, :personId, :fraDato, $tilDatoBind, 'N', 'N')
+                    :datoMottatt, :personId, :fraDato, $tilDatoBind, 'N', 'N', :vedtakIdRelatert)
             """.trimIndent(),
             mapOf(
                 "vedtakId" to vedtakId,
@@ -192,6 +193,7 @@ object ArenaTestdata {
                 "personId" to personId,
                 "fraDato" to fraDato,
                 "tilDato" to tilDato,
+                "vedtakIdRelatert" to vedtakIdRelatert?.toBigDecimal().param(),
             ),
         )
     }
@@ -368,16 +370,21 @@ object ArenaTestdata {
         datoPostert: LocalDate = LocalDate.of(2023, 1, 20),
         datoPeriodeFra: LocalDate = LocalDate.of(2023, 1, 2),
         datoPeriodeTil: LocalDate = LocalDate.of(2023, 1, 15),
+        posteringId: Long? = null,
+        antall: Double? = null,
+        kilde: String? = null,
     ) {
         exec(
             """
             INSERT INTO POSTERING (MELDEKORT_ID, PERSON_ID, VEDTAK_ID, TRANSAKSJONSKODE, DATO_POSTERT,
-                                   POSTERINGSATS, BELOP, DATO_PERIODE_FRA, DATO_PERIODE_TIL)
+                                   POSTERINGSATS, BELOP, DATO_PERIODE_FRA, DATO_PERIODE_TIL,
+                                   POSTERING_ID, ANTALL, TABELLNAVNALIAS_KILDE)
             VALUES (:meldekortId, :personId, :vedtakId, 'UTBET', :datoPostert,
-                    :posteringsats, :belop, :datoPeriodeFra, :datoPeriodeTil)
+                    :posteringsats, :belop, :datoPeriodeFra, :datoPeriodeTil,
+                    :posteringId, :antall, :kilde)
             """.trimIndent(),
             mapOf(
-                "meldekortId" to meldekortId,
+                "meldekortId" to meldekortId?.toBigDecimal().param(),
                 "personId" to personId,
                 "vedtakId" to vedtakId,
                 "datoPostert" to datoPostert,
@@ -385,6 +392,10 @@ object ArenaTestdata {
                 "belop" to belop,
                 "datoPeriodeFra" to datoPeriodeFra,
                 "datoPeriodeTil" to datoPeriodeTil,
+                // Typede parametre, så null bindes med en SQL-type Oracle godtar.
+                "posteringId" to posteringId?.toBigDecimal().param(),
+                "antall" to antall?.toBigDecimal().param(),
+                "kilde" to kilde.param(),
             ),
         )
     }
@@ -398,16 +409,21 @@ object ArenaTestdata {
         modDato: LocalDate = LocalDate.of(2023, 1, 18),
         datoPeriodeFra: LocalDate = LocalDate.of(2023, 1, 2),
         datoPeriodeTil: LocalDate = LocalDate.of(2023, 1, 15),
+        posteringId: Long? = null,
+        antall: Double? = null,
+        kilde: String? = null,
     ) {
         exec(
             """
             INSERT INTO UTBETALINGSGRUNNLAG (MELDEKORT_ID, PERSON_ID, VEDTAK_ID, TRANSAKSJONSKODE, MOD_DATO,
-                                             POSTERINGSATS, BELOP, DATO_PERIODE_FRA, DATO_PERIODE_TIL)
+                                             POSTERINGSATS, BELOP, DATO_PERIODE_FRA, DATO_PERIODE_TIL,
+                                             POSTERING_ID, ANTALL, TABELLNAVNALIAS_KILDE)
             VALUES (:meldekortId, :personId, :vedtakId, 'UTBET', :modDato,
-                    :posteringsats, :belop, :datoPeriodeFra, :datoPeriodeTil)
+                    :posteringsats, :belop, :datoPeriodeFra, :datoPeriodeTil,
+                    :posteringId, :antall, :kilde)
             """.trimIndent(),
             mapOf(
-                "meldekortId" to meldekortId,
+                "meldekortId" to meldekortId?.toBigDecimal().param(),
                 "personId" to personId,
                 "vedtakId" to vedtakId,
                 "modDato" to modDato,
@@ -415,6 +431,10 @@ object ArenaTestdata {
                 "belop" to belop,
                 "datoPeriodeFra" to datoPeriodeFra,
                 "datoPeriodeTil" to datoPeriodeTil,
+                // Typede parametre, så null bindes med en SQL-type Oracle godtar.
+                "posteringId" to posteringId?.toBigDecimal().param(),
+                "antall" to antall?.toBigDecimal().param(),
+                "kilde" to kilde.param(),
             ),
         )
     }
